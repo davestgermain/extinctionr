@@ -37,13 +37,30 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    # CRM stuff
+    'simple_pagination',
+    'compressor',
+    'common',
+    'accounts',
+    'cases',
+    'contacts',
+    'emails',
+    'leads',
+    'opportunity',
+    'planner',
+    'sorl.thumbnail',
+    'phonenumber_field',
+    'storages',
+    'marketing',
+    'xrmass.actions',
+    # end of CRM stuff
 ]
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
-    'django.middleware.csrf.CsrfViewMiddleware',
+    # 'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
@@ -54,7 +71,7 @@ ROOT_URLCONF = 'xrmass.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [os.path.join(BASE_DIR, "templates"), ],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -117,4 +134,53 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.1/howto/static-files/
 
+STATICFILES_DIRS = (BASE_DIR + '/static',)
+
+STATIC_ROOT = BASE_DIR + '/static_root/'
+COMPRESS_ROOT = BASE_DIR + '/static/'
+
 STATIC_URL = '/static/'
+MEDIA_URL = 'http://127.0.0.1:8000/static/'
+
+COMPRESS_ROOT = BASE_DIR + '/static/'
+COMPRESS_ENABLED = False
+
+COMPRESS_OFFLINE_CONTEXT = {
+    'STATIC_URL': 'STATIC_URL',
+}
+
+STATICFILES_FINDERS = (
+    'django.contrib.staticfiles.finders.FileSystemFinder',
+    'django.contrib.staticfiles.finders.AppDirectoriesFinder',
+    'compressor.finders.CompressorFinder',
+)
+
+COMPRESS_CSS_FILTERS = [
+    'compressor.filters.css_default.CssAbsoluteFilter', 'compressor.filters.cssmin.CSSMinFilter']
+COMPRESS_REBUILD_TIMEOUT = 5400
+
+COMPRESS_OUTPUT_DIR = 'CACHE'
+COMPRESS_URL = STATIC_URL
+
+COMPRESS_PRECOMPILERS = (
+    ('text/less', 'lessc {infile} {outfile}'),
+    ('text/x-sass', 'sass {infile} {outfile}'),
+    ('text/x-scss', 'sass {infile} {outfile}'),
+)
+
+COMPRESS_OFFLINE_CONTEXT = {
+    'STATIC_URL': 'STATIC_URL',
+}
+
+AUTH_USER_MODEL = 'common.User'
+
+LOGIN_REDIRECT_URL = '/'
+
+LOGIN_URL = '/login/'
+GP_CLIENT_ID = os.getenv('GP_CLIENT_ID', False)
+GP_CLIENT_SECRET = os.getenv('GP_CLIENT_SECRET', False)
+ENABLE_GOOGLE_LOGIN = os.getenv('ENABLE_GOOGLE_LOGIN', False)
+
+ADMIN_EMAIL = "admin@xrmass.org"
+
+PHONENUMBER_DEFAULT_REGION = 'US'
