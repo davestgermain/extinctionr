@@ -1,4 +1,4 @@
-"""xrmass URL Configuration
+"""extinctionr URL Configuration
 
 The `urlpatterns` list routes URLs to views. For more information please see:
     https://docs.djangoproject.com/en/2.1/topics/http/urls/
@@ -22,14 +22,14 @@ from django.views.generic import TemplateView
 
 from common.views import handler404, handler500
 
-app_name = 'xrmass'
+app_name = 'extinctionr'
 
 urlpatterns = [
-	path('', TemplateView.as_view(template_name='xrmass/index.html'), name="index"),
-	path('about', TemplateView.as_view(template_name='xrmass/about.html'), name="xr.about"),
-	path('resources', TemplateView.as_view(template_name='xrmass/resources.html'), name="xr.resources"),
+	path('', TemplateView.as_view(template_name='extinctionr/index.html'), name="index"),
+	path('about', TemplateView.as_view(template_name='extinctionr/about.html'), name="xr.about"),
+	path('resources', TemplateView.as_view(template_name='extinctionr/resources.html'), name="xr.resources"),
     path('', include('django.contrib.auth.urls')),
-    path('actions/', include('xrmass.actions.urls', namespace="actions")),
+    path('actions/', include('extinctionr.actions.urls', namespace="actions")),
     path('relationships/', include('common.urls', namespace="common")),
     path('relationships/m/', include('marketing.urls', namespace="marketing")),
     path('relationships/accounts/', include('accounts.urls', namespace="accounts")),

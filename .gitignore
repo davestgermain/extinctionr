@@ -1,0 +1,9 @@
+syntax: glob
+__pycache__/*
+*.pyc
+.DS_Store
+build/*
+dist/*
+.eggs/*
+.pytest*
+

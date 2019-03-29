@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="row text-center">
+	<div class="col">
+		<h1>{{action.name}}</h1>
+		<h2>{{action.when}}</h2>
+		<p class="text-left">{{action.description}}</p>
+	</div>
+</div>
+<div class="row">
+	<div class="col">
+		<form method="post"> {% csrf_token %}
+		{{ form }}
+		<input type="submit" value="Submit">
+		</form>
+	</div>
+</div>
+
+
+{% endblock %}

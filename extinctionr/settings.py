@@ -54,7 +54,7 @@ INSTALLED_APPS = [
     'phonenumber_field',
     'storages',
     'marketing',
-    'xrmass.actions',
+    'extinctionr.actions',
     # end of CRM stuff
     # django wiki
     'django_nyt.apps.DjangoNytConfig',
@@ -78,7 +78,7 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-ROOT_URLCONF = 'xrmass.urls'
+ROOT_URLCONF = 'extinctionr.urls'
 
 TEMPLATES = [
     {
@@ -97,7 +97,7 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'xrmass.wsgi.application'
+WSGI_APPLICATION = 'extinctionr.wsgi.application'
 
 
 # Database
