@@ -1,0 +1,8 @@
+{% autoescape off %}
+Hello {{ user.get_username }}<br>,
+you are assigned to account {{ account.name }}<br>
+click the link below to access it:<br>
+{{ protocol }}://{{ domain }}{% url 'accounts:view_account' pk=account.id %}<br>
+<br>
+Django-CRM
+{% endautoescape %}

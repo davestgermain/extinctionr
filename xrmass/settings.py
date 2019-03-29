@@ -27,6 +27,7 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
+SITE_ID = 1
 
 # Application definition
 
@@ -36,7 +37,9 @@ INSTALLED_APPS = [
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
+    'django.contrib.sites.apps.SitesConfig',
     'django.contrib.staticfiles',
+    'django.contrib.humanize.apps.HumanizeConfig',
     # CRM stuff
     'simple_pagination',
     'compressor',
@@ -48,12 +51,21 @@ INSTALLED_APPS = [
     'leads',
     'opportunity',
     'planner',
-    'sorl.thumbnail',
     'phonenumber_field',
     'storages',
     'marketing',
     'xrmass.actions',
     # end of CRM stuff
+    # django wiki
+    'django_nyt.apps.DjangoNytConfig',
+    'mptt',
+    'sekizai',
+    'sorl.thumbnail',
+    'wiki.apps.WikiConfig',
+    'wiki.plugins.attachments.apps.AttachmentsConfig',
+    'wiki.plugins.notifications.apps.NotificationsConfig',
+    'wiki.plugins.images.apps.ImagesConfig',
+    'wiki.plugins.macros.apps.MacrosConfig',
 ]
 
 MIDDLEWARE = [
@@ -79,6 +91,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'sekizai.context_processors.sekizai', # for django-wiki
             ],
         },
     },
