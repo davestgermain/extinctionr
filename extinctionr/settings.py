@@ -54,7 +54,7 @@ INSTALLED_APPS = [
     'phonenumber_field',
     'storages',
     'marketing',
-    'extinctionr.actions',
+    'extinctionr.actions.apps.ActionsConfig',
     # end of CRM stuff
     # django wiki
     'django_nyt.apps.DjangoNytConfig',
@@ -147,6 +147,7 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.1/howto/static-files/
 
+STORAGE_TYPE = 'normal'
 STATICFILES_DIRS = (BASE_DIR + '/static',)
 
 STATIC_ROOT = BASE_DIR + '/static_root/'

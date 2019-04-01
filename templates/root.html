@@ -32,11 +32,11 @@
           <div class="collapse navbar-collapse" id="navbarSupportedContent">
             {% block main_menu %}{% endblock %}
         {% if request.user.is_authenticated %}
-            <ul class="navbar-nav mr-auto">
+            <ul class="navbar-nav ml-auto">
               <li class="nav-item dropdown">
                 <a href="#" class="dropdown-toggle abcd nav-link" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false" >
                   {% if not request.user.profile_pic %}
-                    <img class="img-thumbnail" xsrc="{% static 'images/user.png' %}" alt="Micro profile pic">
+                    <img class="img-thumbnail" style="max-height:30px;" src="{% static 'images/user.png' %}" alt="Micro profile pic">
                   {% else %}
                     {% thumbnail request.user.profile_pic "25x25" as im %}
                       <img src="{{ im.url }}">
@@ -49,9 +49,7 @@
                   <a class="dropdown-item" href="{% url 'common:users_list' %}">Users</a>
                   <a class="dropdown-item" href="{% url 'common:api_settings' %}">Settings</a>
                   {% endif %}
-                  {% if request.user.email != "admin@micropyramid.com" %}
                   <a class="dropdown-item" href="{% url 'password_change' %}">Change Password</a>
-                  {% endif %}
                   <a class="dropdown-item" href="{% url 'common:profile' %}">Profile</a>
                   <a class="dropdown-item" href="{% url 'common:logout' %}">Logout</a>
                 </div>
@@ -69,6 +67,7 @@
       {% block content %}
       {% endblock %}
   </div>
+
 <script src="{% static 'js/jquery-3.3.1.min.js' %}"></script>
 <script src="{% static 'js/popper.min.js' %}"></script>
 <script src="{% static 'js/bootstrap.min.js' %}"></script>

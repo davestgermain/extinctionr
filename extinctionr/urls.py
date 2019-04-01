@@ -27,7 +27,9 @@ app_name = 'extinctionr'
 urlpatterns = [
 	path('', TemplateView.as_view(template_name='extinctionr/index.html'), name="index"),
 	path('about', TemplateView.as_view(template_name='extinctionr/about.html'), name="xr.about"),
-	path('resources', TemplateView.as_view(template_name='extinctionr/resources.html'), name="xr.resources"),
+    path('resources', TemplateView.as_view(template_name='extinctionr/resources.html'), name="xr.resources"),
+    path('climate-change', TemplateView.as_view(template_name='extinctionr/climate-change.html'), name="xr.climatechange"),
+    path('join', TemplateView.as_view(template_name='extinctionr/join.html'), name="xr.join"),
     path('', include('django.contrib.auth.urls')),
     path('actions/', include('extinctionr.actions.urls', namespace="actions")),
     path('relationships/', include('common.urls', namespace="common")),
