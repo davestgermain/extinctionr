@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="row text-center">
+	<div class="col-6 offset-3">
+		<h1>{{action.name}}</h1>
+		<h2>{{action.when}}</h2>
+		<p class="text-left">{{action.description}}</p>
+		<hr>
+	</div>
+</div>
+{% if request.user.is_authenticated %}
+<div class="row mt-4">
+	<div class="col-10 offset-1">
+		<table class="table table-striped">
+			<thead class="thead-dark">
+				<tr>
+				<th scope="col">#</th>
+				<th scope="col">Name</th>
+				<th scope="col">Email</th>
+				<th scope="col">Phone</th>
+				<th scope="col">Role</th>
+				<th scope="col">Notes</th>
+				</tr>
+			</thead>
+			<tbody>
+			{% for attendee in attendees %}
+			<tr>
+				<th scope="row"><a href="/admin/actions/attendee/{{attendee.id}}/change/">{{forloop.counter}}</a></th>
+				<td><a href="{% url 'contacts:edit_contact' pk=attendee.contact_id %}">{{attendee.contact.first_name}} {{attendee.contact.last_name}}</a></td>
+				<td>{% if attendee.contact.email %}<a href="mailto:{{attendee.contact.email}}">{{attendee.contact.email}}</a>{% endif %}</td>
+				<td>{% if attendee.contact.phone %}{{attendee.contact.phone}}{% endif %}</td>
+				<td>{{attendee.role}}</td>
+				<td>{{attendee.notes}}</td>
+			</tr>
+			{% endfor %}
+			</tbody>
+		</table>
+	</div>
+</div>
+{% endif %}
+
+{% endblock %}
