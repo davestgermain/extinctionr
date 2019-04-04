@@ -55,6 +55,7 @@ INSTALLED_APPS = [
     'storages',
     'marketing',
     'extinctionr.actions.apps.ActionsConfig',
+    'extinctionr.info',
     # end of CRM stuff
     # django wiki
     'django_nyt.apps.DjangoNytConfig',

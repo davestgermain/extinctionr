@@ -18,19 +18,14 @@ from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib.auth import views
-from django.views.generic import TemplateView
 
 from common.views import handler404, handler500
 
 app_name = 'extinctionr'
 
 urlpatterns = [
-	path('', TemplateView.as_view(template_name='extinctionr/index.html'), name="index"),
-	path('about', TemplateView.as_view(template_name='extinctionr/about.html'), name="xr.about"),
-    path('resources', TemplateView.as_view(template_name='extinctionr/resources.html'), name="xr.resources"),
-    path('climate-change', TemplateView.as_view(template_name='extinctionr/climate-change.html'), name="xr.climatechange"),
-    path('join', TemplateView.as_view(template_name='extinctionr/join.html'), name="xr.join"),
     path('', include('django.contrib.auth.urls')),
+    path('', include('extinctionr.info.urls')),
     path('actions/', include('extinctionr.actions.urls', namespace="actions")),
     path('relationships/', include('common.urls', namespace="common")),
     path('relationships/m/', include('marketing.urls', namespace="marketing")),
