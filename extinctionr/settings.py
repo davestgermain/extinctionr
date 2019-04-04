@@ -157,12 +157,13 @@ STORAGE_TYPE = 'normal'
 STATICFILES_DIRS = (BASE_DIR + '/static',)
 
 STATIC_ROOT = BASE_DIR + '/static_root/'
-COMPRESS_ROOT = BASE_DIR + '/static/'
+COMPRESS_ROOT = STATIC_ROOT
 
 STATIC_URL = '/static/'
-MEDIA_URL = 'http://127.0.0.1:8000/static/'
+MEDIA_URL = '/static/media/'
+MEDIA_ROOT = STATIC_ROOT + 'media/'
 
-COMPRESS_ROOT = BASE_DIR + '/static/'
+
 COMPRESS_ENABLED = False
 
 COMPRESS_OFFLINE_CONTEXT = {
