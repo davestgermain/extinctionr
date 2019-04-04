@@ -20,10 +20,10 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # See https://docs.djangoproject.com/en/2.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'msl&0^9j7r3#trf#c^4yja9ihj+1+@7wf9^)1-*v@42z*a2562'
+SECRET_KEY = os.getenv('SECRET_KEY', 'msl&0^9j7r3#trf#c^4yja9ihj+1+@7wf9^)1-*v@42z*a2562')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = os.getenv('DEBUG', 'true') == 'true'
 
 ALLOWED_HOSTS = []
 
@@ -54,9 +54,9 @@ INSTALLED_APPS = [
     'phonenumber_field',
     'storages',
     'marketing',
+    # end of CRM stuff
     'extinctionr.actions.apps.ActionsConfig',
     'extinctionr.info',
-    # end of CRM stuff
     # django wiki
     'django_nyt.apps.DjangoNytConfig',
     'mptt',
@@ -136,7 +136,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'US/Eastern'
 
 USE_I18N = True
 

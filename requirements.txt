@@ -1,5 +1,8 @@
 django<2.2
 wiki
 -e git+https://github.com/davestgermain/Django-CRM#egg=django_crm
+boto3
+lxml
+openpyxl
 gunicorn
 ipython

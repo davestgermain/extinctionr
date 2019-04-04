@@ -6,4 +6,7 @@ build/*
 dist/*
 .eggs/*
 .pytest*
-
+db.sqlite3
+static_root/*
+cache/*
+attachments/*
