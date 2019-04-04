@@ -1,4 +1,6 @@
 from django.views.generic import TemplateView
+from django.http import Http404
+from django.template.loader import get_template, TemplateDoesNotExist
 
 
 class InfoView(TemplateView):
@@ -6,5 +8,11 @@ class InfoView(TemplateView):
 		page = kwargs['page']
 		if page.endswith('.html'):
 			page = page.split('.')[0]
-		self.template_name = page + '.html'
-		return super(InfoView, self).get(request, *args, **kwargs)
+		try:
+			template_name = 'pages/%s.html' % page
+			get_template(template_name)
+			self.template_name = template_name
+			return super(InfoView, self).get(request, *args, **kwargs)
+		except TemplateDoesNotExist:
+			raise Http404(page)
+
