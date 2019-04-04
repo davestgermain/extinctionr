@@ -25,7 +25,12 @@ SECRET_KEY = os.getenv('SECRET_KEY', 'msl&0^9j7r3#trf#c^4yja9ihj+1+@7wf9^)1-*v@4
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.getenv('DEBUG', 'true') == 'true'
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [
+    'www.xrmass.org',
+    'xrmass.org',
+    'test.xrmass.org',
+    'localhost',
+]
 
 SITE_ID = 1
 
