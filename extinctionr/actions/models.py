@@ -11,6 +11,8 @@ class Action(models.Model):
 	name = models.CharField(max_length=255, db_index=True)
 	when = models.DateTimeField(db_index=True)
 	description = models.TextField(default='', blank=True)
+	slug = models.SlugField(unique=True)
+	public = models.BooleanField(default=True, blank=True)
 
 	def signup(self, email, role, notes='', promised=None):
 		db_role = ActionRole.objects.get_or_create(name=role)[0]

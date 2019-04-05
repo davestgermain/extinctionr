@@ -4,7 +4,8 @@ from .models import Action, ActionRole, Attendee
 
 @admin.register(Action)
 class ActionAdmin(admin.ModelAdmin):
-	list_display = ('name', 'when')
+	list_display = ('slug', 'name', 'when')
+	prepopulated_fields = {"slug": ("name",)}
 
 
 @admin.register(Attendee)
