@@ -160,7 +160,10 @@ STATIC_ROOT = BASE_DIR + '/static_root/'
 COMPRESS_ROOT = STATIC_ROOT
 
 STATIC_URL = '/static/'
-MEDIA_URL = '/static/media/'
+if DEBUG:
+    MEDIA_URL = '/media/'
+else:
+    MEDIA_URL = '/static/media/'
 MEDIA_ROOT = STATIC_ROOT + 'media/'
 
 
