@@ -2,6 +2,7 @@ import datetime
 from django.db import models
 from django.contrib.auth import get_user_model
 from contacts.models import Contact
+from markdownx.models import MarkdownxField
 
 
 USER_MODEL = get_user_model()
@@ -10,7 +11,7 @@ USER_MODEL = get_user_model()
 class Action(models.Model):
 	name = models.CharField(max_length=255, db_index=True)
 	when = models.DateTimeField(db_index=True)
-	description = models.TextField(default='', blank=True)
+	description = MarkdownxField(default='', blank=True)
 	slug = models.SlugField(unique=True)
 	public = models.BooleanField(default=True, blank=True)
 

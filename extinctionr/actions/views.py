@@ -19,7 +19,7 @@ def signup_form(request, action_slug):
 		form = SignupForm(request.POST)
 		if form.is_valid():
 			data = form.cleaned_data
-			action.signup(data['email'], data['role'], name=data['name'][:100])
+			action.signup(data['email'], data['role'], name=data['name'][:100], promised=data['promised'])
 			next_url = data['next'] or request.headers.get('referer', '/')
 			return redirect(next_url)
 	else:

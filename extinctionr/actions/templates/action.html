@@ -1,12 +1,12 @@
 {% extends "base.html" %}
 
 {% block content %}
-
+{% load info %}
 <div class="row text-center">
 	<div class="col-6 offset-3">
 		<h1>{{action.name}}</h1>
 		<h2>{{action.when}}</h2>
-		<p class="text-left">{{action.description}}</p>
+		<p class="text-left">{{action.description|markdownify}}</p>
 		<hr>
 	</div>
 </div>

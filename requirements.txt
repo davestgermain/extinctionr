@@ -7,3 +7,4 @@ openpyxl
 gunicorn
 requests
 ipython
+django-markdownx

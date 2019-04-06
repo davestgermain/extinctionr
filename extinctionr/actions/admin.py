@@ -1,9 +1,10 @@
 from django.contrib import admin
 from .models import Action, ActionRole, Attendee
+from markdownx.admin import MarkdownxModelAdmin
 
 
 @admin.register(Action)
-class ActionAdmin(admin.ModelAdmin):
+class ActionAdmin(MarkdownxModelAdmin):
 	list_display = ('slug', 'name', 'when')
 	prepopulated_fields = {"slug": ("name",)}
 
