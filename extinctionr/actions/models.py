@@ -14,22 +14,25 @@ class Action(models.Model):
 	slug = models.SlugField(unique=True)
 	public = models.BooleanField(default=True, blank=True)
 
-	def signup(self, email, role, notes='', promised=None):
+	def signup(self, email, role, name='', notes='', promised=None):
 		db_role = ActionRole.objects.get_or_create(name=role)[0]
 		try:
 			user = Contact.objects.get(email=email)
 		except Contact.DoesNotExist:
-			first_name = last_name = ''
+			first_name, last_name = name.split(' ', 1)
 			user = Contact.objects.create(email=email, first_name=first_name, last_name=last_name)
 		if promised:
 			promised = datetime.datetime.now()
-		atten, created = Attendee.objects.get_or_create(action=self, contact=user, role=db_role, notes=notes, promised=promised)
+		atten, created = Attendee.objects.get_or_create(action=self, contact=user, role=db_role)
 		if not created:
 			if notes:
 				atten.notes = notes
 			if promised:
 				atten.promised = promised
-			atten.save()
+		else:
+			atten.promised = promised
+			atten.notes = notes
+		atten.save()
 		return atten
 
 	def __str__(self):
@@ -53,5 +56,5 @@ class Attendee(models.Model):
 	class Meta:
 		unique_together = ('action', 'contact', 'role')
 
-	def __repr__(self):
+	def __str__(self):
 		return '%s %s %s' % (self.action, self.contact, self.role)

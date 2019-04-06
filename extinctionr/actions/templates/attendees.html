@@ -1,0 +1,11 @@
+<table class="table">
+<tbody>
+{% for attendee in attendees %}
+{% if attendee.promised %}
+<tr>
+	<td>{{attendee.contact.first_name}}</td><td>{{attendee.contact.last_name}}</td>
+</tr>
+{% endif %}
+{% endfor %}
+</tbody>
+</table>

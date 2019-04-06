@@ -10,7 +10,7 @@ class ActionAdmin(admin.ModelAdmin):
 
 @admin.register(Attendee)
 class AttendeeAdmin(admin.ModelAdmin):
-	list_display = ('action', 'contact', 'role')
+	list_display = ('action', 'contact', 'role', 'promised')
 
 admin.site.register(ActionRole)
 

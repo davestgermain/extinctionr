@@ -10,17 +10,18 @@ class SignupForm(forms.Form):
 	name = forms.CharField(label="Your name")
 	promised = forms.BooleanField(required=False)
 	role = forms.CharField(required=False)
+	next = forms.CharField(required=False)
 
 
-def signup_form(request, action_id):
-	action = get_object_or_404(Action, pk=action_id)
+def signup_form(request, action_slug):
+	action = get_object_or_404(Action, slug=action_slug)
 	if request.method == 'POST':
 		form = SignupForm(request.POST)
 		if form.is_valid():
 			data = form.cleaned_data
-			print(data)
-			action.signup(data['email'], data['role'])
-			return redirect('/')
+			action.signup(data['email'], data['role'], name=data['name'][:100])
+			next_url = data['next'] or request.headers.get('referer', '/')
+			return redirect(next_url)
 	else:
 		form = SignupForm()
 	ctx = {'action': action, 'form': form}
@@ -32,3 +33,12 @@ def show_action(request, action_id):
 	attendees = Attendee.objects.filter(action=action).select_related('contact')
 	ctx = {'action': action, 'attendees': attendees}
 	return render(request, 'action.html', ctx)
+
+
+def show_attendees(request, action_slug):
+	action = get_object_or_404(Action, slug=action_slug)
+	out_fmt = request.GET.get('fmt', 'json')
+	attendees = Attendee.objects.filter(action=action).select_related('contact')
+	if out_fmt == 'html':
+		ctx = {'attendees': attendees}
+		return render(request, 'attendees.html', ctx)

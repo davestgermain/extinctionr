@@ -21,10 +21,10 @@
     {% block extralinks %} {% endblock %}
 </head>
 <body class="main_body_bg_color">
-  <div id="mainbody" class="xmain_container container-fluid">
+  <div id="xmainbody" class="container">
     {% block header %}
     <header>
-      <nav class="navbar navbar-expand-lg navbar-light bg-light">
+      <nav id="site-nav" class="navbar navbar-expand-lg navbar-light">
         <a class="navbar-brand" href="{% url 'extinctionr.info:index' %}">XRmass</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
           <i class="fas fa-bars"></i>
@@ -63,7 +63,6 @@
 
       {% block breadcrumb %}
       {% endblock %}
-
       {% block content %}
       {% endblock %}
   </div>
