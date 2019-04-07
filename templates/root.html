@@ -16,7 +16,7 @@
   }
   #site-nav {
     background-color: #1a1a1a;
-    font-size: 2em;
+    font-size: 1.8em;
   }
   #site-nav a {
     color: #22a83e;
@@ -102,10 +102,10 @@
   $(document).ready(function(){
     word = window.location.pathname.split('/')[1]
     if(word == "relationships"){
-      $("#dashboard").addClass('active')
+      $("#dashboard").addClass('active');
     }
     else{
-      $('#' + word).addClass('active')
+      $('#' + word).addClass('active');
     }
   });
   /*

@@ -1,11 +1,28 @@
-{% extends "wiki/base_site.html" %}
+{% extends "base.html" %}
+{% load sekizai_tags i18n wiki_tags static %}
+{% block title %}{% block wiki_pagetitle %}{% endblock %}{% block wiki_site_title %}{% endblock %}{% endblock %}
+{% render_block "css" %}
 
-{% block wiki_site_title %} - Wiki{% endblock %}
+{% block content %}
+    {% block wiki_body %}
+    <div class="container" style="margin-top: 60px;">
 
-{% block wiki_header_branding %}
-<a class="navbar-brand" href="/">XRmass</a>
+      {% wiki_messages %}
+
+      <!-- Reserved for breadcrumbs -->
+      {% block wiki_breadcrumbs %}{% endblock %}
+
+      <!-- Main page contents go here -->
+      {% block wiki_contents %}{% endblock %}
+
+    </div> <!-- /container -->
+
+    {% endblock %}
+
 {% endblock %}
-
-{% block wiki_header_navlinks %}
-{% include "menu.html" %}
+{% block extrajs %}
+    <script src="{% static "wiki/js/core.js" %}"></script>
+    <!-- Optionally enable responsive features in IE8 -->
+    <script src="{% static "wiki/js/respond.min.js" %}"></script>
 {% endblock %}
+{% render_block "js" %}
