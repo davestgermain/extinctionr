@@ -1,4 +1,4 @@
-django<2.2
+django
 wiki
 -e git+https://github.com/davestgermain/Django-CRM#egg=django_crm
 boto3
