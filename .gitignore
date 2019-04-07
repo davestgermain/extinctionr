@@ -10,3 +10,4 @@ db.sqlite3
 static_root/*
 cache/*
 attachments/*
+extinctionr/prod_settings.py
