@@ -4,6 +4,6 @@ from .views import InfoView
 app_name = 'extinctionr.info'
 
 urlpatterns = [
-    path('', InfoView.as_view(), kwargs={'page': 'index'}, name='index'),
+    path('', InfoView.as_view(), kwargs={'page': 'home'}, name='index'),
     path('<str:page>', InfoView.as_view(), name='page'),
 ]

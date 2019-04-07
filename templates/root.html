@@ -5,18 +5,42 @@
 <html lang="en">
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <title>Extinction Rebellion Massachusetts{% block title %}{% endblock %}</title>
     <link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet">
- <style type="text/css">
+   {% block extracss %} {% endblock %}
+<style type="text/css">
   body {
     background-color: #1a1a1a;
+    font-family: Georgia;
+  }
+  h1,h2,h3,h4 {
+    font-family: Impact;
+    letter-spacing: .05em;
+  }
+  .xr-green {
+    color: #22a83e;
+  }
+  #mainbody {
+    font-size: 2em;
+  }
+  #article-container {
+    font-size: .6em;
+  }
+  p a, h2 a {
+    color: #22a83e;
+    text-decoration: underline;
+  }
+  p a:hover {
+    color: #f7ec73;
+    background-color: #aaa;
   }
   #site-nav {
     background-color: #1a1a1a;
     font-size: 1.8em;
+    font-family: Impact;
+    letter-spacing: .1em;
   }
   #site-nav a {
     color: #22a83e;
@@ -34,10 +58,13 @@
   .dropdown-menu a:hover {
     background-color: #aaa;
   }
-
+  footer {
+    font-size: .4em;
+  }
  </style>
-    {% block extracss %} {% endblock %}
+
     {% block extralinks %} {% endblock %}
+
 </head>
 <body>
     {% block header %}

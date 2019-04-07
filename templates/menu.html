@@ -4,9 +4,10 @@
   <li class="nav-item dropdown">
     <a class="nav-link dropdown-toggle" href="#" id="nav-info-dropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">About</a>
     <div class="dropdown-menu" aria-labelledby="nav-info-dropdown">
+      <a class="dropdown-item" id="why" href="{% url 'extinctionr.info:page' page='why' %}">Why?</a>
       <a class="dropdown-item" id="about" href="{% url 'extinctionr.info:page' page='about' %}">About XR</a>
       <a class="dropdown-item" id="resources" href="{% url 'extinctionr.info:page' page='resources' %}">Resources</a>
-      <a class="dropdown-item" id="climate-change" href="{% url 'extinctionr.info:page' page='climate-change' %}">Climate Change</a>
+      <!-- <a class="dropdown-item" id="climate-change" href="{% url 'extinctionr.info:page' page='climate-change' %}">Climate Change</a> -->
     </div>
   </li>
   {% if request.user.is_authenticated %}
