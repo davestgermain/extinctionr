@@ -21,8 +21,8 @@
     font-style: normal;
     font-weight: normal;
     src: url("{% static 'css/fucxedcaps-v2-webfont.woff2' %}") format("woff2"), url("{% static 'css/fucxedcaps-v2-webfont.woff' %}") format("woff");
-    font-display: swap
-}
+    font-display: swap;
+  }
 
 
   body {
@@ -56,7 +56,6 @@
     background-color: #1a1a1a;
     font-size: 1.85em;
     font-family: FucXed, sans-serif;
-    /*letter-spacing: .1em;*/
   }
   #site-nav a {
     color: #22a83e;
@@ -87,7 +86,7 @@
     <header>
       <div class="container">
       <nav id="site-nav" class="navbar navbar-expand-lg navbar-dark">
-        <a class="xnavbar-brand" href="{% url 'extinctionr.info:index' %}"><img class="img img-responsive" height="140" src="{% static 'images/extinction-rebellion.png' %}" alt="Extinction Rebellion"></a>
+        <a class="xnavbar-brand" href="{% url 'extinctionr.info:index' %}"><img class="img img-responsive" height="115" src="{% static 'images/xrmass.svg' %}" alt="Extinction Rebellion"></a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
         </button>
