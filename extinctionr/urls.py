@@ -17,7 +17,7 @@ from django.contrib import admin
 from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
-from django.contrib.auth import views
+# from django.contrib.auth import views
 
 from common.views import handler404, handler500
 
@@ -26,7 +26,7 @@ app_name = 'extinctionr'
 urlpatterns = [
     path('', include('django.contrib.auth.urls')),
     path('', include('extinctionr.info.urls')),
-    path('actions/', include('extinctionr.actions.urls', namespace="actions")),
+    path('action/', include('extinctionr.actions.urls', namespace="actions")),
     path('relationships/', include('common.urls', namespace="common")),
     path('relationships/m/', include('marketing.urls', namespace="marketing")),
     path('relationships/accounts/', include('accounts.urls', namespace="accounts")),

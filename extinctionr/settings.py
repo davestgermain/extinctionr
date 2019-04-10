@@ -48,7 +48,7 @@ INSTALLED_APPS = [
     # CRM stuff
     'simple_pagination',
     'compressor',
-    'common',
+    'common.apps.CommonConfig',
     'accounts',
     'cases',
     'contacts',
