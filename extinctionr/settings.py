@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     'django.contrib.sites.apps.SitesConfig',
     'django.contrib.staticfiles',
     'django.contrib.humanize.apps.HumanizeConfig',
+    'django.contrib.redirects',
     # CRM stuff
     'simple_pagination',
     'compressor',
@@ -83,6 +84,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'django.contrib.redirects.middleware.RedirectFallbackMiddleware',
 ]
 
 ROOT_URLCONF = 'extinctionr.urls'
