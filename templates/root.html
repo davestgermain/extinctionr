@@ -12,23 +12,31 @@
     <link rel="icon" href="{% static 'images/cropped-favicon-192x192-150x150.png' %}" sizes="32x32" />
     <link rel="icon" href="{% static 'images/cropped-favicon-192x192.png' %}" sizes="192x192" />
     <link rel="apple-touch-icon-precomposed" href="{% static 'images/cropped-favicon-192x192.png' %}" />
-
+    <link href="https://fonts.googleapis.com/css?family=Crimson+Text:400,700" rel="stylesheet" />
 
    {% block extracss %} {% endblock %}
 <style type="text/css">
+  @font-face {
+    font-family: "FucXed";
+    font-style: normal;
+    font-weight: normal;
+    src: url("{% static 'css/fucxedcaps-v2-webfont.woff2' %}") format("woff2"), url("{% static 'css/fucxedcaps-v2-webfont.woff' %}") format("woff");
+    font-display: swap
+}
+
+
   body {
     background-color: #1a1a1a;
-    font-family: Georgia;
+    font-family: "Crimson Text", Georgia, serif;
   }
   h1,h2,h3,h4 {
-    font-family: Impact, HelveticaNeue-CondensedBlack, sans serif;
-    letter-spacing: .05em;
+    font-family: FucXed, sans-serif;
   }
   .xr-green {
     color: #22a83e;
   }
   #mainbody {
-    font-size: 2em;
+    font-size: 1.8rem;
   }
   #mainbody form {
     font-size: .6em;
@@ -46,9 +54,9 @@
   }
   #site-nav {
     background-color: #1a1a1a;
-    font-size: 1.8em;
-    font-family: Impact, HelveticaNeue-CondensedBlack, sans serif;
-    letter-spacing: .1em;
+    font-size: 1.85em;
+    font-family: FucXed, sans-serif;
+    /*letter-spacing: .1em;*/
   }
   #site-nav a {
     color: #22a83e;
