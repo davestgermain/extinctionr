@@ -32,8 +32,10 @@ class InfoView(TemplateView):
 
 
 class PRListView(ListView):
-    queryset = PressRelease.objects.filter(released__isnull=False).order_by('-created')
+    def get_queryset(self):
+        return PressRelease.objects.released()
 
 
 class PRDetailView(DetailView):
-    queryset = PressRelease.objects.filter(released__isnull=False).order_by('-created')
+    def get_queryset(self):
+        return PressRelease.objects.released()
