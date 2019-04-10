@@ -10,7 +10,7 @@
 		<hr>
 	</div>
 </div>
-{% if request.user.is_authenticated %}
+{% if request.user.is_authenticated and attendees %}
 <div class="row mt-4">
 	<div class="col-10 offset-1">
 		<table class="table table-striped">

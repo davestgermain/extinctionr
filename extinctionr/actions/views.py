@@ -28,8 +28,8 @@ def signup_form(request, action_slug):
 	return render(request, 'signup.html', ctx)
 
 
-def show_action(request, action_id):
-	action = get_object_or_404(Action, pk=action_id)
+def show_action(request, slug):
+	action = get_object_or_404(Action, slug=slug)
 	attendees = Attendee.objects.filter(action=action).select_related('contact')
 	ctx = {'action': action, 'attendees': attendees}
 	return render(request, 'action.html', ctx)

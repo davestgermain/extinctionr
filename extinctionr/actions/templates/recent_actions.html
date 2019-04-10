@@ -1,0 +1,8 @@
+{% if recent %}
+<h2>Recent Actions</h2>
+<ul id="recent_actions">
+{% for action in recent %}
+    <li><a class="item-link" href="{{action.get_absolute_url}}">{{action.name}}</a> on {{action.when|date}}</li>
+{% endfor %}
+</ul>
+{% endif %}

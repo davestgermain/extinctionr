@@ -1,6 +1,7 @@
 import datetime
 from django.db import models
 from django.contrib.auth import get_user_model
+from django.urls import reverse
 from contacts.models import Contact
 from markdownx.models import MarkdownxField
 
@@ -14,6 +15,9 @@ class Action(models.Model):
     description = MarkdownxField(default='', blank=True)
     slug = models.SlugField(unique=True)
     public = models.BooleanField(default=True, blank=True)
+
+    def get_absolute_url(self):
+        return reverse('extinctionr.actions:action', kwargs={'slug': self.slug})
 
     def signup(self, email, role, name='', notes='', promised=None):
         db_role = ActionRole.objects.get_or_create(name=role)[0]

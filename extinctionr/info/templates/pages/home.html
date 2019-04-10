@@ -1,5 +1,6 @@
 {% extends "base.html" %}
 {% block content %}
+{% load actions %}
 <div class="row p-3">
 	<div class="col">
 	<h1 class="display-3 text-uppercase font-weight-bold">Fight For <span class="xr-green">Life</span></h1>
@@ -16,5 +17,10 @@
 	</div>
 </div>
 	<h2 class="display-2 text-center"><a class="xr-green" href="{% url 'extinctionr.info:page' page='signup' %}">Sign up</a></h2>
-
+<hr>
+<div class="row mt-2 p-3">
+    <div class="col">
+{% recent_actions %}
+    </div>
+</div>
 {% endblock %}
