@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% load info %}
+{% block title %}:: {{object.title}}{% endblock %}
+{% block content %}
+<div class="row p-4">
+	<div class="col">
+		<h2 class="text-center">{{object.title}}</h2>
+		<h4 class="text-center">{{object.released|date}}</h4>
+		<p>
+			{{object.body|markdownify}}
+		</p>
+	</div>
+</div>
+{% endblock %}

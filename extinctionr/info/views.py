@@ -1,9 +1,12 @@
-from django.views.generic import TemplateView
+from hashlib import md5
+from django.views.generic import TemplateView, ListView, DetailView
 from django.http import Http404
 from django.utils.decorators import method_decorator
 from django.template.loader import get_template, TemplateDoesNotExist
 from django.views.decorators.http import etag
-from hashlib import md5
+
+from .models import PressRelease
+
 
 
 def get_template_etag(request, *args, **kwargs):
@@ -25,3 +28,11 @@ class InfoView(TemplateView):
         self.template_name = request.template_name
         response = super(InfoView, self).get(request, *args, **kwargs)
         return response
+
+
+class PRListView(ListView):
+    queryset = PressRelease.objects.filter(released__isnull=False).order_by('-created')
+
+
+class PRDetailView(DetailView):
+    queryset = PressRelease.objects.filter(released__isnull=False).order_by('-created')

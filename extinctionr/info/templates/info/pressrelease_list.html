@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% load info %}
+{% block title %}:: Press Releases{% endblock %}
+{% block content %}
+<div class="row p-4">
+	<div class="col">
+		<h1 class="text-center">Press Releases</h1>
+		<hr>
+		<ul>
+			{% for pr in object_list %}
+			<li class="list-item"><a href="{{pr.get_absolute_url}}">{{pr.title}}</a> &mdash; {{pr.released|date}}</li>
+			{% endfor %}
+		</ul>
+
+	</div>
+</div>
+{% endblock %}
