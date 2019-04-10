@@ -17,7 +17,8 @@ def get_template_etag(request, *args, **kwargs):
         template_name = 'pages/%s.html' % page
         template = get_template(template_name).template
         request.template_name = template_name
-        return md5(template.source.encode('utf8')).hexdigest()
+        if not request.user.is_authenticated:
+            return md5(template.source.encode('utf8')).hexdigest()
     except TemplateDoesNotExist:
         raise Http404(page)
 
