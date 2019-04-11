@@ -209,5 +209,6 @@ GP_CLIENT_SECRET = os.getenv('GP_CLIENT_SECRET', False)
 ENABLE_GOOGLE_LOGIN = os.getenv('ENABLE_GOOGLE_LOGIN', False)
 
 ADMIN_EMAIL = "admin@xrmass.org"
+DEFAULT_FROM_EMAIL = 'webmaster@xrmass.org'
 
 PHONENUMBER_DEFAULT_REGION = 'US'
