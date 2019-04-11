@@ -1,19 +1,16 @@
-{% load staticfiles %}
-{% load compress %}
-{% load thumbnail %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+{% load staticfiles %}{% load compress %}{% load thumbnail %}
     <title>Extinction Rebellion Massachusetts {% block title %}{% endblock %}</title>
     <link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet">
     <link rel="icon" href="{% static 'images/cropped-favicon-192x192-150x150.png' %}" sizes="32x32" />
     <link rel="icon" href="{% static 'images/cropped-favicon-192x192.png' %}" sizes="192x192" />
     <link rel="apple-touch-icon-precomposed" href="{% static 'images/cropped-favicon-192x192.png' %}" />
     <link href="https://fonts.googleapis.com/css?family=Crimson+Text:400,700" rel="stylesheet" />
-
    {% block extracss %} {% endblock %}
 <style type="text/css">
   @font-face {
@@ -146,19 +143,15 @@
     </header>
       {% endblock %}
   <div id="mainbody" class="container bg-light">
-{% if messages %}
-    <div class="row">
-      <div class="col text-center">
+{% if messages %}<div class="row">
+<div class="col text-center">
       <ul class="messages list-unstyled">
       {% for message in messages %}
       <li{% if message.tags %} class="{{ message.tags }} text-info"{% endif %}>{{ message }}</li> {% endfor %}
     </ul>
-    </div></div>
-{% endif %}
-      {% block breadcrumb %}
-      {% endblock %}
-      {% block content %}
-      {% endblock %}
+</div></div>{% endif %}
+      {% block breadcrumb %}{% endblock %}
+      {% block content %}{% endblock %}
       <hr>
       <footer class="text-center mt-4 p-4">
         <ul class="list-inline">
