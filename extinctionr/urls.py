@@ -18,12 +18,14 @@ from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
 # from django.contrib.auth import views
+from extinctionr.actions.views import propose_talk
 
 from common.views import handler404, handler500
 
 app_name = 'extinctionr'
 
 urlpatterns = [
+    path('talk', propose_talk),
     path('', include('django.contrib.auth.urls')),
     path('', include('extinctionr.info.urls')),
     path('action/', include('extinctionr.actions.urls', namespace="actions")),
