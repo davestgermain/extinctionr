@@ -1,6 +1,7 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth import get_user_model
 from django.contrib.auth.decorators import login_required
+from django.utils.timezone import now
 
 from django import forms
 from phonenumber_field.formfields import PhoneNumberField
@@ -17,7 +18,7 @@ class SignupForm(forms.Form):
 
 
 class TalkProposalForm(forms.Form):
-    location = forms.CharField(widget=forms.Textarea)
+    location = forms.CharField(widget=forms.Textarea(attrs={'rows': 4}))
     name = forms.CharField(label="Your name", required=True)
     email = forms.EmailField(label="Email", required=True)
     phone = PhoneNumberField(label="Phone Number", required=False)
@@ -25,7 +26,11 @@ class TalkProposalForm(forms.Form):
 
 def signup_form(request, action_slug):
     action = get_object_or_404(Action, slug=action_slug)
-    if request.method == 'POST':
+    ctx = {'action': action}
+    if action.when < now():
+        ctx['already_happened'] = True
+        form = None
+    elif request.method == 'POST':
         form = SignupForm(request.POST)
         if form.is_valid():
             data = form.cleaned_data
@@ -34,7 +39,7 @@ def signup_form(request, action_slug):
             return redirect(next_url)
     else:
         form = SignupForm()
-    ctx = {'action': action, 'form': form}
+    ctx['form'] = form
     return render(request, 'signup.html', ctx)
 
 

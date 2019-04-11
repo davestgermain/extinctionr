@@ -10,6 +10,7 @@
 		<hr>
 	</div>
 </div>
+{% if form %}
 <div class="row mt-4">
 	<div class="col-4 offset-4">
 		<form method="post"> {% csrf_token %}
@@ -50,6 +51,6 @@
 		</form>
 	</div>
 </div>
-
+{% endif %}
 
 {% endblock %}
