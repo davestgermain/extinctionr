@@ -19,8 +19,9 @@ class Action(models.Model):
     def get_absolute_url(self):
         return reverse('extinctionr.actions:action', kwargs={'slug': self.slug})
 
-    def signup(self, email, role, name='', notes='', promised=None):
+    def signup(self, email, role, name='', notes='', promised=None, commit=0):
         db_role = ActionRole.objects.get_or_create(name=role)[0]
+        email = email.lower()
         try:
             user = Contact.objects.get(email=email)
         except Contact.DoesNotExist:
@@ -32,6 +33,7 @@ class Action(models.Model):
                 atten.notes = notes
         else:
             atten.notes = notes
+            atten.mutual_committment = commit
         if promised:
             atten.promised = datetime.datetime.now()
         atten.save()
@@ -54,6 +56,7 @@ class Attendee(models.Model):
     role = models.ForeignKey(ActionRole, on_delete=models.DO_NOTHING)
     promised = models.DateTimeField(null=True, blank=True)
     notes = models.TextField(default='', blank=True)
+    mutual_committment = models.IntegerField(default=0, blank=True)
 
     class Meta:
         unique_together = ('action', 'contact', 'role')
@@ -61,8 +64,10 @@ class Attendee(models.Model):
     def __str__(self):
         return '%s %s %s' % (self.action, self.contact, self.role)
 
+
 class ProposalManager(models.Manager):
     def propose(self, location, email, phone='', first_name='', last_name=''):
+        email = email.lower()
         try:
             contact = Contact.objects.get(email=email)
         except Contact.DoesNotExist:

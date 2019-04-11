@@ -43,6 +43,14 @@
 					{{form.promised}}
 				</div>
 			</div>
+			<div class="form-group row">
+				{{form.commit.errors}}
+				<label for="{{form.commit.id_for_label}}" class="col">I promise to attend if this many also commit:</label>
+				<div class="col">
+					{{form.commit}}
+				</div>
+			</div>
+
 			<div class="form-group row mt-4">
 				<div class="col offset-3">
 					<input class="btn btn-lg btn-primary" type="submit" value="Sign me up!">

@@ -1,10 +1,12 @@
 from django.contrib.auth import get_user_model
 from django.contrib.auth.decorators import login_required
+from django.contrib import messages
 from django.db import IntegrityError
 from django.http import JsonResponse
 from django.shortcuts import render, get_object_or_404, redirect
 from django.utils.html import strip_tags
 from django.utils.timezone import now
+from django.urls import reverse
 
 from datetime import timedelta
 from django import forms
@@ -19,6 +21,7 @@ class SignupForm(forms.Form):
     promised = forms.BooleanField(required=False)
     role = forms.CharField(required=False)
     next = forms.CharField(required=False)
+    commit = forms.IntegerField(required=False, initial=0)
 
 
 class TalkProposalForm(forms.Form):
@@ -38,8 +41,13 @@ def signup_form(request, action_slug):
         form = SignupForm(request.POST)
         if form.is_valid():
             data = form.cleaned_data
-            action.signup(data['email'], data['role'], name=data['name'][:100], promised=data['promised'])
+            action.signup(data['email'],
+                data['role'],
+                name=data['name'][:100],
+                promised=data['promised'],
+                commit=data['commit'])
             next_url = data['next'] or request.headers.get('referer', '/')
+            messages.success(request, "Thank you for signing up for {}!".format(action.name))
             return redirect(next_url)
     else:
         form = SignupForm()
@@ -69,7 +77,12 @@ def propose_talk(request):
         form = TalkProposalForm(request.POST)
         if form.is_valid():
             data = form.cleaned_data
-            first_name, last_name = data['name'].split(' ', 1)
+            sname = data['name'].split(' ')
+            if len(sname) == 2:
+                first_name, last_name = sname
+            else:
+                first_name = sname[0]
+                last_name = 'unknown'
             prop = TalkProposal.objects.propose(
                 strip_tags(data['location']),
                 data['email'],
@@ -77,6 +90,9 @@ def propose_talk(request):
                 first_name=first_name,
                 last_name=last_name)
             ctx['created'] = prop
+            messages.success(request, 'Thank you, {}!'.format(prop.requestor))
+            messages.info(request, 'Somebody from Extinction Rebellion will contact you soon to arrange a talk at {}'.format(prop.location))
+            return redirect(reverse('extinctionr.actions:talk-proposal'))
     else:
         form = TalkProposalForm()
     ctx['form'] = form

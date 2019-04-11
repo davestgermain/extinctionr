@@ -146,7 +146,15 @@
     </header>
       {% endblock %}
   <div id="mainbody" class="container bg-light">
-
+{% if messages %}
+    <div class="row">
+      <div class="col text-center">
+      <ul class="messages list-unstyled">
+      {% for message in messages %}
+      <li{% if message.tags %} class="{{ message.tags }} text-info"{% endif %}>{{ message }}</li> {% endfor %}
+    </ul>
+    </div></div>
+{% endif %}
       {% block breadcrumb %}
       {% endblock %}
       {% block content %}
