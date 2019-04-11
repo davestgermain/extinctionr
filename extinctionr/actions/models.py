@@ -1,5 +1,5 @@
 import datetime
-from django.db import models, IntegrityError
+from django.db import models
 from django.contrib.auth import get_user_model
 from django.urls import reverse
 from contacts.models import Contact
@@ -79,6 +79,7 @@ class TalkProposal(models.Model):
     location = models.TextField()
     requestor = models.ForeignKey(Contact, on_delete=models.DO_NOTHING)
     responded = models.DateTimeField(null=True, blank=True)
+    responder = models.ForeignKey(USER_MODEL, on_delete=models.DO_NOTHING, null=True, blank=True)
     objects = ProposalManager()
 
     def __str__(self):

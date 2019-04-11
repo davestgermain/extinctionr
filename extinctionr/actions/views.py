@@ -1,8 +1,12 @@
-from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth import get_user_model
 from django.contrib.auth.decorators import login_required
+from django.db import IntegrityError
+from django.http import JsonResponse
+from django.shortcuts import render, get_object_or_404, redirect
+from django.utils.html import strip_tags
 from django.utils.timezone import now
 
+from datetime import timedelta
 from django import forms
 from phonenumber_field.formfields import PhoneNumberField
 
@@ -67,7 +71,7 @@ def propose_talk(request):
             data = form.cleaned_data
             first_name, last_name = data['name'].split(' ', 1)
             prop = TalkProposal.objects.propose(
-                data['location'],
+                strip_tags(data['location']),
                 data['email'],
                 phone=data['phone'],
                 first_name=first_name,
@@ -85,4 +89,36 @@ def list_proposals(request):
         'talks': TalkProposal.objects.select_related('requestor').order_by('responded', '-created')
     }
     return render(request, 'list_talks.html', ctx)
+
+
+@login_required
+def talk_respond(request, talk_id):
+    talk = get_object_or_404(TalkProposal, pk=talk_id)
+    if request.method == 'POST' and not talk.responded:
+        talk.responded = now()
+        talk.responder = request.user
+        talk.save()
+    return JsonResponse({'id': talk.id})
+
+
+@login_required
+def convert_proposal_to_action(request, talk_id):
+    talk = get_object_or_404(TalkProposal, pk=talk_id)
+    if request.method == 'POST' and talk.responded:
+        act = Action()
+        act.name = "XR Talk at {}".format(talk.location.strip())
+        act.when = now() + timedelta(days=7)
+        act.public = False
+        act.description = '''Heading to extinction (and what to do about it)
+
+This talk will be at {}
+'''.format(talk.location)
+        act.slug = 'xr-talk-%d' % talk.id
+        try:
+            act.save()
+        except IntegrityError:
+            act = Action.objects.get(slug=act.slug)
+        url = '/admin/actions/action/%d/change/' % act.id
+        return JsonResponse({'next': url})
+
 

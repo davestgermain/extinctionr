@@ -56,4 +56,11 @@
 		{% endif %}
 	</div>
 </div>
+{% if request.user.is_staff %}
+<div class="row">
+	<div class="col">
+		<a href="{% url 'extinctionr.actions:list-talk-proposals' %}">List Talk Proposals</a>
+	</div>
+</div>
+{% endif %}
 {% endblock %}
