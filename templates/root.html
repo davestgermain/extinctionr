@@ -35,9 +35,24 @@
   .xr-green {
     color: #22a83e;
   }
+  #header-image {
+    max-width: 100%
+  }
   #mainbody {
     font-size: 1.8rem;
+    padding-left: 60px;
+    padding-right: 60px;
+    padding-top:40px;
   }
+  .no-margin {
+    margin-left: -60px;
+    margin-right: -60px;
+    max-width: inherit;
+  }
+  .no-topmargin {
+    margin-top: -40px;
+  }
+  
   #mainbody form {
     font-size: .6em;
   }
@@ -94,7 +109,7 @@
     <header>
       <div class="container">
       <nav id="site-nav" class="navbar navbar-expand-lg navbar-dark">
-        <a class="xnavbar-brand" href="{% url 'extinctionr.info:index' %}"><img class="img img-responsive" height="115" src="{% static 'images/xrmass.svg' %}" alt="Extinction Rebellion"></a>
+        <a class="xnavbar-brand" href="{% url 'extinctionr.info:index' %}"><img id="header-image" class="img img-responsive" height="115" src="{% static 'images/xrmass.svg' %}" alt="Extinction Rebellion"></a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
         </button>
