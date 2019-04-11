@@ -2,11 +2,6 @@
 {% block title %} :: Calendar{% endblock %}
 {% block content %}
 {% load actions %}
-<div class="row pt-3">
-	<div class="col offset-1">
-		<h1 class="text-uppercase">Events</h1>
-	</div>
-</div>
 <div class="row p-2">
 	<div class="col text-center">
         {% recent_actions adverb='upcoming' %}
