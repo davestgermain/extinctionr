@@ -15,6 +15,7 @@ class Action(models.Model):
     description = MarkdownxField(default='', blank=True)
     slug = models.SlugField(unique=True)
     public = models.BooleanField(default=True, blank=True)
+    location = models.TextField(default='', blank=True)
 
     def get_absolute_url(self):
         return reverse('extinctionr.actions:action', kwargs={'slug': self.slug})
@@ -25,7 +26,12 @@ class Action(models.Model):
         try:
             user = Contact.objects.get(email=email)
         except Contact.DoesNotExist:
-            first_name, last_name = name.split(' ', 1)
+            sname = name.split(' ')
+            if len(sname) == 2:
+                first_name, last_name = sname
+            else:
+                first_name = sname[0]
+                last_name = 'unknown'
             user = Contact.objects.create(email=email, first_name=first_name, last_name=last_name)
         atten, created = Attendee.objects.get_or_create(action=self, contact=user, role=db_role)
         if not created:
@@ -57,6 +63,7 @@ class Attendee(models.Model):
     promised = models.DateTimeField(null=True, blank=True)
     notes = models.TextField(default='', blank=True)
     mutual_committment = models.IntegerField(default=0, blank=True)
+    created = models.DateTimeField(auto_now_add=True, null=True)
 
     class Meta:
         unique_together = ('action', 'contact', 'role')

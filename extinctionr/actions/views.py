@@ -59,6 +59,24 @@ def show_action(request, slug):
     action = get_object_or_404(Action, slug=slug)
     attendees = Attendee.objects.filter(action=action).select_related('contact')
     ctx = {'action': action, 'attendees': attendees}
+    if action.when < now():
+        ctx['already_happened'] = True
+    elif request.method == 'POST':
+        form = SignupForm(request.POST)
+        if form.is_valid():
+            data = form.cleaned_data
+            action.signup(data['email'],
+                data['role'],
+                name=data['name'][:100],
+                promised=data['promised'],
+                commit=data['commit'])
+            next_url = data['next'] or request.headers.get('referer', '/')
+            messages.success(request, "Thank you for signing up for {}!".format(action.name))
+            return redirect(next_url)
+    else:
+        form = SignupForm()
+    ctx['form'] = form
+
     return render(request, 'action.html', ctx)
 
 

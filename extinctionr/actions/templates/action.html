@@ -6,10 +6,63 @@
 	<div class="col">
 		<h1>{{action.name}}</h1>
 		<h2>{{action.when}}</h2>
+		{% if action.location %}
+		<P class="text-info"><a href="https://maps.google.com/?q={{action.location|urlencode}}">{{action.location|linebreaks}}</a></P>
+		{% endif %}
 		<div class="text-left">{{action.description|markdownify}}</div>
 		<hr>
 	</div>
 </div>
+{% if form %}
+<div class="row mt-4">
+	<div class="col-4 offset-4">
+		<form method="post"> {% csrf_token %}
+			{{ form.non_field_errors }}
+			<div class="form-group row">
+				{{form.email.errors}}
+				<label for="{{form.email.id_for_label}}" class="col">Email:</label>
+				<div class="col">
+					{{form.email}}
+				</div>
+			</div>
+			<div class="form-group row">
+				{{form.name.errors}}
+				<label for="{{form.name.id_for_label}}" class="col">Your Name:</label>
+				<div class="col">
+					{{form.name}}
+				</div>
+			</div>
+<!-- 			<div class="form-group row">
+				{{form.role.errors}}
+				<label for="{{form.role.id_for_label}}" class="col">Your Role:</label>
+				<div class="col">
+					{{form.role}}
+				</div>
+			</div>
+ -->			<div class="form-group row">
+				{{form.promised.errors}}
+				<label for="{{form.promised.id_for_label}}" class="col">I'm Committed!</label>
+				<div class="col">
+					{{form.promised}}
+				</div>
+			</div>
+			<div class="form-group row">
+				{{form.commit.errors}}
+				<label for="{{form.commit.id_for_label}}" class="col">I promise to attend if this many also commit:</label>
+				<div class="col">
+					{{form.commit}}
+				</div>
+			</div>
+
+			<div class="form-group row mt-4">
+				<div class="col offset-3">
+					<input class="btn btn-lg btn-primary" type="submit" value="I'm going!">
+				</div>
+			</div>
+		</form>
+	</div>
+</div>
+{% endif %}
 {% if request.user.is_authenticated and request.user.is_staff and attendees %}
 <div class="row mt-4">
 	<div class="col">
