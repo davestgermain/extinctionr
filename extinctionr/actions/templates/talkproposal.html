@@ -1,0 +1,59 @@
+{% extends "base.html" %}
+{% block title %}:: Propose a Talk{% endblock %}
+{% block content %}
+{% load info %}
+<div class="row text-center pt-4">
+	<div class="col-6 offset-3">
+		{% if created %}
+		<h3>Thank you, {{created.requestor}}!</h3>
+		<p>Somebody from Extinction Rebellion will contact you soon to arrange a talk at <em>{{created.location}}</em></p>
+		{% else %}
+		<h1>Propose a Talk</h1>
+		<p class="text-left">We want to give a talk in your community! Send us your info and we'll be in touch.</p>
+		<hr>
+		{% endif %}
+	</div>
+</div>
+<div class="row mt-4">
+	<div class="col-4 offset-4">
+		{% if not created %}
+		<form method="post"> {% csrf_token %}
+			{{ form.non_field_errors }}
+			<div class="form-group row">
+				{{form.email.errors}}
+				<label for="{{form.email.id_for_label}}" class="col">Email:</label>
+				<div class="col">
+					{{form.email}}
+				</div>
+			</div>
+			<div class="form-group row">
+				{{form.name.errors}}
+				<label for="{{form.name.id_for_label}}" class="col">Your Name:</label>
+				<div class="col">
+					{{form.name}}
+				</div>
+			</div>
+			<div class="form-group row">
+				{{form.phone.errors}}
+				<label for="{{form.phone.id_for_label}}" class="col">Phone Number:</label>
+				<div class="col">
+					{{form.phone}}
+				</div>
+			</div>
+			<div class="form-group row">
+				{{form.location.errors}}
+				<label for="{{form.location.id_for_label}}" class="col">Your Location:</label>
+				<div class="col">
+					{{form.location}}
+				</div>
+			</div>
+			<div class="form-group row mt-4">
+				<div class="col offset-3">
+					<input class="btn btn-lg btn-primary" type="submit" value="I want to participate">
+				</div>
+			</div>
+		</form>
+		{% endif %}
+	</div>
+</div>
+{% endblock %}

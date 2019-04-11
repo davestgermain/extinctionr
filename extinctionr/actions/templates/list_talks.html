@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% block title %}:: Talk Proposals{% endblock %}
+{% block content %}
+{% load info %}
+<div class="row text-center pt-4">
+	<div class="col-10 offset-1">
+	<table class="table table-striped">
+		<thead class="thead-dark">
+			<th>Email</th>
+			<th>Phone</th>
+			<th>Location</th>
+			<th>Responded</th>
+		</thead>
+	<tbody>
+	{% for talk in talks %}
+	<tr>
+		<td><a href="mailto:{{talk.requestor.email}}">{{talk.requestor.email}}</a></td><td><a href="tel:{{talk.requestor.phone}}">{{talk.requestor.phone}}</a></td><td>{{talk.location}}</td><td>{% if talk.responded %}{{talk.responded}}{% else %}<a href="/admin/actions/talkproposal/{{talk.id}}/change/">Edit</a>{% endif %}</td>
+	</tr>
+	{% endfor %}
+	</tbody>
+	</table>	
+</div>
+</div>
+{% endblock %}

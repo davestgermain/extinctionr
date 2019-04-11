@@ -1,5 +1,5 @@
 import datetime
-from django.db import models
+from django.db import models, IntegrityError
 from django.contrib.auth import get_user_model
 from django.urls import reverse
 from contacts.models import Contact
@@ -60,3 +60,27 @@ class Attendee(models.Model):
 
     def __str__(self):
         return '%s %s %s' % (self.action, self.contact, self.role)
+
+class ProposalManager(models.Manager):
+    def propose(self, location, email, phone='', first_name='', last_name=''):
+        try:
+            contact = Contact.objects.get(email=email)
+        except Contact.DoesNotExist:
+            contact = Contact.objects.create(email=email, phone=phone, first_name=first_name, last_name=last_name)
+
+        prop = TalkProposal(requestor=contact)
+        prop.location = location
+        prop.save()
+        return prop
+
+
+class TalkProposal(models.Model):
+    created = models.DateTimeField(auto_now_add=True)
+    location = models.TextField()
+    requestor = models.ForeignKey(Contact, on_delete=models.DO_NOTHING)
+    responded = models.DateTimeField(null=True, blank=True)
+    objects = ProposalManager()
+
+    def __str__(self):
+        return 'Talk at %s for %s' % (self.location[:20], self.requestor)
+
