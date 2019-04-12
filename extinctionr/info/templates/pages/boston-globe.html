@@ -67,24 +67,24 @@
 	<div class="col text-center" id="signup_form">
 		<h1 class="text-center">Sign on</h1>
 
-		<form action="{% url 'extinctionr.actions:signup' action_slug='boston-globe' %}" method="post">
+		<form action="{% url 'extinctionr.actions:action' slug='boston-globe' %}" class="container" method="post">
 			{% csrf_token %}
 			<input type="hidden" name="next" value="/boston-globe">
 			<!-- <input type="hidden" name="role" value="agree"> -->
 			<div class="form-group row">
-				<label for="signup_email" class="col-2 offset-3">Email:</label>
-				<div class="col-2">
-					<input type="email" name="email" id="signup_email">
+				<label for="signup_email" class="col-2 offset-lg-3 offset-sm-1">Email:</label>
+				<div class="col-auto">
+					<input type="email" name="email" id="signup_email" class="form-control" required>
 				</div>
 			</div>
 			<div class="form-group row">
-				<label for="signup_name" class="col-2 offset-3">Name:</label>
-				<div class="col-2">
-					<input type="text" name="name">
+				<label for="signup_name" class="col-2 offset-lg-3 offset-sm-1">Name:</label>
+				<div class="col-auto">
+					<input type="text" name="name" id="signup_name" class="form-control" required>
 				</div>
 			</div>
-			<div class="form-group row mt-4 text-center">
-				<div class="col-4 offset-4">
+			<div class="form-group row mt-4">
+				<div class="col">
 					<input class="btn btn-lg btn-outline-dark btn-success text-uppercase" type="submit" value="I agree">
 				</div>
 			</div>
