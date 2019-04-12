@@ -5,10 +5,14 @@
 <div class="row p-4">
 	<div class="col">
 		<h2 class="text-center">{{object.title}}</h2>
-		<h4 class="text-center">{{object.released|date}}</h4>
+		<h4 class="text-center">{% if not object.is_released %}<span class="text-danger">embargoed until</span> {% endif %}{{object.released|date}}</h4>
 		<p>
 			{{object.body|markdownify}}
 		</p>
+		{% if 'info.change_pressrelease' in perms %}
+		<hr class="pt-4">
+		<div class="text-center"><a class="btn btn-primary btn-lg" href="/admin/info/pressrelease/{{object.id}}/change/">Edit</a></div>
+		{% endif %}
 	</div>
 </div>
 {% endblock %}

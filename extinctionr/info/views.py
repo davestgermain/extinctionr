@@ -33,9 +33,15 @@ class InfoView(TemplateView):
 
 class PRListView(ListView):
     def get_queryset(self):
-        return PressRelease.objects.released()
+        if self.request.user.has_perm('info.view_pressrelease'):
+            return PressRelease.objects.all()
+        else:
+            return PressRelease.objects.released()
 
 
 class PRDetailView(DetailView):
     def get_queryset(self):
-        return PressRelease.objects.released()
+        if self.request.user.has_perm('info.view_pressrelease'):
+            return PressRelease.objects.all()
+        else:
+            return PressRelease.objects.released()

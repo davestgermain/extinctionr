@@ -1,17 +1,18 @@
 {% extends "base.html" %}
 {% load info %}
-{% block title %}:: Press Releases{% endblock %}
+{% block title %}:: Press{% endblock %}
 {% block content %}
 <div class="row p-4">
-	<div class="col">
-		<h1 class="text-center">Press Releases</h1>
+	<div class="col text-center">
+		<h1 class="text-center">Press</h1>
+		<p>Contact: <a href="mailto:xrmass@gmail.com">xrmass@gmail.com</a></p>
+		<h2 class="text-center mt-4">Press Releases</h2>
 		<hr>
-		<ul>
+		<ul class="list-unstyled">
 			{% for pr in object_list %}
-			<li class="list-item"><a href="{{pr.get_absolute_url}}">{{pr.title}}</a> &mdash; {{pr.released|date}}</li>
+			<li class="list-item"><a href="{{pr.get_absolute_url}}">{{pr.title}}</a> &mdash; {{pr.released|date}}{% if not pr.is_released %} <span class="text-danger">embargoed</span>{% endif %}</li>
 			{% endfor %}
 		</ul>
-
 	</div>
 </div>
 {% endblock %}
