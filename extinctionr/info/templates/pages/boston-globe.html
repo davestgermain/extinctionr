@@ -1,0 +1,106 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="row p-3">
+	<div class="col">
+		<h1 class="text-center">Enlisting The Boston Globe</h1>
+<hr>
+<h3 class="xr-green">Extinction Rebellion urges the Boston Globe to declare climate emergency</h3>
+<div class="lead font-italic">By Nick Bain, Galen Hall, Molly Niedbala, David St. Germain, and Niels Burger: members of Extinction Rebellion Massachusetts</div>
+<h5 class="text-right">April 17, 2019</h5>
+
+<p>For society to undergo the drastic, transformational change required to save our species, respected media like the Boston Globe should lead in communicating the existential risks of climate damage. The Extinction Rebellion is an international mobilization whose first demand is that governments and media tell the truth about the climate emergency.</p>
+
+<p>Today, more than one in three people in the Boston Metro area remain unaware of the basic fact that humans are causing global warming. Our house is on fire; the media’s first challenge is simply to wake everyone up to this fact. The greater challenge lies in fully communicating how many lives and species we have already lost through inaction, and in accurately conveying the subtle scientific concepts that explain why our trajectory puts life and humanity at risk.</p>
+
+<p>The truth is that governments’ long-standing inaction and obstruction on the climate crisis is potentially the most far-reaching human rights abuse ever committed. Reporting on this crime requires courage to “expose the truth, even in defiance of powerful interests”. This goal, from the Boston Globe’s own mission statement, is one that the paper’s history lives up to. The Globe has exposed horrific human rights abuses, from violence against journalists to the sexual abuse of children by the Catholic Church.</p>
+
+<p>Yet there is more the Globe can do to communicate the urgency of the existential challenge we face. We read poignant columns by Globe staff who understand and grieve for the state of our struggling  world, and wonder why the climate emergency is not front page news every single day. New developments in the climate crisis deserve more attention than our state’s <a href="https://www.bostonglobe.com/news/marijuana">burgeoning marijuana industry</a>. The narrative of this crisis &mdash; complete with <a href="https://www.opensecrets.org/industries/indus.php?ind=E01">corrupt politicians</a> and <a href="https://littlesis.org/maps/1634-who-s-banking-on-the-dakota-access-pipeline?Resistance_to_Dakota_Access_Grows">shadowy networks</a> <a href="https://www.nytimes.com/interactive/2018/08/01/magazine/climate-change-losing-earth.html">obstructing progress</a> &mdash; is one that the Globe’s readers want and need to hear.</p>
+
+<p>The Globe should devote more space and effort toward informing the public of the urgency of the ecological crisis shaping the future of our commonwealth. Their already-impressive coverage, by reporters like David Abel and Beth Daley, deserves more prominence. Now is not the time to bury the lede by treating climate change as just another issue in today's current events.</p>
+
+<p>Extinction Rebellion Massachusetts has sent The Globe several requests to meet with Editor Brian McGrory and discuss how the Globe’s editorial policy and priorities can inform the public at the scale required. Since we have heard no response yet, we will present a call to action to the Globe in person on Wednesday.</p>
+
+<p>We do not blame the Globe for shortcomings that are pervasive in much of the media and government. Because of the systemic nature of the climate and ecological crises, we need systemic change to address them. However, systemic change only comes when people are brave enough to push for it, as the Globe has done before. For the launch of the International Rebellion this week, chapters around the world are asking their local media to measure up to what the truth demands. We urge the Globe to lead this effort and treat this emergency as the cover story it is.</p>
+
+<p>That said, given the urgency of this crisis, we cannot rely solely on traditional media to get the truth out. In the words of Nobel Peace Prize nominee Greta Thunberg, “we have not come here to beg.” We are giving public talks around Massachusetts to communicate the scientific facts, the risks we face, as well as opportunities to act. You can hear one such talk at 7pm on Friday April 19th at the Boston Community Church.</p>
+
+<p>We invite you, and the Boston Globe, to <a href="/join" class="display-4">join us</a>.
+
+<p class="small mt-3">(This article uses statistics from the Yale Climate Opinion Map, December 2018)</p>
+<hr>
+<h2 class="text-uppercase text-center mt-3">Call To Action</h2>
+		<p class="lead">
+			We call on the Boston Globe:
+		</p>
+		<ol>
+<li>The editors and owners of the Globe meet with Extinction Rebellion to discuss how the Globe can tell the full truth on the climate and ecological emergency.</li>
+
+<li>The Boston Globe declares a climate and ecological emergency.</li>
+
+<li>The Boston Globe places the climate emergency as its top editorial and corporate priority by adopting a climate emergency strategic plan, at the level of urgency placed on informing the public about the Second World War.</li>
+
+<li>The Boston Globe ensures that articles accurately represent the scientific consensus on the climate crisis and its impacts on life, and scrutinizes public policy for its consistency with the scale of action required.</li>
+
+<li>The Boston Globe devotes frontpage prominence to regional environmental issues, including protest, advocacy, conservation and regeneration efforts - especially those with direct impacts on people of color, Indigenous, Black, and poor communities.</li>
+
+<li>The Boston Globe collaborate with its staff’s labor unions to divest any pension funds and investments in fossil fuel corporations and their bankers, as well as disclose any funding from these entities, including advertising income.</li>
+
+<li>The Boston Globe, its subsidiaries, and its supply chain agree to be carbon neutral by 2025.</li>
+
+<li>The Boston Globe takes the lead on encouraging other local, national and global media corporations to join the global efforts to save humanity & nature from this existential crisis.</li>
+</ol>
+
+	</div>
+</div>
+
+
+<div class="row mt-4" hidden id="signees-row">
+	<div class="col-8 offset-2 small text-center">
+		<h4>Signatories</h4>
+		<div id="signees"><!-- this will be dynamically filled in --></div>
+	</div>
+</div>
+<hr>
+<div class="row">
+	<div class="col text-center" id="signup_form">
+		<h1 class="text-center">Sign on</h1>
+
+		<form action="{% url 'extinctionr.actions:signup' action_slug='boston-globe' %}" method="post">
+			{% csrf_token %}
+			<input type="hidden" name="next" value="/boston-globe">
+			<!-- <input type="hidden" name="role" value="agree"> -->
+			<div class="form-group row">
+				<label for="signup_email" class="col-2 offset-3">Email:</label>
+				<div class="col-2">
+					<input type="email" name="email" id="signup_email">
+				</div>
+			</div>
+			<div class="form-group row">
+				<label for="signup_name" class="col-2 offset-3">Name:</label>
+				<div class="col-2">
+					<input type="text" name="name">
+				</div>
+			</div>
+			<div class="form-group row mt-4 text-center">
+				<div class="col-4 offset-4">
+					<input class="btn btn-lg btn-outline-dark btn-success text-uppercase" type="submit" value="I agree">
+				</div>
+			</div>
+		</form>
+	</div>
+</div>
+{% endblock %}
+{% block extrajs %}
+<script>
+	$('#signees').ready(function(){
+		$.get("{% url 'extinctionr.actions:attendees' action_slug='boston-globe' %}?fmt=html", function(data){
+			$('#signees').html(data);
+			if (data != '') {
+				$('#signees-row').removeAttr('hidden');
+
+			}
+		});
+	});
+</script>
+{% endblock %}
