@@ -12,16 +12,27 @@ USER_MODEL = get_user_model()
 class Action(models.Model):
     name = models.CharField(max_length=255, db_index=True)
     when = models.DateTimeField(db_index=True)
-    description = MarkdownxField(default='', blank=True)
-    slug = models.SlugField(unique=True)
-    public = models.BooleanField(default=True, blank=True)
+    description = MarkdownxField(default='', blank=True, help_text='Markdown formatted')
+    slug = models.SlugField(unique=True, help_text='Short form of the title, for URLs')
+    public = models.BooleanField(default=True, blank=True, help_text='Whether this action should be listed publicly')
     location = models.TextField(default='', blank=True)
+    available_roles = models.CharField(default='', blank=True, max_length=255, help_text='List of comma-separated strings')
 
+
+    @property
+    def available_role_choices(self):
+        for role in self.available_roles.split(','):
+            role = role.strip()
+            if role:
+                yield role
+    
     def get_absolute_url(self):
         return reverse('extinctionr.actions:action', kwargs={'slug': self.slug})
 
     def signup(self, email, role, name='', notes='', promised=None, commit=0):
-        db_role = ActionRole.objects.get_or_create(name=role)[0]
+        if not isinstance(role, ActionRole):
+            db_role = ActionRole.objects.get_or_create(name=role or '')[0]
+
         email = email.lower()
         try:
             user = Contact.objects.get(email=email)
@@ -47,6 +58,12 @@ class Action(models.Model):
 
     def __str__(self):
         return '%s on %s' % (self.name, self.when.strftime('%b %e, %Y @ %H:%M'))
+
+    def save(self, *args, **kwargs):
+        ret = super().save(*args, **kwargs)
+        for role in self.available_role_choices:
+            ActionRole.objects.get_or_create(name=role)
+        return ret
 
 
 class ActionRole(models.Model):

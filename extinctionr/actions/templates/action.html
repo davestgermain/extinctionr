@@ -15,48 +15,50 @@
 </div>
 {% if form %}
 <div class="row mt-4">
-	<div class="col-4 offset-4">
+	<div class="col-6 offset-3">
 		<form method="post"> {% csrf_token %}
-			{{ form.non_field_errors }}
+			<div class="text-danger">{{form.non_field_errors}}</div>
 			<div class="form-group row">
-				{{form.email.errors}}
-				<label for="{{form.email.id_for_label}}" class="col">Email:</label>
+				<label for="{{form.email.id_for_label}}" class="col-5">Email:</label>
 				<div class="col">
 					{{form.email}}
+					<div class="text-danger">{{form.email.errors}}</div>
 				</div>
 			</div>
 			<div class="form-group row">
-				{{form.name.errors}}
-				<label for="{{form.name.id_for_label}}" class="col">Your Name:</label>
+				<label for="{{form.name.id_for_label}}" class="col-5">Your Name:</label>
 				<div class="col">
 					{{form.name}}
+					<div class="text-danger">{{form.name.errors}}</div>
 				</div>
 			</div>
-<!-- 			<div class="form-group row">
-				{{form.role.errors}}
-				<label for="{{form.role.id_for_label}}" class="col">Your Role:</label>
+			{% if form.fields.role.queryset %}
+			<div class="form-group row">
+				<label for="{{form.role.id_for_label}}" class="col-5">Your Role:</label>
 				<div class="col">
 					{{form.role}}
+					<div class="text-danger">{{form.role.errors}}</div>
 				</div>
 			</div>
- -->			<div class="form-group row">
-				{{form.promised.errors}}
-				<label for="{{form.promised.id_for_label}}" class="col">I'm Committed!</label>
+			{% endif %}
+			<div class="form-group row">
+				<label for="{{form.promised.id_for_label}}" class="col-5">I'm Committed!</label>
 				<div class="col">
 					{{form.promised}}
+					<div class="text-danger">{{form.promised.errors}}</div>
 				</div>
 			</div>
 			<div class="form-group row">
-				{{form.commit.errors}}
-				<label for="{{form.commit.id_for_label}}" class="col">I promise to attend if this many also commit:</label>
+				<label for="{{form.commit.id_for_label}}" class="col-5">I promise to attend if this many also commit:</label>
 				<div class="col">
 					{{form.commit}}
+					<div class="text-danger">{{form.commit.errors}}</div>
 				</div>
 			</div>
 
 			<div class="form-group row mt-4">
-				<div class="col offset-3">
-					<input class="btn btn-lg btn-primary" type="submit" value="I'm going!">
+				<div class="col text-center">
+					<input class="btn btn-lg btn-outline-dark btn-success text-uppercase" type="submit" value="I'm Going!">
 				</div>
 			</div>
 		</form>

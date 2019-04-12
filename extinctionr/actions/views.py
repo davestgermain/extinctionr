@@ -12,23 +12,32 @@ from datetime import timedelta
 from django import forms
 from phonenumber_field.formfields import PhoneNumberField
 
-from .models import Action, Attendee, TalkProposal
+from .models import Action, ActionRole, Attendee, TalkProposal
+
+BOOTSTRAP_ATTRS = {'class': 'form-control text-center'}
 
 
 class SignupForm(forms.Form):
-    email = forms.EmailField(label="Email", required=True)
-    name = forms.CharField(label="Your name")
-    promised = forms.BooleanField(required=False)
-    role = forms.CharField(required=False)
-    next = forms.CharField(required=False)
-    commit = forms.IntegerField(required=False, initial=0)
+    email = forms.EmailField(label="Email", required=True, widget=forms.EmailInput(attrs=BOOTSTRAP_ATTRS))
+    name = forms.CharField(label="Your name", widget=forms.TextInput(attrs=BOOTSTRAP_ATTRS))
+    promised = forms.BooleanField(required=False, widget=forms.CheckboxInput(attrs=BOOTSTRAP_ATTRS))
+    role = forms.ModelChoiceField(queryset=None, required=False, widget=forms.Select(attrs=BOOTSTRAP_ATTRS))
+    next = forms.CharField(required=False, widget=forms.HiddenInput())
+    commit = forms.IntegerField(required=False, initial=0, widget=forms.NumberInput(attrs=BOOTSTRAP_ATTRS))
+
+    def __init__(self, *args, **kwargs):
+        self.action = kwargs.pop('action')
+        super().__init__(*args, **kwargs)
+        self.fields['role'].queryset = qset = ActionRole.objects.filter(name__in=self.action.available_role_choices)
+        if qset:
+            self.fields['role'].required = True
 
 
 class TalkProposalForm(forms.Form):
-    location = forms.CharField(widget=forms.Textarea(attrs={'rows': 4}))
-    name = forms.CharField(label="Your name", required=True)
-    email = forms.EmailField(label="Email", required=True)
-    phone = PhoneNumberField(label="Phone Number", required=False)
+    location = forms.CharField(widget=forms.Textarea(attrs={'rows': 4, 'class': 'form-control'}))
+    name = forms.CharField(label="Your name", required=True, widget=forms.TextInput(attrs=BOOTSTRAP_ATTRS))
+    email = forms.EmailField(label="Email", required=True, widget=forms.EmailInput(attrs=BOOTSTRAP_ATTRS))
+    phone = PhoneNumberField(label="Phone Number", required=False, widget=forms.TextInput(attrs=BOOTSTRAP_ATTRS))
 
 
 def signup_form(request, action_slug):
@@ -38,7 +47,7 @@ def signup_form(request, action_slug):
         ctx['already_happened'] = True
         form = None
     elif request.method == 'POST':
-        form = SignupForm(request.POST)
+        form = SignupForm(request.POST, action=action)
         if form.is_valid():
             data = form.cleaned_data
             action.signup(data['email'],
@@ -50,7 +59,7 @@ def signup_form(request, action_slug):
             messages.success(request, "Thank you for signing up for {}!".format(action.name))
             return redirect(next_url)
     else:
-        form = SignupForm()
+        form = SignupForm(action=action)
     ctx['form'] = form
     return render(request, 'signup.html', ctx)
 
@@ -62,7 +71,7 @@ def show_action(request, slug):
     if action.when < now():
         ctx['already_happened'] = True
     elif request.method == 'POST':
-        form = SignupForm(request.POST)
+        form = SignupForm(request.POST, action=action)
         if form.is_valid():
             data = form.cleaned_data
             action.signup(data['email'],
@@ -74,7 +83,7 @@ def show_action(request, slug):
             messages.success(request, "Thank you for signing up for {}!".format(action.name))
             return redirect(next_url)
     else:
-        form = SignupForm()
+        form = SignupForm(action=action)
     ctx['form'] = form
 
     return render(request, 'action.html', ctx)
