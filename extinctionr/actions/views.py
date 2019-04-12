@@ -20,7 +20,7 @@ BOOTSTRAP_ATTRS = {'class': 'form-control text-center'}
 class SignupForm(forms.Form):
     email = forms.EmailField(label="Email", required=True, widget=forms.EmailInput(attrs=BOOTSTRAP_ATTRS))
     name = forms.CharField(label="Your name", widget=forms.TextInput(attrs=BOOTSTRAP_ATTRS))
-    promised = forms.BooleanField(required=False, widget=forms.CheckboxInput(attrs=BOOTSTRAP_ATTRS))
+    promised = forms.BooleanField(required=False, widget=forms.CheckboxInput(attrs={'class': 'form-check'}))
     role = forms.ModelChoiceField(queryset=None, required=False, widget=forms.Select(attrs=BOOTSTRAP_ATTRS))
     next = forms.CharField(required=False, widget=forms.HiddenInput())
     commit = forms.IntegerField(required=False, initial=0, widget=forms.NumberInput(attrs=BOOTSTRAP_ATTRS))
