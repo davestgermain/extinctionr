@@ -21,8 +21,9 @@
 
 {% endblock %}
 {% block extrajs %}
+    <script src="{% static 'js/popper.min.js' %}"></script>
     <script src="{% static "wiki/js/core.js" %}"></script>
     <!-- Optionally enable responsive features in IE8 -->
-    <script src="{% static "wiki/js/respond.min.js" %}"></script>
+    <!-- <script src="{% static "wiki/js/respond.min.js" %}"></script> -->
 {% endblock %}
 {% render_block "js" %}

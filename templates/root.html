@@ -17,8 +17,8 @@
     font-family: "FucXed";
     font-style: normal;
     font-weight: normal;
-    src: url("{% static 'css/fucxedcaps-v2-webfont.woff2' %}") format("woff2"), url("{% static 'css/fucxedcaps-v2-webfont.woff' %}") format("woff");
     font-display: swap;
+    src: url("{% static 'css/fucxedcaps-v2-webfont.woff2' %}") format("woff2"), url("{% static 'css/fucxedcaps-v2-webfont.woff' %}") format("woff");
   }
 
 
@@ -130,11 +130,8 @@
       </footer>
   </div>
 
-<script src="{% static 'js/jquery-3.3.1.min.js' %}"></script>
-<script src="{% static 'js/popper.min.js' %}"></script>
+<script src="{% static 'js/jquery-3.3.1.min.js' %}"></script>{% block extrajs %}{% endblock %}{% block js_block %}{% endblock js_block %}
 <script src="{% static 'js/bootstrap.min.js' %}"></script>
-{% block extrajs %}{% endblock %}
-{% block js_block %}{% endblock js_block %}
 <script type="text/javascript">
   $(document).ready(function(){
     $('.nav-a[href="' + window.location.pathname + '"]').addClass('active');

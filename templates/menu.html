@@ -17,7 +17,7 @@
     <a class="nav-link dropdown-toggle" href="#" id="nav-admin-dropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
       {% load thumbnail static %}
 {% if not request.user.profile_pic %}
-      <img class="img-thumbnail" style="max-height:30px;" src="{% static 'images/user.png' %}" alt="Micro profile pic">
+      <img class="img" style="max-height:30px;" src="{% static 'images/user.png' %}" alt="Micro profile pic">
 {% else %}
       {% thumbnail request.user.profile_pic "30x30" as im %}
       <img class="img" src="{{ im.url }}">
