@@ -1,26 +1,42 @@
 <ul class="nav navbar-nav ml-auto text-uppercase">
-  <li class="nav-item"><a class="nav-link" id="events" href="{% url 'extinctionr.info:page' page='events' %}">Events</a></li>
-  <li class="nav-item"><a class="nav-link" id="join" href="{% url 'extinctionr.info:page' page='join' %}">Join</a></li>
+  <li class="nav-item"><a class="nav-link nav-a" id="events" href="{% url 'extinctionr.info:page' page='events' %}">Events</a></li>
+  <li class="nav-item"><a class="nav-link nav-a" id="join" href="{% url 'extinctionr.info:page' page='join' %}">Join</a></li>
   <li class="nav-item dropdown">
     <a class="nav-link dropdown-toggle" href="#" id="nav-info-dropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">About</a>
-    <div class="dropdown-menu" aria-labelledby="nav-info-dropdown">
-      <a class="dropdown-item" id="why" href="{% url 'extinctionr.info:page' page='why' %}">Why?</a>
-      <a class="dropdown-item" id="about" href="{% url 'extinctionr.info:page' page='about' %}">About XR</a>
-      <a class="dropdown-item" id="pr" href="{% url 'extinctionr.info:pr-list' %}">Press</a>
-      <a class="dropdown-item" id="resources" href="{% url 'extinctionr.info:page' page='resources' %}">Resources</a>
+    <div class="dropdown-menu nav-a" aria-labelledby="nav-info-dropdown">
+      <a class="dropdown-item nav-a" id="why" href="{% url 'extinctionr.info:page' page='why' %}">Why?</a>
+      <a class="dropdown-item nav-a" id="about" href="{% url 'extinctionr.info:page' page='about' %}">About XR</a>
+      <a class="dropdown-item nav-a" id="pr" href="{% url 'extinctionr.info:pr-list' %}">Press</a>
+      <a class="dropdown-item nav-a" id="resources" href="{% url 'extinctionr.info:page' page='resources' %}">Resources</a>
       <!-- <a class="dropdown-item" id="climate-change" href="{% url 'extinctionr.info:page' page='climate-change' %}">Climate Change</a> -->
     </div>
   </li>
   {% if request.user.is_authenticated %}
-  <li class="nav-item"><a class="nav-link" id="wiki" href="{% url 'wiki:root' %}">Wiki</a></li>
+  <li class="nav-item"><a class="nav-link nav-a" id="wiki" href="{% url 'wiki:root' %}">Wiki</a></li>
   <li class="nav-item dropdown">
-    <a class="nav-link dropdown-toggle" href="#" id="nav-admin-dropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Admin</a>
+    <a class="nav-link dropdown-toggle" href="#" id="nav-admin-dropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+      {% load thumbnail static %}
+{% if not request.user.profile_pic %}
+      <img class="img-thumbnail" style="max-height:30px;" src="{% static 'images/user.png' %}" alt="Micro profile pic">
+{% else %}
+      {% thumbnail request.user.profile_pic "30x30" as im %}
+      <img class="img" src="{{ im.url }}">
+      {% endthumbnail %}
+{% endif %}
+    </a>
     <div class="dropdown-menu" aria-labelledby="nav-admin-dropdown">
-      <a class="dropdown-item" id="admin" href="{% url 'admin:index' %}">Admin</a>
-      <a class="dropdown-item" id="dashboard" href="{% url 'common:home' %}">Dashboard</a>
-      <a class="dropdown-item" id="contacts" href="{% url 'contacts:list' %}">Contacts</a>
-      <a class="dropdown-item" id="leads" href="{% url 'leads:list' %}">Leads</a>
-      <a class="dropdown-item" id="accounts" href="{% url 'accounts:list' %}">Accounts</a>
+      <a class="dropdown-item nav-a" id="admin" href="{% url 'admin:index' %}">Admin</a>
+      <a class="dropdown-item nav-a" id="dashboard" href="{% url 'common:home' %}">Dashboard</a>
+      <a class="dropdown-item nav-a" id="contacts" href="{% url 'contacts:list' %}">Contacts</a>
+      <a class="dropdown-item nav-a" id="leads" href="{% url 'leads:list' %}">Leads</a>
+      <a class="dropdown-item nav-a" id="accounts" href="{% url 'accounts:list' %}">Accounts</a>
+{% if request.user.role == "ADMIN"  or request.user.is_superuser %}
+      <a class="dropdown-item nav-a" href="{% url 'common:users_list' %}">Users</a>
+      <a class="dropdown-item nav-a" href="{% url 'common:api_settings' %}">Settings</a>
+{% endif %}
+      <a class="dropdown-item nav-a" href="{% url 'password_change' %}">Change Password</a>
+      <a class="dropdown-item nav-a" href="{% url 'common:profile' %}">Profile</a>
+      <a class="dropdown-item nav-a" href="{% url 'logout' %}?next=/">Logout</a>
     </div>
   </li>
   <!-- <li class="nav-item"><a class="nav-link" id="opportunities"href="{% url 'opportunities:list' %}">Opportunities</a></li> -->
