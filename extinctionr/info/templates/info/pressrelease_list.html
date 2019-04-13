@@ -10,7 +10,7 @@
 		<hr>
 		<ul class="list-unstyled">
 			{% for pr in object_list %}
-			<li class="list-item"><a href="{{pr.get_absolute_url}}">{{pr.title}}</a> &mdash; {{pr.released|date}}{% if not pr.is_released %} <span class="text-danger">embargoed</span>{% endif %}</li>
+			<li class="list-item"><a href="{{pr.get_absolute_url}}">{{pr.title}}</a> &mdash; {% if not pr.is_released %}<span class="text-danger">embargoed until</span> {% endif %}{{pr.released|date}}</li>
 			{% endfor %}
 		</ul>
 	</div>
