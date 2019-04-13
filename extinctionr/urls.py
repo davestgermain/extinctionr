@@ -27,7 +27,7 @@ app_name = 'extinctionr'
 urlpatterns = [
     path('talk', propose_talk),
     path('', include('django.contrib.auth.urls')),
-    path('', include('extinctionr.info.urls')),
+    path('', include('extinctionr.info.urls', namespace='extinctionr.info')),
     path('action/', include('extinctionr.actions.urls', namespace="actions")),
     path('relationships/', include('common.urls', namespace="common")),
     path('relationships/m/', include('marketing.urls', namespace="marketing")),
@@ -39,7 +39,6 @@ urlpatterns = [
     path('relationships/cases/', include('cases.urls', namespace="cases")),
     path('relationships/emails/', include('emails.urls', namespace="emails")),
     # path('planner/', include('planner.urls', namespace="planner")),
-    # path('logout/', views.LogoutView, {'next_page': '/login/'}, name="logout"),
     path('admin/', admin.site.urls),
     path('notifications/', include('django_nyt.urls')),
     path('wiki/', include('wiki.urls')),
@@ -47,3 +46,10 @@ urlpatterns = [
 ]
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+    try:
+        import debug_toolbar
+        urlpatterns = [
+            path('__debug__/', include(debug_toolbar.urls))
+        ] + urlpatterns
+    except ImportError:
+        pass

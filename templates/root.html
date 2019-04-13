@@ -120,7 +120,7 @@
                   {% endif %}
                   <a class="dropdown-item" href="{% url 'password_change' %}">Change Password</a>
                   <a class="dropdown-item" href="{% url 'common:profile' %}">Profile</a>
-                  <a class="dropdown-item" href="{% url 'common:logout' %}">Logout</a>
+                  <a class="dropdown-item" href="{% url 'logout' %}?next=/">Logout</a>
                 </div>
               </li>
             </ul>
@@ -147,6 +147,9 @@
           <li class="list-inline-item"><a href="https://twitter.com/XRboston" target="_blank">twitter</a> | </li>
           <li class="list-inline-item"><a href="https://www.instagram.com/xrmass/" target="_blank">instagram</a></li>
         </ul>
+        <div class="pt-6 text-right">
+          <a class="xr-green" href="{% url 'login' %}">login</a>
+        </div>
       </footer>
   </div>
 

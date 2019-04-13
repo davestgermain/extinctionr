@@ -1,33 +1,30 @@
 {% extends "base.html" %}
+{% block title %}:: Login{% endblock %}
 {% block content %}
-<div class="mt-4 row marl justify-content-center login_row">
-  <div class="col-md-6 col-lg-6 col-xl-4">
-    <div class="login_block">
-      <div class="login_form_block">
-        <div class="welcome">XRMass Login</div>
-        <form method="POST" action="{% url 'login'%}">
-          {% csrf_token %}
-          <div class="form-group">
-            <input type="text" class="form-control" id="exampleInputEmail1" placeholder="Email" name="email">
-            <span class = "error">{{form.email.errors}}</span>
-          </div>
-          <div class="form-group">
-            <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Password" name="password">
-            <span class = "error">{{form.password.errors}}</span>
-          </div>
-          <div class="forgot">Forgot Password <a href="{% url "common:password_reset" %}">Click Here?</a></div>
-          {% if error %}
-          <p class="error">{{ message }}</p>
-          {% endif %}
-          <div class="form-group text-center mt-4">
-            <button type="submit" class="btn btn-lg btn-danger">Login</button>
-          </div>
-          &nbsp;
-          {% if ENABLE_GOOGLE_LOGIN and GP_CLIENT_SECRET and GP_CLIENT_ID %}
-          <a href="{% url 'common:google_login' %}" class="btn btn-primary">Google Login</a>
-          {% endif %}
-        </form>
-      </div>
-    </div>
+<div class="row p-4">
+  <div class="col-6 offset-3">
+      <h2 class="text-center">XRMass Login</h2>
+      <form method="POST" action="{% url 'login'%}">
+        {% csrf_token %}
+        <div class="form-group">
+          <input required type="email" class="form-control" id="exampleInputEmail1" placeholder="Email" name="username">
+          <span class="text-danger">{{form.username.errors}}</span>
+        </div>
+        <div class="form-group">
+          <input required type="password" class="form-control" id="exampleInputPassword1" placeholder="Password" name="password">
+          <span class="text-danger">{{form.password.errors}}</span>
+        </div>
+        <div class="text-center">Forgot Password <a href="{% url "common:password_reset" %}">Click Here?</a></div>
+        {% if error %}
+        <p class="error">{{ message }}</p>
+        {% endif %}
+        <div class="form-group text-center mt-4">
+          <button type="submit" class="btn btn-lg btn-danger">Login</button>
+        </div>
+        {% if ENABLE_GOOGLE_LOGIN and GP_CLIENT_SECRET and GP_CLIENT_ID %}
+        <a href="{% url 'common:google_login' %}" class="btn btn-primary">Google Login</a>
+        {% endif %}
+      </form>
   </div>
+</div>
 {% endblock %}
