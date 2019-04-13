@@ -18,7 +18,7 @@ class Action(models.Model):
     public = models.BooleanField(default=True, blank=True, help_text='Whether this action should be listed publicly')
     location = models.TextField(default='', blank=True)
     available_roles = models.CharField(default='', blank=True, max_length=255, help_text='List of comma-separated strings')
-    photos = models.ManyToManyField(Photo)
+    photos = models.ManyToManyField(Photo, blank=True)
 
 
     @property
