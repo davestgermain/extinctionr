@@ -2,6 +2,7 @@ from django.db import models
 from django.urls import reverse
 from markdownx.models import MarkdownxField
 from django.utils.timezone import now
+from django.contrib.auth import get_user_model
 
 
 class PressReleaseManager(models.Manager):
@@ -27,3 +28,16 @@ class PressRelease(models.Model):
 
     def __str__(self):
         return self.title
+
+
+class Photo(models.Model):
+    created = models.DateTimeField(auto_now_add=True, db_index=True)
+    uploader = models.ForeignKey(get_user_model(), null=True, on_delete=models.SET_NULL)
+    photo = models.ImageField(upload_to='photos', width_field='width', height_field='height')
+    caption = models.TextField(default='', blank=True)
+    width = models.IntegerField(default=0, blank=True)
+    height = models.IntegerField(default=0, blank=True)
+    public = models.BooleanField(default=True, db_index=True)
+
+    def __str__(self):
+        return '{} by {}'.format(self.photo, self.uploader)

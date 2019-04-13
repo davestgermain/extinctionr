@@ -3,6 +3,7 @@ from django.db import models
 from django.contrib.auth import get_user_model
 from django.urls import reverse
 from contacts.models import Contact
+from extinctionr.info.models import Photo
 from markdownx.models import MarkdownxField
 
 
@@ -17,6 +18,7 @@ class Action(models.Model):
     public = models.BooleanField(default=True, blank=True, help_text='Whether this action should be listed publicly')
     location = models.TextField(default='', blank=True)
     available_roles = models.CharField(default='', blank=True, max_length=255, help_text='List of comma-separated strings')
+    photos = models.ManyToManyField(Photo)
 
 
     @property
