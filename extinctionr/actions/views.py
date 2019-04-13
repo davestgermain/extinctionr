@@ -70,6 +70,7 @@ def show_action(request, slug):
     ctx = {'action': action, 'attendees': attendees}
     if action.when < now():
         ctx['already_happened'] = True
+        form = None
     elif request.method == 'POST':
         form = SignupForm(request.POST, action=action)
         if form.is_valid():
