@@ -147,9 +147,11 @@
           <li class="list-inline-item"><a href="https://twitter.com/XRboston" target="_blank">twitter</a> | </li>
           <li class="list-inline-item"><a href="https://www.instagram.com/xrmass/" target="_blank">instagram</a></li>
         </ul>
+        {% if request.user.is_anonymous %}
         <div class="pt-6 text-right">
           <a class="xr-green" href="{% url 'login' %}">login</a>
         </div>
+        {% endif %}
       </footer>
   </div>
 
