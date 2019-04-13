@@ -11,8 +11,8 @@ class PressReleaseAdmin(MarkdownxModelAdmin):
 
 @admin.register(Photo)
 class PhotoAdmin(admin.ModelAdmin):
-	readonly_fields = ('uploader',)
-	list_display = ('created', 'uploader', 'photo', 'caption')
+	readonly_fields = ('uploader', 'thumbnail_tag')
+	list_display = ('created', 'uploader', 'caption', 'thumbnail_tag')
 
 	def save_model(self, request, obj, form, change):
 		obj.uploader = request.user

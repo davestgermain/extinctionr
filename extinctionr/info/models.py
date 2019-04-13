@@ -1,6 +1,7 @@
 from django.db import models
 from django.urls import reverse
 from markdownx.models import MarkdownxField
+from django.utils.safestring import mark_safe
 from django.utils.timezone import now
 from django.contrib.auth import get_user_model
 
@@ -41,3 +42,8 @@ class Photo(models.Model):
 
     def __str__(self):
         return '{} by {}'.format(self.photo, self.uploader)
+
+    def thumbnail_tag(self):
+        return mark_safe('<img class="img img-fluid" width=256 src="%s" />' % self.photo.url)
+    thumbnail_tag.short_description = 'Image'
+

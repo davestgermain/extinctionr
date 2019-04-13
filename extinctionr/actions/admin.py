@@ -7,6 +7,7 @@ from markdownx.admin import MarkdownxModelAdmin
 class ActionAdmin(MarkdownxModelAdmin):
     list_display = ('slug', 'name', 'when')
     prepopulated_fields = {"slug": ("name",)}
+    filter_vertical = ('photos',)
 
 
 @admin.register(Attendee)
