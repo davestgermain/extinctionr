@@ -77,6 +77,7 @@ INSTALLED_APPS = [
 ]
 
 MIDDLEWARE = [
+    'django.middleware.cache.UpdateCacheMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -85,6 +86,7 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'django.contrib.redirects.middleware.RedirectFallbackMiddleware',
+    'django.middleware.cache.FetchFromCacheMiddleware',
 ]
 if DEBUG:
     try:
@@ -222,6 +224,7 @@ DEFAULT_FROM_EMAIL = 'webmaster@xrmass.org'
 
 PHONENUMBER_DEFAULT_REGION = 'US'
 
+CACHE_MIDDLEWARE_SECONDS = 1200
 
 LOGGING = {
     'version': 1,
