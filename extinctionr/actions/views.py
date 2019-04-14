@@ -8,6 +8,7 @@ from django.utils.html import strip_tags
 from django.utils.http import http_date
 from django.utils.timezone import now
 from django.urls import reverse
+from django.views.decorators.cache import never_cache
 
 from datetime import timedelta
 from django import forms
@@ -90,9 +91,12 @@ def show_action(request, slug):
 
     resp = render(request, 'action.html', ctx)
     resp['Last-Modified'] = http_date(action.modified.timestamp())
+    if request.user.is_authenticated:
+        resp['Cache-Control'] = 'no-cache'
     return resp
 
 
+@never_cache
 def show_attendees(request, action_slug):
     action = get_object_or_404(Action, slug=action_slug)
     out_fmt = request.GET.get('fmt', 'json')
@@ -131,6 +135,7 @@ def propose_talk(request):
 
 
 @login_required
+@never_cache
 def list_proposals(request):
     ctx = {
         'talks': TalkProposal.objects.select_related('requestor').order_by('responded', '-created')
@@ -138,7 +143,9 @@ def list_proposals(request):
     return render(request, 'list_talks.html', ctx)
 
 
+
 @login_required
+@never_cache
 def talk_respond(request, talk_id):
     talk = get_object_or_404(TalkProposal, pk=talk_id)
     if request.method == 'POST' and not talk.responded:
@@ -149,6 +156,7 @@ def talk_respond(request, talk_id):
 
 
 @login_required
+@never_cache
 def convert_proposal_to_action(request, talk_id):
     talk = get_object_or_404(TalkProposal, pk=talk_id)
     if request.method == 'POST' and talk.responded:

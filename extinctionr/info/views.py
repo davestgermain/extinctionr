@@ -34,6 +34,14 @@ class PRListView(ListView):
             return PressRelease.objects.released()
 
 
+    def render_to_response(self, context, **kwargs):
+        resp = super().render_to_response(context, **kwargs)
+        resp['Last-Modified'] = http_date(context['object_list'].last().modified.timestamp())
+        if self.request.user.is_authenticated:
+            resp['Cache-Control'] = 'no-cache'
+        return resp
+
+
 class PRDetailView(DetailView):
     def get_queryset(self):
         if self.request.user.has_perm('info.view_pressrelease'):
@@ -44,4 +52,6 @@ class PRDetailView(DetailView):
     def render_to_response(self, context, **kwargs):
         resp = super().render_to_response(context, **kwargs)
         resp['Last-Modified'] = http_date(context['object'].modified.timestamp())
+        if self.request.user.is_authenticated:
+            resp['Cache-Control'] = 'no-cache'
         return resp
