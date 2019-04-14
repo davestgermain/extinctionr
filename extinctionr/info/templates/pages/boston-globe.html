@@ -1,8 +1,8 @@
 {% extends "base.html" %}
 
 {% block content %}
-<div class="row p-2 pt-4">
-	<div class="col">
+<div class="row pt-5">
+	<div class="col-text">
 		<h1 class="text-center">Enlisting The Boston Globe</h1>
 <hr>
 <section>
@@ -64,7 +64,7 @@
 </div>
 <hr>
 <div class="row">
-	<div class="col text-center" id="signup_form">
+	<div class="col-text text-center" id="signup_form">
 		<h1 class="text-center">Sign on</h1>
 
 		<form action="{% url 'extinctionr.actions:action' slug='boston-globe' %}" class="container" method="post">
