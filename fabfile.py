@@ -1,10 +1,15 @@
 from fabric import Connection, task
 
 
+conn = Connection('xr@xrmass.org')
+
 @task
 def deploy(ctx):
-    c = Connection('xr@xrmass.org')
+    conn.run('git -C /home/src/extinctionr/ pull')
+    conn.run('supervisorctl restart xr')
 
-    c.run('git -C /home/src/extinctionr/ pull')
-    c.run('supervisorctl restart xr')
 
+@task
+def backup(ctx):
+    with conn.prefix('source /home/xr/venv/bin/activate'):
+        conn.run('/home/src/extinctionr/manage.py dumpdata --settings=extinctionr.prod_settings -a -o ~/backup.json')
