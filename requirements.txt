@@ -8,3 +8,11 @@ gunicorn
 requests
 ipython
 django-markdownx
+django-simple-pagination
+django-compressor
+phonenumbers
+sorl-thumbnail
+django-phonenumber-field
+cssselect
+django-storages
+celery
