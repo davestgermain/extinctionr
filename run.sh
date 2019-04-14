@@ -9,4 +9,4 @@ export DJANGO_SETTINGS_MODULE=extinctionr.prod_settings
 
 python manage.py migrate
 python manage.py collectstatic --noinput
-exec gunicorn extinctionr.wsgi
+exec gunicorn -w 2 --keep-alive 3600 extinctionr.wsgi
