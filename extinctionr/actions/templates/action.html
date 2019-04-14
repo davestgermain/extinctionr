@@ -3,7 +3,7 @@
 {% block content %}
 {% load info %}
 <div class="row pt-4 text-center">
-	<div class="col-10 offset-1">
+	<div class="col-lg-10 col-sm-12 offset-lg-1">
 		<h1>{{action.name}}</h1>
 		<h2>{{action.when}}</h2>
 		{% if action.location %}
@@ -29,18 +29,18 @@
 {% endif %}
 {% if form %}
 <div class="row mt-4">
-	<div class="col-lg-6 col-sm-12 offset-sm-0 offset-lg-4">
+	<div class="col-lg-6 col-sm-12 offset-sm-0 offset-lg-3">
 		<form method="post"> {% csrf_token %}
 			<div class="text-danger">{{form.non_field_errors}}</div>
 			<div class="form-group row">
-				<label for="{{form.email.id_for_label}}" class="col-3">Email:</label>
+				<label for="{{form.email.id_for_label}}" class="col-4 text-right">Email:</label>
 				<div class="col-auto">
 					{{form.email}}
 					<div class="text-danger">{{form.email.errors}}</div>
 				</div>
 			</div>
 			<div class="form-group row">
-				<label for="{{form.name.id_for_label}}" class="col-3">Your Name:</label>
+				<label for="{{form.name.id_for_label}}" class="col-4 text-right">Your Name:</label>
 				<div class="col-auto">
 					{{form.name}}
 					<div class="text-danger">{{form.name.errors}}</div>
@@ -48,7 +48,7 @@
 			</div>
 			{% if form.fields.role.queryset %}
 			<div class="form-group row">
-				<label for="{{form.role.id_for_label}}" class="col-3">Your Role:</label>
+				<label for="{{form.role.id_for_label}}" class="col-4 text-right">Your Role:</label>
 				<div class="col-auto">
 					{{form.role}}
 					<div class="text-danger">{{form.role.errors}}</div>
@@ -56,22 +56,22 @@
 			</div>
 			{% endif %}
 			<div class="form-group row">
-				<label for="{{form.promised.id_for_label}}" class="col-3 form-check-label">I'm Committed!</label>
+				<label for="{{form.promised.id_for_label}}" class="col-4 text-right form-check-label">I'm Committed!</label>
 				<div class="col-auto">
 					{{form.promised}}
 					<div class="text-danger">{{form.promised.errors}}</div>
 				</div>
 			</div>
 			<div class="form-group row">
-				<label for="{{form.commit.id_for_label}}" class="col-3">I promise to attend if this many also commit:</label>
-				<div class="col-auto">
+				<label for="{{form.commit.id_for_label}}" class="col-4 text-right">I promise to attend if this many also commit:</label>
+				<div class="col-2">
 					{{form.commit}}
 					<div class="text-danger">{{form.commit.errors}}</div>
 				</div>
 			</div>
 
 			<div class="form-group row mt-4">
-				<div class="col-6 text-center">
+				<div class="col text-center">
 					<input class="btn btn-lg btn-outline-dark btn-success text-uppercase" type="submit" value="I'm Going!">
 				</div>
 			</div>

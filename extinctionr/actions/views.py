@@ -20,8 +20,8 @@ BOOTSTRAP_ATTRS = {'class': 'form-control text-center'}
 
 
 class SignupForm(forms.Form):
-    email = forms.EmailField(label="Email", required=True, widget=forms.EmailInput(attrs=BOOTSTRAP_ATTRS))
-    name = forms.CharField(label="Your name", widget=forms.TextInput(attrs=BOOTSTRAP_ATTRS))
+    email = forms.EmailField(label="Email", required=True, widget=forms.EmailInput(attrs={'class': 'form-control text-center', 'placeholder': 'Email Address'}))
+    name = forms.CharField(label="Your name", widget=forms.TextInput(attrs={'class': 'form-control text-center', 'placeholder': 'Your Name'}))
     promised = forms.BooleanField(required=False, widget=forms.CheckboxInput(attrs={'class': 'form-check'}))
     role = forms.ModelChoiceField(queryset=None, required=False, widget=forms.Select(attrs=BOOTSTRAP_ATTRS))
     next = forms.CharField(required=False, widget=forms.HiddenInput())
@@ -36,10 +36,10 @@ class SignupForm(forms.Form):
 
 
 class TalkProposalForm(forms.Form):
-    location = forms.CharField(widget=forms.Textarea(attrs={'rows': 4, 'class': 'form-control'}))
-    name = forms.CharField(label="Your name", required=True, widget=forms.TextInput(attrs=BOOTSTRAP_ATTRS))
-    email = forms.EmailField(label="Email", required=True, widget=forms.EmailInput(attrs=BOOTSTRAP_ATTRS))
-    phone = PhoneNumberField(label="Phone Number", required=False, widget=forms.TextInput(attrs=BOOTSTRAP_ATTRS))
+    location = forms.CharField(widget=forms.Textarea(attrs={'rows': 4, 'class': 'form-control', 'placeholder': 'Your location'}))
+    name = forms.CharField(label="Your name", required=True, widget=forms.TextInput(attrs={'class': 'form-control text-center', 'placeholder': 'Your Name'}))
+    email = forms.EmailField(label="Email", required=True, widget=forms.EmailInput(attrs={'class': 'form-control text-center', 'placeholder': 'Email Address'}))
+    phone = PhoneNumberField(label="Phone Number", required=False, widget=forms.TextInput(attrs={'class': 'form-control text-center', 'placeholder': 'Phone Number'}))
 
 
 def signup_form(request, action_slug):

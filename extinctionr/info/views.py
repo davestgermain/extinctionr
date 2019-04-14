@@ -22,6 +22,8 @@ class InfoView(TemplateView):
             raise Http404(page)
         tresp = super(InfoView, self).get(request, *args, **kwargs)
         response = HttpResponse(tresp.rendered_content)
+        if request.user.is_authenticated:
+            response['Cache-Control'] = 'no-cache'
         # response['Etag'] = md5(response.content).hexdigest()
         return response
 

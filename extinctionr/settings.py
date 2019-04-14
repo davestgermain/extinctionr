@@ -90,6 +90,7 @@ MIDDLEWARE = [
     'django.middleware.cache.FetchFromCacheMiddleware',
 ]
 if DEBUG:
+    MIDDLEWARE.remove('django.middleware.cache.FetchFromCacheMiddleware')
     try:
         import debug_toolbar
         INSTALLED_APPS += ['debug_toolbar']
