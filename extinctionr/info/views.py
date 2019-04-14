@@ -2,6 +2,7 @@ from hashlib import md5
 from django.views.generic import TemplateView, ListView, DetailView
 from django.http import Http404, HttpResponse
 from django.utils.decorators import method_decorator
+from django.utils.http import http_date
 from django.template.loader import get_template, TemplateDoesNotExist
 from django.views.decorators.http import etag
 
@@ -39,3 +40,8 @@ class PRDetailView(DetailView):
             return PressRelease.objects.all()
         else:
             return PressRelease.objects.released()
+
+    def render_to_response(self, context, **kwargs):
+        resp = super().render_to_response(context, **kwargs)
+        resp['Last-Modified'] = http_date(context['object'].modified.timestamp())
+        return resp

@@ -17,6 +17,7 @@ class PressRelease(models.Model):
     created = models.DateTimeField(db_index=True, auto_now_add=True)
     released = models.DateTimeField(db_index=True, null=True, blank=True, help_text='Release dates in the future will not be visible on the site')
     body = MarkdownxField(default='', blank=True)
+    modified = models.DateTimeField(auto_now=True)
 
     objects = PressReleaseManager()
 

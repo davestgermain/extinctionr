@@ -7,13 +7,14 @@ from markdownx.admin import MarkdownxModelAdmin
 class PressReleaseAdmin(MarkdownxModelAdmin):
     list_display = ('slug', 'title', 'released')
     prepopulated_fields = {"slug": ("title",)}
+    readonly_fields = ('modified', )
 
 
 @admin.register(Photo)
 class PhotoAdmin(admin.ModelAdmin):
-	readonly_fields = ('uploader', 'thumbnail_tag')
-	list_display = ('created', 'uploader', 'caption', 'thumbnail_tag')
+    readonly_fields = ('uploader', 'thumbnail_tag')
+    list_display = ('created', 'uploader', 'caption', 'thumbnail_tag')
 
-	def save_model(self, request, obj, form, change):
-		obj.uploader = request.user
-		super().save_model(request, obj, form, change)
+    def save_model(self, request, obj, form, change):
+        obj.uploader = request.user
+        super().save_model(request, obj, form, change)

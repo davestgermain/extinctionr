@@ -5,6 +5,7 @@ from django.db import IntegrityError
 from django.http import JsonResponse
 from django.shortcuts import render, get_object_or_404, redirect
 from django.utils.html import strip_tags
+from django.utils.http import http_date
 from django.utils.timezone import now
 from django.urls import reverse
 
@@ -87,7 +88,9 @@ def show_action(request, slug):
         form = SignupForm(action=action)
     ctx['form'] = form
 
-    return render(request, 'action.html', ctx)
+    resp = render(request, 'action.html', ctx)
+    resp['Last-Modified'] = http_date(action.modified.timestamp())
+    return resp
 
 
 def show_attendees(request, action_slug):

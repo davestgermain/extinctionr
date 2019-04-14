@@ -8,6 +8,7 @@ class ActionAdmin(MarkdownxModelAdmin):
     list_display = ('slug', 'name', 'when')
     prepopulated_fields = {"slug": ("name",)}
     filter_vertical = ('photos',)
+    readonly_fields = ('modified', )
 
 
 @admin.register(Attendee)

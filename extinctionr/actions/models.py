@@ -1,4 +1,5 @@
 import datetime
+from hashlib import md5
 from django.db import models
 from django.contrib.auth import get_user_model
 from django.urls import reverse
@@ -19,6 +20,7 @@ class Action(models.Model):
     location = models.TextField(default='', blank=True)
     available_roles = models.CharField(default='', blank=True, max_length=255, help_text='List of comma-separated strings')
     photos = models.ManyToManyField(Photo, blank=True)
+    modified = models.DateTimeField(auto_now=True)
 
 
     @property
