@@ -3,6 +3,7 @@ from hashlib import md5
 from django.db import models
 from django.contrib.auth import get_user_model
 from django.urls import reverse
+from django.utils.timezone import now
 from contacts.models import Contact
 from extinctionr.info.models import Photo
 from markdownx.models import MarkdownxField
@@ -56,7 +57,7 @@ class Action(models.Model):
             atten.notes = notes
             atten.mutual_committment = commit
         if promised:
-            atten.promised = datetime.datetime.now()
+            atten.promised = now()
         atten.save()
         return atten
 
