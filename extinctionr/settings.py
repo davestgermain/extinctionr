@@ -81,6 +81,21 @@ INSTALLED_APPS = [
     'markdownx',
     'todo',
     'taggit',
+    # mailman
+    'postorius',
+    'django_mailman3',
+    'django_gravatar',
+    'allauth',
+    'allauth.account',
+    'allauth.socialaccount',
+    'allauth.socialaccount.providers.openid',
+    'django_mailman3.lib.auth.fedora',
+    # 'allauth.socialaccount.providers.github',
+    # 'allauth.socialaccount.providers.gitlab',
+    'allauth.socialaccount.providers.google',
+    # 'allauth.socialaccount.providers.facebook',
+    # 'allauth.socialaccount.providers.twitter',
+    # 'allauth.socialaccount.providers.stackexchange',
 ]
 
 MIDDLEWARE = [
@@ -95,6 +110,7 @@ MIDDLEWARE = [
     'django.contrib.redirects.middleware.RedirectFallbackMiddleware',
     'extinctionr.middleware.redirect_middleware',
     'crum.CurrentRequestUserMiddleware',
+    'postorius.middleware.PostoriusMiddleware',
 ]
 if DEBUG:
     try:
@@ -122,6 +138,9 @@ TEMPLATES = [
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
                 'sekizai.context_processors.sekizai', # for django-wiki
+                'django_mailman3.context_processors.common',
+                'postorius.context_processors.postorius',
+
             ],
         },
     },
@@ -225,6 +244,10 @@ AUTH_USER_MODEL = 'common.User'
 LOGIN_REDIRECT_URL = '/'
 
 LOGIN_URL = '/login/'
+
+LOGOUT_URL = 'logout'
+
+
 GP_CLIENT_ID = os.getenv('GP_CLIENT_ID', False)
 GP_CLIENT_SECRET = os.getenv('GP_CLIENT_SECRET', False)
 ENABLE_GOOGLE_LOGIN = os.getenv('ENABLE_GOOGLE_LOGIN', False)
@@ -297,4 +320,13 @@ LOGGING = {
         }
     }
 }
+
+
+# Mailman API credentials
+MAILMAN_REST_API_URL = 'http://localhost:9001'
+MAILMAN_REST_API_USER = 'restadmin'
+MAILMAN_REST_API_PASS = 'restpass'
+POSTORIUS_TEMPLATE_BASE_URL = "http://localhost:8000"
+
+
 

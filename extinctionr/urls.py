@@ -44,6 +44,8 @@ urlpatterns = [
     path('wiki/', include('wiki.urls')),
     path('markdownx/', include('markdownx.urls')),
     path('todo/', include('todo.urls', namespace="todo")),
+    path('postorius/', include('postorius.urls')),
+    path('mm/', include('django_mailman3.urls')),
 ]
 if settings.DEBUG:
     print(settings.MEDIA_ROOT, settings.MEDIA_URL)
