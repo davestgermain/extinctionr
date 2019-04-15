@@ -1,6 +1,6 @@
 django
 wiki
--e git+https://github.com/davestgermain/Django-CRM@40676647f0c095738b3d2dc3a5d3f82a8c6b37cc#egg=django_crm
+-e git+https://github.com/davestgermain/Django-CRM@344a4adb6f4a83c9d600aaf6f32a9d350c49a0a8#egg=django_crm
 boto3
 lxml
 openpyxl
