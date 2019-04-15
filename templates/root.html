@@ -104,7 +104,7 @@
     <header>
       <div class="container">
       <nav id="site-nav" class="navbar navbar-expand-lg navbar-dark">
-        <a href="{% url 'extinctionr.info:index' %}"><img id="header-image" class="img img-responsive" height="115" src="{% static 'images/xrmass.svg' %}" alt="Extinction Rebellion"></a>
+        <a href="{% url 'extinctionr.info:index' %}" class="xr-logo"><img id="header-image" class="img img-responsive" height="115" data-swap="{% static 'images/xrmass-yellow.svg' %}" src="{% static 'images/xrmass-green.svg' %}" alt="Extinction Rebellion"></a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
         </button>
@@ -146,6 +146,14 @@
   $(document).ready(function(){
     $('.nav-a[href="' + window.location.pathname + '"]').addClass('active');
     $('#mainbody img').addClass('img img-fluid');
+    function swapImages() {
+      var elt = $(this);
+      var src = elt.attr('src');
+      var swap = elt.data('swap');
+      elt.attr('src', swap);
+      elt.data('swap', src);
+    };
+    $('#header-image').hover(swapImages, swapImages);
   });
   /*
     Usage is very simple; to block user activity for the page:
