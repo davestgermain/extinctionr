@@ -103,7 +103,7 @@ def show_action(request, slug):
 def show_attendees(request, action_slug):
     action = get_object_or_404(Action, slug=action_slug)
     out_fmt = request.GET.get('fmt', 'json')
-    attendees = Attendee.objects.filter(action=action).select_related('contact')
+    attendees = Attendee.objects.filter(action=action).select_related('contact').order_by('contact__last_name')
     if out_fmt == 'html':
         ctx = {'attendees': attendees}
         return render(request, 'attendees.html', ctx)
