@@ -25,6 +25,7 @@ class SignupForm(forms.Form):
     promised = forms.BooleanField(required=False, widget=forms.CheckboxInput(attrs={'class': 'form-check'}))
     role = forms.ModelChoiceField(queryset=None, required=False, widget=forms.Select(attrs=BOOTSTRAP_ATTRS))
     next = forms.CharField(required=False, widget=forms.HiddenInput())
+    notes = forms.CharField(required=False, initial='')
     commit = forms.IntegerField(required=False, initial=0, widget=forms.NumberInput(attrs=BOOTSTRAP_ATTRS))
 
     def __init__(self, *args, **kwargs):
@@ -56,7 +57,8 @@ def signup_form(request, action_slug):
                 data['role'],
                 name=data['name'][:100],
                 promised=data['promised'],
-                commit=data['commit'] or 0)
+                commit=data['commit'] or 0,
+                notes=data['notes'])
             next_url = data['next'] or request.headers.get('referer', '/')
             messages.success(request, "Thank you for signing up for {}!".format(action.name))
             return redirect(next_url)
@@ -81,7 +83,8 @@ def show_action(request, slug):
                 data['role'],
                 name=data['name'][:100],
                 promised=data['promised'],
-                commit=data['commit'])
+                commit=data['commit'] or 0,
+                notes=data['notes'])
             next_url = data['next'] or request.headers.get('referer', '/')
             messages.success(request, "Thank you for signing up for {}!".format(action.name))
             return redirect(next_url)
