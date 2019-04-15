@@ -115,7 +115,7 @@ def propose_talk(request):
         form = TalkProposalForm(request.POST)
         if form.is_valid():
             data = form.cleaned_data
-            sname = data['name'].split(' ')
+            sname = data['name'].split(' ', 1)
             if len(sname) == 2:
                 first_name, last_name = sname
             else:

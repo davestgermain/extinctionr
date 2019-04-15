@@ -42,7 +42,7 @@ class Action(models.Model):
         try:
             user = Contact.objects.get(email=email)
         except Contact.DoesNotExist:
-            sname = name.split(' ')
+            sname = name.split(' ', 1)
             if len(sname) == 2:
                 first_name, last_name = sname
             else:
