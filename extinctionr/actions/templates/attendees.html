@@ -1,11 +1,7 @@
-{% if attendees %}<table class="table">
-<tbody>
+{% if attendees %}
 {% for attendee in attendees %}
 {% if attendee.promised %}
-<tr>
-	<td>{{attendee.contact.first_name}}</td><td>{{attendee.contact.last_name}}</td><td>{{attendee.notes}}</td>
-</tr>
+<p>{{attendee.contact.first_name}} {{attendee.contact.last_name}}{% if attendee.notes %} &mdash; {{attendee.notes}}{% endif %}</p>
 {% endif %}
 {% endfor %}
-</tbody>
-</table>{% endif %}
+{% endif %}
