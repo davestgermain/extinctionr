@@ -13,7 +13,7 @@
 <script type="text/javascript">
 	function markChanged(elt) {
 		$.post('{% url "extinctionr.actions:mark-attendee" action_slug=slug %}', {id: $(elt).data('attendee')}, function(data){
-			location = location;
+			location.reload();
 		});
 	};
 </script>
