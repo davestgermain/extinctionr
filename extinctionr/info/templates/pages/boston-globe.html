@@ -6,6 +6,7 @@
 		<h1 class="text-center">Enlisting The Boston Globe</h1>
 <hr>
 <section>
+<a name="oped"></a>
 <h3 class="xr-green">Extinction Rebellion urges the Boston Globe to declare climate emergency</h3>
 <div class="lead font-italic">By Nick Bain, Galen Hall, Molly Niedbala, David St. Germain, and Niels Burger: members of Extinction Rebellion Massachusetts</div>
 <h5 class="text-right">April 17, 2019</h5>
@@ -30,6 +31,8 @@
 </section>
 <hr>
 <section>
+<a name="cta"></a>
+
 <h2 class="text-uppercase text-center mt-3">Call To Action</h2>
 		<p class="lead">
 			We call on the Boston Globe:
@@ -57,15 +60,20 @@
 	</div>
 </div>
 
-<section>
-<div class="row mt-4" hidden id="signees-row">
-	<div class="col-6 offset-3 small text-center">
-		<h4>Signatories</h4>
-		<hr>
-		<div id="signees"><!-- this will be dynamically filled in --></div>
+<a name="sign"></a>
+<section id="signatures" hidden>
+	<div class="row mt-4">
+		<div class="col text-center">
+			<h4>Signatories</h4>
+			<hr>
+		</div>
 	</div>
-</div>
+	<div class="row small text-center" id="signees">
+			<!-- this will be dynamically filled in -->
+	</div>
+</section>
 <hr>
+<section>
 <div class="row">
 	<div class="col-text text-center" id="signup_form">
 		<h1 class="text-center">Sign on</h1>
@@ -109,7 +117,7 @@
 		$.get("{% url 'extinctionr.actions:attendees' action_slug='boston-globe' %}?fmt=html", function(data){
 			$('#signees').html(data);
 			if (data != '') {
-				$('#signees-row').removeAttr('hidden');
+				$('#signatures').removeAttr('hidden');
 
 			}
 		});

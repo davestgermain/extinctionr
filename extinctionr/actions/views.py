@@ -104,8 +104,13 @@ def show_attendees(request, action_slug):
     action = get_object_or_404(Action, slug=action_slug)
     out_fmt = request.GET.get('fmt', 'json')
     attendees = Attendee.objects.filter(action=action).select_related('contact').order_by('contact__last_name')
+    num = attendees.count()
+    if num > 10:
+        half = int(num / 2)
+    else:
+        half = None
     if out_fmt == 'html':
-        ctx = {'attendees': attendees, 'can_change': request.user.is_staff, 'slug': action_slug}
+        ctx = {'attendees': attendees, 'half': half, 'can_change': request.user.is_staff, 'slug': action_slug}
         return render(request, 'attendees.html', ctx)
 
 
