@@ -105,7 +105,7 @@ def show_attendees(request, action_slug):
     out_fmt = request.GET.get('fmt', 'json')
     attendees = Attendee.objects.filter(action=action).select_related('contact').order_by('contact__last_name')
     if out_fmt == 'html':
-        ctx = {'attendees': attendees}
+        ctx = {'attendees': attendees, 'can_change': request.user.is_staff, 'slug': action_slug}
         return render(request, 'attendees.html', ctx)
 
 
@@ -135,6 +135,16 @@ def propose_talk(request):
         form = TalkProposalForm()
     ctx['form'] = form
     return render(request, 'talkproposal.html', ctx)
+
+
+@login_required
+def mark_promised(request, action_slug):
+    if request.user.has_perm('action.change_attendee'):
+        attendee = get_object_or_404(Attendee, pk=request.POST['id'], action__slug=action_slug)
+        if not attendee.promised:
+            attendee.promised = now()
+            attendee.save()
+    return JsonResponse({'status': 'ok'})
 
 
 @login_required

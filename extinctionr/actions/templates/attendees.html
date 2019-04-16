@@ -2,6 +2,17 @@
 {% for attendee in attendees %}
 {% if attendee.promised %}
 <p>{{attendee.contact.first_name}} {{attendee.contact.last_name}}{% if attendee.notes %} &mdash; {{attendee.notes}}{% endif %}</p>
+{% else %}
+{% if can_change %}<p>{{attendee.contact.first_name}} {{attendee.contact.last_name}} &mdash; "{{attendee.notes}}" &mdash; <button class="btn btn-small btn-info" data-attendee="{{attendee.id}}" onclick="javascript:markChanged(this)">confirm</button> or <a href="/admin/actions/attendee/{{attendee.id}}/change/">edit</a>{% endif %}
 {% endif %}
 {% endfor %}
+{% if can_change %}
+<script type="text/javascript">
+	function markChanged(elt) {
+		$.post('{% url "extinctionr.actions:mark-attendee" action_slug=slug %}', {id: $(elt).data('attendee')}, function(data){
+			location = location;
+		});
+	};
+</script>
+{% endif %}
 {% endif %}
