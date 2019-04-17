@@ -1,6 +1,9 @@
 {% extends "base.html" %}
 {% load info %}
 {% block title %}:: {{object.title}}{% endblock %}
+{% block og_tags %}
+  <meta property="og:description" content="{{object.body|truncatewords:100}}" />
+{% endblock %}
 {% block content %}
 <div class="row pt-4">
 	<div class="col-lg-10 offset-lg-1">

@@ -1,4 +1,8 @@
 {% extends "base.html" %}
+{% block title %}:: {{action.name}}{% endblock %}
+{% block og_tags %}
+  <meta property="og:description" content="{{action.description|truncatewords:20}}" />
+{% endblock %}
 
 {% block content %}
 {% load info %}
