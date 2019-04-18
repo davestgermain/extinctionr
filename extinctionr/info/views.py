@@ -14,6 +14,8 @@ class InfoView(TemplateView):
         page = kwargs['page']
         if page.endswith('.html'):
             page = page.split('.')[0]
+        elif page.endswith('/'):
+            page += 'index.html'
         try:
             template_name = 'pages/%s.html' % page
             get_template(template_name).template

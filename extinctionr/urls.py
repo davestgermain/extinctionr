@@ -27,7 +27,6 @@ app_name = 'extinctionr'
 urlpatterns = [
     path('talk', propose_talk),
     path('', include('django.contrib.auth.urls')),
-    path('', include('extinctionr.info.urls', namespace='extinctionr.info')),
     path('action/', include('extinctionr.actions.urls', namespace="actions")),
     path('relationships/', include('common.urls', namespace="common")),
     path('relationships/m/', include('marketing.urls', namespace="marketing")),
@@ -43,6 +42,7 @@ urlpatterns = [
     path('notifications/', include('django_nyt.urls')),
     path('wiki/', include('wiki.urls')),
     path('markdownx/', include('markdownx.urls')),
+    path('', include('extinctionr.info.urls', namespace='extinctionr.info')),
 ]
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
