@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+
+{% block content %}
+{% if request.user.is_staff %}
+<div class="row pt-5">
+    <div class="col col-lg-8 offset-lg-2">
+        <h2 class="text-center">Coordinator Links</h2>
+        <p>
+            Here are some helpful links for common coordinator tasks:
+        </p>
+        <ul>
+            <li>        
+                <a href="/admin/actions/action/add/">Add an Action</a><br>
+                Actions not marked as public will not show up on <a href="/events">Events</a>
+            </li>
+            <li>
+                <a href="/admin/info/pressrelease/add/">Add a Press Release</a><br>
+                Press releases will only be visible after the date that you set.
+            </li>
+            <li>
+                <a href="/admin/info/photo/add/">Upload a Photo</a>
+            </li>
+            <li>
+                <a href="/talk/list/">List Talk Proposals</a>
+            </li>
+            <li>
+                <a href="/relationships/contacts/list/">Manage Contacts</a>
+            </li>
+        </ul>
+    </div>
+</div>
+{% else %}
+<div class="row pt-5">
+    <div class="col-text">
+        <p>Please <a href="{% url 'login' %}?next=/c">Login</a> to see this page</p>
+    </div>
+</div>
+{% endif %}
+{% endblock %}
