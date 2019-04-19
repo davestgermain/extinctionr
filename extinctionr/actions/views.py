@@ -2,7 +2,7 @@ from django.contrib.auth import get_user_model
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.db import IntegrityError
-from django.http import JsonResponse
+from django.http import JsonResponse, HttpResponse
 from django.shortcuts import render, get_object_or_404, redirect
 from django.utils.html import strip_tags
 from django.utils.http import http_date
@@ -10,6 +10,7 @@ from django.utils.timezone import now
 from django.urls import reverse
 from django.views.decorators.cache import never_cache
 
+import csv
 from datetime import timedelta
 from django import forms
 from phonenumber_field.formfields import PhoneNumberField
@@ -111,7 +112,16 @@ def show_attendees(request, action_slug):
         half = None
     if out_fmt == 'html':
         ctx = {'attendees': attendees, 'half': half, 'can_change': request.user.is_staff, 'slug': action_slug}
-        return render(request, 'attendees.html', ctx)
+        resp = render(request, 'attendees.html', ctx)
+    elif out_fmt == 'csv' and request.user.has_perm('actions.view_attendee'):
+        resp = HttpResponse()
+        resp['Content-Type'] = 'text/csv'
+        csv_writer = csv.writer(resp)
+        header = ('Email', 'First Name', 'Last Name', 'Phone', 'Promised')
+        csv_writer.writerow(header)
+        for attendee in attendees:
+            csv_writer.writerow((attendee.contact.email, attendee.contact.first_name, attendee.contact.last_name, attendee.contact.phone, attendee.promised))
+    return resp
 
 
 def propose_talk(request):
