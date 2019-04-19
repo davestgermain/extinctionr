@@ -87,6 +87,7 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'django.contrib.redirects.middleware.RedirectFallbackMiddleware',
+    'extinctionr.middleware.redirect_middleware',
     'django.middleware.cache.FetchFromCacheMiddleware',
 ]
 if DEBUG:
