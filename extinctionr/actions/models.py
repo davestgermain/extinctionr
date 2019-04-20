@@ -36,7 +36,7 @@ class Action(models.Model):
 
     def signup(self, email, role, name='', notes='', promised=None, commit=0):
         if not isinstance(role, ActionRole):
-            db_role = ActionRole.objects.get_or_create(name=role or '')[0]
+            role = ActionRole.objects.get_or_create(name=role or '')[0]
 
         email = email.lower()
         try:
@@ -49,7 +49,7 @@ class Action(models.Model):
                 first_name = sname[0]
                 last_name = 'unknown'
             user = Contact.objects.create(email=email, first_name=first_name, last_name=last_name)
-        atten, created = Attendee.objects.get_or_create(action=self, contact=user, role=db_role)
+        atten, created = Attendee.objects.get_or_create(action=self, contact=user, role=role)
         if not created:
             if notes:
                 atten.notes = notes
