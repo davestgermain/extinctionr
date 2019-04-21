@@ -22,6 +22,7 @@ class Action(models.Model):
     available_roles = models.CharField(default='', blank=True, max_length=255, help_text='List of comma-separated strings')
     photos = models.ManyToManyField(Photo, blank=True)
     modified = models.DateTimeField(auto_now=True)
+    show_commitment = models.BooleanField(blank=True, default=True, help_text='Whether to show the conditional commitment fields')
 
 
     @property

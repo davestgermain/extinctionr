@@ -50,6 +50,7 @@
 					<div class="text-danger">{{form.name.errors}}</div>
 				</div>
 			</div>
+			{% if action.show_commitment %}
 			{% if form.fields.role.queryset %}
 			<div class="form-group row">
 				<label for="{{form.role.id_for_label}}" class="d-none d-sm-block col-4 text-right">Your Role:</label>
@@ -73,7 +74,7 @@
 					<div class="text-danger">{{form.commit.errors}}</div>
 				</div>
 			</div>
-
+			{% endif %}
 			<div class="form-group row mt-4 pt-4">
 				<div class="col text-center">
 					<input class="btn btn-fucxed btn-lg btn-block btn-outline-dark btn-success text-uppercase" type="submit" value="I'm Going!">
