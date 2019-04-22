@@ -21,9 +21,9 @@
 {% load thumbnail %}
 <section class="row photo-view">
 	{% for photo in action.photos.all %}
-	<div class="col-4">
+	<div class="col text-center">
       {% thumbnail photo.photo "400x400" as im %}
-      <a href="{{photo.photo.url}}"><img class="img img-fluid" src="{{ im.url }}" alt="{{photo.caption}}"></a>
+      <a href="{{photo.photo.url}}"><img class="img img-fluid img-thumbnail" src="{{ im.url }}" alt="{{photo.caption}}"></a>
       {% endthumbnail %}
 	</div>
 {% if forloop.counter|divisibleby:3 %}</section><section class="row mt-2">{% endif %}

@@ -42,9 +42,9 @@ urlpatterns = [
     path('notifications/', include('django_nyt.urls')),
     path('wiki/', include('wiki.urls')),
     path('markdownx/', include('markdownx.urls')),
-    path('', include('extinctionr.info.urls', namespace='extinctionr.info')),
 ]
 if settings.DEBUG:
+    print(settings.MEDIA_ROOT, settings.MEDIA_URL)
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
     try:
         import debug_toolbar
@@ -53,3 +53,5 @@ if settings.DEBUG:
         ] + urlpatterns
     except ImportError:
         pass
+
+urlpatterns += [path('', include('extinctionr.info.urls', namespace='extinctionr.info'))]
