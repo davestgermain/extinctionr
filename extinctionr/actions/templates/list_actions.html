@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+{% block title %}:: Upcoming Actions{% endblock %}
+{% block og_tags %}
+  <meta property="og:description" content="Upcoming Actions" />
+{% endblock %}
+
+{% block content %}
+{% load info %}
+<div class="row pt-4">
+    <h1 class="col-text text-center">Upcoming Actions</h1>
+</div>
+    <hr>
+<section class="row">
+    {% for action in actions %}
+    <div class="col text-center m-2 {% if not forloop.counter|divisibleby:3 %}border-right{% endif %}">
+        <h2><a href="{{action.get_absolute_url}}">{{action.name}}</a></h2>
+        <h3>{{action.when}}</h3>
+        {% if not action.public %}<h4 class="text-danger">not public</h4>{% endif %}
+        {% if action.location %}
+        <p class="text-info small"><a href="https://maps.google.com/?q={{action.location|urlencode}}">{{action.location|linebreaks}}</a></p>
+        {% endif %}
+        <div class="text-left small">{{action.description|markdownify|truncatewords_html:30}}</div>
+    </div>
+{% if forloop.counter|divisibleby:3 %}</section><section class="row pt-3">{% endif %}
+    {% endfor %}
+</section>
+<div class="row mt-3 no-gutters">
+    <div class="col">
+        <hr>
+<iframe src="https://calendar.google.com/calendar/embed?src=mits7cdibmdcdoac6a83996d94%40group.calendar.google.com&amp;ctz=America%2FNew_York" style="width: 70vw;height: 70vh; position: relative; border:0" scrolling="no" frameborder="0"></iframe>
+    </div>
+</div>
+{% endblock %}

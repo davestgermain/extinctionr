@@ -8,6 +8,7 @@ urlpatterns = [
     path('talk/<int:talk_id>/respond', views.talk_respond, name='talk-respond'),
     path('talk/<int:talk_id>/convert', views.convert_proposal_to_action, name='talk-convert'),
     path('talk/list/', views.list_proposals, name='list-talk-proposals'),
+    path('', views.list_actions, name='list-actions'),
     path('<str:slug>/', views.show_action, name='action'),
     path('<str:action_slug>/signup/', views.signup_form, name='signup'),
     path('<str:action_slug>/attendees/', views.show_attendees, name='attendees'),

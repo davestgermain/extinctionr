@@ -44,6 +44,21 @@ class TalkProposalForm(forms.Form):
     phone = PhoneNumberField(label="Phone Number", required=False, widget=forms.TextInput(attrs={'class': 'form-control text-center', 'placeholder': 'Phone Number'}))
 
 
+def list_actions(request):
+    actions = Action.objects.filter(when__gte=now()).order_by('when')
+    if not request.user.is_staff:
+        actions = actions.filter(public=True)
+    ctx = {
+        'actions': actions,
+    }
+    resp = render(request, 'list_actions.html', ctx)
+    if request.user.is_authenticated:
+        resp['Cache-Control'] = 'no-cache'
+    if actions:
+        resp['Last-Modified'] = http_date(actions.last().when.timestamp())
+    return resp
+
+
 def signup_form(request, action_slug):
     action = get_object_or_404(Action, slug=action_slug)
     ctx = {'action': action}
