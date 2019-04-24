@@ -95,14 +95,17 @@ def show_action(request, slug):
         form = SignupForm(request.POST, action=action)
         if form.is_valid():
             data = form.cleaned_data
+            commit = data['commit'] or 0
             action.signup(data['email'],
                 data['role'],
                 name=data['name'][:100],
                 promised=data['promised'],
-                commit=data['commit'] or 0,
+                commit=commit,
                 notes=data['notes'])
             next_url = data['next'] or request.headers.get('referer', '/')
             messages.success(request, "Thank you for signing up for {}!".format(action.name))
+            if commit:
+                messages.info(request, "We will notify you once at least %d others commit" % commit)
             return redirect(next_url)
     else:
         form = SignupForm(action=action)
