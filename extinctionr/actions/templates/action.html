@@ -1,11 +1,21 @@
 {% extends "base.html" %}
+{% load info %}
 {% block title %}:: {{action.name}}{% endblock %}
+{% block og_title %}{{action.name}}{% endblock %}
+{% block og_image %}
+{% if photos %}
+  <meta property="og:image" content="https://{{request.get_host}}{{photos.0.photo.url}}" />
+  <meta property="og:image:alt" content="{{photos.0.caption}}" />
+  <meta property="og:image:type" content="image/jpg" />
+  <meta property="og:image:height" content="{{photos.0.height}}"/>
+  <meta property="og:image:width" content="{{photos.0.width}}"/>
+{% endif %}
+{% endblock %}
 {% block og_tags %}
-  <meta property="og:description" content="{{action.description|truncatewords:20}}" />
+  <meta property="og:description" content="{{action.description|markdownify|truncatewords_html:30|striptags}}" />
 {% endblock %}
 
 {% block content %}
-{% load info %}
 <div class="row pt-5 text-center">
 	<div class="col-lg-10 col-sm-12 offset-lg-1">
 		<h1>{{action.name}}</h1>
@@ -17,10 +27,10 @@
 		<hr>
 	</div>
 </div>
-{% if action.photos.exists %}
+{% if photos %}
 {% load thumbnail %}
 <section class="row photo-view">
-	{% for photo in action.photos.all %}
+	{% for photo in photos %}
 	<div class="col text-center">
       {% thumbnail photo.photo "400x400" as im %}
       <a href="{{photo.photo.url}}"><img class="img img-fluid img-thumbnail" src="{{ im.url }}" alt="{{photo.caption}}"></a>

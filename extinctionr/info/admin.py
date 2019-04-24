@@ -12,7 +12,7 @@ class PressReleaseAdmin(MarkdownxModelAdmin):
 
 @admin.register(Photo)
 class PhotoAdmin(admin.ModelAdmin):
-    readonly_fields = ('uploader', 'thumbnail_tag')
+    readonly_fields = ('uploader', 'thumbnail_tag', 'width', 'height')
     list_display = ('created', 'uploader', 'caption', 'thumbnail_tag')
 
     def save_model(self, request, obj, form, change):

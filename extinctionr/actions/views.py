@@ -110,7 +110,7 @@ def show_action(request, slug):
     else:
         form = SignupForm(action=action)
     ctx['form'] = form
-
+    ctx['photos'] = list(action.photos.all())
     resp = render(request, 'action.html', ctx)
     resp['Last-Modified'] = http_date(action.modified.timestamp())
     if request.user.is_authenticated:
