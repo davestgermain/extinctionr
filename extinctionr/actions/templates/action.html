@@ -98,29 +98,31 @@
 {% endif %}
 {% if request.user.is_staff %}
 <div class="row mt-4">
-	<div class="col">
+	<div class="col small">
 		{% if 'actions.change_action' in perms %}<p class=""><a href="/admin/actions/action/{{action.id}}/change/">Edit</a></p>{% endif %}
 		{% if attendees and 'actions.view_attendee' in perms %}<p class=""><a href="/action/{{action.slug}}/attendees/?fmt=csv">Download CSV of Contacts</a></p>{% endif %}
 		{% if attendees %}
 		<table class="table table-striped">
-			<thead class="thead-dark">
+			<thead class="thead-dark small">
 				<tr class="text-center">
 				<th scope="col">#</th>
 				<th scope="col">Name</th>
 				<th scope="col">Email</th>
 				<th scope="col">Phone</th>
 				<th scope="col">Role</th>
+				<th scope="col">Condition</th>
 				<th scope="col">Notes</th>
 				</tr>
 			</thead>
 			<tbody class="small">
 			{% for attendee in attendees %}
-			<tr>
+			<tr class="text-center border-bottom">
 				<th scope="row"><a title="edit attendee" href="/admin/actions/attendee/{{attendee.id}}/change/">{{forloop.counter}}</a></th>
 				<td><a title="edit contact" href="{% url 'contacts:view_contact' pk=attendee.contact_id %}">{{attendee.contact.first_name}} {{attendee.contact.last_name}}</a></td>
 				<td>{% if attendee.contact.email %}<a href="mailto:{{attendee.contact.email}}">{{attendee.contact.email}}</a>{% endif %}</td>
 				<td>{% if attendee.contact.phone %}{{attendee.contact.phone}}{% endif %}</td>
 				<td>{{attendee.role}}</td>
+				<td>{{attendee.mutual_committment}}</td>
 				<td>{{attendee.notes}}</td>
 			</tr>
 			{% endfor %}
