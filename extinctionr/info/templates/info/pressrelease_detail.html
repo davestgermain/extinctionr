@@ -5,8 +5,8 @@
   <meta property="og:description" content="{{object.body|truncatewords:100}}" />
 {% endblock %}
 {% block content %}
-<div class="row pt-4">
-	<div class="col-lg-10 offset-lg-1">
+<div class="row pt-5">
+	<div class="col col-lg-10 offset-lg-1">
 		<h2 class="text-center">{{object.title}}</h2>
 		<h4 class="text-center">{% if not object.is_released %}<span class="text-danger">embargoed until</span> {% endif %}{{object.released|date}}</h4>
 		<hr>
