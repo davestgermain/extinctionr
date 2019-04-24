@@ -53,7 +53,7 @@ def list_actions(request):
     }
     resp = render(request, 'list_actions.html', ctx)
     if request.user.is_authenticated:
-        resp['Cache-Control'] = 'no-cache'
+        resp['Cache-Control'] = 'private'
     if actions:
         resp['Last-Modified'] = http_date(actions.last().when.timestamp())
     return resp
@@ -114,7 +114,7 @@ def show_action(request, slug):
     resp = render(request, 'action.html', ctx)
     resp['Last-Modified'] = http_date(action.modified.timestamp())
     if request.user.is_authenticated:
-        resp['Cache-Control'] = 'no-cache'
+        resp['Cache-Control'] = 'private'
     return resp
 
 
