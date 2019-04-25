@@ -141,3 +141,17 @@
 {% endif %}
 
 {% endblock %}
+{% block extrajs %}
+<script type="text/javascript">
+	$('#id_commit').change(function(){
+		if ($(this).val() != '0') {
+			$('#id_promised').prop('checked', false);
+		}
+	});
+	$('#id_promised').change(function() {
+		if ($(this).prop('checked')) {
+			$('#id_commit').val('0');
+		}
+	})
+</script>
+{% endblock %}
