@@ -69,7 +69,8 @@ def show_action(request, slug):
         ctx['attendees'] = Attendee.objects.filter(action=action).select_related('contact').order_by('-mutual_commitment', '-promised')
         ctx['promised'] = ctx['attendees'].filter(promised__isnull=False)
 
-    if action.when < now():
+    if action.when < now() and action.public:
+        # don't allow signups for public actions that already happened
         ctx['already_happened'] = True
         form = None
     elif request.method == 'POST':
