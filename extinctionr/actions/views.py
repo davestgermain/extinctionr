@@ -29,7 +29,7 @@ class SignupForm(forms.Form):
     role = forms.ModelChoiceField(queryset=None, required=False, widget=forms.Select(attrs=BOOTSTRAP_ATTRS))
     next = forms.CharField(required=False, widget=forms.HiddenInput())
     notes = forms.CharField(required=False, initial='')
-    commit = forms.IntegerField(required=False, initial=0, widget=forms.NumberInput(attrs=BOOTSTRAP_ATTRS))
+    commit = forms.IntegerField(required=False, initial=0, widget=forms.NumberInput(attrs={'class': 'form-control text-center', 'min': 0, 'max': 1000}))
 
     def __init__(self, *args, **kwargs):
         self.action = kwargs.pop('action')
