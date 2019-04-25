@@ -97,7 +97,7 @@ def show_action(request, slug):
         form = SignupForm(request.POST, action=action)
         if form.is_valid():
             data = form.cleaned_data
-            commit = data['commit'] or 0
+            commit = abs(data['commit'] or 0)
             action.signup(data['email'],
                 data['role'],
                 name=data['name'][:100],
