@@ -121,7 +121,7 @@
 				<td>{% if attendee.contact.email %}<a href="mailto:{{attendee.contact.email}}">{{attendee.contact.email}}</a>{% endif %}</td>
 				<td>{% if attendee.contact.phone %}{{attendee.contact.phone}}{% endif %}</td>
 				<td>{{attendee.role}}</td>
-				<td>{{attendee.mutual_commitment}}</td>
+				<td>{{attendee.mutual_commitment}}{% if attendee.promised %} <span class="text-info" title="Committed on {{attendee.promised}}">&check;</span>{% endif %}</td>
 				<td>{{attendee.notes}}</td>
 			</tr>
 			{% endfor %}
