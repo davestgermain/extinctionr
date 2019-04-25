@@ -13,4 +13,5 @@ urlpatterns = [
     path('<str:action_slug>/signup/', views.signup_form, name='signup'),
     path('<str:action_slug>/attendees/', views.show_attendees, name='attendees'),
     path('<str:action_slug>/attendees/mark/', views.mark_promised, name='mark-attendee'),
+    path('<str:action_slug>/attendees/notify/', views.send_notifications, name='notify-attendees'),
 ]

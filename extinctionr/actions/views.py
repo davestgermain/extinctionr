@@ -16,6 +16,8 @@ from django import forms
 from phonenumber_field.formfields import PhoneNumberField
 
 from .models import Action, ActionRole, Attendee, TalkProposal
+from .comm import notify_commitments
+
 
 BOOTSTRAP_ATTRS = {'class': 'form-control text-center'}
 
@@ -140,6 +142,18 @@ def show_attendees(request, action_slug):
         for attendee in attendees:
             csv_writer.writerow((attendee.contact.email, attendee.contact.first_name, attendee.contact.last_name, attendee.contact.phone, attendee.promised))
     return resp
+
+
+@login_required
+def send_notifications(request, action_slug):
+    action = get_object_or_404(Action, slug=action_slug)
+    if request.method == 'POST':
+        threshold = int(request.POST['threshold'])
+        action_url = request.build_absolute_uri(reverse('actions:action', kwargs={'slug': action_slug}))
+        num = notify_commitments(action, threshold, action_url)
+        if num:
+            messages.success(request, 'Notified %d attendees of their commitment!' % num)
+    return redirect(action.get_absolute_url())
 
 
 def propose_talk(request):

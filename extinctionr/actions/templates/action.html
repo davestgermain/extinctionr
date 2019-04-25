@@ -100,9 +100,9 @@
 <div class="row mt-4">
 	<div class="col small">
 		{% if 'actions.change_action' in perms %}<p class=""><a href="/admin/actions/action/{{action.id}}/change/">Edit</a></p>{% endif %}
-		{% if attendees and 'actions.view_attendee' in perms %}<p class=""><a href="/action/{{action.slug}}/attendees/?fmt=csv">Download CSV of Contacts</a></p>{% endif %}
 		{% if attendees %}
-		<table class="table table-striped">
+		{% if 'actions.view_attendee' in perms %}<p class=""><a href="/action/{{action.slug}}/attendees/?fmt=csv">Download CSV of Contacts</a></p>{% endif %}
+		<table class="table table-striped table-sm">
 			<thead class="thead-dark small">
 				<tr class="text-center">
 				<th scope="col">#</th>
@@ -116,18 +116,25 @@
 			</thead>
 			<tbody class="small">
 			{% for attendee in attendees %}
-			<tr class="text-center border-bottom">
+			<tr class="text-center border-bottom {% if attendee.notified %}table-success{% endif %}">
 				<th scope="row"><a title="edit attendee" href="/admin/actions/attendee/{{attendee.id}}/change/">{{forloop.counter}}</a></th>
 				<td><a title="edit contact" href="{% url 'contacts:view_contact' pk=attendee.contact_id %}">{{attendee.contact.first_name}} {{attendee.contact.last_name}}</a></td>
 				<td>{% if attendee.contact.email %}<a href="mailto:{{attendee.contact.email}}">{{attendee.contact.email}}</a>{% endif %}</td>
 				<td>{% if attendee.contact.phone %}{{attendee.contact.phone}}{% endif %}</td>
 				<td>{{attendee.role}}</td>
-				<td>{{attendee.mutual_committment}}</td>
+				<td>{{attendee.mutual_commitment}}</td>
 				<td>{{attendee.notes}}</td>
 			</tr>
 			{% endfor %}
 			</tbody>
 		</table>
+		{% if action.show_commitment and 'actions.change_attendee' in perms %}
+		<form class="form-inline" action="/action/{{action.slug}}/attendees/notify/" method="post">
+			<label for="threshold-field" class="small">Notify people who have indicated a committment threshold: </label>
+			<input id="threshold-field" class="mx-2 form-control col-1" type="number" name="threshold" value="1">
+			<input type="submit" value="Notify" class="mx-2 form-control btn btn-primary col-1">
+		</form>
+		{% endif %}
 		{% endif %}
 	</div>
 </div>

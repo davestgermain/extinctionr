@@ -56,7 +56,7 @@ class Action(models.Model):
                 atten.notes = notes
         else:
             atten.notes = notes
-            atten.mutual_committment = commit
+            atten.mutual_commitment = commit
         if promised:
             atten.promised = now()
         atten.save()
@@ -85,8 +85,9 @@ class Attendee(models.Model):
     role = models.ForeignKey(ActionRole, on_delete=models.DO_NOTHING)
     promised = models.DateTimeField(null=True, blank=True)
     notes = models.TextField(default='', blank=True)
-    mutual_committment = models.IntegerField(default=0, blank=True)
+    mutual_commitment = models.IntegerField(default=0, blank=True, db_column='mutual_committment')
     created = models.DateTimeField(auto_now_add=True, null=True)
+    notified = models.DateTimeField(null=True, blank=True, db_index=True)
 
     class Meta:
         unique_together = ('action', 'contact', 'role')
