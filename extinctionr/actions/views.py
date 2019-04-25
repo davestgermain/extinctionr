@@ -75,7 +75,7 @@ def signup_form(request, action_slug):
                 data['role'],
                 name=data['name'][:100],
                 promised=data['promised'],
-                commit=data['commit'] or 0,
+                commit=abs(data['commit'] or 0),
                 notes=data['notes'])
             next_url = data['next'] or request.headers.get('referer', '/')
             messages.success(request, "Thank you for signing up for {}!".format(action.name))
