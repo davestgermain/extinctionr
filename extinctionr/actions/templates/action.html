@@ -103,6 +103,7 @@
 		{% if 'actions.change_action' in perms %}<p class=""><a href="/admin/actions/action/{{action.id}}/change/">Edit</a></p>{% endif %}
 		{% if attendees %}
 		{% if 'actions.view_attendee' in perms %}<p class=""><a href="/action/{{action.slug}}/attendees/?fmt=csv">Download CSV of Contacts</a></p>{% endif %}
+		<h4 class="text-right">{{attendees|length}} signups &mdash; {{promised|length}} Committed</h4>
 		<table class="table table-sm table-responsive-sm table-responsive-lg table-striped table-hover">
 			<thead class="thead-dark small">
 				<tr class="text-center">

@@ -64,11 +64,11 @@ def list_actions(request):
 
 def show_action(request, slug):
     action = get_object_or_404(Action, slug=slug)
+    ctx = {'action': action}
     if request.user.is_authenticated:
-        attendees = Attendee.objects.filter(action=action).select_related('contact').order_by('-mutual_commitment', '-promised')
-    else:
-        attendees = []
-    ctx = {'action': action, 'attendees': attendees}
+        ctx['attendees'] = Attendee.objects.filter(action=action).select_related('contact').order_by('-mutual_commitment', '-promised')
+        ctx['promised'] = ctx['attendees'].filter(promised__isnull=False)
+
     if action.when < now():
         ctx['already_happened'] = True
         form = None
