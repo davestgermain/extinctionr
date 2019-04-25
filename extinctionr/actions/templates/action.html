@@ -79,6 +79,7 @@
 					<div class="text-danger">{{form.promised.errors}}</div>
 				</div>
 			</div>
+					<h4 class="text-center">OR</h4>
 			<div class="form-group row">
 				<label for="{{form.commit.id_for_label}}" class="col-lg-4 col-10 text-right">I promise to attend if this many also commit:</label>
 				<div class="col col-lg-2">
@@ -102,7 +103,7 @@
 		{% if 'actions.change_action' in perms %}<p class=""><a href="/admin/actions/action/{{action.id}}/change/">Edit</a></p>{% endif %}
 		{% if attendees %}
 		{% if 'actions.view_attendee' in perms %}<p class=""><a href="/action/{{action.slug}}/attendees/?fmt=csv">Download CSV of Contacts</a></p>{% endif %}
-		<table class="table table-striped table-sm">
+		<table class="table table-sm table-responsive-sm table-striped">
 			<thead class="thead-dark small">
 				<tr class="text-center">
 				<th scope="col">#</th>
@@ -130,9 +131,9 @@
 		</table>
 		{% if action.show_commitment and 'actions.change_attendee' in perms %}
 		<form class="form-inline" action="/action/{{action.slug}}/attendees/notify/" method="post">
-			<label for="threshold-field" class="small">Notify people who have indicated a committment threshold: </label>
-			<input id="threshold-field" class="mx-2 form-control col-1" type="number" name="threshold" value="1">
-			<input type="submit" value="Notify" class="mx-2 form-control btn btn-primary col-1">
+			<label for="threshold-field" class="small col-5">Notify people who have indicated a committment threshold: </label>
+			<input id="threshold-field" class="mx-2 form-control col-2 col-lg-1" type="number" name="threshold" value="1">
+			<input type="submit" value="Notify" class="mx-2 form-control btn btn-primary col-3 col-lg-1">
 		</form>
 		{% endif %}
 		{% endif %}

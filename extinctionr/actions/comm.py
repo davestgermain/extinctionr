@@ -22,8 +22,8 @@ P.S. If you can't make it, please get in touch. We're all in this together.
 
 
 def notify_commitments(action, threshold, action_url):
-	attendees = action.attendee_set.filter(mutual_commitment__lte=threshold)
-	if attendees.count() >= threshold + 1:
+	attendees = action.attendee_set.filter(promised__isnull=False, mutual_commitment=0) | action.attendee_set.filter(mutual_commitment__lte=threshold)
+	if attendees.count() > threshold:
 		to_send = attendees.filter(notified=None, mutual_commitment__gt=0)
 		subject = "[XR] We've got enough to commit to %s" % action.name
 		messages = []
