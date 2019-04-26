@@ -1,3 +1,4 @@
+from django.conf import settings
 from django.contrib.auth import get_user_model
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
@@ -68,7 +69,7 @@ def show_action(request, slug):
     if request.user.is_authenticated:
         ctx['attendees'] = Attendee.objects.filter(action=action).select_related('contact').order_by('-mutual_commitment', '-promised')
         ctx['promised'] = ctx['attendees'].filter(promised__isnull=False)
-
+        ctx['default_to_email'] = settings.DEFAULT_FROM_EMAIL
     if action.when < now() and action.public:
         # don't allow signups for public actions that already happened
         ctx['already_happened'] = True

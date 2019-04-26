@@ -23,7 +23,7 @@
 		<h1>{{action.name}}</h1>
 		<h2>{{action.when}}</h2>
 		{% if action.location %}
-		<P class="text-info"><a href="https://maps.google.com/?q={{action.location|urlencode}}">{{action.location|linebreaks}}</a></P>
+		<p class="text-info"><a href="https://maps.google.com/?q={{action.location|urlencode}}">{{action.location|linebreaks}}</a></p>
 		{% endif %}
 		<div class="text-left">{{action.description|markdownify}}</div>
 		<hr>
@@ -113,6 +113,7 @@
 				<th scope="col">Role</th>
 				<th scope="col">Condition</th>
 				<th scope="col">Notes</th>
+				<th scope="col">Notify</th>
 				</tr>
 			</thead>
 			<tbody class="small">
@@ -124,16 +125,20 @@
 				<td>{{attendee.role}}</td>
 				<td>{{attendee.mutual_commitment}}{% if attendee.promised %} <span class="text-info" title="Committed on {{attendee.promised}}">&check;</span>{% endif %}</td>
 				<td>{{attendee.notes}}</td>
+				<td><input type="checkbox" {% if not attendee.notified %}checked{% endif %} class="email-rcpt" value="{{attendee.contact.email}}"></td>
 			</tr>
 			{% endfor %}
 			</tbody>
 		</table>
 		{% if action.show_commitment and 'actions.change_attendee' in perms %}
-		<form class="form-inline" action="/action/{{action.slug}}/attendees/notify/" method="post">
-			<label for="threshold-field" class="small col-5">Notify people who have indicated a committment threshold: </label>
-			<input id="threshold-field" class="mx-2 form-control col-2 col-lg-1" type="number" name="threshold" value="1">
-			<input type="submit" value="Notify" class="mx-2 form-control btn btn-primary col-3 col-lg-1">
-		</form>
+		<div class="row">
+			<form class="form-inline" action="/action/{{action.slug}}/attendees/notify/" method="post">
+				<label for="threshold-field" class="small col-5">Notify people who have indicated a committment threshold: </label>
+				<input id="threshold-field" class="mx-2 form-control col-2 col-lg-1" type="number" name="threshold" value="1">
+				<input type="submit" value="Notify" class="mx-2 form-control btn btn-primary col-3 col-lg-2 btn-fucxed">
+			</form>
+			<button id="email-everyone" class="col-lg-2 col ml-auto mr-2 btn btn-info btn-fucxed">Email checked</button>
+		</div>
 		{% endif %}
 		{% endif %}
 	</div>
@@ -151,6 +156,20 @@
 	$('#id_promised').change(function() {
 		if ($(this).prop('checked')) {
 			$('#id_commit').val('0');
+		}
+	});
+	$('#email-everyone').click(function(){
+		var href = 'mailto:{{default_to_email}}?subject=[XR] {{action.name}}&bcc=';
+		var has_addrs = false;
+		$('.email-rcpt').each(function(){
+			if ($(this).prop('checked')) {
+				href += $(this).prop('value') + ',';
+				has_addrs = true;
+			}
+		});
+		console.log(href);
+		if (has_addrs) {
+			location.href = href;
 		}
 	})
 </script>
