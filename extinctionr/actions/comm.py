@@ -1,6 +1,6 @@
 from django.conf import settings
 from django.core.mail import send_mass_mail
-from django.utils.timezone import now
+from django.utils.timezone import now, localtime
 from django.utils import dateformat
 
 from .models import Action, Attendee
@@ -29,7 +29,7 @@ def notify_commitments(action, threshold, action_url):
 		messages = []
 		modified = []
 		from_email = settings.DEFAULT_FROM_EMAIL
-		when = dateformat.format(action.when, 'l, F jS @ g:iA')
+		when = dateformat.format(localtime(action.when), 'l, F jS @ g:iA')
 		for attendee in to_send:
 			full_name = '%s %s' % (attendee.contact.first_name, attendee.contact.last_name)
 			msg = MESSAGE.format(

@@ -231,6 +231,9 @@ PHONENUMBER_DEFAULT_REGION = 'US'
 
 CACHE_MIDDLEWARE_SECONDS = 1200
 
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_SCHEME', 'https')
+
+
 LOGGING = {
     'version': 1,
     'disable_existing_loggers': False,
