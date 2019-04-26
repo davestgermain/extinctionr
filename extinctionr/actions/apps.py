@@ -10,6 +10,7 @@ class ActionsConfig(AppConfig):
     name = 'extinctionr.actions'
 
     def ready(self):
+        import extinctionr.actions.signals
         from common.models import User
         User.get_absolute_url = get_absolute_url
 
