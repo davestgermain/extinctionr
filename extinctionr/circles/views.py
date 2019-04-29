@@ -2,6 +2,7 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseForbidden
 from django.views import generic
+from extinctionr.utils import get_contact
 from .models import Circle, Contact
 
 
@@ -30,7 +31,10 @@ class CircleView(generic.DetailView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['can_see_members'] = self.request.user.has_perm('circles.view_circle')
+        if self.request.user.is_authenticated:
+            context['can_see_members'] = self.request.user.has_perm('circles.view_circle')
+            context['is_lead'] = self.request.user.has_perm('circles.change_circle') or context['object'].leads.filter(pk=get_contact(email=self.request.user.email).id).exists()
+            context['members'] = list(context['object'].members.all())
         return context
 
     def render_to_response(self, context, **response_kwargs):

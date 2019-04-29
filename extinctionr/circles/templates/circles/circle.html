@@ -12,16 +12,16 @@
 		<div id="purpose" class="small">{{object.purpose|markdownify}}</div>
 		{% if can_see_members %}
 		<div id="leads">
-			<h4>leads</h4>
+			<h4 class="text-center">leads</h4>
 			<ul class="pl-4 list-unstyled list-horizontal">
 			{% for contact in object.leads.all %}
 			<li><a href="{% url 'circles:person' contact_id=contact.id %}">{{contact.first_name}} {{contact.last_name}}</a> &mdash;  <a href="mailto:{{contact.email}}">{{contact.email}}</a></li>
 			{% endfor %}
 			</ul>
 		</div>
-		{% if not object.has_children %}
 		<div id="members">
-			<h4>members</h4>
+			<h4 class="text-center">members</h4>
+		{% if is_lead %}
 			<form action="{% url 'circles:add-member' pk=object.id %}" class="container" method="post">
 			{% csrf_token %}
 			<div class="form-group row">
@@ -42,8 +42,9 @@
 				</div>
 			</div>
 		</form>
-
-			<table class="pl-4 table table-sm table-responsive-sm table-responsive-lg table-striped table-hover">
+		{% endif %}
+			{% if members %}
+			<table class="pl-4 table table-sm table-responsive-sm table-responsive-lg table-striped table-hover table-light">
 			<thead class="thead-dark small">
 				<tr class="text-center">
 				<th scope="col">Name</th>
@@ -52,25 +53,25 @@
 				</tr>
 			</thead>
 			<tbody class="small">
-			{% for contact in object.members.all %}
+			{% for contact in members %}
 			<tr>
-				<th scope="row"><a href="{% url 'circles:person' contact_id=contact.id %}">{{contact.first_name}} {{contact.last_name}}</a></td>
+				<th scope="row" class="px-3"><a href="{% url 'circles:person' contact_id=contact.id %}">{{contact.first_name}} {{contact.last_name}}</a></td>
 				<td class="text-center"><a href="mailto:{{contact.email}}">{{contact.email}}</a></td>
 				<td>{% if contact.phone %}{{contact.phone}}{% endif %}</td>
 			</tr>
 			{% endfor %}
 			</tbody>
 			</table>
+			{% endif %}
 		</div>
-		<a class="btn btn-info btn-fucxed" href="mailto:{{object.get_member_emails}}">email all</a>
-		{% endif %}
+		{% if members %}<a class="btn btn-info btn-fucxed" href="mailto:{{object.get_member_emails}}">email all</a>{% endif %}
 		{% endif %}
 		<hr>
 	</div>
 </div>
 <div class="row">
 	{% for subgroup in object.circle_set.all %}
-	<div class="col p-2 border" style="background-color: {{subgroup.bgcolor}}">
+	<div class="col p-2 pt-3 border" style="background-color: {{subgroup.bgcolor}}">
 		<h3 class="text-center"><a href="{% url 'circles:detail' pk=subgroup.id %}">{{subgroup.name}}</a></h3>
 		{% if can_see_members %}
 		<h5 class="text-center">{{subgroup.get_all_members|length}} members</h5>
