@@ -56,4 +56,23 @@ class Circle(models.Model):
         contact = contact or get_contact(email, name=name)
         self.members.add(contact)
 
+    def request_membership(self, email, name):
+        contact = get_contact(email, name=name)
+        req = MembershipRequest.objects.create(circle=self, requestor=contact)
 
+
+class MembershipRequest(models.Model):
+    created = models.DateTimeField(db_index=True, auto_now_add=True)
+    circle = models.ForeignKey(Circle, on_delete=models.CASCADE)
+    requestor = models.ForeignKey(Contact, on_delete=models.CASCADE)
+    confirmed = models.BooleanField(default=False, blank=True)
+
+    def __str__(self):
+        return '%s -> %s' % (self.requestor, self.circle)
+
+    def save(self, *args, **kwargs):
+        super().save(*args, **kwargs)
+        if self.confirmed:
+            self.circle.members.add(self.requestor)
+        else:
+            self.circle.members.remove(self.requestor)

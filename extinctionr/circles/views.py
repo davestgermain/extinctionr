@@ -1,5 +1,6 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.decorators import login_required
+from django.contrib import messages
 from django.http import HttpResponseForbidden
 from django import forms
 from django.views import generic
@@ -28,6 +29,12 @@ class ContactForm(forms.Form):
         return cleaned_data
 
 
+class MembershipRequestForm(forms.Form):
+    email = forms.EmailField(label="Email", required=True, widget=forms.EmailInput(attrs={'class': 'form-control text-center', 'placeholder': 'Email Address'}))
+    name = forms.CharField(required=True, label="Name", widget=forms.TextInput(attrs={'class': 'form-control text-center', 'placeholder': 'Your Name'}))
+    circle_id = forms.IntegerField(required=True, widget=forms.HiddenInput())
+
+
 @login_required
 def add_member(request, pk):
     circle = get_object_or_404(Circle, pk=pk)
@@ -41,6 +48,17 @@ def add_member(request, pk):
             circle.leads.add(contact)
         else:
             circle.add_member(email, name, contact=contact)
+    return redirect(circle.get_absolute_url())
+
+
+def request_membership(request, pk):
+    circle = get_object_or_404(Circle, pk=pk)
+    if request.method == 'POST':
+        form = MembershipRequestForm(request.POST)
+        if form.is_valid():
+            data = form.cleaned_data
+            circle.request_membership(data['email'], data['name'])
+            messages.success(request, "Thank you for signing up for {}!".format(circle))
     return redirect(circle.get_absolute_url())
 
 
@@ -63,9 +81,12 @@ class CircleView(generic.DetailView):
         if self.request.user.is_authenticated:
             context['can_see_members'] = self.request.user.has_perm('circles.view_circle')
             context['is_lead'] = self.request.user.has_perm('circles.change_circle') or context['object'].leads.filter(pk=get_contact(email=self.request.user.email).id).exists()
-            context['members'] = list(context['object'].members.all())
+            context['members'] = list(context['object'].members.all().order_by('pk'))
+            context['pending'] = context['object'].membershiprequest_set.filter(confirmed=False)
             context['form'] = ContactForm(initial={'role': 'member'})
             context['lead_form'] = ContactForm(initial={'role': 'lead'})
+        else:
+            context['request_form'] = MembershipRequestForm(initial={'circle_id': context['object'].id})
         return context
 
     def render_to_response(self, context, **response_kwargs):

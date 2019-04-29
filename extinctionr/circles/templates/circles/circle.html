@@ -81,11 +81,45 @@
 				<td>{% if contact.phone %}{{contact.phone}}{% endif %}</td>
 			</tr>
 			{% endfor %}
+			{% if pending %}
+			<tr>
+				<td></td>
+				<th scope="row" class="px-4"><h5>pending</h5></th>
+			</tr>
+			{% for req in pending %}
+			<tr>
+				<th scope="row" class="px-3"><a href="{% url 'circles:person' contact_id=req.requestor_id %}">{{req.requestor}}</a></td>
+				<td class="text-center"><a href="mailto:{{req.requestor.email}}">{{req.requestor.email}}</a></td>
+				<td><a class="btn btn-sm btn-primary btn-fucxed" href="/admin/circles/membershiprequest/{{req.id}}/change/">confirm</a></td>
+			</tr>
+			{% endfor %}
+			{% endif %}
 			</tbody>
 			</table>
 			{% endif %}
 		</div>
 		{% if members %}<div class="text-right"><a class="btn btn-info btn-fucxed" href="mailto:{{object.get_member_emails}}">email all</a></div>{% endif %}
+		{% endif %}
+		{% if request_form %}
+		<form action="{% url 'circles:request-membership' pk=object.id %}" class="container pt-4" method="post">
+			{% csrf_token %}
+			<div class="form-group row">
+				<div class="col-4 offset-4">
+					{{request_form.circle_id}}
+					{{request_form.email}}
+				</div>
+			</div>
+			<div class="form-group row">
+				<div class="col-4 offset-4">
+					{{request_form.name}}
+				</div>
+			</div>
+			<div class="form-group row mt-4 pt-2">
+				<div class="col-4 offset-4">
+					<input class="btn btn-block btn-fucxed btn-lg btn-outline-dark btn-success text-uppercase" type="submit" value="Join group">
+				</div>
+			</div>
+		</form>
 		{% endif %}
 		<hr>
 	</div>
