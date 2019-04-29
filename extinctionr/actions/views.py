@@ -210,4 +210,3 @@ This talk will be at {}
         url = '/admin/actions/action/%d/change/' % act.id
         return JsonResponse({'next': url})
 
-

@@ -52,8 +52,8 @@ class Circle(models.Model):
         emails.extend(m.email for m in self.leads.all())
         return ','.join(emails)
 
-    def add_member(self, email, name):
-        contact = get_contact(email, name=name)
+    def add_member(self, email, name, contact=None):
+        contact = contact or get_contact(email, name=name)
         self.members.add(contact)
 
 

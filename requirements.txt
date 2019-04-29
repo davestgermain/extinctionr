@@ -16,3 +16,4 @@ django-phonenumber-field
 cssselect
 django-storages
 celery
+django-autocomplete-light

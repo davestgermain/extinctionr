@@ -154,7 +154,7 @@
       </footer>
   </div>
 
-<script src="{% static 'js/jquery-3.3.1.min.js' %}"></script>{% block extrajs %}{% endblock %}{% block js_block %}{% endblock js_block %}
+<script src="{% static 'js/jquery-3.3.1.min.js' %}"></script>{% block extrajs %}{% endblock %}{% block js_block %}{% if form %}{{form.media}}{% endif%}{% endblock js_block %}
 <script src="{% static 'js/bootstrap.min.js' %}"></script>
 <script type="text/javascript">
   $(document).ready(function(){
