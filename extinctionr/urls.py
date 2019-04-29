@@ -28,6 +28,7 @@ urlpatterns = [
     path('talk', propose_talk),
     path('', include('django.contrib.auth.urls')),
     path('action/', include('extinctionr.actions.urls', namespace="actions")),
+    path('circle/', include('extinctionr.circles.urls', namespace="circles")),
     path('relationships/', include('common.urls', namespace="common")),
     path('relationships/m/', include('marketing.urls', namespace="marketing")),
     path('relationships/accounts/', include('accounts.urls', namespace="accounts")),

@@ -63,6 +63,7 @@ INSTALLED_APPS = [
     # end of CRM stuff
     'extinctionr.actions.apps.ActionsConfig',
     'extinctionr.info',
+    'extinctionr.circles.apps.CircleConfig',
     # django wiki
     'django_nyt.apps.DjangoNytConfig',
     'mptt',

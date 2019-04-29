@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% block title %}:: Circles{% endblock %}
+{% block og_tags %}
+  <meta property="og:description" content="Help Extinction Rebellion call upon the Boston Globe to sound the alarm on the climate crisis!" />
+{% endblock %}
+
+{% block content %}
+<div class="row pt-5">
+	{% for circle in object_list %}
+	<div class="col p-2 border" style="background-color: {{circle.bgcolor}}">
+		<h3 class="text-center"><a href="{% url 'circles:detail' pk=circle.id %}">{{circle.name}}</a></h3>
+		<h4 class="text-center">{{circle.circle_set.count}} sub-groups</h4>
+		<h4 class="text-center">{{circle.get_all_members|length}} members</h4>
+		<ul class="list-unstyled small">
+		{% for contact in circle.leads.all %}
+		<li><a href="/relationships/contacts/{{contact.id}}/view/">{{contact.first_name}} {{contact.last_name}}</a></li>
+		{% endfor %}
+		</ul>
+	</div>
+	{% endfor %}
+</div>
+{% endblock %}

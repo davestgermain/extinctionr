@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+{% block title %}:: {{contact.name}}{% endblock %}
+{% block content %}
+<div class="row pt-5">
+	<div class="col-text">
+		<h1 class="text-center">{{contact.first_name}} {{contact.last_name}}</h1>
+		{% if 'circles.change_circle' in perms %}
+		<h4 class="text-center"><a href="/admin/contacts/contact/{{contact.id}}/change/">edit</a></h4>
+		{% endif %}
+		<p><a href="mailto:{{contact.email}}">{{contact.email}}</a></h4>
+		<p>{% if contact.phone %}{{contact.phone}}{% endif %}</p>
+		{% if contact.address %}
+		<p>{{contact.address.address}}</p>
+		<p>{% if contact.address.street %}{{contact.address.street}}{% endif %}</p>
+		<p>{{contact.address.city}} {{contact.address.state}}</p>
+		<p>{{contact.address.postcode}}</p>
+		{% endif %}
+		<hr>
+		<div id="leads">
+			<h4>lead of:</h4>
+			<ul class="pl-4 list-unstyled list-horizontal">
+			{% for circle in contact.leads.all %}
+			<li><a href="{{circle.get_absolute_url}}">{{circle}}</a></li>
+			{% endfor %}
+			</ul>
+		</div>
+		<div id="members">
+			<h4>member of:</h4>
+			<ul class="pl-4 list-unstyled list-horizontal">
+			{% for circle in contact.members.all %}
+			<li><a href="{{circle.get_absolute_url}}">{{circle}}</a></li>
+			{% endfor %}
+			</ul>
+		</div>
+		<hr>
+	</div>
+</div>
+{% endblock %}
