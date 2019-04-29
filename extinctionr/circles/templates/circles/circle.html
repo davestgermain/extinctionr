@@ -2,7 +2,7 @@
 {% block title %}:: {{object.name}} Circle{% endblock %}
 {% block content %}
 <div class="row pt-5" style="background-color: {{object.bgcolor}}">
-	<div class="col">
+	<div class="col-text">
 		<h1 class="text-center">{{object.name}}{% for p in object.parents %} :: <a href="{{p.get_absolute_url}}">{{p.name}}</a>{% endfor %}{% if not object.parent %} <a href="{% url 'circles:outer' %}">&uarr;</a>{% endif %}</h1>
 		<h4 class="text-center">{{object.get_all_members|length}} members</h4>
 		{% if 'circles.change_circle' in perms %}

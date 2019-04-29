@@ -18,7 +18,9 @@ def add_member(request, pk):
 def person_view(request, contact_id):
     contact = get_object_or_404(Contact, pk=contact_id)
     ctx = {'contact': contact}
-    return render(request, 'circles/person.html', ctx)
+    response = render(request, 'circles/person.html', ctx)
+    response['Cache-Control'] = 'private'
+    return response
 
 
 class CircleView(generic.DetailView):
