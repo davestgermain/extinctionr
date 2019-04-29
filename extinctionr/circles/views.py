@@ -28,10 +28,10 @@ class CircleView(generic.DetailView):
     def get_queryset(self):
         return Circle.objects.select_related('parent').prefetch_related('leads', 'members')
 
-    def dispatch(self, request, *args, **kwargs):
-        if not request.user.has_perm('circles.view_circle'):
-            return HttpResponseForbidden("you don't have access to see this")
-        return super().dispatch(request, *args, **kwargs)
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['can_see_members'] = self.request.user.has_perm('circles.view_circle')
+        return context
 
     def render_to_response(self, context, **response_kwargs):
         response = super().render_to_response(context, **response_kwargs)
@@ -45,10 +45,10 @@ class TopLevelView(generic.ListView):
     def get_queryset(self):
         return  Circle.objects.filter(parent__isnull=True).prefetch_related('leads', 'members')
 
-    def dispatch(self, request, *args, **kwargs):
-        if not request.user.has_perm('circles.view_circle'):
-            return HttpResponseForbidden("you don't have access to see this")
-        return super().dispatch(request, *args, **kwargs)
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['can_see_members'] = self.request.user.has_perm('circles.view_circle')
+        return context
 
     def render_to_response(self, context, **response_kwargs):
         response = super().render_to_response(context, **response_kwargs)
