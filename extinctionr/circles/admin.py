@@ -8,4 +8,5 @@ class CircleAdmin(MarkdownxModelAdmin):
     list_display = ('__str__', 'modified')
     readonly_fields = ('created', 'modified', )
     list_select_related = ('parent',)
-    autocomplete_fields = ('leads', 'members')
+    search_fields = ('name', )
+    autocomplete_fields = ('leads', 'members', 'parent')

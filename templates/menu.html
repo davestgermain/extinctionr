@@ -25,6 +25,7 @@
 {% endif %}
     </a>
     <div class="dropdown-menu" aria-labelledby="nav-admin-dropdown">
+      <a class="dropdown-item nav-a" id="circle" href="{% url 'circles:outer' %}">Circles</a>
       <a class="dropdown-item nav-a" id="admin" href="{% url 'admin:index' %}">Admin</a>
       <a class="dropdown-item nav-a" id="dashboard" href="{% url 'common:home' %}">Dashboard</a>
       <a class="dropdown-item nav-a" id="contacts" href="{% url 'contacts:list' %}">Contacts</a>
