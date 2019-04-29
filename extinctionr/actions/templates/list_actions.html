@@ -12,6 +12,7 @@
 </div>
     <hr>
 <section class="row">
+    {% if actions %}
     {% for action in actions %}
     <div class="col text-center m-2 {% if not forloop.counter|divisibleby:3 %}border-right{% endif %}">
         <h2><a href="{{action.get_absolute_url}}">{{action.name}}</a></h2>
@@ -24,6 +25,12 @@
     </div>
 {% if forloop.counter|divisibleby:3 %}</section><section class="row pt-3">{% endif %}
     {% endfor %}
+{% else %}
+    <div class="col m-2 text-center">
+        <p>There are no upcoming events.</p>
+        <p>Why not <a href="/talk">propose a location for a talk</a> in your area?</p>
+    </div>
+{% endif %}
 </section>
 <div class="row mt-3 no-gutters">
     <div class="col">
