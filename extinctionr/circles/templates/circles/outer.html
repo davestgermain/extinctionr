@@ -36,7 +36,7 @@
 						<h5 class="text-center">{{sub2.leads.count}} leads</h5>
 						<ul class="list-unstyled lead">
 						{% for contact in sub2.leads.all %}
-						<li><a href="{% url 'circles:person' contact_id=contact.id %}">{{contact.first_name}} {{contact.last_name}}</a></li>
+						<li><a href="{% url 'circles:person' contact_id=contact.id %}">{{contact}}</a></li>
 						{% endfor %}
 						</ul>
 					</div>{% endif %}

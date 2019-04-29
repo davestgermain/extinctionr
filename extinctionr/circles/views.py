@@ -16,10 +16,13 @@ class ContactForm(forms.Form):
         widget=autocomplete.ModelSelect2(url='circles:person-autocomplete', attrs={'class': 'form-control'}))
     email = forms.EmailField(label="Email", required=False, widget=forms.EmailInput(attrs={'class': 'form-control text-center', 'placeholder': 'Email Address'}))
     name = forms.CharField(required=False, label="Name", widget=forms.TextInput(attrs={'class': 'form-control text-center', 'placeholder': 'Your Name'}))
+    role = forms.CharField(required=True, widget=forms.HiddenInput())
 
     def clean(self):
         cleaned_data = super().clean()
         if not cleaned_data['contact']:
+            if cleaned_data['role'] == 'lead':
+                raise forms.ValidationError('contact required')
             if not (cleaned_data['email'] and cleaned_data['name']):
                 raise forms.ValidationError('email or contact required')
         return cleaned_data
@@ -34,7 +37,10 @@ def add_member(request, pk):
         email = data['email'].lower()
         name = data['name']
         contact = data['contact']
-        circle.add_member(email, name, contact=contact)
+        if data['role'] == 'lead':
+            circle.leads.add(contact)
+        else:
+            circle.add_member(email, name, contact=contact)
     return redirect(circle.get_absolute_url())
 
 
@@ -58,7 +64,8 @@ class CircleView(generic.DetailView):
             context['can_see_members'] = self.request.user.has_perm('circles.view_circle')
             context['is_lead'] = self.request.user.has_perm('circles.change_circle') or context['object'].leads.filter(pk=get_contact(email=self.request.user.email).id).exists()
             context['members'] = list(context['object'].members.all())
-            context['form'] = ContactForm()
+            context['form'] = ContactForm(initial={'role': 'member'})
+            context['lead_form'] = ContactForm(initial={'role': 'lead'})
         return context
 
     def render_to_response(self, context, **response_kwargs):
