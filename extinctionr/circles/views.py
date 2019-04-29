@@ -85,7 +85,7 @@ class CircleView(generic.DetailView):
             context['pending'] = context['object'].membershiprequest_set.filter(confirmed=False)
             context['form'] = ContactForm(initial={'role': 'member'})
             context['lead_form'] = ContactForm(initial={'role': 'lead'})
-        else:
+        if not context.get('is_lead', None):
             context['request_form'] = MembershipRequestForm(initial={'circle_id': context['object'].id})
         return context
 
