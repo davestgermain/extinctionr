@@ -43,7 +43,6 @@ class TopLevelView(generic.ListView):
     def get_queryset(self):
         return  Circle.objects.filter(parent__isnull=True).prefetch_related('leads', 'members').order_by('name')
 
-    @login_required
     def dispatch(self, request, *args, **kwargs):
         if not request.user.has_perm('circles.view_circle'):
             return HttpResponseForbidden("you don't have access to see this")
