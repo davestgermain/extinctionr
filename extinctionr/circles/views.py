@@ -41,7 +41,7 @@ class TopLevelView(generic.ListView):
     template_name = 'circles/outer.html'
 
     def get_queryset(self):
-        return  Circle.objects.filter(parent__isnull=True).prefetch_related('leads', 'members').order_by('name')
+        return  Circle.objects.filter(parent__isnull=True).prefetch_related('leads', 'members')
 
     def dispatch(self, request, *args, **kwargs):
         if not request.user.has_perm('circles.view_circle'):

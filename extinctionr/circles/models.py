@@ -14,6 +14,9 @@ class Circle(models.Model):
     parent = models.ForeignKey('self', blank=True, null=True, on_delete=models.SET_NULL)
     color = models.CharField(max_length=50, blank=True, default='')
 
+    class Meta:
+        ordering = ('name',)
+
     def __str__(self):
         parents = list(p.name for p in self.parents)
         parents.reverse()
