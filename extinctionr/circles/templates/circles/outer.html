@@ -33,7 +33,6 @@
 					</div>
 					{% if can_see_members %}<div class="col border p-4">
 						<h5 class="text-center">{{sub2.members.count}} members</h5>
-						<h5 class="text-center">{{sub2.leads.count}} leads</h5>
 						<ul class="list-unstyled lead">
 						{% for contact in sub2.leads.all %}
 						<li><a href="{% url 'circles:person' contact_id=contact.id %}">{{contact}}</a></li>

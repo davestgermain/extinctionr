@@ -99,7 +99,7 @@ class ContactAutocomplete(autocomplete.Select2QuerySetView):
         qs = Contact.objects.all()
 
         if self.q:
-            qs = qs.filter(email__istartswith=self.q)
+            qs = qs.filter(email__istartswith=self.q) | qs.filter(first_name__istartswith=self.q)
 
         return qs
 
