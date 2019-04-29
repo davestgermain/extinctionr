@@ -10,7 +10,7 @@
 		<p><a href="mailto:{{contact.email}}">{{contact.email}}</a></h4>
 		<p>{% if contact.phone %}{{contact.phone}}{% endif %}</p>
 		{% if contact.address %}
-		<p>{{contact.address.address}}</p>
+		<p>{{contact.address.address_line}}</p>
 		<p>{% if contact.address.street %}{{contact.address.street}}{% endif %}</p>
 		<p>{{contact.address.city}} {{contact.address.state}}</p>
 		<p>{{contact.address.postcode}}</p>

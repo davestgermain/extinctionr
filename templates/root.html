@@ -13,6 +13,7 @@
     <link href="https://fonts.googleapis.com/css?family=Crimson+Text:400,700" rel="stylesheet" />
    {% block extracss %} {% endblock %}
 <style type="text/css">
+  {% block inline_css %}
   @font-face {
     font-family: "FucXed";
     font-style: normal;
@@ -94,6 +95,7 @@
   footer {
     font-size: .4em;
   }
+  {% endblock %}
  </style>
 
   <meta property="og:title" content="{% block og_title %}Extinction Rebellion Massachusetts{%endblock%}" />
