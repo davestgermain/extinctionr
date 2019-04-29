@@ -143,18 +143,11 @@ def propose_talk(request):
         form = TalkProposalForm(request.POST)
         if form.is_valid():
             data = form.cleaned_data
-            sname = data['name'].split(' ', 1)
-            if len(sname) == 2:
-                first_name, last_name = sname
-            else:
-                first_name = sname[0]
-                last_name = 'unknown'
             prop = TalkProposal.objects.propose(
                 strip_tags(data['location']),
                 data['email'],
                 phone=data['phone'],
-                first_name=first_name,
-                last_name=last_name)
+                name=data['name'])
             ctx['created'] = prop
             messages.success(request, 'Thank you, {}!'.format(prop.requestor))
             messages.info(request, 'Somebody from Extinction Rebellion will contact you soon to arrange a talk at {}'.format(prop.location))

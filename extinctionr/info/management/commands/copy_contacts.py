@@ -1,5 +1,6 @@
 from django.core.management.base import BaseCommand, CommandError
 import csv
+from extinctionr.utils import get_contact
 from contacts.models import Contact
 
 class Command(BaseCommand):
@@ -27,8 +28,5 @@ class Command(BaseCommand):
                 else:
                     first_name = last_name = ''
                 if email:
-                    try:
-                        c = Contact.objects.get(email=email)
-                    except Contact.DoesNotExist:
-                        c = Contact.objects.create(email=email, phone=phone, first_name=first_name, last_name=last_name, description=notes)
-                        self.stdout.write(str(c))
+                    c = get_contact(email, first_name=first_name, last_name=last_name, phone=phone, description=notes)
+                    self.stdout.write(str(c))

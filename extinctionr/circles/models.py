@@ -1,7 +1,7 @@
 from django.db import models
 from django.urls import reverse
 from contacts.models import Contact
-
+from extinctionr.utils import get_contact
 
 
 class Circle(models.Model):
@@ -53,17 +53,7 @@ class Circle(models.Model):
         return ','.join(emails)
 
     def add_member(self, email, name):
-        try:
-            contact = Contact.objects.get(email=email)
-        except Contact.DoesNotExist:
-            sname = name.split(' ', 1)
-            if len(sname) == 2:
-                first_name, last_name = sname
-            else:
-                first_name = sname[0]
-                last_name = '?'
-
-            contact = Contact.objects.create(email=email, first_name=first_name, last_name=last_name)
+        contact = get_contact(email, name=name)
         self.members.add(contact)
 
 

@@ -6,6 +6,7 @@ from django.urls import reverse
 from django.utils.timezone import now
 from contacts.models import Contact
 from extinctionr.info.models import Photo
+from extinctionr.utils import get_contact
 from markdownx.models import MarkdownxField
 
 
@@ -39,17 +40,7 @@ class Action(models.Model):
         if not isinstance(role, ActionRole):
             role = ActionRole.objects.get_or_create(name=role or '')[0]
 
-        email = email.lower()
-        try:
-            user = Contact.objects.get(email=email)
-        except Contact.DoesNotExist:
-            sname = name.split(' ', 1)
-            if len(sname) == 2:
-                first_name, last_name = sname
-            else:
-                first_name = sname[0]
-                last_name = 'unknown'
-            user = Contact.objects.create(email=email, first_name=first_name, last_name=last_name)
+        user = get_contact(email, name=name)
         atten, created = Attendee.objects.get_or_create(action=self, contact=user, role=role)
         if not created:
             if notes:
@@ -97,13 +88,8 @@ class Attendee(models.Model):
 
 
 class ProposalManager(models.Manager):
-    def propose(self, location, email, phone='', first_name='', last_name=''):
-        email = email.lower()
-        try:
-            contact = Contact.objects.get(email=email)
-        except Contact.DoesNotExist:
-            contact = Contact.objects.create(email=email, phone=phone, first_name=first_name, last_name=last_name)
-
+    def propose(self, location, email, phone='', name=''):
+        contact = get_contact(email, name=name)
         prop = TalkProposal(requestor=contact)
         prop.location = location
         prop.save()
