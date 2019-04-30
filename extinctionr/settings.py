@@ -235,6 +235,7 @@ PHONENUMBER_DEFAULT_REGION = 'US'
 CACHE_MIDDLEWARE_SECONDS = 1200
 
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_SCHEME', 'https')
+SESSION_ENGINE = 'django.contrib.sessions.backends.signed_cookies'
 
 
 LOGGING = {

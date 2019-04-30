@@ -9,6 +9,9 @@
 {% endblock %}
 {% block content %}
 {% load info %}
+{% if not user.is_authenticated %}
+<h4 class="pt-3 text-right"><a href="{% url 'login' %}">login</a></h4>
+{% endif %}
 {% for circle in object_list %}
 <div class="circle row pt-5" style="background-color: {{circle.bgcolor}}">
 	<div class="col col-lg-2 pt-4 p-3">
