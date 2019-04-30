@@ -20,7 +20,7 @@
 			<h4>lead of:</h4>
 			<ul class="pl-4 list-unstyled list-horizontal">
 			{% for circle in contact.leads.all %}
-			<li><a href="{{circle.get_absolute_url}}">{{circle}}</a></li>
+			<li><a href="{{circle.get_absolute_url}}">{{circle}}</a>{% if is_me %} &mdash; <a href="#" title="remove" class="btn-fucxed strong del-member" data-circle-url="{% url 'circles:del-member' pk=circle.id %}" data-circle="{{circle}}" data-contact="{{contact.id}}" data-role="lead">X</a>{% endif %}</li>
 			{% endfor %}
 			</ul>
 		</div>
@@ -28,11 +28,26 @@
 			<h4>member of:</h4>
 			<ul class="pl-4 list-unstyled list-horizontal">
 			{% for circle in contact.members.all %}
-			<li><a href="{{circle.get_absolute_url}}">{{circle}}</a></li>
+			<li><a href="{{circle.get_absolute_url}}">{{circle}}</a>{% if is_me %} &mdash; <a href="#" title="remove" class="btn-fucxed strong del-member" data-circle-url="{% url 'circles:del-member' pk=circle.id %}" data-circle="{{circle}}" data-contact="{{contact.id}}" data-role="member">X</a>{% endif %}</li>
 			{% endfor %}
 			</ul>
 		</div>
 		<hr>
 	</div>
 </div>
+{% endblock %}
+{% block extrajs %}
+<script type="text/javascript">
+	$('.del-member').click(function() {
+		if (confirm("Are you sure you want to leave "+ $(this).data('circle') + "?")) {
+			var data = {
+				id: $(this).data('contact'),
+				role: $(this).data('role')
+			}
+			$.post($(this).data('circle-url'), data, function() {
+				location.reload();
+			});
+		}
+	});
+</script>
 {% endblock %}

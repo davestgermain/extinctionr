@@ -54,10 +54,13 @@ def add_member(request, pk):
 @login_required
 def del_member(request, pk):
     circle = get_object_or_404(Circle, pk=pk)
-    contact_id = int(request.POST['id'])
-    contact = get_object_or_404(Contact, pk=contact_id)
-    if circle.can_manage(request.user):
-        circle.members.remove(contact)
+    contact = get_object_or_404(Contact, pk=request.POST['id'])
+    me = get_contact(email=request.user.email)
+    if me == contact or circle.can_manage(request.user):
+        if request.POST['role'] == 'lead':
+            circle.leads.remove(contact)
+        else:
+            circle.members.remove(contact)
     return redirect(circle.get_absolute_url())
 
 
@@ -73,9 +76,12 @@ def request_membership(request, pk):
 
 
 @login_required
-def person_view(request, contact_id):
-    contact = get_object_or_404(Contact, pk=contact_id)
-    ctx = {'contact': contact}
+def person_view(request, contact_id=None):
+    if contact_id is None:
+        contact = get_contact(email=request.user.email)
+    else:
+        contact = get_object_or_404(Contact, pk=contact_id)
+    ctx = {'contact': contact, 'is_me': contact == get_contact(email=request.user.email)}
     response = render(request, 'circles/person.html', ctx)
     response['Cache-Control'] = 'private'
     return response
