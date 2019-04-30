@@ -24,10 +24,28 @@ class Circle(models.Model):
         return ' :: '.join(parents)
 
     def get_all_members(self):
-        members = set(self.members.all())
-        for circle in self.circle_set.all():
+        members = set(self.get_members())
+        for circle in self.get_children():
             members.update(circle.get_all_members())
         return members
+
+    def get_children(self):
+        children = getattr(self, '_children', None)
+        if children is None:
+            self._children = children = self.circle_set.all().prefetch_related('members', 'leads')
+        return children
+
+    def get_members(self):
+        members = getattr(self, '_members', None)
+        if members is None:
+            self._members = members = self.members.all()
+        return members
+
+    def get_leads(self):
+        leads = getattr(self, '_leads', None)
+        if leads is None:
+            self._leads = leads = self.leads.all()
+        return leads
 
     def get_absolute_url(self):
         return reverse('circles:detail', kwargs={'pk': self.id})
@@ -48,8 +66,8 @@ class Circle(models.Model):
         return self.circle_set.exists()
     
     def get_member_emails(self):
-        emails = [m.email for m in self.members.all()]
-        emails.extend(m.email for m in self.leads.all())
+        emails = [m.email for m in self.get_members()]
+        emails.extend(m.email for m in self.get_leads())
         return ','.join(emails)
 
     def add_member(self, email, name, contact=None):
