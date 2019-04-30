@@ -38,7 +38,7 @@ class Circle(models.Model):
     def get_members(self):
         members = getattr(self, '_members', None)
         if members is None:
-            self._members = members = self.members.all()
+            self._members = members = self.members.all().order_by('pk')
         return members
 
     def get_leads(self):
@@ -77,6 +77,9 @@ class Circle(models.Model):
     def request_membership(self, email, name):
         contact = get_contact(email, name=name)
         req = MembershipRequest.objects.create(circle=self, requestor=contact)
+
+    def can_manage(self, user):
+        return user.has_perm('circles.change_circle') or self.leads.filter(pk=get_contact(email=user.email).id).exists()
 
 
 class MembershipRequest(models.Model):

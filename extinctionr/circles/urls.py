@@ -10,4 +10,5 @@ urlpatterns = [
     path('<int:pk>/', views.CircleView.as_view(), name='detail'),
     path('<int:pk>/join/', views.request_membership, name='request-membership'),
     path('<int:pk>/add/', views.add_member, name='add-member'),
+    path('<int:pk>/del/', views.del_member, name='del-member'),
 ]

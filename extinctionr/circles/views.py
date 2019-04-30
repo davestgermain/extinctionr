@@ -51,6 +51,16 @@ def add_member(request, pk):
     return redirect(circle.get_absolute_url())
 
 
+@login_required
+def del_member(request, pk):
+    circle = get_object_or_404(Circle, pk=pk)
+    contact_id = int(request.POST['id'])
+    contact = get_object_or_404(Contact, pk=contact_id)
+    if circle.can_manage(request.user):
+        circle.members.remove(contact)
+    return redirect(circle.get_absolute_url())
+
+
 def request_membership(request, pk):
     circle = get_object_or_404(Circle, pk=pk)
     if request.method == 'POST':
@@ -80,8 +90,8 @@ class CircleView(generic.DetailView):
         context = super().get_context_data(**kwargs)
         if self.request.user.is_authenticated:
             context['can_see_members'] = self.request.user.has_perm('circles.view_circle')
-            context['is_lead'] = self.request.user.has_perm('circles.change_circle') or context['object'].leads.filter(pk=get_contact(email=self.request.user.email).id).exists()
-            context['members'] = list(context['object'].members.all().order_by('pk'))
+            context['is_lead'] = context['object'].can_manage(self.request.user)
+            context['members'] = list(context['object'].get_members())
             context['pending'] = context['object'].membershiprequest_set.filter(confirmed=False)
             context['form'] = ContactForm(initial={'role': 'member'})
             context['lead_form'] = ContactForm(initial={'role': 'lead'})
