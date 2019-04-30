@@ -11,12 +11,12 @@
 {% load info %}
 {% for circle in object_list %}
 <div class="circle row pt-5" style="background-color: {{circle.bgcolor}}">
-	<div class="col-2 pt-4 p-2">
+	<div class="col col-lg-2 pt-4 p-2">
 		<h3 class="text-center"><a href="{% url 'circles:detail' pk=circle.id %}">{{circle.name}}</a></h3>
 		{% if can_see_members %}<h5 class="text-center">{{circle.get_all_members|length}} members</h5>{% endif %}
 		{{circle.purpose|markdownify}}
 	</div>
-	<div class="col-10 container">
+	<div class="col-10 container d-none d-sm-block">
 		{% for sub1 in circle.circle_set.all %}
 		<div class="circle row border" style="background-color: {{sub1.bgcolor}}">
 			<div class="col-{% if can_see_members %}4{% else %}5{% endif %} pt-4 p-2 border">
