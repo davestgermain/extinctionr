@@ -7,14 +7,16 @@
 		{% if 'circles.change_circle' in perms %}
 		<h4 class="text-center"><a href="/admin/contacts/contact/{{contact.id}}/change/">edit</a></h4>
 		{% endif %}
-		<p><a href="mailto:{{contact.email}}">{{contact.email}}</a></h4>
-		<p>{% if contact.phone %}{{contact.phone}}{% endif %}</p>
+		<address class="small">
+		<a href="mailto:{{contact.email}}">{{contact.email}}</a><br>
+		{% if contact.phone %}{{contact.phone}}<br>{% endif %}
 		{% if contact.address %}
-		<p>{{contact.address.address_line}}</p>
-		<p>{% if contact.address.street %}{{contact.address.street}}{% endif %}</p>
-		<p>{{contact.address.city}} {{contact.address.state}}</p>
-		<p>{{contact.address.postcode}}</p>
+		{{contact.address.address_line}}<br>
+		{% if contact.address.street %}{{contact.address.street}}<br>{% endif %}
+		{{contact.address.city}} {{contact.address.state}}<br>
+		{{contact.address.postcode}}<br>
 		{% endif %}
+		</address>
 		<hr>
 		<div id="leads">
 			<h4>lead of:</h4>
