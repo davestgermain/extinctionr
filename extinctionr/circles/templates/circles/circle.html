@@ -15,7 +15,7 @@
 			<div id="leads" class="col">
 				<h4 class="text-center">leads</h4>
 				<ul class="pl-2 list-unstyled small">
-				{% for contact in object.leads.all %}
+				{% for contact in object.get_leads %}
 				<li><a href="{% url 'circles:person' contact_id=contact.id %}">{{contact.first_name}} {{contact.last_name}}</a> &mdash;  <a href="mailto:{{contact.email}}">{{contact.email}}</a></li>
 				{% endfor %}
 				</ul>
@@ -136,7 +136,7 @@
 		{% if can_see_members %}
 		<h5 class="text-center">{{subgroup.get_all_members|length}} members</h5>
 		<ul class="list-unstyled small px-4">
-		{% for contact in subgroup.leads.all %}
+		{% for contact in subgroup.get_leads %}
 		<li><a href="mailto:{{contact.email}}">{{contact}}</a></li>
 		{% endfor %}
 		</ul>

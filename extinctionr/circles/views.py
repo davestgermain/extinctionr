@@ -4,7 +4,7 @@ from django.contrib import messages
 from django.http import HttpResponseForbidden
 from django import forms
 from django.views import generic
-from extinctionr.utils import get_contact
+from extinctionr.utils import get_contact, get_last_contact, set_last_contact
 from .models import Circle, Contact
 from dal import autocomplete
 
@@ -70,7 +70,9 @@ def request_membership(request, pk):
         form = MembershipRequestForm(request.POST)
         if form.is_valid():
             data = form.cleaned_data
-            circle.request_membership(data['email'], data['name'])
+            contact = circle.request_membership(data['email'], data['name'])
+            if not request.user.is_authenticated:
+                set_last_contact(request, contact)
             messages.success(request, "Thank you for signing up for {}!".format(circle))
     return redirect(circle.get_absolute_url())
 
@@ -102,7 +104,12 @@ class CircleView(generic.DetailView):
             context['form'] = ContactForm(initial={'role': 'member'})
             context['lead_form'] = ContactForm(initial={'role': 'lead'})
         if not context.get('is_lead', None):
-            context['request_form'] = MembershipRequestForm(initial={'circle_id': context['object'].id})
+            initial = {'circle_id': context['object'].id}
+            last_contact = get_last_contact(self.request)
+            if last_contact:
+                initial['email'] = last_contact.email
+                initial['name'] = str(last_contact)
+            context['request_form'] = MembershipRequestForm(initial=initial)
         return context
 
     def render_to_response(self, context, **response_kwargs):

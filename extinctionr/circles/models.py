@@ -1,3 +1,4 @@
+from django.core.exceptions import MultipleObjectsReturned
 from django.db import models
 from django.urls import reverse
 from contacts.models import Contact
@@ -76,7 +77,11 @@ class Circle(models.Model):
 
     def request_membership(self, email, name):
         contact = get_contact(email, name=name)
-        req = MembershipRequest.objects.create(circle=self, requestor=contact)
+        try:
+            MembershipRequest.objects.get_or_create(circle=self, requestor=contact)
+        except MultipleObjectsReturned:
+            pass
+        return contact
 
     def can_manage(self, user):
         return user.has_perm('circles.change_circle') or self.leads.filter(pk=get_contact(email=user.email).id).exists()

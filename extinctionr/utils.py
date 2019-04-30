@@ -15,3 +15,14 @@ def get_contact(email, name='', first_name='', last_name='', **kwargs):
                 last_name = '?'
         user = Contact.objects.create(email=email, first_name=first_name, last_name=last_name, **kwargs)
     return user
+
+
+def get_last_contact(request):
+    last = request.session.get('last-contact', None)
+    if last:
+        return Contact.objects.get(pk=last)
+
+
+def set_last_contact(request, contact):
+    if contact:
+        request.session['last-contact'] = contact.id

@@ -16,6 +16,7 @@ from datetime import timedelta
 from django import forms
 from phonenumber_field.formfields import PhoneNumberField
 
+from extinctionr.utils import get_last_contact, set_last_contact
 from .models import Action, ActionRole, Attendee, TalkProposal
 from .comm import notify_commitments
 
@@ -79,7 +80,7 @@ def show_action(request, slug):
         if form.is_valid():
             data = form.cleaned_data
             commit = abs(data['commit'] or 0)
-            action.signup(data['email'],
+            atten = action.signup(data['email'],
                 data['role'],
                 name=data['name'][:100],
                 promised=data['promised'],
@@ -89,9 +90,15 @@ def show_action(request, slug):
             messages.success(request, "Thank you for signing up for {}!".format(action.name))
             if commit:
                 messages.info(request, "We will notify you once at least %d others commit" % commit)
+            set_last_contact(request, atten.contact)
             return redirect(next_url)
     else:
-        form = SignupForm(action=action)
+        contact = get_last_contact(request)
+        initial = {}
+        if contact:
+            initial['email'] = contact.email
+            initial['name'] = str(contact)
+        form = SignupForm(action=action, initial=initial)
     ctx['form'] = form
     ctx['photos'] = list(action.photos.all())
     resp = render(request, 'action.html', ctx)
@@ -151,9 +158,16 @@ def propose_talk(request):
             ctx['created'] = prop
             messages.success(request, 'Thank you, {}!'.format(prop.requestor))
             messages.info(request, 'Somebody from Extinction Rebellion will contact you soon to arrange a talk at {}'.format(prop.location))
+            set_last_contact(request, prop.requestor)
             return redirect(reverse('extinctionr.actions:talk-proposal'))
     else:
-        form = TalkProposalForm()
+        contact = get_last_contact(request)
+        initial = {}
+        if contact:
+            initial['email'] = contact.email
+            initial['name'] = str(contact)
+            initial['phone'] = contact.phone
+        form = TalkProposalForm(initial=initial)
     ctx['form'] = form
     return render(request, 'talkproposal.html', ctx)
 
