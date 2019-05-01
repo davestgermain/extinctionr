@@ -25,8 +25,10 @@
 		<div class="circle row border" style="background-color: {{sub1.bgcolor}}">
            <div class="col-5 pt-4 p-2 border">
 				<h3 class="text-center"><a href="{{sub1.get_absolute_url}}">{{sub1.name}}</a></h3>
-				<h5 class="text-center"><a href="mailto:{{sub1.public_email}}">{{sub1.public_email}}</a></h5>
-				{% if can_see_members %}<h5 class="text-center pb-4">{{sub1.get_all_members|length}} members</h5>{% endif %}
+				<div class="row text-center pb-2">
+					<div class="col"><a href="mailto:{{sub1.public_email}}">{{sub1.public_email}}</a></div>
+					{% if can_see_members %}<div class="col"><strong>{{sub1.get_all_members|length}} members</strong></div>{% endif %}
+				</div>
 				{{sub1.purpose|markdownify}}
 			</div>
 			<div class="col border container">
@@ -34,9 +36,11 @@
 				<div class="circle row" style="background-color: {{sub2.bgcolor}}">
                    <div class="col pt-4 p-2 border">
 						<h3 class="text-center"><a href="{{sub2.get_absolute_url}}">{{sub2.name}}</a></h3>
-						<h5 class="text-center"><a href="mailto:{{sub2.public_email}}">{{sub2.public_email}}</a></h5>
+						<div class="row text-center pb-2">
+							<div class="col"><a href="mailto:{{sub2.public_email}}">{{sub2.public_email}}</a></div>
+							{% if can_see_members %}<div class="col"><strong>{{sub2.get_members.count}} members{% if not sub2.get_leads %} &mdash; <span class="text-danger">no leads</span>{% endif %}</strong></div>{% endif %}
+						</div>
 						{% if can_see_members %}
-						<h5 class="text-center">{{sub2.get_members.count}} members{% if not sub2.get_leads %} &mdash; <span class="text-danger">no leads</span>{% endif %}</h5>
 						<ul class="list-unstyled lead px-4 text-center">
 						{% for contact in sub2.get_leads %}
 						<li><a href="{% url 'circles:person' contact_id=contact.id %}">{{contact}}</a></li>
