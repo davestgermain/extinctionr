@@ -131,16 +131,16 @@
 			{% endfor %}
 			</tbody>
 		</table>
-		{% if action.show_commitment and 'actions.change_attendee' in perms %}
 		<div class="row">
+		{% if action.show_commitment and 'actions.change_attendee' in perms %}
 			<form class="form-inline" action="/action/{{action.slug}}/attendees/notify/" method="post">
 				<label for="threshold-field" class="small col-5">Notify people who have indicated a committment threshold: </label>
 				<input id="threshold-field" class="mx-2 form-control col-2 col-lg-1" type="number" name="threshold" value="1">
 				<input type="submit" value="Notify" class="mx-2 form-control btn btn-primary col-3 col-lg-2 btn-fucxed">
 			</form>
+		{% endif %}
 			<button id="email-everyone" class="col-lg-2 col ml-auto mr-2 btn btn-info btn-fucxed">Email checked</button>
 		</div>
-		{% endif %}
 		{% endif %}
 	</div>
 </div>
