@@ -22,7 +22,7 @@
     <div class="col-10 container d-none d-sm-block">
 		{% for sub1 in circle.circle_set.all %}
 		<div class="circle row border" style="background-color: {{sub1.bgcolor}}">
-           <div class="col-{% if can_see_members %}4{% else %}5{% endif %} pt-4 p-2 border">
+           <div class="col-5 pt-4 p-2 border">
 				<h3 class="text-center"><a href="{{sub1.get_absolute_url}}">{{sub1.name}}</a></h3>
 				{% if can_see_members %}<h5 class="text-center pb-4">{{sub1.get_all_members|length}} members</h5>{% endif %}
 				{{sub1.purpose|markdownify}}
@@ -30,20 +30,18 @@
 			<div class="col border container">
 				{% for sub2 in sub1.get_children %}
 				<div class="circle row" style="background-color: {{sub2.bgcolor}}">
-                   <div class="col-{% if can_see_members %}6{% else %}12{% endif %} pt-4 p-2 border">
+                   <div class="col pt-4 p-2 border">
 						<h3 class="text-center"><a href="{{sub2.get_absolute_url}}">{{sub2.name}}</a></h3>
-						{{sub2.purpose|markdownify}}
-					</div>
-					{% if can_see_members %}
-					<div class="col border p-4">
+						{% if can_see_members %}
 						<h5 class="text-center">{{sub2.get_members.count}} members{% if not sub2.get_leads %} &mdash; <span class="text-danger">no leads</span>{% endif %}</h5>
-						<ul class="list-unstyled lead">
+						<ul class="list-unstyled lead px-4 text-center">
 						{% for contact in sub2.get_leads %}
 						<li><a href="{% url 'circles:person' contact_id=contact.id %}">{{contact}}</a></li>
 						{% endfor %}
 						</ul>
+						{% endif %}
+						{{sub2.purpose|markdownify}}
 					</div>
-					{% endif %}
 				</div>
 				{% endfor %}
 			</div>
