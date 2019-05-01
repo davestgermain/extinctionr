@@ -4,9 +4,10 @@
 <div class="row pt-5" style="background-color: {{object.bgcolor}}">
 	<div class="col-text">
 		<h1 class="text-center">{{object.name}}{% for p in object.parents %} :: <a href="{{p.get_absolute_url}}">{{p.name}}</a>{% endfor %}{% if not object.parent %} <a href="{% url 'circles:outer' %}">&uarr;</a>{% endif %}</h1>
-		{% if can_see_members %}<h5 class="text-center">{{object.get_all_members|length}} members</h5>{% endif %}
+		{% if can_see_members %}<h5 class="text-left">{{object.get_all_members|length}} members</h5>{% endif %}
+		<h5 class="text-left"><a href="mailto:{{object.public_email}}">{{object.public_email}}</a></h5>
 		{% if 'circles.change_circle' in perms %}
-		<h4 class="text-center"><a href="/admin/circles/circle/{{object.id}}/change/">edit</a></h4>
+		<h4 class="text-right"><a href="/admin/circles/circle/{{object.id}}/change/">edit</a></h4>
 		{% endif %}
 		{% load info %}
 		<div id="purpose" class="small">{{object.purpose|markdownify}}</div>
@@ -133,6 +134,7 @@
 	{% for subgroup in object.circle_set.all %}
 	<div class="col p-2 pt-3 border" style="background-color: {{subgroup.bgcolor}}">
 		<h3 class="text-center"><a href="{% url 'circles:detail' pk=subgroup.id %}">{{subgroup.name}}</a></h3>
+		<h5 class="text-center"><a href="mailto:{{subgroup.public_email}}">{{subgroup.public_email}}</a></h5>
 		{% if can_see_members %}
 		<h5 class="text-center">{{subgroup.get_all_members|length}} members</h5>
 		<ul class="list-unstyled small px-4">

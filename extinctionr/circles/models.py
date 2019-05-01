@@ -9,11 +9,12 @@ class Circle(models.Model):
     created = models.DateTimeField(db_index=True, auto_now_add=True)
     modified = models.DateTimeField(auto_now=True)
     name = models.CharField(max_length=255, db_index=True)
-    purpose = models.TextField(default='')
+    purpose = models.TextField(default='', help_text='Describe the mandates for this group')
     leads = models.ManyToManyField(Contact, blank=True, related_name='leads')
     members = models.ManyToManyField(Contact, blank=True, related_name='members')
     parent = models.ForeignKey('self', blank=True, null=True, on_delete=models.SET_NULL)
     color = models.CharField(max_length=50, blank=True, default='')
+    email = models.EmailField(max_length=255, blank=True, null=True, help_text='Public email address for this group')
 
     class Meta:
         ordering = ('name',)
@@ -66,6 +67,13 @@ class Circle(models.Model):
     def has_children(self):
         return self.circle_set.exists()
     
+    @property
+    def public_email(self):
+        email = self.email
+        if not email:
+            email = self.parent.public_email if self.parent else ''
+        return email
+
     def get_member_emails(self):
         emails = [m.email for m in self.get_members()]
         emails.extend(m.email for m in self.get_leads())
