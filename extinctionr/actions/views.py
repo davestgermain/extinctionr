@@ -16,7 +16,7 @@ from datetime import timedelta
 from django import forms
 from phonenumber_field.formfields import PhoneNumberField
 
-from extinctionr.utils import get_last_contact, set_last_contact
+from extinctionr.utils import get_last_contact, set_last_contact, get_contact
 from .models import Action, ActionRole, Attendee, TalkProposal
 from .comm import notify_commitments
 
@@ -93,7 +93,7 @@ def show_action(request, slug):
             set_last_contact(request, atten.contact)
             return redirect(next_url)
     else:
-        contact = get_last_contact(request)
+        contact = get_contact(email=request.user.email) if request.user.is_authenticated else get_last_contact(request)
         initial = {}
         if contact:
             initial['email'] = contact.email
