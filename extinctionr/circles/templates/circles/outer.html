@@ -10,7 +10,9 @@
 {% block content %}
 {% load info %}
 {% if not user.is_authenticated %}
-<h4 class="pt-3 text-right"><a href="{% url 'login' %}">login</a></h4>
+<h4 class="pt-2 text-right"><a href="{% url 'login' %}">login</a></h4>
+{% else %}
+<h4 class="pt-2 text-right"><a href="{% url 'circles:person-me' %}">my circles</a></h4>
 {% endif %}
 {% for circle in object_list %}
 <div class="circle row pt-5" style="background-color: {{circle.bgcolor}}">

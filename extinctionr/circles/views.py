@@ -97,8 +97,9 @@ class CircleView(generic.DetailView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         if self.request.user.is_authenticated:
-            context['can_see_members'] = self.request.user.has_perm('circles.view_circle')
-            context['is_lead'] = context['object'].can_manage(self.request.user)
+            is_lead = context['object'].can_manage(self.request.user)
+            context['can_see_members'] = is_lead or self.request.user.has_perm('circles.view_circle')
+            context['is_lead'] = is_lead
             context['members'] = list(context['object'].get_members())
             context['pending'] = context['object'].membershiprequest_set.filter(confirmed=False)
             context['form'] = ContactForm(initial={'role': 'member'})
@@ -122,7 +123,7 @@ class TopLevelView(generic.ListView):
     template_name = 'circles/outer.html'
 
     def get_queryset(self):
-        return  Circle.objects.filter(parent__isnull=True).prefetch_related('leads', 'members')
+        return Circle.objects.filter(parent__isnull=True).prefetch_related('leads', 'members')
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)

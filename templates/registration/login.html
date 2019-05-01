@@ -14,7 +14,8 @@
           <input required type="password" class="form-control" id="exampleInputPassword1" placeholder="Password" name="password">
           <span class="text-danger">{{form.password.errors}}</span>
         </div>
-        <div class="text-center">Forgot Password <a href="{% url "common:password_reset" %}">Click Here?</a></div>
+        <div class="text-center"><a href="{% url "common:password_reset" %}">Forgot Password?</a></div>
+        <div class="text-center">Need to <a href="{% url 'extinctionr.info:register' %}">register?</a></div>
         {% if error %}
         <p class="error">{{ message }}</p>
         {% endif %}

@@ -1,12 +1,36 @@
 from hashlib import md5
-from django.views.generic import TemplateView, ListView, DetailView
+
+from django import forms
+from django.contrib.auth import get_user_model, login
+from django.contrib.auth.forms import UserCreationForm
 from django.http import Http404, HttpResponse
+from django.template.loader import TemplateDoesNotExist, get_template
 from django.utils.decorators import method_decorator
 from django.utils.http import http_date
-from django.template.loader import get_template, TemplateDoesNotExist
 from django.views.decorators.http import etag
+from django.views.generic import FormView, DetailView, ListView, TemplateView
 
 from .models import PressRelease
+
+
+class RegistrationForm(UserCreationForm):
+    class Meta:
+        model = get_user_model()
+        fields = ("email",)
+        field_classes = {'email': forms.EmailField}
+
+
+class RegistrationView(FormView):
+    form_class = RegistrationForm
+    success_url = '/'
+    template_name = 'registration/register.html'
+
+    def form_valid(self, form):
+        self.object = form.save()
+        self.object.username = self.object.email
+        self.object.save()
+        login(self.request, self.object)
+        return super().form_valid(form)
 
 
 class InfoView(TemplateView):

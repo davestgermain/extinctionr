@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+{% block title %}:: Register{% endblock %}
+{% block content %}
+<div class="row pt-4">
+  <div class="col-6 offset-3">
+      <h2 class="text-center">XRMass Registration</h2>
+      <form method="POST" action="{% url 'extinctionr.info:register' %}">
+        {% csrf_token %}
+        <div class="form-group">
+          <input required type="email" class="form-control" id="exampleInputEmail1" placeholder="Email" name="email" {% if form.data %}value="{{form.email.value}}"{% endif %}>
+          <span class="text-danger">{{form.email.errors}}</span>
+        </div>
+        <div class="form-group">
+          <input required type="password" class="form-control" id="exampleInputPassword1" placeholder="Password" name="password1" {% if form.data %}value="{{form.password1.value}}"{% endif %}>
+          <span class="text-danger">{{form.password1.errors}}</span>
+        </div>
+        <div class="form-group">
+          <input required type="password" class="form-control" id="exampleInputPassword2" placeholder="Repeat Password" name="password2" {% if form.data %}value="{{form.password2.value}}"{% endif %}>
+          <span class="text-danger">{{form.password2.errors}}</span>
+        </div>
+        {% if error %}
+        <p class="error">{{ message }}</p>
+        {% endif %}
+        <div class="form-group text-center mt-4">
+          <button type="submit" class="btn btn-lg btn-danger btn-fucxed">Register</button>
+        </div>
+      </form>
+  </div>
+</div>
+{% endblock %}

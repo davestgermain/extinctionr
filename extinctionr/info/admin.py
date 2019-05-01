@@ -1,6 +1,7 @@
 from django.contrib import admin
-from .models import PressRelease, Photo
 from markdownx.admin import MarkdownxModelAdmin
+
+from .models import Photo, PressRelease
 
 
 @admin.register(PressRelease)
