@@ -86,6 +86,9 @@ class Attendee(models.Model):
     def __str__(self):
         return '%s %s %s' % (self.action, self.contact, self.role)
 
+    def get_absolute_url(self):
+        return self.action.get_absolute_url() + '#attendees'
+
 
 class ProposalManager(models.Manager):
     def propose(self, location, email, phone='', name=''):
@@ -106,4 +109,7 @@ class TalkProposal(models.Model):
 
     def __str__(self):
         return 'Talk at %s for %s' % (self.location[:20], self.requestor)
+
+    def get_absolute_url(self):
+        return '/talk'
 

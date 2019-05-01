@@ -63,7 +63,7 @@
 				</div>
 			</div>
 			{% if action.show_commitment %}
-			{% if form.fields.role.queryset %}
+			{% if has_roles %}
 			<div class="form-group row">
 				<label for="{{form.role.id_for_label}}" class="d-none d-sm-block col-4 text-right">Your Role:</label>
 				<div class="col">
@@ -103,15 +103,16 @@
 		{% if 'actions.change_action' in perms %}<p class=""><a href="/admin/actions/action/{{action.id}}/change/">Edit</a></p>{% endif %}
 		{% if attendees %}
 		{% if 'actions.view_attendee' in perms %}<p class=""><a href="/action/{{action.slug}}/attendees/?fmt=csv">Download CSV of Contacts</a></p>{% endif %}
-		<h4 class="text-right">{{attendees|length}} signups &mdash; {{promised|length}} Committed</h4>
+		<a name="attendees"></a>
+		<h4 class="text-right">{{attendees|length}} signups{% if action.show_commitment %} &mdash; {{promised|length}} Committed{% endif %}</h4>
 		<table class="table table-sm table-responsive-sm table-responsive-lg table-striped table-hover">
 			<thead class="thead-dark small">
 				<tr class="text-center">
 				<th scope="col">Name</th>
 				<th scope="col">Email</th>
 				<th scope="col">Phone</th>
-				<th scope="col">Role</th>
-				<th scope="col">Condition</th>
+				{% if has_roles %}<th scope="col">Role</th>{% endif %}
+				{% if action.show_commitment %}<th scope="col">Condition</th>{% endif %}
 				<th scope="col">Notes</th>
 				<th scope="col">Notify</th>
 				</tr>
@@ -122,8 +123,8 @@
 				<th scope="row"><a title="edit attendee" href="/admin/actions/attendee/{{attendee.id}}/change/">{{attendee.contact.first_name}} {{attendee.contact.last_name}}</a></th>
 				<td>{% if attendee.contact.email %}<a href="mailto:{{attendee.contact.email}}">{{attendee.contact.email}}</a>{% endif %}</td>
 				<td>{% if attendee.contact.phone %}{{attendee.contact.phone}}{% endif %}</td>
-				<td>{{attendee.role}}</td>
-				<td>{{attendee.mutual_commitment}}{% if attendee.promised %} <span class="text-info" title="Committed on {{attendee.promised}}">&check;</span>{% endif %}</td>
+				{% if has_roles %}<td>{{attendee.role}}</td>{% endif %}
+{% if action.show_commitment %}<td>{{attendee.mutual_commitment}}{% if attendee.promised %} <span class="text-info" title="Committed on {{attendee.promised}}">&check;</span>{% endif %}</td>{% endif %}
 				<td>{{attendee.notes}}</td>
 				<td><input type="checkbox" {% if not attendee.notified %}checked{% endif %} class="email-rcpt" value="{{attendee.contact.email}}"></td>
 			</tr>

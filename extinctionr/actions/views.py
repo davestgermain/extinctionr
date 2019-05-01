@@ -100,6 +100,7 @@ def show_action(request, slug):
             initial['name'] = str(contact)
         form = SignupForm(action=action, initial=initial)
     ctx['form'] = form
+    ctx['has_roles'] = list(action.available_role_choices)
     ctx['photos'] = list(action.photos.all())
     resp = render(request, 'action.html', ctx)
     resp['Last-Modified'] = http_date(action.modified.timestamp())
