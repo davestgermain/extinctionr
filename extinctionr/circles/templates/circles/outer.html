@@ -48,6 +48,14 @@
 						</ul>
 						{% endif %}
 						{{sub2.purpose|markdownify}}
+						{% if sub2.get_children %}
+						<h5 class="text-center pt-3">Subgroups</h5>
+						<ul class="list-unstyled">
+							{% for sub3 in sub2.get_children %}
+							<li><h5 class="text-center"><a href="{{sub3.get_absolute_url}}">{{sub3.name}}</a></h5></li>
+							{% endfor %}
+						</ul>
+						{% endif %}
 					</div>
 				</div>
 				{% endfor %}

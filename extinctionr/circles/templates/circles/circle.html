@@ -135,12 +135,18 @@
 </div>
 <div class="row">
 	{% for subgroup in object.circle_set.all %}
-	<div class="col p-2 pt-3 border" style="background-color: {{subgroup.bgcolor}}">
-		<h3 class="text-center"><a href="{% url 'circles:detail' pk=subgroup.id %}">{{subgroup.name}}</a></h3>
-		<h5 class="text-center"><a href="mailto:{{subgroup.public_email}}">{{subgroup.public_email}}</a></h5>
+	<div class="col p-2 pt-3 border text-center" style="background-color: {{subgroup.bgcolor}}">
+		<h3><a href="{% url 'circles:detail' pk=subgroup.id %}">{{subgroup.name}}</a></h3>
+		<div class="row pb-2 px-2" style="font-size: .55em">
+			{% if subgroup.public_email %}
+			<div class="col">
+				<a href="mailto:{{subgroup.public_email}}">{{subgroup.public_email}}</a>
+			</div>
+			{% endif %}
+			{% if can_see_members %}<div class="col"><strong>{{subgroup.get_all_members|length}} members{% if not subgroup.get_leads %} &mdash; <span class="text-danger">no leads</span>{% endif %}</strong></div>{% endif %}
+		</div>
 		{% if can_see_members %}
-		<h5 class="text-center">{{subgroup.get_all_members|length}} members</h5>
-		<ul class="list-unstyled small px-4">
+		<ul class="list-unstyled small">
 		{% for contact in subgroup.get_leads %}
 		<li><a href="mailto:{{contact.email}}">{{contact}}</a></li>
 		{% endfor %}
