@@ -68,7 +68,7 @@ def show_action(request, slug):
     action = get_object_or_404(Action, slug=slug)
     ctx = {'action': action}
     if request.user.is_authenticated:
-        ctx['attendees'] = Attendee.objects.filter(action=action).select_related('contact').order_by('-mutual_commitment', '-promised')
+        ctx['attendees'] = Attendee.objects.filter(action=action).select_related('contact').order_by('-mutual_commitment', '-promised', 'pk')
         ctx['promised'] = ctx['attendees'].filter(promised__isnull=False)
         ctx['default_to_email'] = settings.DEFAULT_FROM_EMAIL
     if action.when < now() and action.public:

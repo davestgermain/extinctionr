@@ -89,7 +89,7 @@ class Attendee(models.Model):
 
 class ProposalManager(models.Manager):
     def propose(self, location, email, phone='', name=''):
-        contact = get_contact(email, name=name)
+        contact = get_contact(email, name=name, phone=phone)
         prop = TalkProposal(requestor=contact)
         prop.location = location
         prop.save()

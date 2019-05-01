@@ -14,6 +14,13 @@ def get_contact(email, name='', first_name='', last_name='', **kwargs):
                 first_name = sname[0]
                 last_name = '?'
         user = Contact.objects.create(email=email, first_name=first_name, last_name=last_name, **kwargs)
+    resave = False
+    for k, v in kwargs.items():
+        if v and getattr(user, k, None) is None:
+            setattr(user, k, v)
+            resave = True
+    if resave:
+        user.save()
     return user
 
 

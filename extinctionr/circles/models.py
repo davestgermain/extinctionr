@@ -96,6 +96,9 @@ class MembershipRequest(models.Model):
     def __str__(self):
         return '%s -> %s' % (self.requestor, self.circle)
 
+    def get_absolute_url(self):
+        return self.circle.get_absolute_url()
+
     def save(self, *args, **kwargs):
         super().save(*args, **kwargs)
         if self.confirmed:
