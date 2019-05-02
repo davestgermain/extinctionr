@@ -7,8 +7,7 @@
 	<table class="table table-striped small table-responsive-sm">
 		<thead class="thead-dark">
 			<th>Created</th>
-			<th>Email</th>
-			<th>Phone</th>
+			<th>Contact</th>
 			<th>Location</th>
 			<th>Responded</th>
 		</thead>
@@ -16,7 +15,12 @@
 	{% for talk in talks %}
 	<tr>
 		<td>{{talk.created|timesince}} ago</td>
-		<td><a href="mailto:{{talk.requestor.email}}">{{talk.requestor.email}}</a></td><td>{% if talk.requestor.phone %}<a href="tel:{{talk.requestor.phone}}">{{talk.requestor.phone}}</a>{% endif %}</td><td>{{talk.location}}</td><td>{% if talk.responded %}<a title="Convert into action" class="convert-button" data-talkid="{{talk.id}}" href="#">{{talk.responded}}</a>{% else %}
+		<td>
+			<a href="{% url 'contacts:view_contact' pk=talk.requestor_id %}">{{talk.requestor}}</a><br>
+			<a href="mailto:{{talk.requestor.email}}">{{talk.requestor.email}}</a>
+			{% if talk.requestor.phone %}<br><a href="tel:{{talk.requestor.phone}}">{{talk.requestor.phone}}</a>{% endif %}
+		</td>
+		<td>{{talk.location}}</td><td>{% if talk.responded %}<a title="Convert into action" class="convert-button" data-talkid="{{talk.id}}" href="#">{{talk.responded}}</a>{% else %}
 			<button class="btn btn-info respond-button" data-contact="{{talk.requestor.email}}" data-talkid="{{talk.id}}">mark as responded</button>{% endif %}</td>
 	</tr>
 	{% endfor %}
