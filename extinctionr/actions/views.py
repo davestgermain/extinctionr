@@ -187,7 +187,7 @@ def mark_promised(request, action_slug):
 @never_cache
 def list_proposals(request):
     ctx = {
-        'talks': TalkProposal.objects.select_related('requestor').order_by('responded', 'created')
+        'talks': TalkProposal.objects.select_related('requestor').order_by('-responded', 'created')
     }
     return render(request, 'list_talks.html', ctx)
 

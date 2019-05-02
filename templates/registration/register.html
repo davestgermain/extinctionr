@@ -4,6 +4,10 @@
 <div class="row pt-4">
   <div class="col-6 offset-3">
       <h2 class="text-center">XRMass Registration</h2>
+      {% if user.is_authenticated %}
+      <p class="text-warning text-center">You're already logged in as {{user}}</p>
+      <p class="text-center pt-4"><a href="{% url 'logout' %}">Logout</a></p>
+      {% else %}
       <form method="POST" action="{% url 'extinctionr.info:register' %}">
         {% csrf_token %}
         <div class="form-group">
@@ -25,6 +29,7 @@
           <button type="submit" class="btn btn-lg btn-danger btn-fucxed">Register</button>
         </div>
       </form>
+      {% endif %}
   </div>
 </div>
 {% endblock %}
