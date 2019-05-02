@@ -34,7 +34,7 @@ class Action(models.Model):
                 yield role
     
     def is_full(self):
-        return self.max_participants and self.attendee_set.count() > self.max_participants
+        return self.max_participants and self.attendee_set.count() >= self.max_participants
 
     def get_absolute_url(self):
         return reverse('extinctionr.actions:action', kwargs={'slug': self.slug})
