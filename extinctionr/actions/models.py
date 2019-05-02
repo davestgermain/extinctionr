@@ -24,7 +24,7 @@ class Action(models.Model):
     photos = models.ManyToManyField(Photo, blank=True)
     modified = models.DateTimeField(auto_now=True)
     show_commitment = models.BooleanField(blank=True, default=True, help_text='Whether to show the conditional commitment fields')
-
+    max_participants = models.IntegerField(blank=True, default=0, help_text="Maximun number of people allowed to register")
 
     @property
     def available_role_choices(self):
@@ -33,6 +33,9 @@ class Action(models.Model):
             if role:
                 yield role
     
+    def is_full(self):
+        return self.max_participants and self.attendee_set.count() > self.max_participants
+
     def get_absolute_url(self):
         return reverse('extinctionr.actions:action', kwargs={'slug': self.slug})
 
