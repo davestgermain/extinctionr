@@ -23,7 +23,7 @@ def notify_circle_membership(circle, msg_type, members):
     message = '''
 {contact} <{contact_email}> {action} {circle}
 
-{circle_url}
+{circle_url}#members
 '''.format(**context)
     subject = '[XR] %s added to %s' % (msg_type, circle)
     send_mail(subject, message, settings.DEFAULT_FROM_EMAIL, addresses)
