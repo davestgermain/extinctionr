@@ -75,6 +75,15 @@ class Circle(models.Model):
             email = self.parent.public_email if self.parent else ''
         return email
 
+    def get_notification_addresses(self):
+        addresses = set()
+        public_address = self.public_email
+        if public_address:
+            addresses.add(public_address)
+        for lead in self.get_leads():
+            addresses.add(lead.email)
+        return addresses
+
     def get_member_emails(self):
         emails = [m.email for m in self.get_members()]
         emails.extend(m.email for m in self.get_leads())

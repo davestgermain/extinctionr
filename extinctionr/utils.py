@@ -1,4 +1,7 @@
 from contacts.models import Contact
+from django.conf import settings
+from django.contrib.sites.models import Site
+
 
 def get_contact(email, name='', first_name='', last_name='', **kwargs):
     email = email.lower().strip()
@@ -33,3 +36,9 @@ def get_last_contact(request):
 def set_last_contact(request, contact):
     if contact:
         request.session['last-contact'] = contact.id
+
+
+def base_url():
+    current_site = Site.objects.get_current()
+    scheme = 'http' if settings.DEBUG else 'https'
+    return '%s://%s' % (scheme, current_site.domain)
