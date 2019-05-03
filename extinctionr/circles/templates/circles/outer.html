@@ -42,7 +42,7 @@
 							<div class="col"><a href="mailto:{{sub2.public_email}}">{{sub2.public_email}}</a></div>
 							{% if can_see_members %}<div class="col"><strong>{{sub2.get_members.count}} members{% if not sub2.get_leads %} &mdash; <span class="text-danger">no leads</span>{% endif %}</strong></div>{% endif %}
 						</div>
-						{% if can_see_members %}
+						{% if can_see_leads %}
 						<ul class="list-unstyled lead px-4 text-center">
 						{% for contact in sub2.get_leads %}
 						<li><a href="{% url 'circles:person' contact_id=contact.id %}">{{contact}}</a></li>

@@ -14,7 +14,7 @@
 		{% load info %}
 		<hr>
 		<div id="purpose" class="small py-4">{{object.purpose|markdownify}}</div>
-		{% if can_see_members %}
+		{% if can_see_leads %}
 		<section class="row pt-3 border-top">
 			<div id="leads" class="col">
 				<h4 class="text-center">leads</h4>
@@ -40,9 +40,11 @@
 				</form>
 				{% endif %}
 			</div>
+		{% endif %}
+		{% if can_see_members %}
 			<div class="col border-left" id="members">
 				<h4 class="text-center">members</h4>
-{% if is_lead %}
+				{% if is_lead %}
 				<form action="{% url 'circles:add-member' pk=object.id %}" class="container" method="post">
 					{% csrf_token %}
 					<div class="form-group row">
@@ -68,7 +70,7 @@
 						</div>
 					</div>
 				</form>
-{% endif %}
+		{% endif %}
 			</div>
 		</section>
 			{% if members %}
@@ -145,7 +147,7 @@
 			{% endif %}
 			{% if can_see_members %}<div class="col"><strong>{{subgroup.get_all_members|length}} members{% if not subgroup.get_leads %} &mdash; <span class="text-danger">no leads</span>{% endif %}</strong></div>{% endif %}
 		</div>
-		{% if can_see_members %}
+		{% if can_see_leads %}
 		<ul class="list-unstyled small">
 		{% for contact in subgroup.get_leads %}
 		<li><a href="mailto:{{contact.email}}">{{contact}}</a></li>
