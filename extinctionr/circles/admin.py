@@ -16,3 +16,5 @@ class CircleAdmin(MarkdownxModelAdmin):
 class RequestAdmin(admin.ModelAdmin):
     list_display = ('created', 'requestor', 'circle', 'confirmed_by', 'confirm_date')
     list_select_related = ('requestor', 'circle')
+    autocomplete_fields = ('requestor', 'confirmed_by', 'circle')
+    readonly_fields = ('confirm_date', )

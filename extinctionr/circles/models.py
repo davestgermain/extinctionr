@@ -95,7 +95,6 @@ class Circle(models.Model):
     def approve_membership(self, contact, who):
         for req in MembershipRequest.objects.filter(circle=self, requestor=contact):
             req.confirmed_by = who
-            req.confirm_date = now()
             req.save()
 
     def can_manage(self, user):
@@ -116,6 +115,8 @@ class MembershipRequest(models.Model):
         return self.circle.get_absolute_url()
 
     def save(self, *args, **kwargs):
+        if self.confirmed_by and not self.confirm_date:
+            self.confirm_date = now()
         super().save(*args, **kwargs)
         if self.confirmed_by:
             self.circle.members.add(self.requestor)
