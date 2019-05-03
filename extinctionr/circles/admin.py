@@ -12,6 +12,12 @@ class CircleAdmin(MarkdownxModelAdmin):
     autocomplete_fields = ('leads', 'members', 'parent')
     fields = ('name', 'parent', 'purpose', 'sensitive_info', 'email', 'leads', 'members', 'color', 'created', 'modified')
 
+    def has_change_permission(self, request, obj=None):
+        if obj:
+            return obj.can_manage(request.user)
+        else:
+            return request.user.has_perm('circles.change_circle')
+
 
 @admin.register(MembershipRequest)
 class RequestAdmin(admin.ModelAdmin):

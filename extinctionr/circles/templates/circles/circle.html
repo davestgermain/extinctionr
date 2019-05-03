@@ -7,7 +7,7 @@
 		<div class="row text-center">
 		{% if can_see_members %}<h5 class="col">{{object.recursive_members|length}} members</h5>{% endif %}
 			<h5 class="col"><a href="mailto:{{object.public_email}}">{{object.public_email}}</a></h5>
-		{% if 'circles.change_circle' in perms %}
+		{% if is_lead %}
 			<h4 class="col"><a href="/admin/circles/circle/{{object.id}}/change/">edit</a></h4>
 		{% endif %}
 		</div>
