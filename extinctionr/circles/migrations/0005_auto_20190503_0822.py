@@ -7,7 +7,6 @@ import django.db.models.deletion
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('contacts', '0005_auto_20190503_0822'),
         ('circles', '0004_membershiprequest_confirm_date'),
     ]
 
