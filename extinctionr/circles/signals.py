@@ -23,3 +23,4 @@ def send_join_email(sender, instance, action, pk_set, **kwargs):
         comm.notify_circle_membership(instance, msg_type, pk_set)
 
 m2m_changed.connect(send_join_email, sender=Circle.members.through)
+m2m_changed.connect(send_join_email, sender=Circle.leads.through)

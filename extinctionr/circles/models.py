@@ -4,6 +4,7 @@ from django.urls import reverse
 from contacts.models import Contact
 from extinctionr.utils import get_contact
 from django.utils.timezone import now
+from django.utils.functional import cached_property
 
 
 class Circle(models.Model):
@@ -11,6 +12,7 @@ class Circle(models.Model):
     modified = models.DateTimeField(auto_now=True)
     name = models.CharField(max_length=255, db_index=True)
     purpose = models.TextField(default='', help_text='Describe the mandates for this group')
+    sensitive_info = models.TextField(default='', help_text='Information for members only')
     leads = models.ManyToManyField(Contact, blank=True, related_name='leads')
     members = models.ManyToManyField(Contact, blank=True, related_name='members')
     parent = models.ForeignKey('self', blank=True, null=True, on_delete=models.SET_NULL)
@@ -26,29 +28,24 @@ class Circle(models.Model):
         parents.append(self.name)
         return ' :: '.join(parents)
 
-    def get_all_members(self):
-        members = set(self.get_members())
-        for circle in self.get_children():
-            members.update(circle.get_all_members())
+    @cached_property
+    def recursive_members(self):
+        members = set(self.member_list)
+        for circle in self.children:
+            members.update(circle.recursive_members)
         return members
 
-    def get_children(self):
-        children = getattr(self, '_children', None)
-        if children is None:
-            self._children = children = self.circle_set.all().prefetch_related('members', 'leads')
-        return children
+    @cached_property
+    def children(self):
+        return list(self.circle_set.all().prefetch_related('members', 'leads'))
 
-    def get_members(self):
-        members = getattr(self, '_members', None)
-        if members is None:
-            self._members = members = self.members.all().order_by('pk')
-        return members
+    @cached_property
+    def member_list(self):
+        return list(self.members.all().order_by('pk'))
 
-    def get_leads(self):
-        leads = getattr(self, '_leads', None)
-        if leads is None:
-            self._leads = leads = self.leads.all()
-        return leads
+    @cached_property
+    def lead_list(self):
+        return list(self.leads.all())
 
     def get_absolute_url(self):
         return reverse('circles:detail', kwargs={'pk': self.id})
@@ -68,7 +65,7 @@ class Circle(models.Model):
     def has_children(self):
         return self.circle_set.exists()
     
-    @property
+    @cached_property
     def public_email(self):
         email = self.email
         if not email:
@@ -80,13 +77,13 @@ class Circle(models.Model):
         public_address = self.public_email
         if public_address:
             addresses.add(public_address)
-        for lead in self.get_leads():
+        for lead in self.lead_list:
             addresses.add(lead.email)
         return addresses
 
     def get_member_emails(self):
-        emails = [m.email for m in self.get_members()]
-        emails.extend(m.email for m in self.get_leads())
+        emails = [m.email for m in self.member_list]
+        emails.extend(m.email for m in self.lead_list)
         return ','.join(emails)
 
     def add_member(self, email, name, contact=None):
@@ -108,6 +105,13 @@ class Circle(models.Model):
 
     def can_manage(self, user):
         return user.has_perm('circles.change_circle') or self.leads.filter(pk=get_contact(email=user.email).id).exists()
+
+    def is_member(self, user):
+        email = user.email
+        for member in self.recursive_members:
+            if member.email == email:
+                return True
+        return False
 
 
 class MembershipRequest(models.Model):

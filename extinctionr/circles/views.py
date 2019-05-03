@@ -106,17 +106,19 @@ class CircleView(generic.DetailView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+        circle = context['object']
         if self.request.user.is_authenticated:
-            is_lead = context['object'].can_manage(self.request.user)
+            is_lead = circle.can_manage(self.request.user)
+            context['is_member'] = circle.is_member(self.request.user)
             context['can_see_members'] = is_lead or self.request.user.has_perm('circles.view_circle')
             context['can_see_leads'] = self.request.user.is_authenticated
             context['is_lead'] = is_lead
-            context['members'] = list(context['object'].get_members())
-            context['pending'] = context['object'].membershiprequest_set.filter(confirmed_by=None)
+            context['members'] = circle.member_list
+            context['pending'] = circle.membershiprequest_set.filter(confirmed_by=None)
             context['form'] = ContactForm(initial={'role': 'member'})
             context['lead_form'] = ContactForm(initial={'role': 'lead'})
         if not context.get('is_lead', None):
-            initial = {'circle_id': context['object'].id}
+            initial = {'circle_id': circle.id}
             last_contact = get_last_contact(self.request)
             if last_contact:
                 initial['email'] = last_contact.email

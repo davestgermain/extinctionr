@@ -10,6 +10,7 @@ class CircleAdmin(MarkdownxModelAdmin):
     list_select_related = ('parent',)
     search_fields = ('name', )
     autocomplete_fields = ('leads', 'members', 'parent')
+    fields = ('name', 'parent', 'purpose', 'sensitive_info', 'email', 'leads', 'members', 'color', 'created', 'modified')
 
 
 @admin.register(MembershipRequest)
