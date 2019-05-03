@@ -135,8 +135,12 @@
 		<hr>
 	</div>
 </div>
+{% if object.get_children %}
+<div class="row pt-2" style="background-color: {{object.bgcolor}}">
+	<h4 class="col">working groups</h4>
+</div>
 <div class="row">
-	{% for subgroup in object.circle_set.all %}
+	{% for subgroup in object.get_children %}
 	<div class="col p-2 pt-3 border text-center" style="background-color: {{subgroup.bgcolor}}">
 		<h3><a href="{% url 'circles:detail' pk=subgroup.id %}">{{subgroup.name}}</a></h3>
 		<div class="row pb-2 px-2" style="font-size: .55em">
@@ -157,6 +161,7 @@
 	</div>
 	{% endfor %}
 </div>
+{% endif %}
 {% endblock %}
 {% block extrajs %}
 <script type="text/javascript">
