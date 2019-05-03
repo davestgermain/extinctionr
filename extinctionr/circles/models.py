@@ -12,7 +12,7 @@ class Circle(models.Model):
     modified = models.DateTimeField(auto_now=True)
     name = models.CharField(max_length=255, db_index=True)
     purpose = models.TextField(default='', help_text='Describe the mandates for this group')
-    sensitive_info = models.TextField(default='', help_text='Information for members only')
+    sensitive_info = models.TextField(default='', blank=True, help_text='Information for members only')
     leads = models.ManyToManyField(Contact, blank=True, related_name='leads')
     members = models.ManyToManyField(Contact, blank=True, related_name='members')
     parent = models.ForeignKey('self', blank=True, null=True, on_delete=models.SET_NULL)
