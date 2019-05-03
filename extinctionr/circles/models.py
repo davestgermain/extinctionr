@@ -92,10 +92,11 @@ class Circle(models.Model):
 
     def request_membership(self, email, name):
         contact = get_contact(email, name=name)
-        try:
-            MembershipRequest.objects.get_or_create(circle=self, requestor=contact)
-        except MultipleObjectsReturned:
-            pass
+        if not self.members.filter(pk=contact.id).exists():
+            try:
+                MembershipRequest.objects.get_or_create(circle=self, requestor=contact)
+            except MultipleObjectsReturned:
+                pass
         return contact
 
     def approve_membership(self, contact, who):

@@ -81,7 +81,7 @@
 		{% endif %}
 			</div>
 		</section>
-			{% if members %}
+			{% if members or pending %}
 		<table class="pl-4 table table-sm table-responsive-sm xtable-responsive-lg table-striped table-hover table-light">
 		<thead class="thead-dark small">
 			<tr class="text-center">
@@ -103,7 +103,9 @@
 			{% if pending %}
 			<tr>
 				<td></td>
-				<th scope="row" class="px-4"><h5>pending</h5></th>
+				<th scope="row" class="px-4 py-4"><h5>pending</h5></th>
+				<td></td>
+				<td></td>
 			</tr>
 			{% for req in pending %}
 			<tr>
@@ -168,6 +170,11 @@
 		{% endif %}
 	</div>
 	{% endfor %}
+</div>
+{% endif %}
+{% if not user.is_authenticated %}
+<div class="row p-4 pt-5">
+	<h5 class="col"><a href="{% url 'login' %}?next={{object.get_absolute_url}}">login</a> to see more information</h5>
 </div>
 {% endif %}
 {% endblock %}
