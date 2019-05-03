@@ -14,5 +14,5 @@ class CircleAdmin(MarkdownxModelAdmin):
 
 @admin.register(MembershipRequest)
 class RequestAdmin(admin.ModelAdmin):
-    list_display = ('created', 'requestor', 'circle', 'confirmed')
+    list_display = ('created', 'requestor', 'circle', 'confirmed_by', 'confirm_date')
     list_select_related = ('requestor', 'circle')

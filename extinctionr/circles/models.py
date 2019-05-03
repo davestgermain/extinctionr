@@ -3,6 +3,7 @@ from django.db import models
 from django.urls import reverse
 from contacts.models import Contact
 from extinctionr.utils import get_contact
+from django.utils.timezone import now
 
 
 class Circle(models.Model):
@@ -91,6 +92,12 @@ class Circle(models.Model):
             pass
         return contact
 
+    def approve_membership(self, contact, who):
+        for req in MembershipRequest.objects.filter(circle=self, requestor=contact):
+            req.confirmed_by = who
+            req.confirm_date = now()
+            req.save()
+
     def can_manage(self, user):
         return user.has_perm('circles.change_circle') or self.leads.filter(pk=get_contact(email=user.email).id).exists()
 
@@ -99,7 +106,8 @@ class MembershipRequest(models.Model):
     created = models.DateTimeField(db_index=True, auto_now_add=True)
     circle = models.ForeignKey(Circle, on_delete=models.CASCADE)
     requestor = models.ForeignKey(Contact, on_delete=models.CASCADE)
-    confirmed = models.BooleanField(default=False, blank=True)
+    confirmed_by = models.ForeignKey(Contact, null=True, blank=True, on_delete=models.SET_NULL, related_name='confirmation_set')
+    confirm_date = models.DateTimeField(null=True, blank=True)
 
     def __str__(self):
         return '%s -> %s' % (self.requestor, self.circle)
@@ -109,7 +117,7 @@ class MembershipRequest(models.Model):
 
     def save(self, *args, **kwargs):
         super().save(*args, **kwargs)
-        if self.confirmed:
+        if self.confirmed_by:
             self.circle.members.add(self.requestor)
         else:
             self.circle.members.remove(self.requestor)

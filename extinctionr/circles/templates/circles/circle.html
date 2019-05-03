@@ -101,7 +101,7 @@
 			<tr>
 				<th scope="row" class="px-3"><a href="{% url 'circles:person' contact_id=req.requestor_id %}">{{req.requestor}}</a></td>
 				<td class="text-center"><a href="mailto:{{req.requestor.email}}">{{req.requestor.email}}</a></td>
-				<td><a class="btn btn-sm btn-primary btn-fucxed" href="/admin/circles/membershiprequest/{{req.id}}/change/">confirm</a></td>
+				<td><button class="approve-member btn btn-sm btn-primary btn-fucxed" data-contact="{{req.requestor.id}}">confirm</button></td>
 			</tr>
 			{% endfor %}
 			{% endif %}
@@ -171,6 +171,15 @@
 				location.reload();
 			});
 		}
+	});
+	$('.approve-member').click(function() {
+		var url = "{% url 'circles:approve-member' pk=object.id %}";
+		var data = {
+			id: $(this).data('contact')
+		}
+		$.post(url, data, function(){
+			location.reload();
+		});
 	});
 </script>
 {% endblock %}

@@ -63,6 +63,16 @@ def del_member(request, pk):
             circle.members.remove(contact)
     return redirect(circle.get_absolute_url())
 
+@login_required
+def approve_membership(request, pk):
+    circle = get_object_or_404(Circle, pk=pk)
+    contact = get_object_or_404(Contact, pk=request.POST['id'])
+    if circle.can_manage(request.user):
+        circle.approve_membership(contact, who=get_contact(email=request.user.email))
+        messages.success(request, "Approved {}!".format(contact))
+
+    return redirect(circle.get_absolute_url())
+
 
 def request_membership(request, pk):
     circle = get_object_or_404(Circle, pk=pk)
@@ -102,7 +112,7 @@ class CircleView(generic.DetailView):
             context['can_see_leads'] = self.request.user.is_authenticated
             context['is_lead'] = is_lead
             context['members'] = list(context['object'].get_members())
-            context['pending'] = context['object'].membershiprequest_set.filter(confirmed=False)
+            context['pending'] = context['object'].membershiprequest_set.filter(confirmed_by=None)
             context['form'] = ContactForm(initial={'role': 'member'})
             context['lead_form'] = ContactForm(initial={'role': 'lead'})
         if not context.get('is_lead', None):

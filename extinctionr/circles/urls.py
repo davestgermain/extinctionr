@@ -12,4 +12,5 @@ urlpatterns = [
     path('<int:pk>/join/', views.request_membership, name='request-membership'),
     path('<int:pk>/add/', views.add_member, name='add-member'),
     path('<int:pk>/del/', views.del_member, name='del-member'),
+    path('<int:pk>/approve/', views.approve_membership, name='approve-member'),
 ]
