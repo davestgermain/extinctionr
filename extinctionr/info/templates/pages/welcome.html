@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}:: Welcome to the Rebellion{% endblock %}
+{% block og_tags %}
+{% endblock %}
+
+{% block content %}
+<div class="row pt-5">
+	<div class="col-text">
+		<h1 class="xr-green text-center">Welcome to the Rebellion</h1>
+		<p>Here are some resources to get you started.</p>
+		<h2>This Site</h2>
+		{% if not user.is_authenticated %}
+		<p>
+			If you haven't registered an account, <a href="{% url 'extinctionr.info:register' %}">register here</a>. Otherwise, <a href="{% url 'login' %}">Login</a>.
+		</p>
+		{% endif %} 
+		<p>
+			First, look through the <a href="/circle/">working groups</a> and identify your area of interest. You can join an individual working group and contact the public email address listed there. The individual working group page may point you to specific resources or instructions not mentioned below. 
+			{% if user.is_authenticated %}<br>You can also <a href="{% url 'circles:person-me' %}">see which groups you've joined</a>.{% endif %} 
+		</p>
+		<p>If you need permission to create press releases, events, etc. on this site, email <a href="mailto:webmaster@xrmass.org">webmaster@xrmass.org</a>. If you want to modify other parts of the site, <a href="https://github.com/davestgermain/extinctionr">it's open source!</a>.</p>
+		<h2>Communication</h2>
+			<p>Each working group may have its own mailing list. Check with the coordinator.</p>
+			<p><a href="https://keybase.io/">Keybase</a> is a secure, end-to-end encrypted messaging app (for Windows, Mac, iOS, Android) which Extinction Rebellion US chapters have been using to communicate (to each other, and internally).</p>
+
+			<p>If you want to sign up, there’s a <a href="http://bit.ly/keybase-starter">useful intro here</a>. Just send your username to Nick (BostonXR@protonmail.com) and we can add you to the Extinction Rebellion Boston / Massachusetts teams
+for chat.</p>
+		<h2>Shared Files</h2>
+		<p>
+			This <a href="http://bit.ly/xrmass_drive"><strong>public</strong> Google Drive</a> has poster templates, fliers, research, meeting notes etc. There are also compilations of links to other XR chapters’ resources. When you make or find a useful resource, please post it here to share! No sensitive action info should be posted.
+		</p>
+		<h2>Public Calendar</h2>
+			<p>If you need events posted on <a href="http://bit.ly/xrmass_events">this calendar</a>, send date, time, location and description to your working group coordinator. We will post our own events here (art builds, meetings, talks, actions, etc.), and we will selectively promote events of other groups in line with XR’s mission. </p>
+
+
+	</div>
+</div>
+{% endblock %}
