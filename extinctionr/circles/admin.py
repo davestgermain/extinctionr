@@ -1,5 +1,6 @@
 from django.contrib import admin
 from .models import Circle, MembershipRequest
+from extinctionr.utils import get_contact
 from markdownx.admin import MarkdownxModelAdmin
 
 
@@ -12,11 +13,21 @@ class CircleAdmin(MarkdownxModelAdmin):
     autocomplete_fields = ('leads', 'members', 'parent')
     fields = ('name', 'parent', 'purpose', 'sensitive_info', 'email', 'leads', 'members', 'color', 'created', 'modified')
 
+    def has_view_permission(self, request, obj=None):
+        if obj:
+            return obj.can_manage(request.user)
+        else:
+            return request.user.has_perm('circles.view_circle')
+
     def has_change_permission(self, request, obj=None):
         if obj:
             return obj.can_manage(request.user)
         else:
             return request.user.has_perm('circles.change_circle')
+
+    def has_module_permission(self, request):
+        contact = get_contact(email=request.user.email)
+        return (contact.members.exists() or contact.leads.exists())
 
 
 @admin.register(MembershipRequest)

@@ -1,4 +1,4 @@
-from contacts.models import Contact
+from contacts.models import Contact, Address
 from django.conf import settings
 from django.contrib.sites.models import Site
 
@@ -6,6 +6,13 @@ from django.contrib.sites.models import Site
 def get_contact(email, name='', first_name='', last_name='', **kwargs):
     email = email.lower().strip()
     assert email
+    addr_keys = [f.name for f in Address._meta.fields]
+    addr_keys.remove('id')
+    address = {}
+    for k in addr_keys:
+        if k in kwargs:
+            address[k] = kwargs.pop(k)
+
     try:
         user = Contact.objects.get(email=email)
     except Contact.DoesNotExist:
@@ -22,6 +29,15 @@ def get_contact(email, name='', first_name='', last_name='', **kwargs):
         if v and getattr(user, k, None) is None:
             setattr(user, k, v)
             resave = True
+    if address:
+        if not user.address:
+            user.address = Address.objects.create(**address)
+            resave = True
+        else:
+            for k, v in address.items():
+                setattr(user.address, k, v)
+            user.address.save()
+
     if resave:
         user.save()
     return user
