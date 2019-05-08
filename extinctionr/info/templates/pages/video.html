@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% block title %}:: Video{% endblock %}
+{% load static %}
+{% block og_tags %}
+{% endblock %}
+
+{% block content %}
+<div class="row pt-4">
+	<h2 class="col text-center">Videos</h2>
+</div>
+<div class="row">
+	<div class="col-6 video">
+		<iframe width="560" height="315" src="https://www.youtube.com/embed/PvDk6THMEJI" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+	</div>
+	<div class="col-6 video">
+		<iframe width="560" height="315" src="https://www.youtube.com/embed/WOABT6BrAm4" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>	
+	</div>
+</div>
+<div class="row">
+	<div class="col video">
+		<a href="https://www.facebook.com/ExtRebMA/videos/1259249230907885/">video on facebook</a>
+	</div>
+</div>
+{% endblock %}
