@@ -93,10 +93,13 @@
     background-color: #aaa;
   }
   footer {
-    font-size: .4em;
+    font-size: 1em;
   }
   {% endblock %}
  </style>
+{% load sekizai_tags %}
+
+ {% render_block "css" %}
 
   <meta property="og:title" content="{% block og_title %}Extinction Rebellion Massachusetts{%endblock%}" />
   <meta property="og:url" content="https://{{request.get_host}}{{request.get_full_path}}" />
@@ -142,9 +145,9 @@
       <hr>
       <footer class="text-center mt-4 p-4">
         <ul class="list-inline">
-          <li class="list-inline-item"><a href="https://www.facebook.com/ExtRebMA/" target="_blank">facebook</a> | </li>
-          <li class="list-inline-item"><a href="https://twitter.com/XRboston" target="_blank">twitter</a> | </li>
-          <li class="list-inline-item"><a href="https://www.instagram.com/xrmass/" target="_blank">instagram</a></li>
+          <li class="list-inline-item"><a href="https://www.facebook.com/ExtRebMA/" target="_blank"><i class="fab fa-facebook"></i></a></li>
+          <li class="list-inline-item px-4"><a href="https://twitter.com/XRboston" target="_blank"><i class="fab fa-twitter"></i></a></li>
+          <li class="list-inline-item"><a href="https://www.instagram.com/xrmass/" target="_blank"><i class="fab fa-instagram"></i></a></li>
         </ul>
         {% if request.user.is_anonymous %}
         <div class="pt-6 text-right">
@@ -156,6 +159,9 @@
 
 <script src="{% static 'js/jquery-3.3.1.min.js' %}"></script>{% block extrajs %}{% endblock %}{% block js_block %}{% if form %}{{form.media}}{% endif%}{% endblock js_block %}
 <script src="{% static 'js/bootstrap.min.js' %}"></script>
+{% render_block "js" %}
+<script defer src="{% static "js/fontawesome-all.js" %}"></script>
+
 <script type="text/javascript">
   $(document).ready(function(){
     $('.nav-a[href="' + window.location.pathname + '"]').addClass('active');

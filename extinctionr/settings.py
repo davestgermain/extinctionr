@@ -237,6 +237,7 @@ CACHE_MIDDLEWARE_SECONDS = 1200
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_SCHEME', 'https')
 SESSION_ENGINE = 'django.contrib.sessions.backends.signed_cookies'
 
+WIKI_CHECK_SLUG_URL_AVAILABLE = False
 
 LOGGING = {
     'version': 1,

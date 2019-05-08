@@ -15,20 +15,20 @@
       <li class="nav-item pr-4" id="article-title-li">
         <h1 id="article-title">
           {{ article.current_revision.title }}
-          <small style="font-size: 14px;">
+          <!-- <small style="font-size: 14px;"> -->
             {% if urlpath.parent %}
-            <a class="nav-link" href="{% url 'wiki:get' path=urlpath.path %}"><span class="fa fa-bookmark"></span> {{ urlpath.slug }}</a>
+            <!-- <a class="nav-link" href="{% url 'wiki:get' path=urlpath.path %}"><span class="fa fa-bookmark"></span> {{ urlpath.slug }}</a> -->
             {% endif %}
             {% if article.current_revision.locked %}
-              <span class="fa fa-lock"></span> {% trans "locked" %}
+              <!-- <span class="fa fa-lock"></span> {% trans "locked" %} -->
             {% endif %}
-          </small>
+          <!-- </small> -->
         </h1>
       </li>
       {% include "wiki/includes/article_menu.html" %}
     </ul>
       <hr>
-    <div class="row mt-3">
+    <div class="row py-3">
       <div class="col">
       {% block wiki_contents_tab %}
       {% endblock %}
