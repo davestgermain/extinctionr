@@ -17,3 +17,4 @@ cssselect
 django-storages
 celery
 django-autocomplete-light
+django-archive
