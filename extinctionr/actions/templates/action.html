@@ -63,7 +63,6 @@
 					<div class="text-danger">{{form.name.errors}}</div>
 				</div>
 			</div>
-			{% if action.show_commitment %}
 			{% if has_roles %}
 			<div class="form-group row">
 				<label for="{{form.role.id_for_label}}" class="d-none d-sm-block col-4 text-right">Your Role:</label>
@@ -73,6 +72,7 @@
 				</div>
 			</div>
 			{% endif %}
+			{% if action.show_commitment %}
 			<div class="form-group row">
 				<label for="{{form.promised.id_for_label}}" class="col-10 col-lg-4 text-right form-check-label">I'm Committed!</label>
 				<div class="col">
