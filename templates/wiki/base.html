@@ -1,7 +1,16 @@
 {% extends "base.html" %}
 {% load sekizai_tags i18n wiki_tags static %}
 {% block title %}{% block wiki_pagetitle %}{% endblock %}{% block wiki_site_title %}{% endblock %}{% endblock %}
-
+{% block inline_css %}
+{{block.super}}
+#article-menu .nav-item,
+.breadcrumb {
+  font-size: .75em;
+}
+.wiki-footer {
+  font-size: .5em;
+}
+{% endblock %}
 {% block content %}
     {% block wiki_body %}
     <div class="container">
@@ -15,6 +24,7 @@
       {% block wiki_contents %}{% endblock %}
 
     </div> <!-- /container -->
+{% block wiki_footer_prepend %}{% endblock %}
 
     {% endblock %}
 

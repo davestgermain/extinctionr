@@ -2,7 +2,7 @@
 
 {% with selected_tab as selected %}
 
-<li class="ml-auto nav-item">
+<li class="border-left ml-auto nav-item">
   {% if not user.is_anonymous %}
   <a class="nav-link{% if selected == "settings" %} active{% endif %}" href="{% url 'wiki:settings' article_id=article.id path=urlpath.path %}">
     <i class="fas fa-wrench"></i>

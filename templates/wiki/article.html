@@ -12,23 +12,18 @@
 
   <div id="article-container">
     <ul class="nav nav-pills" id="article-menu">
-      <li class="nav-item pr-4" id="article-title-li">
+      <li class="nav-item text-center" id="article-title-li">
         <h1 id="article-title">
           {{ article.current_revision.title }}
-          <!-- <small style="font-size: 14px;"> -->
-            {% if urlpath.parent %}
-            <!-- <a class="nav-link" href="{% url 'wiki:get' path=urlpath.path %}"><span class="fa fa-bookmark"></span> {{ urlpath.slug }}</a> -->
-            {% endif %}
             {% if article.current_revision.locked %}
-              <!-- <span class="fa fa-lock"></span> {% trans "locked" %} -->
+              <small><span class="fa fa-lock" title="{% trans "locked" %}"></span></small>
             {% endif %}
-          <!-- </small> -->
         </h1>
       </li>
       {% include "wiki/includes/article_menu.html" %}
     </ul>
       <hr>
-    <div class="row py-3">
+    <div class="row pt-3 pb-5">
       <div class="col">
       {% block wiki_contents_tab %}
       {% endblock %}
@@ -39,5 +34,5 @@
 {% endblock %}
 
 {% block wiki_footer_prepend %}
-  <p style="margin-bottom: 10px;"><em>{% trans "This article was last modified:" %} {{ article.current_revision.modified }}</em></p>
+  <p class="wiki-footer text-right"><em>{% trans "Last modified:" %} {{ article.current_revision.modified }}</em></p>
 {% endblock %}
