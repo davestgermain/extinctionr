@@ -1,5 +1,7 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.decorators import login_required
+from django.utils.decorators import method_decorator
+from django.views.decorators.cache import cache_page
 from django.contrib import messages
 from django.http import HttpResponseForbidden
 from django import forms
@@ -99,6 +101,7 @@ def person_view(request, contact_id=None):
     return response
 
 
+@method_decorator(cache_page(1200), name='dispatch')
 class CircleView(generic.DetailView):
     template_name = 'circles/circle.html'
     def get_queryset(self):
@@ -128,10 +131,12 @@ class CircleView(generic.DetailView):
 
     def render_to_response(self, context, **response_kwargs):
         response = super().render_to_response(context, **response_kwargs)
-        response['Cache-Control'] = 'private'
+        if self.request.user.is_authenticated:
+            response['Cache-Control'] = 'private'
         return response
 
 
+@method_decorator(cache_page(1200), name='dispatch')
 class TopLevelView(generic.ListView):
     template_name = 'circles/outer.html'
 
@@ -146,7 +151,8 @@ class TopLevelView(generic.ListView):
 
     def render_to_response(self, context, **response_kwargs):
         response = super().render_to_response(context, **response_kwargs)
-        response['Cache-Control'] = 'private'
+        if self.request.user.is_authenticated:
+            response['Cache-Control'] = 'private'
         return response
 
 

@@ -8,6 +8,7 @@ from django.template.loader import TemplateDoesNotExist, get_template
 from django.utils.decorators import method_decorator
 from django.utils.http import http_date
 from django.views.decorators.http import etag
+from django.views.decorators.cache import cache_page
 from django.views.generic import FormView, DetailView, ListView, TemplateView
 
 from .models import PressRelease
@@ -33,6 +34,7 @@ class RegistrationView(FormView):
         return super().form_valid(form)
 
 
+@method_decorator(cache_page(1200), name='dispatch')
 class InfoView(TemplateView):
     def get(self, request, *args, **kwargs):
         page = kwargs['page']
@@ -50,17 +52,16 @@ class InfoView(TemplateView):
         response = HttpResponse(tresp.rendered_content)
         if request.user.is_authenticated:
             response['Cache-Control'] = 'private'
-        # response['Etag'] = md5(response.content).hexdigest()
         return response
 
 
+@method_decorator(cache_page(1200), name='dispatch')
 class PRListView(ListView):
     def get_queryset(self):
         if self.request.user.has_perm('info.view_pressrelease'):
             return PressRelease.objects.all()
         else:
             return PressRelease.objects.released()
-
 
     def render_to_response(self, context, **kwargs):
         resp = super().render_to_response(context, **kwargs)
@@ -69,7 +70,7 @@ class PRListView(ListView):
             resp['Cache-Control'] = 'private'
         return resp
 
-
+@method_decorator(cache_page(1200), name='dispatch')
 class PRDetailView(DetailView):
     def get_queryset(self):
         if self.request.user.has_perm('info.view_pressrelease'):

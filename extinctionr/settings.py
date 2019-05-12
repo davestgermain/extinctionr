@@ -82,7 +82,6 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     'django.middleware.http.ConditionalGetMiddleware',
-    'django.middleware.cache.UpdateCacheMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -92,10 +91,8 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'django.contrib.redirects.middleware.RedirectFallbackMiddleware',
     'extinctionr.middleware.redirect_middleware',
-    'django.middleware.cache.FetchFromCacheMiddleware',
 ]
 if DEBUG:
-    MIDDLEWARE.remove('django.middleware.cache.FetchFromCacheMiddleware')
     try:
         import debug_toolbar
         INSTALLED_APPS += ['debug_toolbar']
@@ -239,6 +236,11 @@ SECURE_PROXY_SSL_HEADER = ('HTTP_X_SCHEME', 'https')
 SESSION_ENGINE = 'django.contrib.sessions.backends.signed_cookies'
 
 WIKI_CHECK_SLUG_URL_AVAILABLE = False
+
+### django-todo settings
+TODO_DEFAULT_LIST_SLUG = 'tickets'
+TODO_DEFAULT_ASSIGNEE = 'dave@st.germa.in'
+TODO_PUBLIC_SUBMIT_REDIRECT = 'extinctionr.info:index'
 
 LOGGING = {
     'version': 1,

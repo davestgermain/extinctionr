@@ -9,7 +9,8 @@ from django.utils.html import strip_tags
 from django.utils.http import http_date
 from django.utils.timezone import now
 from django.urls import reverse
-from django.views.decorators.cache import never_cache
+from django.views.decorators.cache import never_cache, cache_page
+from django.utils.decorators import method_decorator
 
 import csv
 from datetime import timedelta
@@ -48,6 +49,7 @@ class TalkProposalForm(forms.Form):
     phone = PhoneNumberField(label="Phone Number", required=False, widget=forms.TextInput(attrs={'class': 'form-control text-center', 'placeholder': 'Phone Number'}))
 
 
+@cache_page(1200)
 def list_actions(request):
     actions = Action.objects.filter(when__gte=now()).order_by('when')
     if not request.user.is_staff:
@@ -63,7 +65,7 @@ def list_actions(request):
     return resp
 
 
-
+@cache_page(1200)
 def show_action(request, slug):
     action = get_object_or_404(Action, slug=slug)
     ctx = {'action': action}
