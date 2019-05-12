@@ -16,39 +16,39 @@
         <div class="card">
           <div class="card-body" id="datashow">
 
-           <div class="card-title text-right">
-            <h5>
-              <span class="float-left title">Overview</span>
-              <span class="" style="margin-top: 0px">
-                <div class="dropdown buttons_row">
-                  <button class="btn primary_btn dropdown-toggle" type="button" data-toggle="dropdown">Actions
-                  <span class="caret"></span></button>
-                  <ul class="dropdown-menu">
-                    <li><a href="{% url 'contacts:edit_contact' contact_record.id %}">Edit</a></li>
-                  </ul>
-                </div>
-              </span>
-            </h5>
-          </div>
+             <div class="card-title text-right">
+                <h5>
+                  <span class="float-left title">Overview</span>
+                  <span class="" style="margin-top: 0px">
+                    <div class="dropdown buttons_row">
+                      <button class="btn primary_btn dropdown-toggle" type="button" data-toggle="dropdown">Actions
+                      <span class="caret"></span></button>
+                      <ul class="dropdown-menu">
+                        <li><a href="{% url 'contacts:edit_contact' contact_record.id %}">Edit</a></li>
+                      </ul>
+                    </div>
+                  </span>
+                </h5>
+              </div>
 
             <div class="row marl">
               <div class="col" id="iname">
                   <div class="form-group" >
                     <label class="small" for="id_name" data-name="name">Name</label>
-                    <div class="display-4" id="contact_name" data-name="name">{{ contact_record.first_name }} {{ contact_record.last_name }}</div>
+                    <div class="lead" id="contact_name" data-name="name">{{ contact_record.first_name }} {{ contact_record.last_name }}</div>
                   </div>
               </div>
               <div class="col">
                 <div class="form-group">
                   <label class="small" for="id_email" data-name="name">Email</label>
-                  <div class="display-4" id="contact_email" data-name="name">{{ contact_record.email }}</div>
+                  <div class="lead" id="contact_email" data-name="name">{{ contact_record.email }}</div>
                 </div>
               </div>
               {% if contact_record.phone %}
               <div class="col">
                   <div class="form-group">
                     <label class="small" for="id_phone" data-name="name">Phone</label>
-                    <div class="display-4" id="contact_phone" data-name="name">{{ contact_record.phone }}</div>
+                    <div class="lead" id="contact_phone" data-name="name">{{ contact_record.phone }}</div>
                   </div>
               </div>
               {% endif %}
@@ -82,7 +82,6 @@
           </div>
 
         <!-- Attachment Section start -->
-      <div>
       <div class="card-body mar-top" id="datashow">
           <div class="card-title view-pad">
               <h5>Attachments</h5>
