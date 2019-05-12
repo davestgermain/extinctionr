@@ -11,7 +11,6 @@
     <link rel="icon" href="{% static 'images/cropped-favicon-192x192.png' %}" sizes="192x192" />
     <link rel="apple-touch-icon-precomposed" href="{% static 'images/cropped-favicon-192x192.png' %}" />
     <link href="https://fonts.googleapis.com/css?family=Crimson+Text:400,700" rel="stylesheet" />
-   {% block extracss %} {% endblock %}
 <style type="text/css">
   {% block inline_css %}
   @font-face {
@@ -97,6 +96,8 @@
   }
   {% endblock %}
  </style>
+{% block extrahead %}{% endblock %}
+
 {% load sekizai_tags %}
 
  {% render_block "css" %}
@@ -141,7 +142,7 @@
     </ul>
 </div></div>{% endif %}
       {% block breadcrumb %}{% endblock %}
-      {% block content %}{% endblock %}
+      {% block default_container %}{% block content %}{% endblock %}{% endblock %}
       <hr>
       <footer class="text-center mt-4 p-4">
         <ul class="list-inline">
@@ -157,7 +158,7 @@
       </footer>
   </div>
 
-<script src="{% static 'js/jquery-3.3.1.min.js' %}"></script>{% block extrajs %}{% endblock %}{% block js_block %}{% if form %}{{form.media}}{% endif%}{% endblock js_block %}
+<script src="{% static 'js/jquery-3.3.1.min.js' %}"></script>{% block extra_js %}{% endblock %}{% block js_block %}{% if form %}{{form.media}}{% endif%}{% endblock js_block %}
 <script src="{% static 'js/bootstrap.min.js' %}"></script>
 {% render_block "js" %}
 <script defer src="{% static "js/fontawesome-all.js" %}"></script>

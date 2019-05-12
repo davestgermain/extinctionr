@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block extrahead %}
+	<!-- CSS and JavaScripts for django-todo -->
+	<link rel="stylesheet" type="text/css" href="{% static 'todo/css/styles.css' %}" />
+{% endblock extrahead %}
+
+{% block default_container %}
+<div class="row pt-4">
+	<div class="col">
+{% block content %}
+{% endblock %}
+	</div>
+</div>
+{% endblock %}

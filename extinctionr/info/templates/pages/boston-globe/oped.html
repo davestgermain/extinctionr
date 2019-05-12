@@ -116,7 +116,7 @@
 </div>
 </section>
 {% endblock %}
-{% block extrajs %}
+{% block extra_js %}
 <script>
 	$('#signees').ready(function(){
 		$.get("{% url 'extinctionr.actions:attendees' action_slug='boston-globe' %}?fmt=html", function(data){

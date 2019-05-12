@@ -43,6 +43,7 @@ urlpatterns = [
     path('notifications/', include('django_nyt.urls')),
     path('wiki/', include('wiki.urls')),
     path('markdownx/', include('markdownx.urls')),
+    path('todo/', include('todo.urls', namespace="todo")),
 ]
 if settings.DEBUG:
     print(settings.MEDIA_ROOT, settings.MEDIA_URL)

@@ -30,11 +30,13 @@
       {% if user.is_staff %}
       <a class="dropdown-item nav-a" id="admin" href="{% url 'admin:index' %}">Admin</a>
       {% endif %}
+      <a class="dropdown-item nav-a" href="{% url 'todo:lists' %}">Todo Lists</a>
+      <a class="dropdown-item nav-a" href="{% url 'todo:mine' %}">My Tasks</a>
       {% if request.user.role == "ADMIN" or 'leads.change_lead' in perms %}
-      <a class="dropdown-item nav-a" id="dashboard" href="{% url 'common:home' %}">Dashboard</a>
+      <!-- <a class="dropdown-item nav-a" id="dashboard" href="{% url 'common:home' %}">Dashboard</a> -->
       <a class="dropdown-item nav-a" id="contacts" href="{% url 'contacts:list' %}">Contacts</a>
-      <a class="dropdown-item nav-a" id="leads" href="{% url 'leads:list' %}">Leads</a>
-      <a class="dropdown-item nav-a" id="accounts" href="{% url 'accounts:list' %}">Accounts</a>
+      <!-- <a class="dropdown-item nav-a" id="leads" href="{% url 'leads:list' %}">Leads</a>
+      <a class="dropdown-item nav-a" id="accounts" href="{% url 'accounts:list' %}">Accounts</a> -->
       {% endif %}
 {% if request.user.role == "ADMIN"  or request.user.is_superuser %}
       <a class="dropdown-item nav-a" href="{% url 'common:users_list' %}">Users</a>

@@ -1,14 +1,14 @@
 {% extends "base.html" %}
 {% load compress %}
 {% load static %}
-{% block extracss %} 
+{% block extrahead %}
     {% compress css %}
       <link href="{% static 'css/main.scss' %}" type="text/x-scss" rel="stylesheet">
       <link href="{% static 'css/mention.scss' %}" type="text/x-scss" rel="stylesheet">
     {% endcompress %}
 {% endblock %}
 
-{% block extrajs %}
+{% block extra_js %}
 <script src="{% static 'js/popper.min.js' %}"></script>
 <script src="{% static 'js/moment-with-locales.min.js' %}"></script>
 <script defer src="{% static 'js/fontawesome-all.js' %}"></script>

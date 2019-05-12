@@ -1,6 +1,6 @@
 django
 wiki
--e git+https://github.com/davestgermain/Django-CRM@344a4adb6f4a83c9d600aaf6f32a9d350c49a0a8#egg=django_crm
+-e git+https://github.com/davestgermain/Django-CRM@549ea96ecfbf9c9fa44d2e6f738386edbe70a8ca#egg=django_crm
 boto3
 lxml
 openpyxl
@@ -17,4 +17,4 @@ cssselect
 django-storages
 celery
 django-autocomplete-light
-django-archive
+django-todo
