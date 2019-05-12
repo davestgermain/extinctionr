@@ -77,7 +77,6 @@ INSTALLED_APPS = [
     'wiki.plugins.images.apps.ImagesConfig',
     'wiki.plugins.macros.apps.MacrosConfig',
     'markdownx',
-    'django_archive',
 ]
 
 MIDDLEWARE = [
