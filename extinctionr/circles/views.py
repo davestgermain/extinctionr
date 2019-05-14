@@ -131,6 +131,7 @@ class CircleView(generic.DetailView):
 
     def render_to_response(self, context, **response_kwargs):
         response = super().render_to_response(context, **response_kwargs)
+        response['Vary'] = 'Cookie'
         if self.request.user.is_authenticated:
             response['Cache-Control'] = 'private'
         return response
@@ -151,6 +152,7 @@ class TopLevelView(generic.ListView):
 
     def render_to_response(self, context, **response_kwargs):
         response = super().render_to_response(context, **response_kwargs)
+        response['Vary'] = 'Cookie'
         if self.request.user.is_authenticated:
             response['Cache-Control'] = 'private'
         return response

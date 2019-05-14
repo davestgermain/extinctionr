@@ -50,6 +50,7 @@ class InfoView(TemplateView):
             raise Http404(page)
         tresp = super(InfoView, self).get(request, *args, **kwargs)
         response = HttpResponse(tresp.rendered_content)
+        response['Vary'] = 'Cookie'
         if request.user.is_authenticated:
             response['Cache-Control'] = 'private'
         return response
@@ -66,6 +67,7 @@ class PRListView(ListView):
     def render_to_response(self, context, **kwargs):
         resp = super().render_to_response(context, **kwargs)
         resp['Last-Modified'] = http_date(context['object_list'].last().modified.timestamp())
+        resp['Vary'] = 'Cookie'
         if self.request.user.is_authenticated:
             resp['Cache-Control'] = 'private'
         return resp
@@ -81,6 +83,7 @@ class PRDetailView(DetailView):
     def render_to_response(self, context, **kwargs):
         resp = super().render_to_response(context, **kwargs)
         resp['Last-Modified'] = http_date(context['object'].modified.timestamp())
+        resp['Vary'] = 'Cookie'
         if self.request.user.is_authenticated:
             resp['Cache-Control'] = 'private'
         return resp

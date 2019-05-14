@@ -58,6 +58,8 @@ def list_actions(request):
         'actions': actions,
     }
     resp = render(request, 'list_actions.html', ctx)
+    resp['Vary'] = 'Cookie'
+
     if request.user.is_authenticated:
         resp['Cache-Control'] = 'private'
     if actions:
@@ -105,6 +107,7 @@ def show_action(request, slug):
     ctx['has_roles'] = list(action.available_role_choices)
     ctx['photos'] = list(action.photos.all())
     resp = render(request, 'action.html', ctx)
+    resp['Vary'] = 'Cookie'
     resp['Last-Modified'] = http_date(action.modified.timestamp())
     if request.user.is_authenticated:
         resp['Cache-Control'] = 'private'
