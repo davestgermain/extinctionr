@@ -25,6 +25,7 @@ class Action(models.Model):
     modified = models.DateTimeField(auto_now=True)
     show_commitment = models.BooleanField(blank=True, default=True, help_text='Whether to show the conditional commitment fields')
     max_participants = models.IntegerField(blank=True, default=0, help_text="Maximun number of people allowed to register")
+    accessibility = models.TextField(default='', help_text="Indicate what the accessibility accomodations are for this location.")
 
     @property
     def available_role_choices(self):

@@ -26,6 +26,12 @@
 		<p class="text-info"><a href="https://maps.google.com/?q={{action.location|urlencode}}">{{action.location|linebreaks}}</a></p>
 		{% endif %}
 		<div class="text-left">{{action.description|markdownify}}</div>
+		{% if action.accessibility %}
+		<div class="accessibility-info small text-left pt-4">
+			<h5>Accessibility</h5>
+		{{action.accessibility|markdownify}}
+		</div>
+		{% endif %}
 		<hr>
 	</div>
 </div>
