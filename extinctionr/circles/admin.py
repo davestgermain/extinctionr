@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Circle, MembershipRequest
+from .models import Circle, CircleMember, MembershipRequest
 from extinctionr.utils import get_contact
 from markdownx.admin import MarkdownxModelAdmin
 
@@ -10,8 +10,8 @@ class CircleAdmin(MarkdownxModelAdmin):
     readonly_fields = ('created', 'modified', )
     list_select_related = ('parent',)
     search_fields = ('name', )
-    autocomplete_fields = ('leads', 'members', 'parent')
-    fields = ('name', 'parent', 'purpose', 'sensitive_info', 'email', 'leads', 'members', 'color', 'created', 'modified')
+    autocomplete_fields = ('parent', )
+    fields = ('name', 'parent', 'purpose', 'sensitive_info', 'email', 'color', 'created', 'modified')
 
     def has_view_permission(self, request, obj=None):
         if obj:
@@ -27,7 +27,7 @@ class CircleAdmin(MarkdownxModelAdmin):
 
     def has_module_permission(self, request):
         contact = get_contact(email=request.user.email)
-        return (contact.members.exists() or contact.leads.exists())
+        return contact.circlemember_set.exists()
 
 
 @admin.register(MembershipRequest)
@@ -36,3 +36,11 @@ class RequestAdmin(admin.ModelAdmin):
     list_select_related = ('requestor', 'circle')
     autocomplete_fields = ('requestor', 'confirmed_by', 'circle')
     readonly_fields = ('confirm_date', )
+
+
+@admin.register(CircleMember)
+class CircleMemberAdmin(admin.ModelAdmin):
+    list_display = ('circle', 'contact', 'role', 'join_date')
+    autocomplete_fields = ('circle', 'contact')
+    readonly_fields = ('join_date', )
+    list_filter = ('circle',)

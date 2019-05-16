@@ -86,6 +86,7 @@
 		<table class="pl-4 table table-sm table-responsive-sm xtable-responsive-lg table-striped table-hover table-light">
 		<thead class="thead-dark small">
 			<tr class="text-center">
+			<th scope="col">Role</th>
 			<th scope="col">Name</th>
 			<th scope="col">Email</th>
 			<th scope="col">Phone</th>
@@ -93,12 +94,13 @@
 			</tr>
 		</thead>
 			<tbody class="small">
-			{% for contact in members %}
+			{% for mem in members %}
 			<tr>
-				<th scope="row" class="px-3"><a href="{% url 'circles:person' contact_id=contact.id %}">{{contact}}</a></td>
-				<td class="text-center"><a href="mailto:{{contact.email}}">{{contact.email}}</a></td>
-				<td>{% if contact.phone %}{{contact.phone}}{% endif %}</td>
-				<td class="text-center"><a href="#" title="remove" class="btn-fucxed strong del-member" data-name="{{contact}}" data-contact="{{contact.id}}" data-role="member">X</a></td>
+				<th scope="row" class="px-3 text-center">{{mem.role}}</th>
+				<td><a href="{% url 'circles:person' contact_id=mem.contact.id %}">{{mem.contact}}</a></td>
+				<td class="text-center"><a href="mailto:{{mem.contact.email}}">{{mem.contact.email}}</a></td>
+				<td>{% if mem.contact.phone %}{{mem.contact.phone}}{% endif %}</td>
+				<td class="text-center"><a href="#" title="remove" class="btn-fucxed strong del-member" data-name="{{mem.contact}}" data-contact="{{mem.contact.id}}" data-role="member">X</a></td>
 			</tr>
 			{% endfor %}
 			{% if pending %}

@@ -13,8 +13,7 @@ class Circle(models.Model):
     name = models.CharField(max_length=255, db_index=True)
     purpose = models.TextField(default='', help_text='Describe the mandates for this group')
     sensitive_info = models.TextField(default='', blank=True, help_text='Information for members only')
-    leads = models.ManyToManyField(Contact, blank=True, related_name='leads')
-    members = models.ManyToManyField(Contact, blank=True, related_name='members')
+    members = models.ManyToManyField(to=Contact, through='CircleMember', blank=True)
     parent = models.ForeignKey('self', blank=True, null=True, on_delete=models.SET_NULL)
     color = models.CharField(max_length=50, blank=True, default='')
     email = models.EmailField(max_length=255, blank=True, null=True, help_text='Public email address for this group')
@@ -30,22 +29,26 @@ class Circle(models.Model):
 
     @cached_property
     def recursive_members(self):
-        members = set(self.member_list)
+        members = set(Contact.objects.filter(circlemember__circle=self))
         for circle in self.children:
             members.update(circle.recursive_members)
         return members
 
     @cached_property
     def children(self):
-        return list(self.circle_set.all().prefetch_related('members', 'leads'))
+        return list(self.circle_set.all().prefetch_related('members'))
 
     @cached_property
     def member_list(self):
-        return list(self.members.all().order_by('pk'))
+        return list(CircleMember.objects.filter(circle=self).order_by('role', 'pk'))
 
     @cached_property
     def lead_list(self):
         return list(self.leads.all())
+
+    @cached_property
+    def leads(self):
+        return Contact.objects.filter(circlemember__role='lead', circlemember__circle=self)
 
     def get_absolute_url(self):
         return reverse('circles:detail', kwargs={'pk': self.id})
@@ -82,19 +85,19 @@ class Circle(models.Model):
         return addresses
 
     def get_member_emails(self):
-        emails = [m.email for m in self.member_list]
+        emails = [m.contact.email for m in self.member_list]
         emails.extend(m.email for m in self.lead_list)
         return ','.join(emails)
 
-    def add_member(self, email, name, contact=None):
+    def add_member(self, email, name, contact=None, role='member'):
         contact = contact or get_contact(email, name=name)
-        self.members.add(contact)
+        CircleMember.objects.get_or_create(circle=self, contact=contact, role=role)
 
-    def remove_member(self, contact):
+    def remove_member(self, contact, role='member'):
         """
         Removes the member and/or any requests for membership
         """
-        self.members.remove(contact)
+        CircleMember.objects.filter(circle=self, contact=contact, role=role).delete()
         MembershipRequest.objects.filter(circle=self, requestor=contact).delete()
 
     def request_membership(self, email, name):
@@ -136,6 +139,19 @@ class Circle(models.Model):
         return False
 
 
+class CircleMember(models.Model):
+    circle = models.ForeignKey(Circle, on_delete=models.CASCADE)
+    contact = models.ForeignKey(Contact, on_delete=models.CASCADE)
+    role = models.CharField(max_length=255)
+    join_date = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        unique_together = ('circle', 'contact', 'role')
+
+    def __str__(self):
+        return '{} {}'.format(self.circle, self.contact)
+
+
 class MembershipRequest(models.Model):
     created = models.DateTimeField(db_index=True, auto_now_add=True)
     circle = models.ForeignKey(Circle, on_delete=models.CASCADE)
@@ -154,6 +170,6 @@ class MembershipRequest(models.Model):
             self.confirm_date = now()
         super().save(*args, **kwargs)
         if self.confirmed_by:
-            self.circle.members.add(self.requestor)
+            self.circle.add_member(self.requestor)
         else:
             self.circle.members.remove(self.requestor)

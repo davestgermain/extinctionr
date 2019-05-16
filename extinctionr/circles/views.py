@@ -46,10 +46,8 @@ def add_member(request, pk):
         email = data['email'].lower()
         name = data['name']
         contact = data['contact']
-        if data['role'] == 'lead':
-            circle.leads.add(contact)
-        else:
-            circle.add_member(email, name, contact=contact)
+        role = 'lead' if data['role'] == 'lead' else 'member'
+        circle.add_member(email, name, contact=contact, role=role)
     return redirect(circle.get_absolute_url())
 
 
@@ -59,10 +57,8 @@ def del_member(request, pk):
     contact = get_object_or_404(Contact, pk=request.POST['id'])
     me = get_contact(email=request.user.email)
     if me == contact or circle.can_manage(request.user):
-        if request.POST['role'] == 'lead':
-            circle.leads.remove(contact)
-        else:
-            circle.remove_member(contact)
+        role = 'lead' if request.POST['role'] == 'lead' else 'member'
+        circle.remove_member(contact, role=role)
     return redirect(circle.get_absolute_url())
 
 @login_required
@@ -108,7 +104,7 @@ def person_view(request, contact_id=None):
 class CircleView(generic.DetailView):
     template_name = 'circles/circle.html'
     def get_queryset(self):
-        return Circle.objects.select_related('parent').prefetch_related('leads', 'members')
+        return Circle.objects.select_related('parent').prefetch_related('members')
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -147,7 +143,7 @@ class TopLevelView(generic.ListView):
     template_name = 'circles/outer.html'
 
     def get_queryset(self):
-        return Circle.objects.filter(parent__isnull=True).prefetch_related('leads', 'members')
+        return Circle.objects.filter(parent__isnull=True).prefetch_related('members')
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
