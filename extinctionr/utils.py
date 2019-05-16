@@ -29,6 +29,13 @@ def get_contact(email, name='', first_name='', last_name='', **kwargs):
         if v and getattr(user, k, None) is None:
             setattr(user, k, v)
             resave = True
+    if last_name and user.last_name in ('', '?', 'unknown'):
+        user.last_name = last_name
+        resave = True
+    if first_name and user.first_name in ('', '?', 'unknown'):
+        user.first_name = first_name
+        resave = True
+
     if address:
         if not user.address:
             user.address = Address.objects.create(**address)

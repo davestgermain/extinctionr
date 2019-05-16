@@ -41,7 +41,7 @@ class MembershipRequestForm(forms.Form):
 def add_member(request, pk):
     circle = get_object_or_404(Circle, pk=pk)
     form = ContactForm(request.POST)
-    if form.is_valid():
+    if form.is_valid() and circle.can_manage(request.user):
         data = form.cleaned_data
         email = data['email'].lower()
         name = data['name']
@@ -62,7 +62,7 @@ def del_member(request, pk):
         if request.POST['role'] == 'lead':
             circle.leads.remove(contact)
         else:
-            circle.members.remove(contact)
+            circle.remove_member(contact)
     return redirect(circle.get_absolute_url())
 
 @login_required
@@ -85,6 +85,9 @@ def request_membership(request, pk):
             contact = circle.request_membership(data['email'], data['name'])
             if not request.user.is_authenticated:
                 set_last_contact(request, contact)
+                circle_requests = request.session.get('circle_requests', {})
+                circle_requests[str(circle.id)] = True
+                request.session['circle_requests'] = circle_requests
             messages.success(request, "Thank you for signing up for {}!".format(circle))
     return redirect(circle.get_absolute_url())
 
@@ -127,6 +130,8 @@ class CircleView(generic.DetailView):
                 initial['email'] = last_contact.email
                 initial['name'] = str(last_contact)
             context['request_form'] = MembershipRequestForm(initial=initial)
+        if not (context.get('is_lead', None) or context.get('is_member', None)):
+            context['is_pending'] = circle.is_pending(self.request)
         return context
 
     def render_to_response(self, context, **response_kwargs):

@@ -90,6 +90,13 @@ class Circle(models.Model):
         contact = contact or get_contact(email, name=name)
         self.members.add(contact)
 
+    def remove_member(self, contact):
+        """
+        Removes the member and/or any requests for membership
+        """
+        self.members.remove(contact)
+        MembershipRequest.objects.filter(circle=self, requestor=contact).delete()
+
     def request_membership(self, email, name):
         contact = get_contact(email, name=name)
         if not self.members.filter(pk=contact.id).exists():
@@ -112,6 +119,20 @@ class Circle(models.Model):
         for member in self.recursive_members:
             if member.email == email:
                 return True
+        return False
+
+    def is_pending(self, request):
+        if request.user.is_authenticated:
+            contact = get_contact(request.user.email)
+        else:
+            contact = None
+        if contact:
+            try:
+                return MembershipRequest.objects.get(circle=self, requestor=contact).confirm_date is None
+            except MembershipRequest.DoesNotExist:
+                return False
+        else:
+            return str(self.id) in request.session.get('circle_requests', {})
         return False
 
 
