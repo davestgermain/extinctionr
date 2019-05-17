@@ -100,7 +100,7 @@ def person_view(request, contact_id=None):
         contact = get_object_or_404(Contact, pk=contact_id)
     ctx = {
         'contact': contact,
-        'leads': Circle.objects.filter(circlemember__contact=contact, circlemember__role='lead'),
+        'leads': Circle.objects.filter(circlemember__contact=contact, circlemember__role__in=['int','ext']).distinct(),
         'members': Circle.objects.filter(circlemember__contact=contact, circlemember__role='member'),
         'is_me': contact == get_contact(email=request.user.email),
         }

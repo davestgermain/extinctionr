@@ -31,6 +31,15 @@
 					<div class="col"><a href="mailto:{{sub1.public_email}}">{{sub1.public_email}}</a></div>
 					{% if can_see_members %}<div class="col"><strong>{{sub1.recursive_members|length}} members</strong></div>{% endif %}
 				</div>
+				{% if can_see_leads %}
+				<div class="row">
+					<ul class="col list-unstyled lead px-4 text-center">
+					{% for mem in sub1.external_coordinators %}
+					<li><a href="{% url 'circles:person' contact_id=mem.contact.id %}">{{mem.contact}}</a></li>
+					{% endfor %}
+					</ul>
+				</div>
+				{% endif %}
 				{{sub1.purpose|markdownify}}
 			</div>
 			<div class="col border container">
