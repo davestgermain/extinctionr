@@ -6,6 +6,12 @@ from extinctionr.utils import get_contact
 from django.utils.timezone import now
 from django.utils.functional import cached_property
 
+ROLE_CHOICES = {
+    'int': 'Internal Coordinator',
+    'ext': 'External Coordinator',
+    'member': 'Member'
+}
+
 
 class Circle(models.Model):
     created = models.DateTimeField(db_index=True, auto_now_add=True)
@@ -17,6 +23,8 @@ class Circle(models.Model):
     parent = models.ForeignKey('self', blank=True, null=True, on_delete=models.SET_NULL)
     color = models.CharField(max_length=50, blank=True, default='')
     email = models.EmailField(max_length=255, blank=True, null=True, help_text='Public email address for this group')
+    available_roles = models.CharField(max_length=255, blank=True, default='int,ext,member', help_text='Comma-separated names of roles')
+    role_description = models.TextField(default='', blank=True, help_text='Describe additional roles (markdown format')
 
     class Meta:
         ordering = ('name',)
@@ -26,6 +34,21 @@ class Circle(models.Model):
         parents.reverse()
         parents.append(self.name)
         return ' :: '.join(parents)
+
+    def clean(self):
+        super().clean()
+        available = [a.strip() for a in self.available_roles.split(',') if a.strip()]
+        for role in ROLE_CHOICES.keys():
+            if role not in available:
+                available.append(role)
+        self.available_roles = ','.join(available)
+
+    def get_role_choices(self):
+        choices = []
+        for role in self.available_roles.split(','):
+            choice = ROLE_CHOICES.get(role, role.capitalize())
+            choices.append((role, choice))
+        return choices
 
     @cached_property
     def recursive_members(self):
@@ -48,7 +71,11 @@ class Circle(models.Model):
 
     @cached_property
     def leads(self):
-        return Contact.objects.filter(circlemember__role='lead', circlemember__circle=self)
+        return Contact.objects.filter(circlemember__role__in=['int','ext'], circlemember__circle=self)
+
+    @cached_property
+    def coordinators(self):
+        return CircleMember.objects.filter(circle=self, role__in=['int', 'ext']).order_by('role', 'pk')
 
     def get_absolute_url(self):
         return reverse('circles:detail', kwargs={'pk': self.id})
@@ -93,12 +120,12 @@ class Circle(models.Model):
         contact = contact or get_contact(email, name=name)
         CircleMember.objects.get_or_create(circle=self, contact=contact, role=role)
 
-    def remove_member(self, contact, role='member'):
+    def remove_member(self, contact, role='member', who=None):
         """
         Removes the member and/or any requests for membership
         """
         CircleMember.objects.filter(circle=self, contact=contact, role=role).delete()
-        MembershipRequest.objects.filter(circle=self, requestor=contact).delete()
+        MembershipRequest.objects.filter(circle=self, requestor=contact).update(confirmed_by=who)
 
     def request_membership(self, email, name):
         contact = get_contact(email, name=name)
@@ -139,17 +166,26 @@ class Circle(models.Model):
         return False
 
 
+
 class CircleMember(models.Model):
     circle = models.ForeignKey(Circle, on_delete=models.CASCADE)
     contact = models.ForeignKey(Contact, on_delete=models.CASCADE)
     role = models.CharField(max_length=255)
     join_date = models.DateTimeField(auto_now_add=True)
 
+    @property
+    def verbose_role(self):
+        return ROLE_CHOICES.get(self.role, self.role.capitalize())
+
     class Meta:
         unique_together = ('circle', 'contact', 'role')
 
     def __str__(self):
         return '{} {}'.format(self.circle, self.contact)
+
+    def get_absolute_url(self):
+        return self.circle.get_absolute_url()
+
 
 
 class MembershipRequest(models.Model):
@@ -170,6 +206,6 @@ class MembershipRequest(models.Model):
             self.confirm_date = now()
         super().save(*args, **kwargs)
         if self.confirmed_by:
-            self.circle.add_member(self.requestor)
+            self.circle.add_member(self.requestor.email, str(self.requestor), contact=self.requestor, role='member')
         else:
-            self.circle.members.remove(self.requestor)
+            self.circle.remove_member(self.requestor, role='member')

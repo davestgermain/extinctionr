@@ -19,7 +19,11 @@ class ContactForm(forms.Form):
         widget=autocomplete.ModelSelect2(url='circles:person-autocomplete', attrs={'class': 'form-control'}))
     email = forms.EmailField(label="Email", required=False, widget=forms.EmailInput(attrs={'class': 'form-control text-center', 'placeholder': 'Email Address'}))
     name = forms.CharField(required=False, label="Name", widget=forms.TextInput(attrs={'class': 'form-control text-center', 'placeholder': 'Your Name'}))
-    role = forms.CharField(required=True, widget=forms.HiddenInput())
+    role = forms.ChoiceField(required=True, widget=forms.Select(attrs={'class': 'form-control text-center custom-select custom-select-lg', 'placeholder': 'Role'}))
+
+    def __init__(self, circle, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['role'].choices = circle.get_role_choices()
 
     def clean(self):
         cleaned_data = super().clean()
@@ -40,13 +44,13 @@ class MembershipRequestForm(forms.Form):
 @login_required
 def add_member(request, pk):
     circle = get_object_or_404(Circle, pk=pk)
-    form = ContactForm(request.POST)
+    form = ContactForm(circle, request.POST)
     if form.is_valid() and circle.can_manage(request.user):
         data = form.cleaned_data
         email = data['email'].lower()
         name = data['name']
         contact = data['contact']
-        role = 'lead' if data['role'] == 'lead' else 'member'
+        role = data['role']
         circle.add_member(email, name, contact=contact, role=role)
     return redirect(circle.get_absolute_url())
 
@@ -57,8 +61,8 @@ def del_member(request, pk):
     contact = get_object_or_404(Contact, pk=request.POST['id'])
     me = get_contact(email=request.user.email)
     if me == contact or circle.can_manage(request.user):
-        role = 'lead' if request.POST['role'] == 'lead' else 'member'
-        circle.remove_member(contact, role=role)
+        role = request.POST.get('role', 'member')
+        circle.remove_member(contact, role=role, who=request.user)
     return redirect(circle.get_absolute_url())
 
 @login_required
@@ -94,7 +98,12 @@ def person_view(request, contact_id=None):
         contact = get_contact(email=request.user.email)
     else:
         contact = get_object_or_404(Contact, pk=contact_id)
-    ctx = {'contact': contact, 'is_me': contact == get_contact(email=request.user.email)}
+    ctx = {
+        'contact': contact,
+        'leads': Circle.objects.filter(circlemember__contact=contact, circlemember__role='lead'),
+        'members': Circle.objects.filter(circlemember__contact=contact, circlemember__role='member'),
+        'is_me': contact == get_contact(email=request.user.email),
+        }
     response = render(request, 'circles/person.html', ctx)
     response['Cache-Control'] = 'private'
     return response
@@ -117,15 +126,18 @@ class CircleView(generic.DetailView):
             context['is_lead'] = is_lead
             context['members'] = circle.member_list
             context['pending'] = circle.membershiprequest_set.filter(confirmed_by=None)
-            context['form'] = ContactForm(initial={'role': 'member'})
-            context['lead_form'] = ContactForm(initial={'role': 'lead'})
+            context['form'] = ContactForm(circle, initial={'role': 'member'})
+            # if they're logged in, this is not relevant
+            if 'circle_requests' in self.request.session:
+                del self.request.session['circle_requests']
         if not context.get('is_lead', None):
             initial = {'circle_id': circle.id}
             last_contact = get_last_contact(self.request)
             if last_contact:
                 initial['email'] = last_contact.email
                 initial['name'] = str(last_contact)
-            context['request_form'] = MembershipRequestForm(initial=initial)
+            if not context.get('is_member'):
+                context['request_form'] = MembershipRequestForm(initial=initial)
         if not (context.get('is_lead', None) or context.get('is_member', None)):
             context['is_pending'] = circle.is_pending(self.request)
         return context

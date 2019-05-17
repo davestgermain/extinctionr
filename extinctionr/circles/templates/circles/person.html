@@ -19,9 +19,9 @@
 		</address>
 		<hr>
 		<div id="leads">
-			<h4>lead of:</h4>
+			<h4>coordinator of:</h4>
 			<ul class="pl-4 list-unstyled list-horizontal">
-			{% for circle in contact.leads.all %}
+			{% for circle in leads %}
 			<li><a href="{{circle.get_absolute_url}}">{{circle}}</a>{% if is_me %} &mdash; <a href="#" title="remove" class="btn-fucxed strong del-member" data-circle-url="{% url 'circles:del-member' pk=circle.id %}" data-circle="{{circle}}" data-contact="{{contact.id}}" data-role="lead">X</a>{% endif %}</li>
 			{% endfor %}
 			</ul>
@@ -29,7 +29,7 @@
 		<div id="members">
 			<h4>member of:</h4>
 			<ul class="pl-4 list-unstyled list-horizontal">
-			{% for circle in contact.members.all %}
+			{% for circle in members %}
 			<li><a href="{{circle.get_absolute_url}}">{{circle}}</a>{% if is_me %} &mdash; <a href="#" title="remove" class="btn-fucxed strong del-member" data-circle-url="{% url 'circles:del-member' pk=circle.id %}" data-circle="{{circle}}" data-contact="{{contact.id}}" data-role="member">X</a>{% endif %}</li>
 			{% endfor %}
 			</ul>

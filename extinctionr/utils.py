@@ -59,7 +59,8 @@ def get_last_contact(request):
 def set_last_contact(request, contact):
     if contact:
         request.session['last-contact'] = contact.id
-
+    else:
+        request.session.pop('last-contact', None)
 
 def base_url():
     current_site = Site.objects.get_current()

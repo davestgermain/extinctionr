@@ -11,7 +11,7 @@ class CircleAdmin(MarkdownxModelAdmin):
     list_select_related = ('parent',)
     search_fields = ('name', )
     autocomplete_fields = ('parent', )
-    fields = ('name', 'parent', 'purpose', 'sensitive_info', 'email', 'color', 'created', 'modified')
+    fields = ('name', 'parent', 'purpose', 'sensitive_info', 'email', 'available_roles', 'role_description', 'color', 'created', 'modified')
 
     def has_view_permission(self, request, obj=None):
         if obj:

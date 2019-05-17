@@ -22,42 +22,24 @@
 		</div>
 		{% endif %}
 		{% endif %}
-		{% if can_see_leads %}
 		<section class="row pt-3 border-top">
+		{% if can_see_leads %}
 			<div id="leads" class="col">
-				<h4 class="text-center">leads</h4>
+				<h4 class="text-center">coordinators</h4>
 				<ul class="pl-2 list-unstyled small">
-				{% for contact in object.lead_list %}
-				<li><a href="{% url 'circles:person' contact_id=contact.id %}">{{contact.first_name}} {{contact.last_name}}</a> &mdash;  <a href="mailto:{{contact.email}}">{{contact.email}}</a></li>
+				{% for coord in object.coordinators %}
+				<li><strong>{{coord.verbose_role}}</strong> &mdash; <a href="{% url 'circles:person' contact_id=coord.contact.id %}">{{coord.contact}}</a> &mdash;  <a href="mailto:{{coord.contact.email}}">{{coord.contact.email}}</a></li>
 				{% endfor %}
 				</ul>
-				{% if is_lead %}
-				<form action="{% url 'circles:add-member' pk=object.id %}" class="container" method="post">
-				{% csrf_token %}
-					<div class="form-group row">
-						<div class="col">
-							{{lead_form.role}}
-							{{lead_form.contact}}
-						</div>
-					</div>
-					<div class="form-group row mt-4 pt-2">
-						<div class="col col-lg-4 text-center">
-							<input class="btn btn-block btn-fucxed btn-lg btn-outline-dark btn-success text-uppercase" type="submit" value="add lead">
-						</div>
-					</div>
-				</form>
-				{% endif %}
 			</div>
 		{% endif %}
-		{% if can_see_members %}
+		{% if is_lead %}
 			<div class="col border-left" id="members">
 				<h4 class="text-center">members</h4>
-				{% if is_lead %}
 				<form action="{% url 'circles:add-member' pk=object.id %}" class="container" method="post">
 					{% csrf_token %}
 					<div class="form-group row">
 						<div class="col">
-							{{form.role}}
 							{{form.contact}}
 						</div>
 					</div>
@@ -72,15 +54,22 @@
 							{{form.name}}
 						</div>
 					</div>
+					<div class="form-group row">
+						<div class="col text-center">
+							{{form.role}}
+							<p><a href="" data-toggle="modal" data-target="#role-modal">Explanation of roles</a></p>
+						</div>
+					</div>
 					<div class="form-group row mt-4 pt-2">
 						<div class="col col-lg-4 ml-auto">
 							<input class="btn btn-block btn-fucxed btn-lg btn-outline-dark btn-success text-uppercase" type="submit" value="add member">
 						</div>
 					</div>
 				</form>
-		{% endif %}
 			</div>
+		{% endif %}
 		</section>
+		{% if can_see_members %}
 			{% if members or pending %}
 		<a name="members"></a>
 		<table class="pl-4 table table-sm table-responsive-sm xtable-responsive-lg table-striped table-hover table-light">
@@ -96,15 +85,16 @@
 			<tbody class="small">
 			{% for mem in members %}
 			<tr>
-				<th scope="row" class="px-3 text-center">{{mem.role}}</th>
+				<th scope="row" class="px-3 text-center">{{mem.verbose_role}}</th>
 				<td><a href="{% url 'circles:person' contact_id=mem.contact.id %}">{{mem.contact}}</a></td>
 				<td class="text-center"><a href="mailto:{{mem.contact.email}}">{{mem.contact.email}}</a></td>
 				<td>{% if mem.contact.phone %}{{mem.contact.phone}}{% endif %}</td>
-				<td class="text-center"><a href="#" title="remove" class="btn-fucxed strong del-member" data-name="{{mem.contact}}" data-contact="{{mem.contact.id}}" data-role="member">X</a></td>
+				<td class="text-center"><a href="#" title="remove" class="btn-fucxed strong del-member" data-name="{{mem.contact}}" data-contact="{{mem.contact.id}}" data-role="{{mem.role}}">X</a></td>
 			</tr>
 			{% endfor %}
 			{% if pending %}
 			<tr>
+				<td></td>
 				<td></td>
 				<th scope="row" class="px-4 py-4"><h5>pending</h5></th>
 				<td></td>
@@ -112,6 +102,7 @@
 			</tr>
 			{% for req in pending %}
 			<tr>
+				<td></td>
 				<th scope="row" class="px-3"><a href="{% url 'circles:person' contact_id=req.requestor_id %}">{{req.requestor}}</a></td>
 				<td class="text-center">
 					<a href="mailto:{{req.requestor.email}}">{{req.requestor.email}}</a>
@@ -134,6 +125,8 @@
 		{% if members %}<div class="text-right"><a class="btn btn-info btn-fucxed" href="mailto:{{object.get_member_emails}}">email all</a></div>{% endif %}
 		{% endif %}
 		{% if request_form %}
+		<section class="row">
+			<div class="col">
 		{% if is_pending %}
 		<p class="text-success py-4 text-center">Your request to join is pending coordinator approval.<br>Please check back later.</p>
 		{% else %}
@@ -157,6 +150,8 @@
 			</div>
 		</form>
 		{% endif %}
+			</div>
+		</section>
 		{% endif %}
 		<hr>
 	</div>
@@ -191,6 +186,35 @@
 {% if not user.is_authenticated %}
 <div class="row p-4 pt-5">
 	<h5 class="col"><a href="{% url 'login' %}?next={{object.get_absolute_url}}">login</a> to see more information</h5>
+</div>
+{% endif %}
+
+{% if is_lead %}
+<div class="modal" tabindex="-1" role="dialog" id="role-modal">
+  <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title text-center">Role Information</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <ul class="list-unstyled">
+        	<li><strong>Internal Coordinator</strong> &mdash; Schedule &amp; Facilitate meetings, draft agendas</li>
+        	<li><strong>External Coordinator</strong> &mdash; Represents this group within the {% if object.parent %}wider <a href="{{object.parent.get_absolute_url}}">{{object.parent.name}}</a> group{% else %}entire organization{% endif %}</li>
+        	<li><strong>Member</strong> &mdash; You're a member of the group, with no special responsibilities (yet!)</li>
+        </ul>
+        {% if object.role_description %}
+        <p>{{object.role_description|markdownify}}</p>
+        {% endif %}
+        <p>For more information on Extinction Rebellion organization, <a href="https://www.loom.com/share/2a1a2ecc1b5247d5bac7c32e1cf60d73">watch this brief video</a></p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary btn-fucxed" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
 </div>
 {% endif %}
 {% endblock %}

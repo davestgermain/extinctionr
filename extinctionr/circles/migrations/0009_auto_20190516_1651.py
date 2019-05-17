@@ -11,7 +11,8 @@ def copy_members(apps, schema_editor):
         for member in circle.members.all():
             CircleMember.objects.create(circle=circle, contact=member, role='member')
         for member in circle.leads.all():
-            CircleMember.objects.create(circle=circle, contact=member, role='lead')
+            CircleMember.objects.create(circle=circle, contact=member, role='int')
+            CircleMember.objects.create(circle=circle, contact=member, role='ext')
 
 
 class Migration(migrations.Migration):
