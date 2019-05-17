@@ -44,8 +44,8 @@
 						</div>
 						{% if can_see_leads %}
 						<ul class="list-unstyled lead px-4 text-center">
-						{% for contact in sub2.lead_list %}
-						<li><a href="{% url 'circles:person' contact_id=contact.id %}">{{contact}}</a></li>
+						{% for mem in sub2.external_coordinators %}
+						<li><a href="{% url 'circles:person' contact_id=mem.contact.id %}">{{mem.contact}}</a></li>
 						{% endfor %}
 						</ul>
 						{% endif %}

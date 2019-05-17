@@ -174,8 +174,8 @@
 		</div>
 		{% if can_see_leads %}
 		<ul class="list-unstyled small">
-		{% for contact in subgroup.lead_list %}
-		<li><a href="mailto:{{contact.email}}">{{contact}}</a></li>
+		{% for mem in subgroup.external_coordinators %}
+		<li><a href="mailto:{{mem.contact.email}}">{{mem.contact}}</a></li>
 		{% endfor %}
 		</ul>
 		{% endif %}

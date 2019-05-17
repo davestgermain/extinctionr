@@ -77,6 +77,14 @@ class Circle(models.Model):
     def coordinators(self):
         return CircleMember.objects.filter(circle=self, role__in=['int', 'ext']).order_by('role', 'pk')
 
+    @property
+    def external_coordinators(self):
+        return self.coordinators.filter(role='ext')
+
+    @property
+    def internal_coordinators(self):
+        return self.coordinators.filter(role='int')
+
     def get_absolute_url(self):
         return reverse('circles:detail', kwargs={'pk': self.id})
 
