@@ -23,12 +23,12 @@
 		{% endif %}
 		{% endif %}
 		<section class="row pt-3 border-top">
-		{% if can_see_leads %}
+		{% if can_see_leads and object.coordinators %}
 			<div id="leads" class="col">
 				<h4 class="text-center">coordinators</h4>
 				<ul class="pl-2 list-unstyled small">
 				{% for coord in object.coordinators %}
-				<li><strong>{{coord.verbose_role}}</strong> &mdash; <a href="{% url 'circles:person' contact_id=coord.contact.id %}">{{coord.contact}}</a> &mdash;  <a href="mailto:{{coord.contact.email}}">{{coord.contact.email}}</a></li>
+				<li class="pb-3"><strong>{{coord.verbose_role}}:</strong><br><a href="{% url 'circles:person' contact_id=coord.contact.id %}">{{coord.contact}}</a> &mdash;  <a href="mailto:{{coord.contact.email}}">{{coord.contact.email}}</a></li>
 				{% endfor %}
 				</ul>
 			</div>
@@ -57,7 +57,7 @@
 					<div class="form-group row">
 						<div class="col text-center">
 							{{form.role}}
-							<p><a href="" data-toggle="modal" data-target="#role-modal">Explanation of roles</a></p>
+							<p class="pt-3"><a href="" data-toggle="modal" data-target="#role-modal">Explanation of roles</a></p>
 						</div>
 					</div>
 					<div class="form-group row mt-4 pt-2">
