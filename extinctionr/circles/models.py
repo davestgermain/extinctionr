@@ -137,8 +137,8 @@ class Circle(models.Model):
         CircleMember.objects.filter(circle=self, contact=contact, role=role).delete()
         MembershipRequest.objects.filter(circle=self, requestor=contact).update(confirmed_by=who)
 
-    def request_membership(self, email, name):
-        contact = get_contact(email, name=name)
+    def request_membership(self, email='', name='', contact=None):
+        contact = contact or get_contact(email, name=name)
         if not self.members.filter(pk=contact.id).exists():
             try:
                 MembershipRequest.objects.get_or_create(circle=self, requestor=contact)

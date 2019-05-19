@@ -1,3 +1,6 @@
+from io import TextIOWrapper
+import csv
+
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
@@ -108,6 +111,58 @@ def person_view(request, contact_id=None):
     response['Cache-Control'] = 'private'
     return response
 
+
+def find_field(fields, search_for):
+    for field in fields:
+        if field.lower().startswith(search_for):
+            return field
+    raise ValueError(search_for)
+
+
+@login_required
+def csv_import(request):
+    ctx = {}
+    can_import = request.user.has_perm('circles.change_circle')
+    ctx['can_import'] = can_import
+    if can_import and request.method == 'POST':
+        f = TextIOWrapper(request.FILES['csv'].file, encoding=request.encoding)
+        reader = csv.DictReader(f)
+        fields = reader.fieldnames
+        email_field = find_field(fields, 'email')
+        first_name_field = find_field(fields, ('first', 'first name', 'fname'))
+        last_name_field = find_field(fields, ('last', 'last name', 'lname'))
+        try:
+            wg_field = find_field(fields, ('circle', 'working group', 'wg'))
+        except ValueError:
+            wg_field = None
+
+        try:
+            phone_field = find_field(fields, ('phone number', 'phone'))
+        except ValueError:
+            phone_field = None
+
+        contacts = set()
+        memberships = []
+        for row in reader:
+            contact = get_contact(row[email_field],
+                first_name=row[first_name_field],
+                last_name=row[last_name_field],
+                phone=row[phone_field] if phone_field else None)
+            contacts.add(contact)
+            messages.success(request, 'Found {}'.format(contact))
+            if wg_field and row[wg_field]:
+                wg = row[wg_field].strip()
+                try:
+                    circle = Circle.objects.filter(name__iexact=wg).order_by('-pk')[0]
+                except IndexError:
+                    messages.error(request, 'Could not find circle named {}'.format(wg))
+                else:
+                    circle.request_membership(contact=contact)
+                    messages.success(request, 'Requested membership for {} to {}'.format(contact, circle))
+        return redirect('circles:person-import')
+    response = render(request, 'circles/csv.html', ctx)
+    response['Cache-Control'] = 'private'
+    return response
 
 @method_decorator(cache_page(1200), name='dispatch')
 class CircleView(generic.DetailView):

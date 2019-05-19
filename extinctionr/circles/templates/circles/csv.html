@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+{% block title %}:: Contact Import{% endblock %}
+{% block content %}
+<div class="row pt-5">
+	<div class="col-text">
+		<h2 class="text-center">Import Contacts</h2>
+		{% if can_import %}
+		<p>
+			To add contacts to working groups, upload a CSV file with at least the following columns (case insensitive):
+			<ul>
+				<li><code>email</code></li>
+				<li><code>first_name</code> or <code>first name</code> or <code>fname</code></li>
+				<li><code>last_name</code> or <code>last name</code> or <code>lname</code></li>
+				<li>(optional) <code>phone</code> or <code>phone number</code></li>
+				<li><code>circle</code> or <code>working group</code> or <code>wg</code></li>
+			</ul>
+		</p>
+		<form method="POST" enctype="multipart/form-data" id="file-form" class="mb-5">
+            <label class="btn btn-lg btn-block btn-primary btn-fucxed mt-5">
+				<input id="file-field" type="file" name="csv" style="display:none" accept=".csv">
+				Choose File
+			</label>
+		</form>
+		{% else %}
+		<p>You don't seem to have permission to import contacts. If this is a mistake, <a href="/todo/ticket/add/">File a ticket</a></p>
+		{% endif %}
+	</div>
+</div>
+{% endblock %}
+{% block extra_js %}
+<script>
+	$(function(){
+		$('#file-field').change(function(e){
+			$('#file-form').submit();
+		})
+	});
+</script>
+{% endblock %}
