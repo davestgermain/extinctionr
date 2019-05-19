@@ -151,7 +151,7 @@ def csv_import(request):
             contacts.add(contact)
             messages.success(request, 'Found {}'.format(contact))
             if wg_field and row[wg_field]:
-                wg = row[wg_field].strip()
+                wg = row[wg_field].strip().split('-')[0]
                 try:
                     circle = Circle.objects.filter(name__iexact=wg).order_by('-pk')[0]
                 except IndexError:
