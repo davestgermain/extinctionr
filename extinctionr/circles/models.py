@@ -52,7 +52,10 @@ class Circle(models.Model):
 
     @cached_property
     def recursive_members(self):
-        members = set(Contact.objects.filter(circlemember__circle=self))
+        members = set()
+        for mem in CircleMember.objects.filter(circle=self).select_related('contact').order_by('role', 'pk'):
+            mem.contact.verbose_role = mem.verbose_role
+            members.add((mem.contact, mem.role))
         for circle in self.children:
             members.update(circle.recursive_members)
         return members
@@ -63,7 +66,7 @@ class Circle(models.Model):
 
     @cached_property
     def member_list(self):
-        return list(CircleMember.objects.filter(circle=self).order_by('role', 'pk'))
+        return list(CircleMember.objects.filter(circle=self).select_related('contact').order_by('role', 'pk'))
 
     @cached_property
     def lead_list(self):
@@ -154,7 +157,7 @@ class Circle(models.Model):
 
     def is_member(self, user):
         email = user.email
-        for member in self.recursive_members:
+        for member, role in self.recursive_members:
             if member.email == email:
                 return True
         return False

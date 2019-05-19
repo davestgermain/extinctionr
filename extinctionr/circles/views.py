@@ -124,7 +124,7 @@ class CircleView(generic.DetailView):
             context['can_see_members'] = is_lead or self.request.user.has_perm('circles.view_circle')
             context['can_see_leads'] = self.request.user.is_authenticated
             context['is_lead'] = is_lead
-            context['members'] = circle.member_list
+            context['members'] = circle.recursive_members
             context['pending'] = circle.membershiprequest_set.filter(confirmed_by=None)
             context['form'] = ContactForm(circle, initial={'role': 'member'})
             # if they're logged in, this is not relevant
