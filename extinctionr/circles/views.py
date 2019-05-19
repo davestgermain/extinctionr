@@ -86,7 +86,7 @@ def request_membership(request, pk):
         if form.is_valid():
             data = form.cleaned_data
             contact = circle.request_membership(data['email'], data['name'])
-            if not request.user.is_authenticated:
+            if contact and not request.user.is_authenticated:
                 set_last_contact(request, contact)
                 circle_requests = request.session.get('circle_requests', {})
                 circle_requests[str(circle.id)] = True
@@ -151,14 +151,14 @@ def csv_import(request):
             contacts.add(contact)
             messages.success(request, 'Found {}'.format(contact))
             if wg_field and row[wg_field]:
-                wg = row[wg_field].strip().split('-')[0]
+                wg = row[wg_field].split('-')[0].strip()
                 try:
                     circle = Circle.objects.filter(name__iexact=wg).order_by('-pk')[0]
                 except IndexError:
                     messages.error(request, 'Could not find circle named {}'.format(wg))
                 else:
-                    circle.request_membership(contact=contact)
-                    messages.success(request, 'Requested membership for {} to {}'.format(contact, circle))
+                    if circle.request_membership(contact=contact):
+                        messages.success(request, 'Requested membership for {} to {}'.format(contact, circle))
         return redirect('circles:person-import')
     response = render(request, 'circles/csv.html', ctx)
     response['Cache-Control'] = 'private'

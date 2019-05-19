@@ -144,7 +144,9 @@ class Circle(models.Model):
                 MembershipRequest.objects.get_or_create(circle=self, requestor=contact)
             except MultipleObjectsReturned:
                 pass
-        return contact
+            return contact
+        else:
+            return False
 
     def approve_membership(self, contact, who):
         for req in MembershipRequest.objects.filter(circle=self, requestor=contact):
