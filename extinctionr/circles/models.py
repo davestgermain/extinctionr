@@ -123,8 +123,7 @@ class Circle(models.Model):
         return addresses
 
     def get_member_emails(self):
-        emails = [m.contact.email for m in self.member_list]
-        emails.extend(m.email for m in self.lead_list)
+        emails = set((m.email for m, role in self.recursive_members))
         return ','.join(emails)
 
     def add_member(self, email, name, contact=None, role='member'):
