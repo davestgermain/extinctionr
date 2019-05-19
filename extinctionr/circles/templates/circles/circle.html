@@ -88,7 +88,7 @@
 				<th scope="row" class="px-3 text-center">{{mem.verbose_role}}</th>
 				<td><a href="{% url 'circles:person' contact_id=mem.id %}">{{mem}}</a></td>
 				<td class="text-center"><a href="mailto:{{mem.email}}">{{mem.email}}</a></td>
-				<td>{% if mem.contact.phone %}{{mem.phone}}{% endif %}</td>
+				<td>{% if mem.phone %}{{mem.phone}}{% endif %}</td>
 				<td class="text-center"><a href="#" title="remove" class="btn-fucxed strong del-member" data-name="{{mem}}" data-contact="{{mem.id}}" data-role="{{role}}">X</a></td>
 			</tr>
 			{% endfor %}
