@@ -61,6 +61,10 @@ class Circle(models.Model):
         return members
 
     @cached_property
+    def recursive_members_count(self):
+        return len(set((mem[0] for mem in self.recursive_members)))
+
+    @cached_property
     def children(self):
         return list(self.circle_set.all().prefetch_related('members'))
 

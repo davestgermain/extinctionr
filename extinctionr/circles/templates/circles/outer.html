@@ -19,7 +19,7 @@
 	<div class="col col-lg-2 pt-4 p-3">
 		<h3 class="text-center"><a href="{% url 'circles:detail' pk=circle.id %}">{{circle.name}}</a></h3>
 		<h5 class="text-center"><a href="mailto:{{circle.public_email}}">{{circle.public_email}}</a></h5>
-		{% if can_see_members %}<h5 class="text-center">{{circle.recursive_members|length}} members</h5>{% endif %}
+		{% if can_see_members %}<h5 class="text-center">{{circle.recursive_members_count}} members</h5>{% endif %}
 		{{circle.purpose|markdownify}}
 	</div>
     <div class="col-10 container d-none d-sm-block">
@@ -29,7 +29,7 @@
 				<h3 class="text-center"><a href="{{sub1.get_absolute_url}}">{{sub1.name}}</a></h3>
 				<div class="row text-center pb-2">
 					<div class="col"><a href="mailto:{{sub1.public_email}}">{{sub1.public_email}}</a></div>
-					{% if can_see_members %}<div class="col"><strong>{{sub1.recursive_members|length}} members</strong></div>{% endif %}
+					{% if can_see_members %}<div class="col"><strong>{{sub1.recursive_members_count}} members</strong></div>{% endif %}
 				</div>
 				{% if can_see_leads %}
 				<div class="row">
@@ -49,7 +49,7 @@
 						<h3 class="text-center"><a href="{{sub2.get_absolute_url}}">{{sub2.name}}</a></h3>
 						<div class="row text-center pb-2">
 							<div class="col"><a href="mailto:{{sub2.public_email}}">{{sub2.public_email}}</a></div>
-							{% if can_see_members %}<div class="col"><strong>{{sub2.member_list|length}} members{% if not sub2.lead_list %} &mdash; <span class="text-danger">no leads</span>{% endif %}</strong></div>{% endif %}
+							{% if can_see_members %}<div class="col"><strong>{{sub2.recursive_members_count}} members{% if not sub2.lead_list %} &mdash; <span class="text-danger">no leads</span>{% endif %}</strong></div>{% endif %}
 						</div>
 						{% if can_see_leads %}
 						<ul class="list-unstyled lead px-4 text-center">
