@@ -100,7 +100,7 @@ class Circle(models.Model):
 
     @property
     def bgcolor(self):
-        return self.color or self.parent.bgcolor
+        return self.color or (self.parent.bgcolor if self.parent else '')
 
     @property
     def has_children(self):
