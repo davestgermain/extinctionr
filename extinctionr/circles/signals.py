@@ -1,9 +1,12 @@
+import os.path
 from django.db.models.signals import m2m_changed, post_save
+from django.conf import settings
 
 from django.dispatch import receiver
+from crum import get_current_user
 
 from .models import Circle, CircleMember, MembershipRequest
-from . import comm
+from . import comm, git
 
 
 @receiver(post_save, sender=MembershipRequest)
@@ -15,3 +18,12 @@ def sent_pending_email(sender, instance, **kwargs):
 @receiver(post_save, sender=CircleMember)
 def send_join_email(sender, instance, **kwargs):
     comm.notify_circle_membership(instance.circle, instance.role, [instance.contact_id])
+
+
+@receiver(post_save, sender=Circle)
+def save_to_git(sender, instance, **kwargs):
+    current_user = get_current_user()
+    if current_user:
+        committer = "{} <{}>".format(current_user, current_user.email).encode('utf8')
+        repo_dir = os.path.join(settings.STATIC_ROOT, 'circle_history')
+        git.commit_circles_to_git(repo_dir, committer)

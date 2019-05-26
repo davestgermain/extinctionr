@@ -91,6 +91,7 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'django.contrib.redirects.middleware.RedirectFallbackMiddleware',
     'extinctionr.middleware.redirect_middleware',
+    'crum.CurrentRequestUserMiddleware',
 ]
 if DEBUG:
     try:
