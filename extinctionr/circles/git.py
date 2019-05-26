@@ -38,4 +38,9 @@ def commit_circles_to_git(repo_path='/tmp/circles/', committer=b''):
     if num_changed:
         tree = index.commit(rep.object_store)
         message = '\n'.join(commit_message).encode('utf8')
-        print(rep.do_commit(message=message, committer=committer, commit_timestamp=now().timestamp(), tree=tree))
+        print(rep.do_commit(
+            message=message,
+            author=committer,
+            committer=committer,
+            commit_timestamp=now().timestamp(),
+            tree=tree))
