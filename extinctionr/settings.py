@@ -89,7 +89,7 @@ INSTALLED_APPS = [
     'allauth.account',
     'allauth.socialaccount',
     'allauth.socialaccount.providers.openid',
-    'django_mailman3.lib.auth.fedora',
+    # 'django_mailman3.lib.auth.fedora',
     # 'allauth.socialaccount.providers.github',
     # 'allauth.socialaccount.providers.gitlab',
     'allauth.socialaccount.providers.google',
@@ -243,7 +243,7 @@ AUTH_USER_MODEL = 'common.User'
 
 LOGIN_REDIRECT_URL = '/'
 
-LOGIN_URL = '/login/'
+LOGIN_URL = 'login'
 
 LOGOUT_URL = 'logout'
 

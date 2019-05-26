@@ -1,0 +1,72 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% load staticfiles %}
+{% block title %}{% block head_title %}{{ site_name }}{% endblock %}{% endblock %}
+{% block extrahead %}
+    <link rel="stylesheet" href="{% static 'django-mailman3/css/main.css' %}">
+    <link rel="stylesheet" href="{% static 'postorius/css/style.css' %}">
+    {% block additionalcss %}{% endblock %}
+
+{% endblock %}
+{% block main_menu %}
+{{block.super}}
+
+<div class="collapse navbar-collapse" id="header-nav">
+    <ul class="nav navbar-nav">
+        <li><a href="{% url 'list_index' %}">
+            <span class="glyphicon glyphicon-envelope"></span>
+            {% trans 'Lists' %}
+        </a></li>
+        {% if user.is_superuser %}
+            <li><a href="{% url 'domain_index' %}">
+                <span class="glyphicon glyphicon-globe"></span>
+                {% trans 'Domains' %}
+            </a></li>
+            <li>
+                <a href="{% url 'system_information' %}">
+                    <span class="glyphicon glyphicon-list-alt"></span>
+                    {% trans 'System Information' %}
+                </a>
+            </li>
+        {% endif %}
+    </ul>
+    <ul class="nav navbar-nav navbar-right">
+        {% if user.is_authenticated %}
+            <li class="dropdown">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown"
+                   role="button" aria-haspopup="true" aria-expanded="false">
+                    {{ user.username|truncatechars:"35" }}
+                    <span class="caret"></span>
+                </a>
+                <ul class="dropdown-menu">
+                    <li><a href="{% url 'mm_user_profile' %}">
+                        <span class="glyphicon glyphicon-user"></span>
+                        {% trans 'Account' %}
+                    </a></li>
+                    <li><a href="{% url 'ps_user_profile' %}">
+                        <span class="glyphicon glyphicon-cog"></span>
+                        {% trans 'Mailman settings' %}
+                    </a></li>
+                    <li role="separator" class="divider"></li>
+                    <li><a href="{% url LOGOUT_URL %}?next={% url 'list_index' %}">
+                        <span class="glyphicon glyphicon-log-out"></span>
+                        {% trans 'Logout' %}
+                    </a></li>
+                </ul>
+            </li>
+        {% else %}
+            <li><a href="{% url LOGIN_URL %}?next={{ next|default:request.path|urlencode }}">
+                <span class="glyphicon glyphicon-log-in"></span>
+                {% trans 'Login' %}
+            </a></li>
+        {% endif %}
+    </ul>
+</div>
+{% endblock %}
+{% block default_container %}<div class="row pt-4"><div class="col-text">{% block content %}{% endblock %}</div></div>{% endblock %}
+
+ {% block extra_js %}
+    <script src="{% static 'django-mailman3/js/main.js' %}"></script>
+    <script src="{% static 'postorius/js/script.js' %}"></script>
+    {% block additionaljs %}{% endblock %}
+{% endblock %}
