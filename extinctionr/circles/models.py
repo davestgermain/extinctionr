@@ -99,6 +99,14 @@ class Circle(models.Model):
     def get_absolute_url(self):
         return reverse('circles:detail', kwargs={'pk': self.id})
 
+    def get_path(self):
+        parents = list(p.name for p in self.parents)
+        parents.reverse()
+        parents.append(self.name)
+        path = '/'.join(parents)
+        path += '/index.yaml'
+        return path.encode('utf8')
+
     @property
     def parents(self):
         parent = self.parent
