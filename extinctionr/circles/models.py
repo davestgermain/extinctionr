@@ -50,6 +50,10 @@ class Circle(models.Model):
             choices.append((role, choice))
         return choices
 
+    @property
+    def wiki_home(self):
+        return self.name.lower()
+
     @cached_property
     def recursive_members(self):
         members = set()
