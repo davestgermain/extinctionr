@@ -46,6 +46,7 @@ urlpatterns = [
     path('todo/', include('todo.urls', namespace="todo")),
     path('postorius/', include('postorius.urls')),
     path('mm/', include('django_mailman3.urls')),
+    path('accounts/', include('allauth.urls')),
 ]
 if settings.DEBUG:
     print(settings.MEDIA_ROOT, settings.MEDIA_URL)
