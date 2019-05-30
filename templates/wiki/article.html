@@ -8,14 +8,6 @@
 {% endblock %}
 
 {% block wiki_contents %}
-{% addtoblock "js" %}
-<script>
-  $(document).ready(function() {
-    $('.wiki-article .article-list ul, .wiki-article .toc ul').addClass('flex-column px-5').find('li').addClass('nav-item');
-});
-</script>
-{% endaddtoblock %}
-
   <div id="article-container">
     <ul class="nav nav-pills" id="article-menu">
       <li class="nav-item text-center" id="article-title-li">

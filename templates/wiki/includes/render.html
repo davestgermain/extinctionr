@@ -1,0 +1,30 @@
+{% load wiki_tags i18n cache sekizai_tags static %}
+
+{% addtoblock "js" %}
+<script>
+  $(document).ready(function() {
+    $('.wiki-article .article-list ul, .wiki-article .toc ul').addClass('nav flex-column px-5').find('li').addClass('nav-item');
+});
+</script>
+{% endaddtoblock %}
+
+<div class="wiki-article">
+  {{ content|default:"" }}
+</div>
+
+{% for plugin in plugins %}
+  {% if plugin.RenderMedia.css %}
+    {% addtoblock "css" %}
+      {% for media, url in plugin.RenderMedia.css.items %}
+        <link rel="stylesheet" href="{% static url %}" />
+      {% endfor %}
+    {% endaddtoblock %}
+  {% endif %}
+  {% if plugin.RenderMedia.js %}
+    {% addtoblock "js" %}
+      {% for url in plugin.RenderMedia.js %}
+        <script type="text/javascript" src="{% static url %}"></script>
+      {% endfor %}
+    {% endaddtoblock %}
+  {% endif %}
+{% endfor %}
