@@ -1,6 +1,5 @@
 {% extends "wiki/base.html" %}
-{% load wiki_tags i18n sekizai_tags %}
-
+{% load wiki_tags i18n cache sekizai_tags static %}
 
 {% block wiki_pagetitle %}{{ article.current_revision.title }}{% endblock %}
 
@@ -9,6 +8,13 @@
 {% endblock %}
 
 {% block wiki_contents %}
+{% addtoblock "js" %}
+<script>
+  $(document).ready(function() {
+    $('.wiki-article .article-list ul, .wiki-article .toc ul').addClass('flex-column px-5').find('li').addClass('nav-item');
+});
+</script>
+{% endaddtoblock %}
 
   <div id="article-container">
     <ul class="nav nav-pills" id="article-menu">
