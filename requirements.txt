@@ -21,3 +21,4 @@ django-todo
 dulwich
 PyYAML
 django-crum
+django-taggit

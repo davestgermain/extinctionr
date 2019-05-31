@@ -8,6 +8,7 @@ from contacts.models import Contact
 from extinctionr.info.models import Photo
 from extinctionr.utils import get_contact
 from markdownx.models import MarkdownxField
+from taggit.managers import TaggableManager
 
 
 USER_MODEL = get_user_model()
@@ -26,6 +27,9 @@ class Action(models.Model):
     show_commitment = models.BooleanField(blank=True, default=True, help_text='Whether to show the conditional commitment fields')
     max_participants = models.IntegerField(blank=True, default=0, help_text="Maximun number of people allowed to register")
     accessibility = models.TextField(default='', help_text="Indicate what the accessibility accomodations are for this location.")
+
+    tags = TaggableManager(help_text="Attendees will automatically be tagged with these tags")
+
 
     @property
     def available_role_choices(self):

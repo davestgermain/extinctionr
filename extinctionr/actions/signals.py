@@ -11,3 +11,10 @@ def send_commit_email(sender, instance, **kwargs):
     if instance.promised or instance.mutual_commitment > 0 and not instance.notified:
         action_url = '%s%s' % (base_url(), instance.action.get_absolute_url())
         notify_commitments(instance.action, instance.mutual_commitment, action_url)
+
+
+@receiver(post_save, sender=Attendee)
+def auto_tag_attendee(sender, instance, **kwargs):
+    action_tags = instance.action.tags.all()
+    if action_tags:
+        instance.contact.tags.add(*action_tags)

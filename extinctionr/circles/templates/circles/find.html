@@ -1,0 +1,63 @@
+{% extends "base.html" %}
+{% block title %}:: Find People{% endblock %}
+{% block content %}
+<div class="row pt-5">
+	<div class="col-text">
+		<h2 class="text-center">Find People</h2>
+		{% if 'contacts.view_contact' in perms %}
+		<form method="post">{% csrf_token %} 
+			<div class="form-group row">
+				<label for="{{form.actions.id_for_label}}" class="col col-lg-1">Actions Attended</label>
+				<div class="col">
+				{{form.actions}}
+				</div>
+			</div>
+			<div class="form-group row">
+				<label for="{{form.tags.id_for_label}}" class="col col-lg-1">Tags</label>
+				<div class="col">
+				{{form.tags}}
+				</div>
+			</div>
+			<div class="form-group row">
+				<div class="col">
+					<input type="submit" value="Search" class="btn btn-lg btn-block btn-primary btn-fucxed "> 
+				</div>
+			</div>
+		</form>
+		{% if contacts %}
+		<hr class="pt-5">
+		<h2 class="text-center">{{contacts|length}} Results</h2>
+		<table class="table table-sm table-responsive-sm table-responsive-lg table-striped table-hover">
+			<thead class="thead-dark small">
+				<tr class="text-center">
+				<th scope="col">Name</th>
+				<th scope="col">Email</th>
+				<th scope="col">Phone</th>
+				<th scope="col">City</th>
+				<th scope="col">Tags</th>
+				</tr>
+			</thead>
+			<tbody class="small">
+		{% for contact in contacts %}
+		<tr class="text-center">
+			<td><a href="/admin/contacts/contact/{{contact.id}}/change/">{{contact}}</a></td>
+			<td><a href="mailto:{{contact.email}}">{{contact.email}}</a></td>
+			<td>{% if contact.phone %}{{contact.phone}}{% endif %}</td>
+			<td>{% if contact.address %}{{contact.address.city}}{% endif %}</td>
+			<td>{{contact.tags.names|join:","}}</td>
+		</tr>
+		{% endfor %}
+			</tbody>
+		</table>
+		<div class="text-center text-info">
+			<hr>
+			<a href="/circle/person/export/?contacts={% for c in contacts %}{{c.id}},{% endfor %}">Export as CSV</a>
+		</div>
+		{% endif %}
+		{% else %}
+		<h3 class="text-center text-danger">You need permission to view contacts</h3>
+		<h4 class="text-center text-danger"><a href="/todo/ticket/add/">Request permission</a></h4>
+		{% endif %}
+	</div>
+</div>
+{% endblock %}

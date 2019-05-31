@@ -78,6 +78,7 @@ INSTALLED_APPS = [
     'wiki.plugins.macros.apps.MacrosConfig',
     'markdownx',
     'todo',
+    'taggit',
 ]
 
 MIDDLEWARE = [

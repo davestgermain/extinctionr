@@ -5,13 +5,17 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
 from django.views.decorators.cache import cache_page
+from django.views.generic.edit import FormView
 from django.contrib import messages
-from django.http import HttpResponseForbidden
+from django.http import HttpResponseForbidden, HttpResponse
 from django import forms
 from django.views import generic
 from extinctionr.utils import get_contact, get_last_contact, set_last_contact
+from extinctionr.actions.models import Action
 from .models import Circle, Contact
 from dal import autocomplete
+
+from taggit.models import Tag
 
 
 class ContactForm(forms.Form):
@@ -42,6 +46,19 @@ class MembershipRequestForm(forms.Form):
     email = forms.EmailField(label="Email", required=True, widget=forms.EmailInput(attrs={'class': 'form-control text-center', 'placeholder': 'Email Address'}))
     name = forms.CharField(required=True, label="Name", widget=forms.TextInput(attrs={'class': 'form-control text-center', 'placeholder': 'Your Name'}))
     circle_id = forms.IntegerField(required=True, widget=forms.HiddenInput())
+
+
+class FindPeopleForm(forms.Form):
+    tags = forms.ModelMultipleChoiceField(
+        required=False,
+        queryset=Tag.objects.all(),
+        widget=autocomplete.ModelSelect2Multiple(attrs={'class': 'form-control', 'placeholder': 'Tags'})
+    )
+    actions = forms.ModelMultipleChoiceField(
+        required=False,
+        queryset=Action.objects.all().order_by('-when'),
+        widget=forms.SelectMultiple(attrs={'class': 'form-control'})
+    )
 
 
 @login_required
@@ -224,6 +241,57 @@ class TopLevelView(generic.ListView):
         if self.request.user.is_authenticated:
             response['Cache-Control'] = 'private'
         return response
+
+
+@method_decorator(login_required, name='dispatch')
+class FindFormView(FormView):
+    template_name = 'circles/find.html'
+    form_class = FindPeopleForm
+
+    def form_valid(self, form):
+        tags = form.cleaned_data['tags']
+        actions = form.cleaned_data['actions']
+        contacts = Contact.objects
+        if tags:
+            contacts = contacts.filter(tags__in=tags)
+        if actions:
+            contacts = contacts.filter(attendee__action__in=actions)
+
+        if not (actions or tags):
+            contacts = []
+        else:
+            contacts = contacts.distinct()
+        ctx = {
+            'form': FindPeopleForm(initial=form.cleaned_data),
+            'tags': tags,
+            'actions': actions,
+            'contacts': contacts,
+        }
+        response = render(self.request, self.template_name, ctx)
+        response['Cache-Control'] = 'private'
+        return response
+
+
+@login_required
+def csv_export(request):
+    if request.user.has_perm('contacts.view_contact'):
+        contact_ids = [c for c in request.GET.get('contacts', '').split(',') if c]
+        contacts = Contact.objects.filter(id__in=contact_ids)
+    else:
+        contacts = []
+    resp = HttpResponse(content_type='text/csv')
+    resp['Content-Disposition'] = 'attachment; filename="contacts.csv"'
+    csv_writer = csv.writer(resp)
+    header = ('Email', 'First Name', 'Last Name', 'Phone', 'City')
+    csv_writer.writerow(header)
+    for contact in contacts:
+        csv_writer.writerow((
+            contact.email,
+            contact.first_name,
+            contact.last_name,
+            contact.phone,
+            contact.address.city if contact.address else None))
+    return resp
 
 
 class ContactAutocomplete(autocomplete.Select2QuerySetView):
