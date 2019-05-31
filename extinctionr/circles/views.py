@@ -158,6 +158,11 @@ def csv_import(request):
         except ValueError:
             phone_field = None
 
+        try:
+            tag_field = find_field(fields, ('tags', 'tag'))
+        except ValueError:
+            tag_field = None
+
         contacts = set()
         memberships = []
         for row in reader:
@@ -176,6 +181,8 @@ def csv_import(request):
                 else:
                     if circle.request_membership(contact=contact):
                         messages.success(request, 'Requested membership for {} to {}'.format(contact, circle))
+            if tag_field and row[tag_field]:
+                contact.tags.add(*[t.strip() for t in row[tag_field].split(',')])
         return redirect('circles:person-import')
     response = render(request, 'circles/csv.html', ctx)
     response['Cache-Control'] = 'private'
@@ -282,7 +289,7 @@ def csv_export(request):
     resp = HttpResponse(content_type='text/csv')
     resp['Content-Disposition'] = 'attachment; filename="contacts.csv"'
     csv_writer = csv.writer(resp)
-    header = ('Email', 'First Name', 'Last Name', 'Phone', 'City')
+    header = ('Email', 'First Name', 'Last Name', 'Phone', 'City', 'Tags')
     csv_writer.writerow(header)
     for contact in contacts:
         csv_writer.writerow((
@@ -290,7 +297,8 @@ def csv_export(request):
             contact.first_name,
             contact.last_name,
             contact.phone,
-            contact.address.city if contact.address else None))
+            contact.address.city if contact.address else None,
+            ','.join(contact.tags.names())))
     return resp
 
 
