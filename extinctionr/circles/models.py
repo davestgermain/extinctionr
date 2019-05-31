@@ -52,7 +52,7 @@ class Circle(models.Model):
 
     @property
     def wiki_home(self):
-        return self.name.lower()
+        return self.name.lower().replace(' ', '-').replace('&', '-')
 
     @cached_property
     def recursive_members(self):
