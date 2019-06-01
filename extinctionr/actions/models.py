@@ -2,6 +2,7 @@ import datetime
 from hashlib import md5
 from django.db import models
 from django.contrib.auth import get_user_model
+from django.contrib.sites.shortcuts import get_current_site
 from django.urls import reverse
 from django.utils.timezone import now
 from contacts.models import Contact
@@ -122,3 +123,9 @@ class TalkProposal(models.Model):
     def get_absolute_url(self):
         return '/talk'
 
+    def get_talk_url(self):
+        try:
+            action = Action.objects.get(slug='xr-talk-%d' % self.id)
+            return ''.join(['https://', get_current_site(None).domain, action.get_absolute_url()])
+        except Action.DoesNotExist:
+            return ''

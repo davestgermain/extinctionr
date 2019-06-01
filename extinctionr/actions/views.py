@@ -194,7 +194,20 @@ def list_proposals(request):
     ctx = {
         'talks': TalkProposal.objects.select_related('requestor').order_by('-responded', 'created')
     }
-    return render(request, 'list_talks.html', ctx)
+    template = 'list_talks'
+    if request.GET.get('format', 'html') == 'csv':
+        template += '.csv'
+        content_type = 'text/csv'
+        content_disposition = 'attachment; filename="talks.csv"'
+    else:
+        template += '.html'
+        content_type = 'text/html'
+        content_disposition = None
+    response = render(request, template, ctx)
+    response['content-type'] = content_type
+    if content_disposition:
+        response['content-disposition'] = content_disposition
+    return response
 
 
 
