@@ -29,7 +29,7 @@ class Action(models.Model):
     max_participants = models.IntegerField(blank=True, default=0, help_text="Maximun number of people allowed to register")
     accessibility = models.TextField(default='', help_text="Indicate what the accessibility accomodations are for this location.")
 
-    tags = TaggableManager(help_text="Attendees will automatically be tagged with these tags")
+    tags = TaggableManager(blank=True, help_text="Attendees will automatically be tagged with these tags")
 
 
     @property
