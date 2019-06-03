@@ -1,6 +1,7 @@
 To run this site:
 
 ```
+pip install django
 pip install -r requirements.txt
 
 ./manage.py migrate

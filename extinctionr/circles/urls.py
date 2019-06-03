@@ -11,6 +11,7 @@ urlpatterns = [
     path('person/export/', views.csv_export, name='person-export'),
     path('person/autocomplete/', views.ContactAutocomplete.as_view(), name='person-autocomplete'),
     path('person/find/', views.FindFormView.as_view(), name='find-person'),
+    path('jobs/', views.JobView.as_view(), name='jobs'),
     path('<int:pk>/', views.CircleView.as_view(), name='detail'),
     path('<int:pk>/join/', views.request_membership, name='request-membership'),
     path('<int:pk>/add/', views.add_member, name='add-member'),

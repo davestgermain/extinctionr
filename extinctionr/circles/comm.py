@@ -27,3 +27,17 @@ def notify_circle_membership(circle, msg_type, members):
 '''.format(**context)
     subject = '[XR] %s added to %s' % (msg_type, circle)
     send_mail(subject, message, settings.DEFAULT_FROM_EMAIL, addresses)
+
+
+def notify_circle_job(job):
+    circle = job.circle
+    addresses = circle.get_notification_addresses()
+    addresses.add(job.creator.email)
+    subject = '[XR] Job filled by {}'.format(job.filled)
+    message = '''{who} has signed up to fill job {jobid} in {circle}
+
+{job}
+
+{baseurl}{url}
+'''.format(who=job.filled, jobid=job.id, circle=circle, job=job.job, baseurl=base_url(), url=job.get_absolute_url())
+    send_mail(subject, message, settings.DEFAULT_FROM_EMAIL, addresses)

@@ -22,6 +22,26 @@
 			{{object.sensitive_info|markdownify}}
 		</div>
 		{% endif %}
+		<div id="jobs">
+			<h5>jobs</h5>
+		{% if jobs %}
+			<ul>
+			{% for job in jobs %}
+			<li>
+				{{job.job|markdownify}}
+				{% if job.filled %}
+				Filled by: <strong>{{job.filled}}</strong>
+				{% else %}
+				<button class="btn btn-primary btn-fucxed job-button" data-jobid="{{job.id}}">I will do this</button>
+				{% endif %}
+			</li>
+			{% endfor %}
+			</ul>
+		{% endif %}
+			{% if is_lead %}
+			<p><a href="/admin/circles/circlejob/add/" class="btn btn-primary btn-fucxed">create a job</a></p>
+			{% endif %}
+		</div>
 		{% endif %}
 		<section class="row pt-3 border-top">
 		{% if can_see_leads and object.coordinators %}
@@ -241,6 +261,17 @@
 		$.post(url, data, function(){
 			location.reload();
 		});
+	});
+	$('.job-button').click(function(){
+		if (confirm("Are you sure you can do this job?")) {
+			var url = "{% url 'circles:jobs' %}";
+			var data = {
+				id: $(this).data('jobid')
+			}
+			$.post(url, data, function() {
+				location.reload();
+			});
+		}
 	});
 </script>
 {% endblock %}

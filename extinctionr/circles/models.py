@@ -237,3 +237,18 @@ class MembershipRequest(models.Model):
             self.circle.add_member(self.requestor.email, str(self.requestor), contact=self.requestor, role='member')
         else:
             self.circle.remove_member(self.requestor, role='member')
+
+
+class CircleJob(models.Model):
+    created = models.DateTimeField(db_index=True, auto_now_add=True)
+    circle = models.ForeignKey(Circle, on_delete=models.CASCADE)
+    creator = models.ForeignKey(Contact, null=True, blank=True, on_delete=models.SET_NULL)
+    job = models.TextField(default='')
+    filled = models.ForeignKey(Contact, null=True, blank=True, on_delete=models.SET_NULL, related_name="my_job_set", help_text="Who will fill this job?")
+    filled_on = models.DateTimeField(null=True, blank=True)
+
+    def get_absolute_url(self):
+        return self.circle.get_absolute_url() + '#jobs'
+
+    def __str__(self):
+        return 'Job for {}'.format(self.circle)

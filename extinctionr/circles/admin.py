@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Circle, CircleMember, MembershipRequest
+from .models import Circle, CircleMember, MembershipRequest, CircleJob
 from extinctionr.utils import get_contact
 from markdownx.admin import MarkdownxModelAdmin
 
@@ -44,3 +44,17 @@ class CircleMemberAdmin(admin.ModelAdmin):
     autocomplete_fields = ('circle', 'contact')
     readonly_fields = ('join_date', )
     list_filter = ('circle',)
+
+
+@admin.register(CircleJob)
+class CircleJobAdmin(admin.ModelAdmin):
+    list_display = ('circle', 'created', 'filled')
+    autocomplete_fields = ('circle', 'filled')
+    readonly_fields = ('created', 'filled_on', 'creator')
+    list_filter = ('circle',)
+
+    def save_model(self, request, obj, form, change):
+        if not obj.creator:
+            obj.creator = get_contact(email=request.user.email)
+        super().save_model(request, obj, form, change)
+

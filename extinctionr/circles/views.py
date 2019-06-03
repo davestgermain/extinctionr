@@ -6,13 +6,14 @@ from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
 from django.views.decorators.cache import cache_page
 from django.views.generic.edit import FormView
+from django.utils.timezone import now
 from django.contrib import messages
 from django.http import HttpResponseForbidden, HttpResponse
 from django import forms
 from django.views import generic
 from extinctionr.utils import get_contact, get_last_contact, set_last_contact
 from extinctionr.actions.models import Action
-from .models import Circle, Contact
+from .models import Circle, Contact, CircleJob
 from dal import autocomplete
 
 from taggit.models import Tag
@@ -188,8 +189,18 @@ def csv_import(request):
     response['Cache-Control'] = 'private'
     return response
 
+
 @method_decorator(cache_page(1200), name='dispatch')
-class CircleView(generic.DetailView):
+class BaseCircleView(generic.View):
+    def render_to_response(self, context, **response_kwargs):
+        response = super().render_to_response(context, **response_kwargs)
+        response['Vary'] = 'Cookie'
+        if self.request.user.is_authenticated:
+            response['Cache-Control'] = 'private'
+        return response
+
+
+class CircleView(BaseCircleView, generic.DetailView):
     template_name = 'circles/circle.html'
     def get_queryset(self):
         return Circle.objects.select_related('parent').prefetch_related('members')
@@ -206,6 +217,7 @@ class CircleView(generic.DetailView):
             context['members'] = sorted(circle.recursive_members, key=lambda m: (m[0].last_name.lower(), m[0].first_name.lower()))
             context['pending'] = circle.membershiprequest_set.filter(confirmed_by=None)
             context['form'] = ContactForm(circle, initial={'role': 'member'})
+            context['jobs'] = CircleJob.objects.filter(circle=circle)
             # if they're logged in, this is not relevant
             if 'circle_requests' in self.request.session:
                 del self.request.session['circle_requests']
@@ -221,16 +233,8 @@ class CircleView(generic.DetailView):
             context['is_pending'] = circle.is_pending(self.request)
         return context
 
-    def render_to_response(self, context, **response_kwargs):
-        response = super().render_to_response(context, **response_kwargs)
-        response['Vary'] = 'Cookie'
-        if self.request.user.is_authenticated:
-            response['Cache-Control'] = 'private'
-        return response
 
-
-@method_decorator(cache_page(1200), name='dispatch')
-class TopLevelView(generic.ListView):
+class TopLevelView(BaseCircleView, generic.ListView):
     template_name = 'circles/outer.html'
 
     def get_queryset(self):
@@ -242,12 +246,22 @@ class TopLevelView(generic.ListView):
         context['can_see_leads'] = self.request.user.is_authenticated
         return context
 
-    def render_to_response(self, context, **response_kwargs):
-        response = super().render_to_response(context, **response_kwargs)
-        response['Vary'] = 'Cookie'
-        if self.request.user.is_authenticated:
-            response['Cache-Control'] = 'private'
-        return response
+
+class JobView(BaseCircleView, generic.TemplateView):
+    template_name = 'circles/jobs.html'
+
+    def post(self, request, *args, **kwargs):
+        job = get_object_or_404(CircleJob, pk=request.POST['id'])
+        job.filled = get_contact(email=self.request.user.email)
+        job.filled_on = now()
+        job.save()
+        messages.success(request, "Thanks for signing up for this job!")
+        return HttpResponse('ok')
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['jobs'] = CircleJob.objects.filter(filled__isnull=True).select_related('circle')
+        return context
 
 
 @method_decorator(login_required, name='dispatch')
@@ -300,6 +314,7 @@ def csv_export(request):
             contact.address.city if contact.address else None,
             ','.join(contact.tags.names())))
     return resp
+
 
 
 class ContactAutocomplete(autocomplete.Select2QuerySetView):
