@@ -34,12 +34,13 @@
 				{% else %}
 				<button class="btn btn-primary btn-fucxed job-button" data-jobid="{{job.id}}">I will do this</button>
 				{% endif %}
+				{% if is_lead %}<p><a href="/admin/circles/circlejob/{{job.id}}/change/">Edit</a></p>{% endif %}
 			</li>
 			{% endfor %}
 			</ul>
 		{% endif %}
 			{% if is_lead %}
-			<p><a href="/admin/circles/circlejob/add/" class="btn btn-primary btn-fucxed">create a job</a></p>
+			<p class="text-right"><a href="/admin/circles/circlejob/add/" class="btn btn-info btn-fucxed">create a job</a></p>
 			{% endif %}
 		</div>
 		{% endif %}

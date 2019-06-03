@@ -8,6 +8,9 @@
         {% if not jobs %}
         <p>There are no jobs open right now. But you can still get involved with a <a href="/circle/">working group</a>.</p>
         {% endif %}
+        {% if 'circles.add_job' in perms %}
+        <p class="text-center"><a href="/admin/circles/circlejob/add/" class="btn btn-info btn-fucxed">create a job</a></p>
+        {% endif %}
         {% for job in jobs %}
         <div class="row py-2" style="background-color:{{job.circle.bgcolor}}">
             <div class="col">
