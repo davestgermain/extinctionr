@@ -8,9 +8,9 @@ register = template.Library()
 @register.inclusion_tag('recent_actions.html')
 def recent_actions(*args, **kwargs):
     adverb = kwargs.get('adverb', 'recent')
-    ract = models.Action.objects.filter(public=True).order_by('when')
+    ract = models.Action.objects.filter(public=True)
     if adverb == 'recent':
-        ract = ract.filter(when__lte=now())
+        ract = ract.filter(when__lte=now()).order_by('-when')
     else:
-        ract = ract.filter(when__gte=now())
+        ract = ract.filter(when__gte=now()).order_by('when')
     return {'actions': ract, 'adverb': adverb.capitalize()}
