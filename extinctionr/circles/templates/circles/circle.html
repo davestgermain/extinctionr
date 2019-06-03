@@ -30,6 +30,7 @@
 			<ul>
 			{% for job in jobs %}
 			<li>
+				{% if job.title %}<strong>{{job.title}}</strong><br>{% endif %}
 				{{job.job|markdownify}}
 				{% if job.filled %}
 				Filled by: <strong>{{job.filled}}</strong>

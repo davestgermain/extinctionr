@@ -256,7 +256,8 @@ class JobView(BaseCircleView, generic.TemplateView):
         job.filled = who
         job.filled_on = now()
         job.save()
-        job.circle.add_member(who.email, str(who), contact=who)
+        role = job.title or 'member'
+        job.circle.add_member(who.email, str(who), contact=who, role=role)
         messages.success(request, "Thanks for signing up for this job!")
         return HttpResponse('ok')
 

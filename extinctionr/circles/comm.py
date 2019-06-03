@@ -34,10 +34,11 @@ def notify_circle_job(job):
     addresses = circle.get_notification_addresses()
     addresses.add(job.creator.email)
     subject = '[XR] Job filled by {}'.format(job.filled)
-    message = '''{who} has signed up to fill job {jobid} in {circle}
+    title = job.title or job.id
+    message = '''{who} has signed up to fill job "{title}" in {circle}
 
 {job}
 
 {baseurl}{url}
-'''.format(who=job.filled, jobid=job.id, circle=circle, job=job.job, baseurl=base_url(), url=job.get_absolute_url())
+'''.format(who=job.filled, title=title, circle=circle, job=job.job, baseurl=base_url(), url=job.get_absolute_url())
     send_mail(subject, message, settings.DEFAULT_FROM_EMAIL, addresses)

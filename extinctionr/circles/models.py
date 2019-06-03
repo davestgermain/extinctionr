@@ -247,6 +247,7 @@ class CircleJob(models.Model):
     filled = models.ForeignKey(Contact, null=True, blank=True, on_delete=models.SET_NULL, related_name="my_job_set", help_text="Who will fill this job?")
     filled_on = models.DateTimeField(null=True, blank=True)
     asap = models.BooleanField(blank=True, default=False, help_text="This job needs to be filled as soon as possible")
+    title = models.CharField(max_length=255, blank=True, default='')
 
     def get_absolute_url(self):
         return self.circle.get_absolute_url() + '#jobs'

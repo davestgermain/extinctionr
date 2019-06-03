@@ -19,6 +19,7 @@
                 <a href="{{job.circle.get_absolute_url}}">{{job.circle}}</a>
             </div>
             <div class="col{% if job.asap %} text-danger{% endif %}">
+                {% if job.title %}<h5>{{job.title}}</h5>{% endif %}
                 {{job.job|markdownify}}
             </div>
         </div>

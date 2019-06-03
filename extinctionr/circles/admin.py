@@ -48,6 +48,7 @@ class CircleMemberAdmin(admin.ModelAdmin):
 
 @admin.register(CircleJob)
 class CircleJobAdmin(admin.ModelAdmin):
+    fields = ('circle', 'title', 'job', 'asap', 'filled', 'filled_on', 'creator', 'created')
     list_display = ('circle', 'created', 'filled')
     autocomplete_fields = ('circle', 'filled')
     readonly_fields = ('created', 'filled_on', 'creator')
