@@ -7,6 +7,8 @@
         <h1 class="text-center">open jobs</h1>
         {% if not jobs %}
         <p>There are no jobs open right now. But you can still get involved with a <a href="/circle/">working group</a>.</p>
+        {% else %}
+        <p><span class="text-danger">Red jobs</span> need to be filled as soon as possible.</p>
         {% endif %}
         {% if 'circles.add_job' in perms %}
         <p class="text-center"><a href="/admin/circles/circlejob/add/" class="btn btn-info btn-fucxed">create a job</a></p>
@@ -16,7 +18,7 @@
             <div class="col">
                 <a href="{{job.circle.get_absolute_url}}">{{job.circle}}</a>
             </div>
-            <div class="col">
+            <div class="col{% if job.asap %} text-danger{% endif %}">
                 {{job.job|markdownify}}
             </div>
         </div>
