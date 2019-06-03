@@ -252,9 +252,11 @@ class JobView(BaseCircleView, generic.TemplateView):
 
     def post(self, request, *args, **kwargs):
         job = get_object_or_404(CircleJob, pk=request.POST['id'])
-        job.filled = get_contact(email=self.request.user.email)
+        who = get_contact(email=self.request.user.email)
+        job.filled = who
         job.filled_on = now()
         job.save()
+        job.circle.add_member(who.email, str(who), contact=who)
         messages.success(request, "Thanks for signing up for this job!")
         return HttpResponse('ok')
 
