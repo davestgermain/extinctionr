@@ -8,58 +8,13 @@ from django.views.decorators.cache import cache_page
 from django.views.generic.edit import FormView
 from django.utils.timezone import now
 from django.contrib import messages
-from django.http import HttpResponseForbidden, HttpResponse
+from django.http import HttpResponseForbidden, HttpResponse, HttpResponseRedirect
 from django import forms
 from django.views import generic
 from extinctionr.utils import get_contact, get_last_contact, set_last_contact
-from extinctionr.actions.models import Action
-from .models import Circle, Contact, CircleJob
-from dal import autocomplete
+from .models import Circle, Contact, CircleJob, Couch, LEAD_ROLES
 
-from taggit.models import Tag
-
-
-class ContactForm(forms.Form):
-    contact = forms.ModelChoiceField(
-        required=False,
-        queryset=Contact.objects.all(),
-        label='Lookup',
-        widget=autocomplete.ModelSelect2(url='circles:person-autocomplete', attrs={'class': 'form-control'}))
-    email = forms.EmailField(label="Email", required=False, widget=forms.EmailInput(attrs={'class': 'form-control text-center', 'placeholder': 'Email Address'}))
-    name = forms.CharField(required=False, label="Name", widget=forms.TextInput(attrs={'class': 'form-control text-center', 'placeholder': 'Your Name'}))
-    role = forms.ChoiceField(required=True, widget=forms.Select(attrs={'class': 'form-control text-center custom-select custom-select-lg', 'placeholder': 'Role'}))
-
-    def __init__(self, circle, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        self.fields['role'].choices = circle.get_role_choices()
-
-    def clean(self):
-        cleaned_data = super().clean()
-        if not cleaned_data['contact']:
-            if cleaned_data['role'] == 'lead':
-                raise forms.ValidationError('contact required')
-            if not (cleaned_data['email'] and cleaned_data['name']):
-                raise forms.ValidationError('email or contact required')
-        return cleaned_data
-
-
-class MembershipRequestForm(forms.Form):
-    email = forms.EmailField(label="Email", required=True, widget=forms.EmailInput(attrs={'class': 'form-control text-center', 'placeholder': 'Email Address'}))
-    name = forms.CharField(required=True, label="Name", widget=forms.TextInput(attrs={'class': 'form-control text-center', 'placeholder': 'Your Name'}))
-    circle_id = forms.IntegerField(required=True, widget=forms.HiddenInput())
-
-
-class FindPeopleForm(forms.Form):
-    tags = forms.ModelMultipleChoiceField(
-        required=False,
-        queryset=Tag.objects.all(),
-        widget=autocomplete.ModelSelect2Multiple(attrs={'class': 'form-control', 'placeholder': 'Tags'})
-    )
-    actions = forms.ModelMultipleChoiceField(
-        required=False,
-        queryset=Action.objects.all().order_by('-when'),
-        widget=forms.SelectMultiple(attrs={'class': 'form-control'})
-    )
+from .forms import FindPeopleForm, MembershipRequestForm, ContactForm, CouchForm, ContactAutocomplete
 
 
 @login_required
@@ -111,23 +66,6 @@ def request_membership(request, pk):
                 request.session['circle_requests'] = circle_requests
             messages.success(request, "Thank you for signing up for {}!".format(circle))
     return redirect(circle.get_absolute_url())
-
-
-@login_required
-def person_view(request, contact_id=None):
-    if contact_id is None:
-        contact = get_contact(email=request.user.email)
-    else:
-        contact = get_object_or_404(Contact, pk=contact_id)
-    ctx = {
-        'contact': contact,
-        'leads': Circle.objects.filter(circlemember__contact=contact, circlemember__role__in=['int','ext']).distinct(),
-        'members': Circle.objects.filter(circlemember__contact=contact, circlemember__role='member'),
-        'is_me': contact == get_contact(email=request.user.email),
-        }
-    response = render(request, 'circles/person.html', ctx)
-    response['Cache-Control'] = 'private'
-    return response
 
 
 def find_field(fields, search_for):
@@ -198,6 +136,59 @@ class BaseCircleView(generic.View):
         if self.request.user.is_authenticated:
             response['Cache-Control'] = 'private'
         return response
+
+
+@method_decorator(login_required, name='dispatch')
+class PersonView(BaseCircleView, FormView):
+    template_name = 'circles/person.html'
+    form_class = CouchForm
+
+    def form_valid(self, form):
+        info = form.cleaned_data['info']
+        availability = form.cleaned_data['availability']
+        public = form.cleaned_data['public']
+        me = get_contact(email=self.request.user.email)
+        me.couch_set.create(info=info, availability=availability, public=public)
+        messages.success(self.request, "Thank you for your generosity!")
+        return HttpResponseRedirect('/circle/person/me/')
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        me = get_contact(email=self.request.user.email)
+        contact_id = self.kwargs.get('contact_id', None)
+        if contact_id is None:
+            contact = me
+        else:
+            contact = get_object_or_404(Contact, pk=contact_id)
+
+        ctx = {
+            'contact': contact,
+            'leads': Circle.objects.filter(circlemember__contact=contact, circlemember__role__in=LEAD_ROLES).distinct(),
+            'members': Circle.objects.filter(circlemember__contact=contact).exclude(circlemember__role__in=LEAD_ROLES),
+            'is_me': contact == me,
+            }
+        couches = contact.couch_set.all()
+        if not ctx['is_me']:
+            couches = couches.filter(public=True)
+        else:
+            ctx['form'] = self.form_class()
+        ctx['couches'] = couches
+        return ctx
+
+
+class CouchListView(BaseCircleView, generic.ListView):
+    template_name = 'circles/couches.html'
+
+    def get_queryset(self):
+        qset = Couch.objects.all().order_by('-modified')
+        if not self.request.user.has_perm('circles.view_couch'):
+            qset = qset.filter(public=True)
+        return qset
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['can_edit'] = self.request.user.has_perm('circles.change_couch')
+        return context
 
 
 class CircleView(BaseCircleView, generic.DetailView):
@@ -317,18 +308,4 @@ def csv_export(request):
             contact.address.city if contact.address else None,
             ','.join(contact.tags.names())))
     return resp
-
-
-
-class ContactAutocomplete(autocomplete.Select2QuerySetView):
-    def get_queryset(self):
-        if not self.request.user.is_authenticated:
-            return Contact.objects.none()
-
-        qs = Contact.objects.all()
-
-        if self.q:
-            qs = qs.filter(email__istartswith=self.q) | qs.filter(first_name__istartswith=self.q)
-
-        return qs
 

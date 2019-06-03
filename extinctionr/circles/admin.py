@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Circle, CircleMember, MembershipRequest, CircleJob
+from .models import Circle, CircleMember, MembershipRequest, CircleJob, Couch
 from extinctionr.utils import get_contact
 from markdownx.admin import MarkdownxModelAdmin
 
@@ -47,7 +47,7 @@ class CircleMemberAdmin(admin.ModelAdmin):
 
 
 @admin.register(CircleJob)
-class CircleJobAdmin(admin.ModelAdmin):
+class CircleJobAdmin(MarkdownxModelAdmin):
     fields = ('circle', 'title', 'job', 'asap', 'filled', 'filled_on', 'creator', 'created')
     list_display = ('circle', 'created', 'filled')
     autocomplete_fields = ('circle', 'filled')
@@ -59,3 +59,23 @@ class CircleJobAdmin(admin.ModelAdmin):
             obj.creator = get_contact(email=request.user.email)
         super().save_model(request, obj, form, change)
 
+
+@admin.register(Couch)
+class CouchAdmin(MarkdownxModelAdmin):
+    autocomplete_fields = ('owner',)
+    list_display = ('owner', 'created', 'modified', 'public')
+    readonly_fields = ('created', 'modified')
+    list_select_related = ('owner',)
+    list_filter = ('owner__address__city',)
+
+    def has_view_permission(self, request, obj=None):
+        has_perm = request.user.has_perm('circle.view_couch')
+        if obj:
+            return obj.is_me(request.user) or has_perm
+        return has_perm
+
+    def has_change_permission(self, request, obj=None):
+        has_perm = request.user.has_perm('circles.change_couch')
+        if obj:
+            return obj.is_me(request.user) or has_perm
+        return has_perm

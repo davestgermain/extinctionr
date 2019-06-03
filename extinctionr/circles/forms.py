@@ -1,0 +1,68 @@
+from django import forms
+from dal import autocomplete
+from taggit.models import Tag
+from extinctionr.actions.models import Action
+from .models import Contact
+
+
+class ContactForm(forms.Form):
+    contact = forms.ModelChoiceField(
+        required=False,
+        queryset=Contact.objects.all(),
+        label='Lookup',
+        widget=autocomplete.ModelSelect2(url='circles:person-autocomplete', attrs={'class': 'form-control'}))
+    email = forms.EmailField(label="Email", required=False, widget=forms.EmailInput(attrs={'class': 'form-control text-center', 'placeholder': 'Email Address'}))
+    name = forms.CharField(required=False, label="Name", widget=forms.TextInput(attrs={'class': 'form-control text-center', 'placeholder': 'Your Name'}))
+    role = forms.ChoiceField(required=True, widget=forms.Select(attrs={'class': 'form-control text-center custom-select custom-select-lg', 'placeholder': 'Role'}))
+
+    def __init__(self, circle, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['role'].choices = circle.get_role_choices()
+
+    def clean(self):
+        cleaned_data = super().clean()
+        if not cleaned_data['contact']:
+            if cleaned_data['role'] == 'lead':
+                raise forms.ValidationError('contact required')
+            if not (cleaned_data['email'] and cleaned_data['name']):
+                raise forms.ValidationError('email or contact required')
+        return cleaned_data
+
+
+class MembershipRequestForm(forms.Form):
+    email = forms.EmailField(label="Email", required=True, widget=forms.EmailInput(attrs={'class': 'form-control text-center', 'placeholder': 'Email Address'}))
+    name = forms.CharField(required=True, label="Name", widget=forms.TextInput(attrs={'class': 'form-control text-center', 'placeholder': 'Your Name'}))
+    circle_id = forms.IntegerField(required=True, widget=forms.HiddenInput())
+
+
+class FindPeopleForm(forms.Form):
+    tags = forms.ModelMultipleChoiceField(
+        required=False,
+        queryset=Tag.objects.all(),
+        widget=autocomplete.ModelSelect2Multiple(attrs={'class': 'form-control', 'placeholder': 'Tags'})
+    )
+    actions = forms.ModelMultipleChoiceField(
+        required=False,
+        queryset=Action.objects.all().order_by('-when'),
+        widget=forms.SelectMultiple(attrs={'class': 'form-control'})
+    )
+
+
+class CouchForm(forms.Form):
+    availability = forms.CharField(required=True, widget=forms.Textarea(attrs={'rows': 3, 'class': 'form-control', 'placeholder': 'Dates/times the room or couch is available'}))
+    info = forms.CharField(required=True, widget=forms.Textarea(attrs={'rows': 3, 'class': 'form-control', 'placeholder': 'Other info'}))
+    public = forms.BooleanField(required=False, label="Show my contact on the public page")
+
+
+class ContactAutocomplete(autocomplete.Select2QuerySetView):
+    def get_queryset(self):
+        if not self.request.user.is_authenticated:
+            return Contact.objects.none()
+
+        qs = Contact.objects.all()
+
+        if self.q:
+            qs = qs.filter(email__istartswith=self.q) | qs.filter(first_name__istartswith=self.q)
+
+        return qs
+

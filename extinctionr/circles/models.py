@@ -5,6 +5,8 @@ from contacts.models import Contact
 from extinctionr.utils import get_contact
 from django.utils.timezone import now
 from django.utils.functional import cached_property
+from markdownx.models import MarkdownxField
+
 
 ROLE_CHOICES = {
     'int': 'Internal Coordinator',
@@ -19,14 +21,14 @@ class Circle(models.Model):
     created = models.DateTimeField(db_index=True, auto_now_add=True)
     modified = models.DateTimeField(auto_now=True)
     name = models.CharField(max_length=255, db_index=True)
-    purpose = models.TextField(default='', help_text='Describe the mandates for this group')
-    sensitive_info = models.TextField(default='', blank=True, help_text='Information for members only')
+    purpose = MarkdownxField(default='', help_text='Describe the mandates for this group')
+    sensitive_info = MarkdownxField(default='', blank=True, help_text='Information for members only')
     members = models.ManyToManyField(to=Contact, through='CircleMember', blank=True)
     parent = models.ForeignKey('self', blank=True, null=True, on_delete=models.SET_NULL)
     color = models.CharField(max_length=50, blank=True, default='')
     email = models.EmailField(max_length=255, blank=True, null=True, help_text='Public email address for this group')
     available_roles = models.CharField(max_length=255, blank=True, default='int,ext,member', help_text='Comma-separated names of roles')
-    role_description = models.TextField(default='', blank=True, help_text='Describe additional roles (markdown format')
+    role_description = MarkdownxField(default='', blank=True, help_text='Describe additional roles (markdown format')
 
     class Meta:
         ordering = ('name',)
@@ -245,7 +247,7 @@ class CircleJob(models.Model):
     created = models.DateTimeField(db_index=True, auto_now_add=True)
     circle = models.ForeignKey(Circle, on_delete=models.CASCADE)
     creator = models.ForeignKey(Contact, null=True, blank=True, on_delete=models.SET_NULL)
-    job = models.TextField(default='')
+    job = MarkdownxField(default='')
     filled = models.ForeignKey(Contact, null=True, blank=True, on_delete=models.SET_NULL, related_name="my_job_set", help_text="Who will fill this job?")
     filled_on = models.DateTimeField(null=True, blank=True)
     asap = models.BooleanField(blank=True, default=False, help_text="This job needs to be filled as soon as possible")
@@ -256,3 +258,24 @@ class CircleJob(models.Model):
 
     def __str__(self):
         return 'Job for {}'.format(self.circle)
+
+
+class Couch(models.Model):
+    created = models.DateTimeField(db_index=True, auto_now_add=True)
+    modified = models.DateTimeField(db_index=True, auto_now=True)
+    owner = models.ForeignKey(Contact, on_delete=models.CASCADE)
+    availability = MarkdownxField(default='', help_text="Enter dates/times this room is available")
+    info = MarkdownxField(default='')
+    public = models.BooleanField(default=False, db_index=True, help_text="Show publicly")
+
+    class Meta:
+        verbose_name_plural = 'couches'
+
+    def __str__(self):
+        return str(self.owner)
+
+    def get_absolute_url(self):
+        return reverse('circles:person', kwargs={'contact_id': self.id}) + '#couches'
+
+    def is_me(self, user):
+        return get_contact(user.email) == self.owner

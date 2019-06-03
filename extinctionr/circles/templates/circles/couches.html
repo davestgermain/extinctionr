@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+{% block title %}:: Couches For Rebels{% endblock %}
+{% block content %}
+{% load info %}
+<div class="row pt-5">
+    <div class="col-text">
+        <h1 class="text-center">Couch Sitting</h1>
+        <p>Here's a list of local Rebels willing to host visitors. You can also contact us at <a href="mailto:xrmass@gmail.com">xrmass@gmail.com</a>, and we'll hook you up with a place to stay.</p>
+        {% if user.is_authenticated %}
+        <p>If you can offer a spare couch or room, <a href="/circle/person/me/#couches">add your availability</a>.</p>
+        {% endif %}
+        <p class="text-center text-warning">Solidarity!</p>
+        {% for couch in object_list %}
+        <hr>
+        <div class="row py-2">
+            <div class="col">
+                <p>{{couch.owner}}</p>
+                <p><a href="mailto:{{couch.owner.email}}">{{couch.owner.email}}</a></p>
+                {% if user.is_authenticated %}
+                {% if couch.owner.phone %}{{couch.owner.phone}}{% endif %}
+                {% endif %}
+                {% if can_edit %}
+                <br><a class="btn btn-fucxed btn-info" href="/admin/circles/couch/{{couch.id}}/change/">edit</a>
+                {% endif %}
+            </div>
+            <div class="col">
+                <em>Availability:</em>
+                {{couch.availability|markdownify}}
+                <em>Info:</em>
+                {{couch.info|markdownify}}
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

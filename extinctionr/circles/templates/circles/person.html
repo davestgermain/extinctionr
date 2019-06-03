@@ -1,10 +1,11 @@
 {% extends "base.html" %}
 {% block title %}:: {{contact.first_name}} {{contact.last_name}}{% endblock %}
 {% block content %}
+{% load info %}
 <div class="row pt-5">
 	<div class="col-text">
 		<h1 class="text-center">{{contact.first_name}} {{contact.last_name}}</h1>
-		{% if 'circles.change_circle' in perms %}
+		{% if 'contacts.change_contact' in perms %}
 		<h4 class="text-center"><a href="/admin/contacts/contact/{{contact.id}}/change/">edit</a></h4>
 		{% endif %}
 		<address class="small">
@@ -35,6 +36,29 @@
 			</ul>
 		</div>
 		<hr>
+		<div id="couches">
+			<h4>couch:</h4>
+			{% for couch in couches %}
+			<div class="couch">
+				<em>Available:</em>
+				{{couch.availability|markdownify}}
+				<em>Info:</em>
+				{{couch.info|markdownify}}
+				{% if is_me %}<br><a class="btn btn-info btn-fucxed" href="/admin/circles/couch/{{couch.id}}/change/">edit</a>{% endif %}
+			</div>
+			{% endfor %}
+			{% if is_me %}
+			{% if not couches %}
+			<div class="couch">
+				<p>Do you have a couch or room you can offer to visiting Rebels? Indicate availability here. If you're comfortable listing your information publicly, it will show up <a href="{% url 'circles:couches' %}">here</a>, otherwise, we'll keep your contact private and connect you if someone comes our way!</p>
+				<form method="post">
+				{{form.as_p}}
+				<button type="submit" class="btn btn-primary btn-fucxed">Add Couch</button>
+				</form>
+			</div>
+			{% endif %}
+			{% endif %}
+		</div>
 	</div>
 </div>
 {% endblock %}
