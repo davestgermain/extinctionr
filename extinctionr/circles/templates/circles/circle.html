@@ -16,12 +16,14 @@
 		<hr>
 		<div id="purpose" class="small py-4">{{object.purpose|markdownify}}</div>
 		{% if is_member or is_lead %}
-		{% if object.sensitive_info %}
+			{% if object.sensitive_info %}
 		<div id="sensitive" class="small">
 			<h5>sensitive information</h5>
 			{{object.sensitive_info|markdownify}}
 		</div>
+			{% endif %}
 		{% endif %}
+		{% if can_see_leads %}
 		<div id="jobs">
 			<h5>jobs</h5>
 		{% if jobs %}
