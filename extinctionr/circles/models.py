@@ -12,6 +12,8 @@ ROLE_CHOICES = {
     'member': 'Member'
 }
 
+LEAD_ROLES = ('int', 'ext', 'lead')
+
 
 class Circle(models.Model):
     created = models.DateTimeField(db_index=True, auto_now_add=True)
@@ -38,9 +40,9 @@ class Circle(models.Model):
     def clean(self):
         super().clean()
         available = [a.strip() for a in self.available_roles.split(',') if a.strip()]
-        for role in ROLE_CHOICES.keys():
-            if role not in available:
-                available.append(role)
+        # for role in ROLE_CHOICES.keys():
+        #     if role not in available:
+        #         available.append(role)
         self.available_roles = ','.join(available)
 
     def get_role_choices(self):
@@ -82,11 +84,11 @@ class Circle(models.Model):
 
     @cached_property
     def leads(self):
-        return Contact.objects.filter(circlemember__role__in=['int','ext'], circlemember__circle=self)
+        return Contact.objects.filter(circlemember__role__in=LEAD_ROLES, circlemember__circle=self)
 
     @cached_property
     def coordinators(self):
-        return CircleMember.objects.filter(circle=self, role__in=['int', 'ext']).order_by('role', 'pk')
+        return CircleMember.objects.filter(circle=self, role__in=LEAD_ROLES).order_by('role', 'pk')
 
     @property
     def external_coordinators(self):
@@ -94,7 +96,7 @@ class Circle(models.Model):
 
     @property
     def internal_coordinators(self):
-        return self.coordinators.filter(role='int')
+        return self.coordinators.filter(role__in=('int', 'lead'))
 
     def get_absolute_url(self):
         return reverse('circles:detail', kwargs={'pk': self.id})
