@@ -20,16 +20,18 @@
         <div class="pb-5 text-center"><a href="/admin/circles/circlejob/add/{% if circle %}?circle={{circle.id}}{% endif %}" class="btn btn-info btn-fucxed">create a job</a></div>
         {% endif %}
         {% for job in jobs %}
-        <div class="row py-2" style="background-color:{{job.circle.bgcolor}}">
+        <div class="row text-center py-2 border-bottom" style="background-color:{{job.circle.bgcolor}}">
+            {% if not circle %}
             <div class="col">
                 <a href="{{job.circle.get_absolute_url}}">{{job.circle}}</a>
             </div>
+            {% endif %}
             <div class="col{% if job.asap %} text-danger{% endif %}">
                 {% if job.title %}<h5>{{job.title}}</h5>{% endif %}
                 {{job.job|markdownify}}
             </div>
             {% if user.is_authenticated %}
-            <div class="col p-3">
+            <div class="col p-2">
                 <div class="text-center">
                 {% if job.filled %}
                 Filled by: <strong><a href="{% url 'circles:person' contact_id=job.filled.id %}">{{job.filled}}</a></strong>
