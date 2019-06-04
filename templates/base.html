@@ -10,11 +10,26 @@
     <link rel="icon" href="{% static 'images/cropped-favicon-192x192-150x150.png' %}" sizes="32x32" />
     <link rel="icon" href="{% static 'images/cropped-favicon-192x192.png' %}" sizes="192x192" />
     <link rel="apple-touch-icon-precomposed" href="{% static 'images/cropped-favicon-192x192.png' %}" />
-    <link href="https://fonts.googleapis.com/css?family=Crimson+Text:400,700" rel="stylesheet" />
     {% block extrahead %}{% endblock %}
 
 <style type="text/css">
   {% block inline_css %}
+  /* latin */
+  @font-face {
+    font-family: 'Crimson Text';
+    font-style: normal;
+    font-weight: 400;
+    src: local('Crimson Text Regular'), local('CrimsonText-Regular'), url({% static 'css/crimsontext-regular.woff2' %}) format('woff2');
+    unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+  }
+  /* latin */
+  @font-face {
+    font-family: 'Crimson Text';
+    font-style: normal;
+    font-weight: 700;
+    src: local('Crimson Text Bold'), local('CrimsonText-Bold'), url({% static 'css/crimsontext-bold.woff2' %}) format('woff2');
+    unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+  }
   @font-face {
     font-family: "FucXed";
     font-style: normal;
