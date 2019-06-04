@@ -30,7 +30,7 @@
 			<p>There are <a href="{% url 'circles:circle-jobs' pk=object.id %}">{{jobs|length}} jobs</a>.</p> 
 		{% endif %}
 			{% if is_lead %}
-			<div class="text-right pb-4"><a href="/admin/circles/circlejob/add/?circle={{object.id}}" class="btn btn-info btn-fucxed">create a job</a></div>
+			<div class="pb-4"><a href="/admin/circles/circlejob/add/?circle={{object.id}}" class="btn btn-info btn-fucxed">create a job</a></div>
 			{% endif %}
 		</div>
 		{% endif %}
