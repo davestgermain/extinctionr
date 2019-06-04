@@ -4,14 +4,20 @@
 {% load info %}
 <div class="row pt-5">
     <div class="col-text">
-        <h1 class="text-center">open jobs</h1>
+        <h1 class="text-center">
+            {% if circle %}
+            <a href="{{circle.get_absolute_url}}">{{circle.name}}</a> jobs
+            {% else %}
+            open jobs
+            {% endif %}
+        </h1>
         {% if not jobs %}
         <p>There are no jobs open right now. But you can still get involved with a <a href="/circle/">working group</a>.</p>
         {% else %}
-        <p><span class="text-danger">Red jobs</span> need to be filled as soon as possible.</p>
+        <p><span class="text-danger">Red jobs</span> need to be filled as soon as possible. {% if user.is_authenticated %}If you are willing and able to do a job, click <span class="btn-fucxed">i will do this</span>, and a notification will be sent to the working group coordinators.{% else %}<a href="/login/">Login</a> to sign up for a job.{% endif %}</p>
         {% endif %}
-        {% if 'circles.add_job' in perms %}
-        <p class="text-center"><a href="/admin/circles/circlejob/add/" class="btn btn-info btn-fucxed">create a job</a></p>
+        {% if 'circles.add_circlejob' in perms %}
+        <div class="pb-5 text-center"><a href="/admin/circles/circlejob/add/{% if circle %}?circle={{circle.id}}{% endif %}" class="btn btn-info btn-fucxed">create a job</a></div>
         {% endif %}
         {% for job in jobs %}
         <div class="row py-2" style="background-color:{{job.circle.bgcolor}}">
@@ -22,6 +28,20 @@
                 {% if job.title %}<h5>{{job.title}}</h5>{% endif %}
                 {{job.job|markdownify}}
             </div>
+            {% if user.is_authenticated %}
+            <div class="col p-3">
+                <div class="text-center">
+                {% if job.filled %}
+                Filled by: <strong><a href="{% url 'circles:person' contact_id=job.filled.id %}">{{job.filled}}</a></strong>
+                {% else %}
+                    <button class="btn btn-primary btn-fucxed job-button" data-jobid="{{job.id}}">I will do this</button>
+                {% endif %}
+                {% if can_change %}
+                    <a class="pl-4" href="/admin/circles/circlejob/{{job.id}}/change/">Edit</a>
+                {% endif %}
+                </div>
+            </div>
+            {% endif %}
         </div>
         {% endfor %}
     </div>
@@ -29,5 +49,16 @@
 {% endblock %}
 {% block extra_js %}
 <script type="text/javascript">
+    $('.job-button').click(function(){
+        if (confirm("Are you sure you can do this job?")) {
+            var url = "{% url 'circles:jobs' %}";
+            var data = {
+                id: $(this).data('jobid')
+            }
+            $.post(url, data, function() {
+                location.reload();
+            });
+        }
+    });
 </script>
 {% endblock %}

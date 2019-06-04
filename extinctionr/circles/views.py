@@ -255,7 +255,15 @@ class JobView(BaseCircleView, generic.TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['jobs'] = CircleJob.objects.filter(filled__isnull=True).select_related('circle')
+        qset = CircleJob.objects.select_related('circle')
+        circle_id = self.kwargs.get('pk', None)
+        if circle_id:
+            context['circle'] = get_object_or_404(Circle, pk=circle_id)
+            qset = qset.filter(circle__id=circle_id)
+        else:
+            qset = qset.filter(filled__isnull=True)
+        context['can_change'] = can_change = self.request.user.has_perm('circles.change_circlejob')
+        context['jobs'] = qset
         return context
 
 

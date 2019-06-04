@@ -25,25 +25,12 @@
 		{% endif %}
 		{% if can_see_leads %}
 		<div id="jobs">
-			<h5>jobs</h5>
 		{% if jobs %}
-			<ul>
-			{% for job in jobs %}
-			<li>
-				{% if job.title %}<strong>{{job.title}}</strong><br>{% endif %}
-				{{job.job|markdownify}}
-				{% if job.filled %}
-				Filled by: <strong>{{job.filled}}</strong>
-				{% else %}
-				<button class="btn btn-primary btn-fucxed job-button" data-jobid="{{job.id}}">I will do this</button>
-				{% endif %}
-				{% if is_lead %}<p><a href="/admin/circles/circlejob/{{job.id}}/change/">Edit</a></p>{% endif %}
-			</li>
-			{% endfor %}
-			</ul>
+			<h5>jobs</h5>
+			<p>There are <a href="{% url 'circles:circle-jobs' pk=object.id %}">{{jobs|length}} jobs</a>.</p> 
 		{% endif %}
 			{% if is_lead %}
-			<p class="text-right"><a href="/admin/circles/circlejob/add/?circle={{object.id}}" class="btn btn-info btn-fucxed">create a job</a></p>
+			<div class="text-right pb-4"><a href="/admin/circles/circlejob/add/?circle={{object.id}}" class="btn btn-info btn-fucxed">create a job</a></div>
 			{% endif %}
 		</div>
 		{% endif %}
