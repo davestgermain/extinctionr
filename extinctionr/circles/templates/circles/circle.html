@@ -108,9 +108,9 @@
 			</tr>
 		</thead>
 			<tbody class="small">
-			{% for mem, role, mem_id in members %}
+			{% for mem, role in members %}
 			<tr>
-				<th scope="row" class="px-3 text-center">{% if can_edit_member %}<a href="/admin/circles/circlemember/{{mem_id}}/change/">{% endif %}{{mem.verbose_role}}{% if can_edit_member %}</a>{% endif %}</th>
+				<th scope="row" class="px-3 text-center">{% if can_edit_member %}<a href="/admin/circles/circlemember/{{mem.member_id}}/change/">{% endif %}{{mem.verbose_role}}{% if can_edit_member %}</a>{% endif %}</th>
 				<td><a href="{% url 'circles:person' contact_id=mem.id %}">{{mem}}</a></td>
 				<td class="text-center"><a href="mailto:{{mem.email}}">{{mem.email}}</a></td>
 				<td>{% if mem.phone %}{{mem.phone}}{% endif %}</td>

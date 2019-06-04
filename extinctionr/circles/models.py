@@ -63,7 +63,8 @@ class Circle(models.Model):
         members = set()
         for mem in CircleMember.objects.filter(circle=self).select_related('contact').order_by('role', 'pk'):
             mem.contact.verbose_role = mem.verbose_role
-            members.add((mem.contact, mem.role, mem.id))
+            mem.contact.member_id = mem.id
+            members.add((mem.contact, mem.role))
         for circle in self.children:
             members.update(circle.recursive_members)
         return members
