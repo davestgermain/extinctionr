@@ -276,7 +276,7 @@ class Couch(models.Model):
         return str(self.owner)
 
     def get_absolute_url(self):
-        return reverse('circles:person', kwargs={'contact_id': self.id}) + '#couches'
+        return reverse('circles:person', kwargs={'contact_id': self.owner_id}) + '#couches'
 
     def is_me(self, user):
         return get_contact(user.email) == self.owner
