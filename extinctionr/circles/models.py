@@ -63,7 +63,7 @@ class Circle(models.Model):
         members = set()
         for mem in CircleMember.objects.filter(circle=self).select_related('contact').order_by('role', 'pk'):
             mem.contact.verbose_role = mem.verbose_role
-            members.add((mem.contact, mem.role))
+            members.add((mem.contact, mem.role, mem.id))
         for circle in self.children:
             members.update(circle.recursive_members)
         return members
@@ -143,7 +143,7 @@ class Circle(models.Model):
         return addresses
 
     def get_member_emails(self):
-        emails = set((m.email for m, role in self.recursive_members))
+        emails = set((m[0].email for m in self.recursive_members))
         return ','.join(emails)
 
     def add_member(self, email, name, contact=None, role='member'):
@@ -178,8 +178,8 @@ class Circle(models.Model):
 
     def is_member(self, user):
         email = user.email
-        for member, role in self.recursive_members:
-            if member.email == email:
+        for member in self.recursive_members:
+            if member[0].email == email:
                 return True
         return False
 

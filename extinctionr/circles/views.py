@@ -209,6 +209,7 @@ class CircleView(BaseCircleView, generic.DetailView):
             context['pending'] = circle.membershiprequest_set.filter(confirmed_by=None)
             context['form'] = ContactForm(circle, initial={'role': 'member'})
             context['jobs'] = CircleJob.objects.filter(circle=circle)
+            context['can_edit_member'] = self.request.user.has_perm('circles.circlemember_change')
             # if they're logged in, this is not relevant
             if 'circle_requests' in self.request.session:
                 del self.request.session['circle_requests']
