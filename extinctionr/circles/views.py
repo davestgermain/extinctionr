@@ -255,7 +255,7 @@ class JobView(BaseCircleView, generic.TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        qset = CircleJob.objects.select_related('circle').order_by('asap', 'id')
+        qset = CircleJob.objects.select_related('circle').order_by('-asap', 'id')
         circle_id = self.kwargs.get('pk', None)
         if circle_id:
             context['circle'] = get_object_or_404(Circle, pk=circle_id)
