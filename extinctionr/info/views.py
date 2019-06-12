@@ -60,7 +60,7 @@ class InfoView(TemplateView):
 class PRListView(ListView):
     def get_queryset(self):
         if self.request.user.has_perm('info.view_pressrelease'):
-            return PressRelease.objects.all()
+            return PressRelease.objects.all().order_by('-released')
         else:
             return PressRelease.objects.released()
 

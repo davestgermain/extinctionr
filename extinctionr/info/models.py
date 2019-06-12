@@ -8,7 +8,7 @@ from markdownx.models import MarkdownxField
 
 class PressReleaseManager(models.Manager):
     def released(self):
-        return self.get_queryset().filter(released__lt=now()).order_by('released')
+        return self.get_queryset().filter(released__lt=now()).order_by('-released')
 
 
 class PressRelease(models.Model):
