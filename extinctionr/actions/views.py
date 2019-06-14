@@ -1,3 +1,9 @@
+import calendar
+import csv
+
+from collections import defaultdict
+from datetime import timedelta, datetime
+
 from django.conf import settings
 from django.contrib.auth import get_user_model
 from django.contrib.auth.decorators import login_required
@@ -11,9 +17,8 @@ from django.utils.timezone import now
 from django.urls import reverse
 from django.views.decorators.cache import never_cache, cache_page
 from django.utils.decorators import method_decorator
+from django.views.decorators.csrf import csrf_protect
 
-import csv
-from datetime import timedelta
 from django import forms
 from phonenumber_field.formfields import PhoneNumberField
 
@@ -23,6 +28,11 @@ from .comm import notify_commitments
 
 
 BOOTSTRAP_ATTRS = {'class': 'form-control text-center'}
+
+class ActionForm(forms.ModelForm):
+    class Meta:
+        model = Action
+        fields = ('name', 'when', 'description', 'public', 'location', 'tags', 'slug', 'accessibility')
 
 
 class SignupForm(forms.Form):
@@ -50,13 +60,73 @@ class TalkProposalForm(forms.Form):
 
 
 @cache_page(1200)
+@csrf_protect
 def list_actions(request):
-    actions = Action.objects.filter(when__gte=now()).order_by('when')
+    can_add = request.user.has_perm('actions.add_action')
+    if request.method == 'POST' and can_add:
+        form = ActionForm(request.POST)
+        if form.is_valid():
+            action = form.save()
+            return redirect(action.get_absolute_url())
+        else:
+            print(form.errors)
+
+    current_date = now().date().replace(day=1)
+    ctx = {}
+    req_date = request.GET.get('month','')
+    if req_date:
+        current_date = datetime.strptime(req_date, '%Y-%m')
+        ctx['is_cal'] = True
+        actions = None
+    else:
+        actions = Action.objects.filter(when__gte=now()).order_by('when')
+        if not request.user.is_staff:
+            actions = actions.filter(public=True)
+        ctx['upcoming'] = actions[:5]
+    ctx['next_month'] = current_date + timedelta(days=31)
+    ctx['last_month'] = current_date + timedelta(days=-1)
+    cal_days = list(calendar.Calendar().itermonthdates(current_date.year, current_date.month))
+    this_month = []
+    this_week = []
+    month_actions = defaultdict(list)
+    qset = Action.objects.filter(when__date__range=(cal_days[0], cal_days[-1]))
     if not request.user.is_staff:
-        actions = actions.filter(public=True)
-    ctx = {
-        'actions': actions,
-    }
+        qset = qset.filter(public=True)
+
+    for action in qset:
+        month_actions[action.when.date()].append(action)
+
+    for daynum, mdate in enumerate(cal_days, 1):
+        todays_actions = month_actions[mdate]
+        obj = {
+            'day': mdate,
+            'events': todays_actions,
+        }
+        if mdate.month == current_date.month:
+            for a in todays_actions:
+                tagnames = a.tags.names()
+                if 'talk' in tagnames:
+                    obj['bg'] = 'xr-bg-pink'
+                elif 'action' in tagnames:
+                    obj['bg'] = 'xr-bg-light-green'
+                elif 'meeting' in tagnames:
+                    obj['bg'] = 'xr-bg-lemon'
+                elif 'nvda' in tagnames:
+                    obj['bg'] = 'xr-bg-light-blue'
+        else:
+            # previous month
+            obj['bg'] = 'bg-light'
+        this_week.append(obj)
+        if daynum % 7 == 0:
+            this_month.append(this_week)
+            this_week = []
+    if this_week:
+        this_month.append(this_week)
+    ctx['month'] = this_month
+    ctx['can_add'] = can_add
+    if ctx['can_add']:
+        ctx['form'] = ActionForm()
+    ctx['current_date'] = current_date
     resp = render(request, 'list_actions.html', ctx)
     resp['Vary'] = 'Cookie'
 
@@ -65,6 +135,7 @@ def list_actions(request):
     if actions:
         resp['Last-Modified'] = http_date(actions.last().when.timestamp())
     return resp
+
 
 
 @cache_page(1200)

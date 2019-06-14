@@ -7,13 +7,15 @@
 
 {% block content %}
 {% load info %}
+{% load tz %}
+{% if not is_cal %}
 <div class="row pt-5">
     <h1 class="col-text text-center">Upcoming Actions</h1>
 </div>
     <hr>
 <section class="row">
-    {% if actions %}
-    {% for action in actions %}
+    {% if upcoming %}
+    {% for action in upcoming %}
     <div class="col text-center m-2 {% if not forloop.counter|divisibleby:3 %}border-right{% endif %}">
         <h2><a href="{{action.get_absolute_url}}">{{action.name}}</a></h2>
         <h3>{{action.when}}</h3>
@@ -32,10 +34,77 @@
     </div>
 {% endif %}
 </section>
-<div class="row mt-3 no-gutters">
+{% endif %}
+<div class="row {% if is_cal %}pt-5{% else %}mt-3{% endif %} no-gutters">
     <div class="col">
-        <hr>
-<iframe src="https://calendar.google.com/calendar/embed?src=mits7cdibmdcdoac6a83996d94%40group.calendar.google.com&amp;ctz=America%2FNew_York" style="width: 70vw;height: 70vh; position: relative; border:0" scrolling="no" frameborder="0"></iframe>
-    </div>
+        {% if not is_cal %}<hr>{% endif %}
+        <h3 class="text-center">{{current_date|date:"F Y"}}</h3>
+        <table class="table table-hover table-bordered">
+            <thead class="thead-dark small text-center text-fucxed">
+                <tr>
+                    <th style="width: 14%" scope="col">Sun</th>
+                    <th style="width: 14%" scope="col">Mon</th>
+                    <th style="width: 14%" scope="col">Tue</th>
+                    <th style="width: 14%" scope="col">Wed</th>
+                    <th style="width: 14%" scope="col">Thu</th>
+                    <th style="width: 14%" scope="col">Fri</th>
+                    <th style="width: 14%" scope="col">Sat</th>
+                </tr>
+            </thead>
+            <tbody class="small">
+                {% for week in month %}
+                <tr style="height:6em">
+                    {% for day in week %}
+                    <td{% if forloop.first %} scope="row"{% endif %} class="{% if day.bg %} {{day.bg}}{% endif %}">
+                        <h5>{% if can_add %}<a href="" data-toggle="modal" data-target="#event-modal" data-when="{{day.day.isoformat}}">{{day.day.day}}</a>{% else %}{{day.day.day}}{% endif %}</h5>
+                        {% for event in day.events %}
+                        <a href="{{event.get_absolute_url}}">{{event.when|localtime|date:"P"}} &mdash; {{event.name}}</a><br>
+                        {% endfor %}
+                    </td>
+                    {% endfor %}
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        <h4 class="row">
+            <span class="col text-left"><a href="?month={{last_month|date:"Y-m"}}">&larr; {{last_month|date:"F Y"}}</a></span>
+            <span class="col text-right"><a href="?month={{next_month|date:"Y-m"}}">{{next_month|date:"F Y"}} &rarr;</a></span>
+        </h4>
+<!-- <iframe src="https://calendar.google.com/calendar/embed?src=mits7cdibmdcdoac6a83996d94%40group.calendar.google.com&amp;ctz=America%2FNew_York" style="width: 70vw;height: 70vh; position: relative; border:0" scrolling="no" frameborder="0"></iframe>
+ -->    </div>
 </div>
+{% if can_add %}
+<div class="modal" tabindex="-1" role="dialog" id="event-modal">
+  <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title text-center">Add Event</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form method="post">
+            {% csrf_token %}
+        {{form.as_p}}
+            <button type="submit" class="btn btn-fucxed btn-primary btn-block">Save</button>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary btn-fucxed" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+{% endif %}
+{% endblock %}
+{% block extra_js %}
+<script>
+    $('#event-modal').on('show.bs.modal', function (event) {
+        var button = $(event.relatedTarget); // Button that triggered the modal
+        var when = button.data('when'); // Extract info from data-* attributes
+        console.log(when);
+        $('#id_when').val(when);
+    });
+</script>
 {% endblock %}

@@ -1,4 +1,6 @@
 from django.contrib import admin
+from django.db import models
+from django import forms
 from .models import Action, ActionRole, Attendee, TalkProposal
 from markdownx.admin import MarkdownxModelAdmin
 from contacts.models import Contact
@@ -10,6 +12,9 @@ class ActionAdmin(MarkdownxModelAdmin):
     prepopulated_fields = {"slug": ("name",)}
     filter_vertical = ('photos',)
     readonly_fields = ('modified', )
+    # formfield_overrides = {
+    #     models.DateTimeField: {'widget': forms.DateTimeInput},
+    # }
 
 
 @admin.register(Attendee)
