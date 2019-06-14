@@ -40,16 +40,16 @@
     <div class="col">
         {% if not is_cal %}<hr>{% endif %}
         <h3 class="text-center">{{current_date|date:"F Y"}}</h3>
-        <table class="table table-hover xtable-bordered">
+        <table class="table border">
             <thead class="thead-dark small text-center text-fucxed">
                 <tr>
-                    <th style="width: 14%" scope="col">Sun</th>
                     <th style="width: 14%" scope="col">Mon</th>
                     <th style="width: 14%" scope="col">Tue</th>
                     <th style="width: 14%" scope="col">Wed</th>
                     <th style="width: 14%" scope="col">Thu</th>
                     <th style="width: 14%" scope="col">Fri</th>
                     <th style="width: 14%" scope="col">Sat</th>
+                    <th style="width: 14%" scope="col">Sun</th>
                 </tr>
             </thead>
             <tbody class="small">
@@ -101,8 +101,8 @@
 {% endblock %}
 {% block extra_js %}
 <script>
-    $('#event-modal input,textarea').addClass('form-control');
     $('#event-modal').on('show.bs.modal', function (event) {
+        $('#event-modal input,textarea').addClass('form-control');
         var button = $(event.relatedTarget); // Button that triggered the modal
         var when = button.data('when'); // Extract info from data-* attributes
         console.log(when);

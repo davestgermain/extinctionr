@@ -108,7 +108,7 @@ def list_actions(request):
     ctx['next_month'] = current_date + timedelta(days=31)
     ctx['last_month'] = current_date + timedelta(days=-1)
 
-    cal_days = list(calendar.Calendar().itermonthdates(current_date.year, current_date.month))
+    cal_days = list(calendar.Calendar(firstweekday=0).itermonthdates(current_date.year, current_date.month))
     this_month = []
     this_week = []
     month_actions = defaultdict(list)
