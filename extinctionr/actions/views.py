@@ -121,7 +121,8 @@ def list_actions(request):
 
     event_colors = {
         'talk': 'xr-bg-pink',
-        'action': 'xr-bg-light-green',
+        'action': 'xr-bg-green',
+        'ally': 'xr-bg-light-green',
         'meeting': 'xr-bg-lemon',
         'orientation': 'xr-bg-purple',
         'art': 'xr-bg-warm-yellow',

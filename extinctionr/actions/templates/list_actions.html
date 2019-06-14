@@ -14,7 +14,7 @@ table td {
     font-size: .8em;
 }
 table a:hover {
-    color: rgb(20, 170, 55);
+    color: rgb(200, 0, 130);
 }
 {% endblock %}
 
@@ -113,7 +113,14 @@ table a:hover {
 {% endif %}
 {% endblock %}
 {% block extra_js %}
-<script>
+{% load static %}
+<script type="text/javascript" src="{% static 'admin/js/vendor/xregexp/xregexp.min.js' %}"></script>
+<script type="text/javascript" src="{% static 'admin/js/urlify.js' %}"></script>
+<script type="text/javascript">
+document.getElementById("id_name").onkeyup = function() {
+    var e = document.getElementById("id_slug");
+    if (!e._changed) { e.value = URLify(document.getElementById("id_name").value, 50, true); }
+}
     $('#event-modal').on('show.bs.modal', function (event) {
         $('#event-modal input,textarea').addClass('form-control');
         var button = $(event.relatedTarget); // Button that triggered the modal
