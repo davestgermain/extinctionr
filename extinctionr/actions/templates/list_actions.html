@@ -4,6 +4,19 @@
 {% block og_tags %}
   <meta property="og:description" content="Upcoming Actions" />
 {% endblock %}
+  {% block inline_css %}
+{{block.super}}
+table a {
+    color: #000;
+    text-decoration: underline;
+}
+table td {
+    font-size: .8em;
+}
+table a:hover {
+    color: rgb(20, 170, 55);
+}
+{% endblock %}
 
 {% block content %}
 {% load info %}
@@ -36,20 +49,20 @@
 </section>
 {% endif %}
 <a name="calendar"></a>
-<div class="row {% if is_cal %}pt-5{% else %}mt-3{% endif %} no-gutters">
+<div class="row {% if is_cal %}pt-5{% else %}mt-3{% endif %}">
     <div class="col">
         {% if not is_cal %}<hr>{% endif %}
         <h3 class="text-center">{{current_date|date:"F Y"}}</h3>
-        <table class="table border">
+        <table class="table border table-responsive-sm">
             <thead class="thead-dark small text-center text-fucxed">
                 <tr>
+                    <th style="width: 14%" scope="col">Sun</th>
                     <th style="width: 14%" scope="col">Mon</th>
                     <th style="width: 14%" scope="col">Tue</th>
                     <th style="width: 14%" scope="col">Wed</th>
                     <th style="width: 14%" scope="col">Thu</th>
                     <th style="width: 14%" scope="col">Fri</th>
                     <th style="width: 14%" scope="col">Sat</th>
-                    <th style="width: 14%" scope="col">Sun</th>
                 </tr>
             </thead>
             <tbody class="small">
@@ -59,7 +72,7 @@
                     <td{% if forloop.first %} scope="row"{% endif %} class="{% if day.bg %} {{day.bg}}{% endif %}{% if day.today %} border border-dark{% endif %}">
                         <h5>{% if can_add %}<a href="" data-toggle="modal" data-target="#event-modal" data-when="{{day.day.isoformat}}">{{day.day.day}}</a>{% else %}{{day.day.day}}{% endif %}</h5>
                         {% for event in day.events %}
-                        <a href="{{event.get_absolute_url}}">{{event.when|localtime|date:"P"}} &mdash; {{event.name}}</a><br>
+                        {{event.when|localtime|date:"P"}} &mdash; <a href="{{event.get_absolute_url}}">{{event.name}}</a><br>
                         {% endfor %}
                     </td>
                     {% endfor %}
@@ -68,8 +81,8 @@
             </tbody>
         </table>
         <h4 class="row">
-            <span class="col text-left"><a href="?month={{last_month|date:"Y-m"}}">&larr; {{last_month|date:"F Y"}}</a></span>
-            <span class="col text-right"><a href="?month={{next_month|date:"Y-m"}}">{{next_month|date:"F Y"}} &rarr;</a></span>
+            <span class="col text-left ml-3"><a href="?month={{last_month|date:"Y-m"}}">&larr; {{last_month|date:"F Y"}}</a></span>
+            <span class="col text-right mr-3"><a href="?month={{next_month|date:"Y-m"}}">{{next_month|date:"F Y"}} &rarr;</a></span>
         </h4>
 <!-- <iframe src="https://calendar.google.com/calendar/embed?src=mits7cdibmdcdoac6a83996d94%40group.calendar.google.com&amp;ctz=America%2FNew_York" style="width: 70vw;height: 70vh; position: relative; border:0" scrolling="no" frameborder="0"></iframe>
  -->    </div>

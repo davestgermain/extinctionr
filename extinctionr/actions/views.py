@@ -104,11 +104,11 @@ def list_actions(request):
         actions = Action.objects.filter(when__gte=now()).order_by('when')
         if not request.user.is_staff:
             actions = actions.filter(public=True)
-        ctx['upcoming'] = actions[:5]
+        ctx['upcoming'] = actions[:6]
     ctx['next_month'] = current_date + timedelta(days=31)
     ctx['last_month'] = current_date + timedelta(days=-1)
 
-    cal_days = list(calendar.Calendar(firstweekday=0).itermonthdates(current_date.year, current_date.month))
+    cal_days = list(calendar.Calendar(firstweekday=6).itermonthdates(current_date.year, current_date.month))
     this_month = []
     this_week = []
     month_actions = defaultdict(list)
@@ -119,6 +119,14 @@ def list_actions(request):
     for action in qset:
         month_actions[action.when.date()].append(action)
 
+    event_colors = {
+        'talk': 'xr-bg-pink',
+        'action': 'xr-bg-light-green',
+        'meeting': 'xr-bg-lemon',
+        'orientation': 'xr-bg-purple',
+        'art': 'xr-bg-warm-yellow',
+        'nvda': 'xr-bg-light-blue',
+    }
     for daynum, mdate in enumerate(cal_days, 1):
         todays_actions = month_actions[mdate]
         obj = {
@@ -128,16 +136,11 @@ def list_actions(request):
         if mdate.month == current_date.month:
             for a in todays_actions:
                 tagnames = a.tags.names()
-                if 'talk' in tagnames:
-                    obj['bg'] = 'xr-bg-pink'
-                elif 'action' in tagnames:
-                    obj['bg'] = 'xr-bg-light-green'
-                elif 'meeting' in tagnames:
-                    obj['bg'] = 'xr-bg-lemon'
-                elif 'nvda' in tagnames:
-                    obj['bg'] = 'xr-bg-light-blue'
-                elif 'art' in tagnames:
-                    obj['bg'] = 'xr-bg-warm-yellow'
+                for t in a.tags.names():
+                    color = event_colors.get(t, None)
+                    if color:
+                        obj['bg'] = color
+                        break
         else:
             # previous month
             obj['bg'] = 'bg-light'
