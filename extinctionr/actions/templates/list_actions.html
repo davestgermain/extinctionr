@@ -35,11 +35,12 @@
 {% endif %}
 </section>
 {% endif %}
+<a name="calendar"></a>
 <div class="row {% if is_cal %}pt-5{% else %}mt-3{% endif %} no-gutters">
     <div class="col">
         {% if not is_cal %}<hr>{% endif %}
         <h3 class="text-center">{{current_date|date:"F Y"}}</h3>
-        <table class="table table-hover table-bordered">
+        <table class="table table-hover xtable-bordered">
             <thead class="thead-dark small text-center text-fucxed">
                 <tr>
                     <th style="width: 14%" scope="col">Sun</th>
@@ -55,7 +56,7 @@
                 {% for week in month %}
                 <tr style="height:6em">
                     {% for day in week %}
-                    <td{% if forloop.first %} scope="row"{% endif %} class="{% if day.bg %} {{day.bg}}{% endif %}">
+                    <td{% if forloop.first %} scope="row"{% endif %} class="{% if day.bg %} {{day.bg}}{% endif %}{% if day.today %} border border-dark{% endif %}">
                         <h5>{% if can_add %}<a href="" data-toggle="modal" data-target="#event-modal" data-when="{{day.day.isoformat}}">{{day.day.day}}</a>{% else %}{{day.day.day}}{% endif %}</h5>
                         {% for event in day.events %}
                         <a href="{{event.get_absolute_url}}">{{event.when|localtime|date:"P"}} &mdash; {{event.name}}</a><br>
@@ -100,6 +101,7 @@
 {% endblock %}
 {% block extra_js %}
 <script>
+    $('#event-modal input,textarea').addClass('form-control');
     $('#event-modal').on('show.bs.modal', function (event) {
         var button = $(event.relatedTarget); // Button that triggered the modal
         var when = button.data('when'); // Extract info from data-* attributes

@@ -25,6 +25,8 @@
 		{% if action.location %}
 		<p class="text-info"><a href="https://maps.google.com/?q={{action.location|urlencode}}">{{action.location|linebreaks}}</a></p>
 		{% endif %}
+		{% if 'actions.change_action' in perms %}<h4><a href="/admin/actions/action/{{action.id}}/change/">Edit</a></h4>{% endif %}
+
 		<div class="text-left">{{action.description|markdownify}}</div>
 		{% if action.accessibility %}
 		<div class="accessibility-info small text-left pt-4">

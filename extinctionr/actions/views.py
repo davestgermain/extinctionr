@@ -70,8 +70,30 @@ def list_actions(request):
             return redirect(action.get_absolute_url())
         else:
             print(form.errors)
+    elif request.GET.get('format', '') == 'ical':
+        import icalendar
+        actions = Action.objects.filter(when__gte=now()).order_by('when')
+        if not request.user.is_staff:
+            actions = actions.filter(public=True)
+        thecal = icalendar.Calendar()
+        thecal.add('prodid', '-//XR Calendar//xrmass.org//')
+        thecal.add('version', '2.0')
+        current_time = now().strftime('%Y%m%dT%H%M%SZ')
+        for action in actions:
+            evt = icalendar.Event()
+            evt['uid'] = '{}@{}'.format(action.id, request.get_host())
+            evt['last-modified'] = action.modified.strftime('%Y%m%dT%H%M%SZ')
+            evt['summary'] = action.name
+            evt['dtstart'] = action.when
+            evt['dtend'] = action.when + timedelta(hours=1)
+            evt['dtstamp'] = current_time
+            evt['location'] = action.location
+            thecal.add_component(evt)
+        response = HttpResponse(thecal.to_ical(), content_type='text/calendar')
+        return response
 
-    current_date = now().date().replace(day=1)
+    today = now().date()
+    current_date = today.replace(day=1)
     ctx = {}
     req_date = request.GET.get('month','')
     if req_date:
@@ -85,6 +107,7 @@ def list_actions(request):
         ctx['upcoming'] = actions[:5]
     ctx['next_month'] = current_date + timedelta(days=31)
     ctx['last_month'] = current_date + timedelta(days=-1)
+
     cal_days = list(calendar.Calendar().itermonthdates(current_date.year, current_date.month))
     this_month = []
     this_week = []
@@ -113,9 +136,13 @@ def list_actions(request):
                     obj['bg'] = 'xr-bg-lemon'
                 elif 'nvda' in tagnames:
                     obj['bg'] = 'xr-bg-light-blue'
+                elif 'art' in tagnames:
+                    obj['bg'] = 'xr-bg-warm-yellow'
         else:
             # previous month
             obj['bg'] = 'bg-light'
+        if mdate == today:
+            obj['today'] = True
         this_week.append(obj)
         if daynum % 7 == 0:
             this_month.append(this_week)
