@@ -15,6 +15,13 @@ from taggit.managers import TaggableManager
 
 USER_MODEL = get_user_model()
 
+class ActionManager(models.Manager):
+    def for_user(self, user):
+        qset = self.all().order_by('when')
+        if not user.is_staff:
+            qset = qset.filter(public=True).exclude(tags__name='pending')
+        return qset
+
 
 class Action(models.Model):
     name = models.CharField(max_length=255, db_index=True)
@@ -31,7 +38,7 @@ class Action(models.Model):
     accessibility = models.TextField(default='', help_text="Indicate what the accessibility accomodations are for this location.")
 
     tags = TaggableManager(blank=True, help_text="Attendees will automatically be tagged with these tags")
-
+    objects = ActionManager()
 
     @property
     def available_role_choices(self):

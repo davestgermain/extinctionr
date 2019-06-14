@@ -113,6 +113,8 @@
 {% if request.user.is_staff %}
 <div class="row mt-4">
 	<div class="col small">
+		<hr>
+		<p>Tags: {{action.tags.names|join:","}}</p>
 		{% if 'actions.change_action' in perms %}<p class=""><a href="/admin/actions/action/{{action.id}}/change/">Edit</a></p>{% endif %}
 		{% if attendees %}
 		{% if 'actions.view_attendee' in perms %}<p class=""><a href="/action/{{action.slug}}/attendees/?fmt=csv">Download CSV of Contacts</a></p>{% endif %}

@@ -72,6 +72,8 @@ table a:hover {
                     <td{% if forloop.first %} scope="row"{% endif %} class="{% if day.bg %} {{day.bg}}{% endif %}{% if day.today %} border border-dark{% endif %}">
                         <h5>{% if can_add %}<a href="" data-toggle="modal" data-target="#event-modal" data-when="{{day.day.isoformat}}">{{day.day.day}}</a>{% else %}{{day.day.day}}{% endif %}</h5>
                         {% for event in day.events %}
+                        {% if not event.public %}<i class="fas fa-lock" title="Not public"></i> {% endif %}
+                        {% if 'pending' in event.tags.names %}<i class="fas fa-question" title="Pending Event"></i>{% endif %}
                         {{event.when|localtime|date:"P"}} &mdash; <a href="{{event.get_absolute_url}}">{{event.html_title}}</a><br>
                         {% endfor %}
                     </td>
