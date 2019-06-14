@@ -20,7 +20,7 @@
 {% block content %}
 <div class="row pt-5 text-center">
 	<div class="col-lg-10 col-sm-12 offset-lg-1">
-		<h1>{{action.name}}</h1>
+		<h1>{{action.html_title}}</h1>
 		<h2>{{action.when}}</h2>
 		{% if action.location %}
 		<p class="text-info"><a href="https://maps.google.com/?q={{action.location|urlencode}}">{{action.location|linebreaks}}</a></p>
