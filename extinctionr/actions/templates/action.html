@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 {% load info %}
-{% block title %}:: {{action.name}}{% endblock %}
-{% block og_title %}{{action.name}}{% endblock %}
+{% block title %}:: {{action.text_title}}{% endblock %}
+{% block og_title %}{{action.text_title}}{% endblock %}
 {% block og_image %}
 {% if photos %}
   <meta property="og:image" content="https://{{request.get_host}}{{photos.0.photo.url}}" />

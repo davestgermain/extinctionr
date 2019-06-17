@@ -74,6 +74,10 @@ class Action(models.Model):
     def html_title(self):
         return mark_safe(self.name.replace('\n','<br>').replace('\\n', '<br>'))
 
+    @property
+    def text_title(self):
+        return self.name.replace('\\n', ' ')
+
     def __str__(self):
         return '%s on %s' % (self.name, self.when.strftime('%b %e, %Y @ %H:%M'))
 
