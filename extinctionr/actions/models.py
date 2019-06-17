@@ -5,6 +5,7 @@ from django.contrib.auth import get_user_model
 from django.contrib.sites.shortcuts import get_current_site
 from django.urls import reverse
 from django.utils.timezone import now
+from django.utils.safestring import mark_safe
 from contacts.models import Contact
 from extinctionr.info.models import Photo
 from extinctionr.utils import get_contact
@@ -13,6 +14,13 @@ from taggit.managers import TaggableManager
 
 
 USER_MODEL = get_user_model()
+
+class ActionManager(models.Manager):
+    def for_user(self, user):
+        qset = self.all().order_by('when')
+        if not user.is_staff:
+            qset = qset.filter(public=True).exclude(tags__name='pending')
+        return qset
 
 
 class Action(models.Model):
@@ -30,7 +38,7 @@ class Action(models.Model):
     accessibility = models.TextField(default='', help_text="Indicate what the accessibility accomodations are for this location.")
 
     tags = TaggableManager(blank=True, help_text="Attendees will automatically be tagged with these tags")
-
+    objects = ActionManager()
 
     @property
     def available_role_choices(self):
@@ -61,6 +69,10 @@ class Action(models.Model):
             atten.promised = now()
         atten.save()
         return atten
+
+    @property
+    def html_title(self):
+        return mark_safe(self.name.replace('\n','<br>').replace('\\n', '<br>'))
 
     def __str__(self):
         return '%s on %s' % (self.name, self.when.strftime('%b %e, %Y @ %H:%M'))

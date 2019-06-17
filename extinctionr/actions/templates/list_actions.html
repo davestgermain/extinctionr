@@ -30,7 +30,7 @@ table a:hover {
     {% if upcoming %}
     {% for action in upcoming %}
     <div class="col text-center m-2 {% if not forloop.counter|divisibleby:3 %}border-right{% endif %}">
-        <h2><a href="{{action.get_absolute_url}}">{{action.name}}</a></h2>
+        <h2><a href="{{action.get_absolute_url}}">{{action.html_title}}</a></h2>
         <h3>{{action.when}}</h3>
         {% if not action.public %}<h4 class="text-danger">not public</h4>{% endif %}
         {% if action.location %}
@@ -72,7 +72,9 @@ table a:hover {
                     <td{% if forloop.first %} scope="row"{% endif %} class="{% if day.bg %} {{day.bg}}{% endif %}{% if day.today %} border border-dark{% endif %}">
                         <h5>{% if can_add %}<a href="" data-toggle="modal" data-target="#event-modal" data-when="{{day.day.isoformat}}">{{day.day.day}}</a>{% else %}{{day.day.day}}{% endif %}</h5>
                         {% for event in day.events %}
-                        {{event.when|localtime|date:"P"}} &mdash; <a href="{{event.get_absolute_url}}">{{event.name}}</a><br>
+                        {% if not event.public %}<i class="fas fa-lock" title="Not public"></i> {% endif %}
+                        {% if 'pending' in event.tags.names %}<i class="fas fa-question" title="Pending Event"></i>{% endif %}
+                        {{event.when|localtime|date:"P"}} &mdash; <a href="{{event.get_absolute_url}}">{{event.html_title}}</a><br>
                         {% endfor %}
                     </td>
                     {% endfor %}

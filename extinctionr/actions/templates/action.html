@@ -20,7 +20,7 @@
 {% block content %}
 <div class="row pt-5 text-center">
 	<div class="col-lg-10 col-sm-12 offset-lg-1">
-		<h1>{{action.name}}</h1>
+		<h1>{{action.html_title}}</h1>
 		<h2>{{action.when}}</h2>
 		{% if action.location %}
 		<p class="text-info"><a href="https://maps.google.com/?q={{action.location|urlencode}}">{{action.location|linebreaks}}</a></p>
@@ -113,6 +113,8 @@
 {% if request.user.is_staff %}
 <div class="row mt-4">
 	<div class="col small">
+		<hr>
+		<p>Tags: {{action.tags.names|join:","}}</p>
 		{% if 'actions.change_action' in perms %}<p class=""><a href="/admin/actions/action/{{action.id}}/change/">Edit</a></p>{% endif %}
 		{% if attendees %}
 		{% if 'actions.view_attendee' in perms %}<p class=""><a href="/action/{{action.slug}}/attendees/?fmt=csv">Download CSV of Contacts</a></p>{% endif %}

@@ -72,9 +72,7 @@ def list_actions(request):
             print(form.errors)
     elif request.GET.get('format', '') == 'ical':
         import icalendar
-        actions = Action.objects.filter(when__gte=now()).order_by('when')
-        if not request.user.is_staff:
-            actions = actions.filter(public=True)
+        actions = Action.objects.for_user(request.user).filter(when__gte=now())
         thecal = icalendar.Calendar()
         thecal.add('prodid', '-//XR Calendar//xrmass.org//')
         thecal.add('version', '2.0')
@@ -101,9 +99,7 @@ def list_actions(request):
         ctx['is_cal'] = True
         actions = None
     else:
-        actions = Action.objects.filter(when__gte=now()).order_by('when')
-        if not request.user.is_staff:
-            actions = actions.filter(public=True)
+        actions = Action.objects.for_user(request.user).filter(when__gte=now())
         ctx['upcoming'] = actions[:6]
     ctx['next_month'] = current_date + timedelta(days=31)
     ctx['last_month'] = current_date + timedelta(days=-1)
@@ -112,9 +108,7 @@ def list_actions(request):
     this_month = []
     this_week = []
     month_actions = defaultdict(list)
-    qset = Action.objects.filter(when__date__range=(cal_days[0], cal_days[-1]))
-    if not request.user.is_staff:
-        qset = qset.filter(public=True)
+    qset = Action.objects.for_user(request.user).filter(when__date__range=(cal_days[0], cal_days[-1]))
 
     for action in qset:
         month_actions[action.when.date()].append(action)
@@ -133,6 +127,7 @@ def list_actions(request):
         obj = {
             'day': mdate,
             'events': todays_actions,
+            'bg': '',
         }
         if mdate.month == current_date.month:
             for a in todays_actions:
