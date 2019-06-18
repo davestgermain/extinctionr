@@ -121,6 +121,7 @@ def list_actions(request):
         'orientation': 'xr-bg-purple',
         'art': 'xr-bg-warm-yellow',
         'nvda': 'xr-bg-light-blue',
+        'regen': 'xr-warm-yellow xr-bg-dark-blue',
     }
     for daynum, mdate in enumerate(cal_days, 1):
         todays_actions = month_actions[mdate]
