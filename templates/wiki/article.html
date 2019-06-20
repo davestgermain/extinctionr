@@ -10,7 +10,7 @@
 {% block wiki_contents %}
   <div id="article-container">
     <div class="row">
-      <h1 id="article-title" class="col-9 col-sm-9 col-md-5">
+      <h1 id="article-title" class="col-9 col-sm-6 col-md-5">
         {{ article.current_revision.title }}
           {% if article.current_revision.locked %}
             <small><span class="fa fa-lock" title="{% trans "locked" %}"></span></small>
