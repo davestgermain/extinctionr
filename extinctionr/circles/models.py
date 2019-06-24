@@ -65,7 +65,8 @@ class Circle(models.Model):
         for mem in CircleMember.objects.filter(circle=self).select_related('contact').order_by('role', 'pk'):
             members[mem.contact].add((mem.role, mem.verbose_role, mem.id, mem.circle_id))
         for circle in self.children:
-            members.update(circle.recursive_members)
+            for contact, roles in circle.recursive_members.items():
+                members[contact].update(roles)
         return members
 
     @cached_property
