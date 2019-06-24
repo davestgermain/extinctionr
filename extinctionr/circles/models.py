@@ -6,6 +6,7 @@ from extinctionr.utils import get_contact
 from django.utils.timezone import now
 from django.utils.functional import cached_property
 from markdownx.models import MarkdownxField
+from collections import defaultdict
 
 
 ROLE_CHOICES = {
@@ -60,18 +61,16 @@ class Circle(models.Model):
 
     @cached_property
     def recursive_members(self):
-        members = set()
+        members = defaultdict(set)
         for mem in CircleMember.objects.filter(circle=self).select_related('contact').order_by('role', 'pk'):
-            mem.contact.verbose_role = mem.verbose_role
-            mem.contact.member_id = mem.id
-            members.add((mem.contact, mem.role))
+            members[mem.contact].add((mem.role, mem.verbose_role, mem.id, mem.circle_id))
         for circle in self.children:
             members.update(circle.recursive_members)
         return members
 
     @cached_property
     def recursive_members_count(self):
-        return len(set((mem[0] for mem in self.recursive_members)))
+        return len(self.recursive_members)
 
     @cached_property
     def children(self):
@@ -144,7 +143,7 @@ class Circle(models.Model):
         return addresses
 
     def get_member_emails(self):
-        emails = set((m[0].email for m in self.recursive_members))
+        emails = set((m.email for m in self.recursive_members))
         return ','.join(emails)
 
     def add_member(self, email, name, contact=None, role='member'):
@@ -180,7 +179,7 @@ class Circle(models.Model):
     def is_member(self, user):
         email = user.email
         for member in self.recursive_members:
-            if member[0].email == email:
+            if member.email == email:
                 return True
         return False
 

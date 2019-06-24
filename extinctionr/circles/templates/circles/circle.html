@@ -91,17 +91,19 @@
 			<th scope="col">Name</th>
 			<th scope="col">Email</th>
 			<th scope="col">Phone</th>
-			<th scope="col">Action</th>
 			</tr>
 		</thead>
 			<tbody class="small">
-			{% for mem, role in members %}
+			{% for mem, roles in members %}
 			<tr>
-				<th scope="row" class="px-3 text-center">{% if can_edit_member %}<a href="/admin/circles/circlemember/{{mem.member_id}}/change/">{% endif %}{{mem.verbose_role}}{% if can_edit_member %}</a>{% endif %}</th>
+				<th scope="row" class="px-3 text-center">
+					{% for role, verbose_role, member_id, circle_id in roles %}
+					{% if can_edit_member %}<a href="/admin/circles/circlemember/{{member_id}}/change/">{% endif %}{{verbose_role}}{% if can_edit_member %}</a>{% endif %} {% if circle_id == object.id %}<a href="#" title="remove" class="btn-fucxed strong del-member" data-name="{{mem}}" data-contact="{{mem.id}}" data-role="{{role}}">X</a>{% endif %}<br>
+					{% endfor %}
+				</th>
 				<td><a href="{% url 'circles:person' contact_id=mem.id %}">{{mem}}</a></td>
 				<td class="text-center"><a href="mailto:{{mem.email}}">{{mem.email}}</a></td>
 				<td>{% if mem.phone %}{{mem.phone}}{% endif %}</td>
-				<td class="text-center"><a href="#" title="remove" class="btn-fucxed strong del-member" data-name="{{mem}}" data-contact="{{mem.id}}" data-role="{{role}}">X</a></td>
 			</tr>
 			{% endfor %}
 			{% if pending %}
