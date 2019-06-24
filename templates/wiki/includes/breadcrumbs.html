@@ -1,7 +1,7 @@
 {% load i18n %}
 {% if urlpath %}
 <nav aria-label="breadcrumb" id="article-breadcrumbs">
-  <ul class="breadcrumb border-bottom">
+  <ul class="breadcrumb border-bottom d-print-none">
     {% for ancestor in urlpath.cached_ancestors %}
       <li class="breadcrumb-item"><a href="{% url 'wiki:get' path=ancestor.path %}">{{ ancestor.article.current_revision.title|truncatechars:25 }}</a></li>
     {% endfor %}

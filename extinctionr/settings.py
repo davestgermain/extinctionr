@@ -76,6 +76,8 @@ INSTALLED_APPS = [
     'wiki.plugins.notifications.apps.NotificationsConfig',
     'wiki.plugins.images.apps.ImagesConfig',
     'wiki.plugins.macros.apps.MacrosConfig',
+    'wiki.plugins.globalhistory.apps.GlobalHistoryConfig',
+    'wiki.plugins.help.apps.HelpConfig',
     'markdownx',
     'todo',
     'taggit',

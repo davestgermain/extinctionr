@@ -13,6 +13,7 @@ def do_monkeypatch():
     from contacts.models import Contact
     from common.models import User
     from taggit.managers import TaggableManager
+    from wiki.plugins.images.wiki_plugin import ImagePlugin
 
     # give users an absolute url
     User.get_absolute_url = get_absolute_url
@@ -31,3 +32,6 @@ def do_monkeypatch():
         list_display = ('email', 'first_name', 'last_name', 'phone', 'created_on')
         list_filter = ('tags', 'address__city')
         list_select_related = ('address', )
+
+    # fix the icon on the image macro
+    ImagePlugin.sidebar['icon_class'] = 'fa-images'

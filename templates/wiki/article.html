@@ -9,18 +9,25 @@
 
 {% block wiki_contents %}
   <div id="article-container">
-    <ul class="nav nav-pills" id="article-menu">
-      <li class="nav-item text-center" id="article-title-li">
-        <h1 id="article-title">
-          {{ article.current_revision.title }}
-            {% if article.current_revision.locked %}
-              <small><span class="fa fa-lock" title="{% trans "locked" %}"></span></small>
-            {% endif %}
-        </h1>
-      </li>
-      {% include "wiki/includes/article_menu.html" %}
-    </ul>
-      <hr>
+    <div class="row">
+      <h1 id="article-title" class="col-9 col-sm-6 col-md-5">
+        {{ article.current_revision.title }}
+          {% if article.current_revision.locked %}
+            <small><span class="fa fa-lock" title="{% trans "locked" %}"></span></small>
+          {% endif %}
+      </h1>
+      <nav class="col navbar navbar-light navbar-expand-md d-print-none">
+        <button class="navbar-toggler ml-auto" type="button" data-toggle="collapse" data-target="#wikiCollapse" aria-controls="wikiCollapse" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="wikiCollapse">
+          <ul class="navbar-nav ml-auto" id="article-menu">
+            {% include "wiki/includes/article_menu.html" %}
+          </ul>
+        </div>
+      </nav>
+    </div>
+    <hr>
     <div class="row pt-3 pb-5">
       <div class="col">
       {% block wiki_contents_tab %}
