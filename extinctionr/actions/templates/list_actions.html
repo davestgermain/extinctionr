@@ -34,7 +34,7 @@ table a:hover {
         <h3>{{action.when}}</h3>
         {% if not action.public %}<h4 class="text-danger">not public</h4>{% endif %}
         {% if action.location %}
-        <p class="text-info small"><a href="https://maps.google.com/?q={{action.location|urlencode}}">{{action.location|linebreaks}}</a></p>
+        <p class="text-info small">{{action.location_link}}</p>
         {% endif %}
         <div class="text-left small">{{action.description|markdownify|truncatewords_html:30}}</div>
     </div>

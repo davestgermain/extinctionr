@@ -1,15 +1,19 @@
 import datetime
 from hashlib import md5
+from urllib.parse import quote
+
 from django.db import models
 from django.contrib.auth import get_user_model
 from django.contrib.sites.shortcuts import get_current_site
 from django.urls import reverse
 from django.utils.timezone import now
 from django.utils.safestring import mark_safe
+from django.utils.html import linebreaks
 from contacts.models import Contact
 from extinctionr.info.models import Photo
 from extinctionr.utils import get_contact
 from markdownx.models import MarkdownxField
+from markdown import markdown
 from taggit.managers import TaggableManager
 
 
@@ -29,7 +33,7 @@ class Action(models.Model):
     description = MarkdownxField(default='', blank=True, help_text='Markdown formatted')
     slug = models.SlugField(unique=True, help_text='Short form of the title, for URLs')
     public = models.BooleanField(default=True, blank=True, help_text='Whether this action should be listed publicly')
-    location = models.TextField(default='', blank=True)
+    location = models.TextField(default='', blank=True, help_text='Event location will be converted to a google maps link, unless you format it as a Markdown link -- [something](http://foo.com)')
     available_roles = models.CharField(default='', blank=True, max_length=255, help_text='List of comma-separated strings')
     photos = models.ManyToManyField(Photo, blank=True)
     modified = models.DateTimeField(auto_now=True)
@@ -86,6 +90,14 @@ class Action(models.Model):
         for role in self.available_role_choices:
             ActionRole.objects.get_or_create(name=role)
         return ret
+
+    @property
+    def location_link(self):
+        if self.location.startswith('['):
+            link = markdown(self.location)
+        else:
+            link = '<a href="https://maps.google.com/?q={}">{}</a>'.format(quote(self.location), linebreaks(self.location))
+        return mark_safe(link)
 
 
 class ActionRole(models.Model):
