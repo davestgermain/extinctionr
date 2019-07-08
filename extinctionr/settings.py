@@ -329,4 +329,7 @@ MAILMAN_REST_API_PASS = 'restpass'
 POSTORIUS_TEMPLATE_BASE_URL = "http://localhost:8000"
 
 
+ADMINS = [('Webmaster', 'webmaster@xrmass.org')]
+SERVER_EMAIL = 'webmaster@xrmass.org'
+
 
