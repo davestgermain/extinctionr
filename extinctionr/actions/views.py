@@ -226,13 +226,14 @@ def show_attendees(request, action_slug):
         ctx = {'attendees': attendees, 'half': half, 'can_change': request.user.is_staff, 'slug': action_slug}
         resp = render(request, 'attendees.html', ctx)
     elif out_fmt == 'csv' and request.user.has_perm('actions.view_attendee'):
+        attendees = attendees.order_by('created')
         resp = HttpResponse()
         resp['Content-Type'] = 'text/csv'
         csv_writer = csv.writer(resp)
-        header = ('Email', 'First Name', 'Last Name', 'Phone', 'Promised')
+        header = ('Email', 'First Name', 'Last Name', 'Phone', 'Promised', 'Created')
         csv_writer.writerow(header)
         for attendee in attendees:
-            csv_writer.writerow((attendee.contact.email, attendee.contact.first_name, attendee.contact.last_name, attendee.contact.phone, attendee.promised))
+            csv_writer.writerow((attendee.contact.email, attendee.contact.first_name, attendee.contact.last_name, attendee.contact.phone, attendee.promised, attendee.created.isoformat()))
     return resp
 
 
