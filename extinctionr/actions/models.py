@@ -22,8 +22,10 @@ USER_MODEL = get_user_model()
 class ActionManager(models.Manager):
     def for_user(self, user):
         qset = self.all().order_by('when')
+        if user.is_anonymous:
+            qset = qset.filter(public=True)
         if not user.is_staff:
-            qset = qset.filter(public=True).exclude(tags__name='pending')
+            qset = qset.exclude(tags__name='pending')
         return qset
 
 
@@ -37,7 +39,7 @@ class Action(models.Model):
     available_roles = models.CharField(default='', blank=True, max_length=255, help_text='List of comma-separated strings')
     photos = models.ManyToManyField(Photo, blank=True)
     modified = models.DateTimeField(auto_now=True)
-    show_commitment = models.BooleanField(blank=True, default=True, help_text='Whether to show the conditional commitment fields')
+    show_commitment = models.BooleanField(blank=True, default=False, help_text='Whether to show the conditional commitment fields')
     max_participants = models.IntegerField(blank=True, default=0, help_text="Maximun number of people allowed to register")
     accessibility = models.TextField(default='', help_text="Indicate what the accessibility accomodations are for this location.")
 
