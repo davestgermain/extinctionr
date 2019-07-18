@@ -22,6 +22,7 @@
 	<div class="col-lg-10 col-sm-12 offset-lg-1">
 		<h1>{{action.html_title}}</h1>
 		<h2>{{action.when}}</h2>
+		{% if not action.public %}<h4 class="text-center text-warning">not public</h4>{% endif %}
 		{% if action.location %}
 		<p class="text-info">{{action.location_link}}</p>
 		{% endif %}
