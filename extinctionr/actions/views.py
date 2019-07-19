@@ -94,6 +94,7 @@ def list_actions(request):
     current_date = today.replace(day=1)
     ctx = {}
     req_date = request.GET.get('month','')
+    tag_filter = request.GET.get('tag', '')
     if req_date:
         current_date = datetime.strptime(req_date, '%Y-%m')
         ctx['is_cal'] = True
@@ -109,6 +110,11 @@ def list_actions(request):
     this_week = []
     month_actions = defaultdict(list)
     qset = Action.objects.for_user(request.user).filter(when__date__range=(cal_days[0], cal_days[-1]))
+
+    if tag_filter:
+        qset = qset.filter(tags__name=tag_filter)
+        ctx['current_tag'] = tag_filter
+        ctx['is_cal'] = True
 
     for action in qset:
         month_actions[action.when.date()].append(action)
