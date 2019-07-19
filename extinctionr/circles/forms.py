@@ -43,7 +43,7 @@ class FindPeopleForm(forms.Form):
     )
     actions = forms.ModelMultipleChoiceField(
         required=False,
-        queryset=Action.objects.all().order_by('-when'),
+        queryset=Action.objects.filter(attendee__isnull=False).distinct().order_by('-when'),
         widget=forms.SelectMultiple(attrs={'class': 'form-control'})
     )
 
