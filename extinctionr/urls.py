@@ -19,6 +19,7 @@ from django.conf import settings
 from django.conf.urls.static import static
 # from django.contrib.auth import views
 from extinctionr.actions.views import propose_talk
+from extinctionr.circles.views import SignupView
 
 from common.views import handler404, handler500
 
@@ -47,7 +48,9 @@ urlpatterns = [
     path('postorius/', include('postorius.urls')),
     path('mm/', include('django_mailman3.urls')),
     path('accounts/', include('allauth.urls')),
+    path('welcome/signup', SignupView.as_view()),
 ]
+
 if settings.DEBUG:
     print(settings.MEDIA_ROOT, settings.MEDIA_URL)
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

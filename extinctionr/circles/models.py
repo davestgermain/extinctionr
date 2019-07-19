@@ -7,6 +7,8 @@ from django.utils.timezone import now
 from django.utils.functional import cached_property
 from markdownx.models import MarkdownxField
 from collections import defaultdict
+import json
+
 
 
 ROLE_CHOICES = {
@@ -280,3 +282,20 @@ class Couch(models.Model):
 
     def is_me(self, user):
         return get_contact(user.email) == self.owner
+
+
+class Signup(models.Model):
+    created = models.DateTimeField(db_index=True, auto_now_add=True)
+    contact = models.ForeignKey(Contact, null=True, blank=True, on_delete=models.SET_NULL)
+    ip_address = models.CharField(max_length=255, blank=True, default='')
+    raw_data = models.TextField(blank=True, default='{}')
+
+    @property
+    def data(self):
+        return json.loads(self.raw_data)
+
+    @data.setter
+    def data(self, obj):
+        self.raw_data = json.dumps(obj)
+
+    

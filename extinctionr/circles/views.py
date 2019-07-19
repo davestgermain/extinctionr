@@ -12,9 +12,9 @@ from django.http import HttpResponseForbidden, HttpResponse, HttpResponseRedirec
 from django import forms
 from django.views import generic
 from extinctionr.utils import get_contact, get_last_contact, set_last_contact
-from .models import Circle, Contact, CircleJob, Couch, LEAD_ROLES
+from .models import Circle, Contact, CircleJob, Couch, LEAD_ROLES, Signup
 
-from .forms import FindPeopleForm, MembershipRequestForm, ContactForm, CouchForm, ContactAutocomplete
+from .forms import FindPeopleForm, MembershipRequestForm, ContactForm, CouchForm, ContactAutocomplete, IntakeForm
 
 
 @login_required
@@ -176,6 +176,50 @@ class PersonView(BaseCircleView, FormView):
         return ctx
 
 
+class SignupView(BaseCircleView, FormView):
+    template_name = 'pages/welcome/signup.html'
+    form_class = IntakeForm
+
+    def form_valid(self, form):
+        data = form.cleaned_data
+        person = get_contact(
+            email=data['email'],
+            first_name=data['first_name'],
+            last_name=data['last_name'],
+            postcode=data['zipcode'],
+            phone=data['phone'])
+        person.tags.add('self-signup')
+
+        working_group = data['working_group']
+        signup_obj = Signup(
+                ip_address=self.request.META['REMOTE_ADDR'],
+                contact=person
+        )
+        signup_obj.data = data
+        if working_group != 'UNKNOWN':
+            try:
+                circle = Circle.objects.filter(name__iexact=data['working_group']).order_by('-pk')[0]
+            except IndexError:
+                messages.error(self.request, 'Could not find circle named {}'.format(wg))
+            else:
+                if circle.request_membership(contact=person):
+                    messages.success(self.request, 'Requested membership in {}'.format(circle))
+        signup_obj.save()
+        set_last_contact(self.request, person)
+        return HttpResponseRedirect('/welcome/guide')
+
+    def get_initial(self):
+        """
+        Returns the initial data to use for forms on this view.
+        """
+        initial = super(SignupView, self).get_initial()
+
+        initial['working_group'] = 'UNKNOWN'
+        initial['committment'] = 'full'
+
+        return initial
+
+
 class CouchListView(BaseCircleView, generic.ListView):
     template_name = 'circles/couches.html'
 
@@ -317,4 +361,25 @@ def csv_export(request):
             contact.address.city if contact.address else None,
             ','.join(contact.tags.names())))
     return resp
+
+
+@login_required
+def signup_export(request):
+    if request.user.has_perm('circles.view_signup'):
+        resp = HttpResponse(content_type='text/csv')
+        resp['Content-Disposition'] = 'attachment; filename="signups.csv"'
+        csv_writer = csv.writer(resp)
+        header = ['Date', 'IP Address', 'Contact ID']
+        wrote_header = False
+        for signup in Signup.objects.all():
+            data = signup.data
+            row = [signup.created, signup.ip_address, signup.contact_id]
+            if not wrote_header:
+                header.extend(sorted(data))
+                csv_writer.writerow(header)
+                wrote_header = True
+            for key, value in sorted(data.items()):
+                row.append(value)
+            csv_writer.writerow(row)
+        return resp
 

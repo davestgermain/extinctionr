@@ -42,3 +42,19 @@ def notify_circle_job(job):
 {baseurl}{url}
 '''.format(who=job.filled, title=title, circle=circle, job=job.job, baseurl=base_url(), url=job.get_absolute_url())
     send_mail(subject, message, settings.DEFAULT_FROM_EMAIL, addresses)
+
+
+def notify_new_signup(outreach_circle, signup):
+    contact = signup.contact
+    if signup.data.get('working_group', '') == 'UNKNOWN':
+        wg_message = 'They will need help finding a working group\n'
+    else:
+        wg_message = ''
+    subject = '[XR] New Self-Service Signup: {}'.format(contact)
+    message = '''{who} <{email}> has signed up through the website.
+{wg_message}
+To export signup data:
+{baseurl}/circle/person/join/export/
+
+'''.format(who=contact, email=contact.email, wg_message=wg_message, data=signup.data, baseurl=base_url())
+    send_mail(subject, message, settings.DEFAULT_FROM_EMAIL, outreach_circle.get_notification_addresses())

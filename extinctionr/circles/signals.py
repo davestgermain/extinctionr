@@ -5,7 +5,7 @@ from django.conf import settings
 from django.dispatch import receiver
 from crum import get_current_user
 
-from .models import Circle, CircleMember, MembershipRequest, CircleJob
+from .models import Circle, CircleMember, MembershipRequest, CircleJob, Signup
 from . import comm, git
 
 
@@ -33,3 +33,14 @@ def save_to_git(sender, instance, **kwargs):
 def notify_job(sender, instance, **kwargs):
     if instance.filled:
         comm.notify_circle_job(instance)
+
+
+@receiver(post_save, sender=Signup)
+def send_signup_email(sender, instance, **kwargs):
+    try:
+        outreach_circle = Circle.objects.get(name__iexact='outreach')
+        comm.notify_new_signup(outreach_circle, instance)
+    except Circle.DoesNotExist:
+        pass
+
+

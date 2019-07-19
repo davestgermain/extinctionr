@@ -54,6 +54,44 @@ class CouchForm(forms.Form):
     public = forms.BooleanField(required=False, label="Show my contact on the public page")
 
 
+WG_CHOICES = [
+    ('ACTION', '<b>ACTION</b> – Help plan non-violent direct actions to engage with the public and demand more from the media and our leaders'),
+    ('ART', '<b>ART</b> – Help make our actions memorable with art, drama, dance and music'),
+    ('MEDIA', '<b>MEDIA + MESSAGING</b> – Construct press releases, prepare media packets, and communicate with media.'),
+    ('OUTREACH', '<b>OUTREACH</b> – Recruit and engage members, build alliances and promote upcoming events'),
+    ('REGEN', '<b>REGENERATIVE CULTURE</b> – Foster organizational resilience through community-building and jail support'),
+    ('INFRASTRUCTURE', '<b>INFRASTRUCTURE</b> – Create our digital infrastructure and train XR members to leverage it.'),
+    ('FINANCE', '<b>FINANCE</b> – Raise money and transparently manage XR finances to ensure we can fund our activities'),
+    ('UNKNOWN', "I'm not sure – please contact me"),
+]
+
+class IntakeForm(forms.Form):
+    email = forms.EmailField(label="Email", required=True, widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Email'}))
+    first_name = forms.CharField(required=True, widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'First Name'}))
+    last_name = forms.CharField(required=True, widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Last Name'}))
+    phone = forms.CharField(required=False, widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Phone'}))
+    zipcode = forms.CharField(required=True, widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Zip Code'}))
+    interests = forms.CharField(required=False, widget=forms.Textarea(attrs={'rows': 3, 'class': 'form-control', 'placeholder': 'What draws you to volunteer? What interests and skills do you bring to Extinction Rebellion?'}))
+    other_groups = forms.CharField(required=True, widget=forms.Textarea(attrs={'rows': 3, 'class': 'form-control', 'placeholder': 'Please list any other climate or social justice groups, schools, labor unions or faith groups. Your answers will help us identify our connections to local organizations and build relationships with coalition partners.'}))
+    working_group = forms.ChoiceField(widget=forms.RadioSelect(attrs={'class': 'form-control'}), choices=WG_CHOICES)
+    committment = forms.ChoiceField(
+            required=True,
+            widget=forms.Select(attrs={'class': 'form-control text-center custom-select custom-select-lg'}),
+            choices=[
+                ('low', '2 hours per month'),
+                ('medium', '2 hours, 2-4 times per month'),
+                ('high', '1-3 hours per week'),
+                ('full', 'as much as possible - this is an emergency')
+            ])
+    anything_else = forms.CharField(required=False, widget=forms.Textarea(attrs={'rows': 3, 'class': 'form-control', 'placeholder': 'Anything else you want us to know?'}))
+
+    def clean_zipcode(self):
+        zipcode = self.cleaned_data['zipcode']
+        if not (zipcode.isdigit() and len(zipcode) == 5):
+            raise forms.ValidationError('Invalid zipcode')
+        return zipcode
+
+
 class ContactAutocomplete(autocomplete.Select2QuerySetView):
     def get_queryset(self):
         if not self.request.user.is_authenticated:
