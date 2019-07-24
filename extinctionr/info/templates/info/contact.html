@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+{% block title %}:: Contact Extinction Rebellion Massachusetts!{% endblock %}
+{% block og_tags %}
+  <meta property="og:description" content="How to contact Extinction Rebellion Massachusetts" />
+{% endblock %}
+
+{% block content %}
+<div class="row pt-5">
+    <div class="col-text">
+        <h1 class="text-center">Contact us</h1>
+        <form method="post" class="py-4">
+            {% csrf_token %}
+            <div class="form-group">
+              <textarea name="message" placeholder="Enter your feedback here" rows=4 class="form-control"></textarea>
+            </div>
+            <div class="form-group">
+              <input type="submit" class="btn btn-block btn-primary btn-fucxed btn-lg" value="send" />
+            </div>
+        </form>
+        <hr>
+        <p>Or email us: <a href="mailto:xr.boston.outreach@protonmail.com">xr.boston.outreach@protonmail.com</a></p>
+        <p>Or find us on social media:</p>
+        <ul class="list-unstyled ml-5">
+          <li class="list-item"><a href="https://www.facebook.com/ExtRebMA/" target="_blank"><i class="fab fa-facebook"></i></a> <a href="https://www.facebook.com/ExtRebMA/" target="_blank">facebook.com/ExtRebMA</a></li>
+          <li class="list-item"><a href="https://twitter.com/XRboston" target="_blank"><i class="fab fa-twitter"></i></a> <a href="https://twitter.com/XRboston" target="_blank">twitter.com/XRboston</a></li>
+          <li class="list-item"><a href="https://www.instagram.com/xrmass/" target="_blank"><i class="fab fa-instagram"></i></a> <a href="https://www.instagram.com/xrmass/" target="_blank">instagram.com/xrmass</a></li>
+        </ul>
+        <hr>
+        <p class="display-4 text-center">Or <a href="/welcome/">Join us!</a></p>
+    </div>
+</div>
+{% endblock %}

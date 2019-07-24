@@ -3,6 +3,7 @@ from hashlib import md5
 from django import forms
 from django.contrib.auth import get_user_model, login
 from django.contrib.auth.forms import UserCreationForm
+from django.contrib import messages
 from django.http import Http404, HttpResponse
 from django.template.loader import TemplateDoesNotExist, get_template
 from django.utils.decorators import method_decorator
@@ -21,6 +22,10 @@ class RegistrationForm(UserCreationForm):
         field_classes = {'email': forms.EmailField}
 
 
+class ContactForm(forms.Form):
+    message = forms.CharField()
+
+
 class RegistrationView(FormView):
     form_class = RegistrationForm
     success_url = '/'
@@ -31,6 +36,24 @@ class RegistrationView(FormView):
         self.object.username = self.object.email
         self.object.save()
         login(self.request, self.object)
+        return super().form_valid(form)
+
+
+class ContactView(FormView):
+    form_class = ContactForm
+    success_url = '/contact'
+    template_name = 'info/contact.html'
+
+    def form_valid(self, form):
+        from django.conf import settings
+        from django.core.mail import send_mail
+        from extinctionr.circles import get_circle
+        outreach_circle = get_circle('outreach')
+        address = self.request.META.get('HTTP_X_FORWARDED_FOR', self.request.META.get('REMOTE_ADDR', 'unknown address'))
+        subject = '[XR] Website Contact from {}'.format(address)
+        message = form.cleaned_data['message']
+        send_mail(subject, message, settings.DEFAULT_FROM_EMAIL, outreach_circle.get_notification_addresses())
+        messages.success(self.request, "Thanks for your feedback")
         return super().form_valid(form)
 
 
