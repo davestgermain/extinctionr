@@ -257,7 +257,7 @@ class CircleJob(models.Model):
     title = models.CharField(max_length=255, blank=True, default='')
 
     def get_absolute_url(self):
-        return self.circle.get_absolute_url() + 'jobs/'
+        return '{}jobs/{}'.format(self.circle.get_absolute_url(), self.id)
 
     def __str__(self):
         return 'Job for {}'.format(self.circle)

@@ -306,6 +306,10 @@ class JobView(BaseCircleView, generic.TemplateView):
             qset = qset.filter(circle__id=circle_id)
         else:
             qset = qset.filter(filled__isnull=True)
+        job_id = self.kwargs.get('job_id', None)
+        if job_id:
+            qset = qset.filter(pk=job_id)
+            context['job_id'] = job_id
         context['can_change'] = can_change = self.request.user.has_perm('circles.change_circlejob')
         context['jobs'] = qset
         return context

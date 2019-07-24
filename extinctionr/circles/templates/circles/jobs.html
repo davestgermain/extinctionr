@@ -5,7 +5,9 @@
 <div class="row pt-5">
     <div class="col-text">
         <h1 class="text-center">
-            {% if circle %}
+            {% if job_id %}
+            {{jobs.0.title}} in <a href="{{circle.get_absolute_url}}">{{circle.name}}</a>
+            {% elif circle %}
             <a href="{{circle.get_absolute_url}}">{{circle.name}}</a> jobs
             {% else %}
             open jobs
@@ -27,7 +29,7 @@
             </div>
             {% endif %}
             <div class="col{% if job.asap %} text-danger{% endif %}">
-                {% if job.title %}<h5>{{job.title}}</h5>{% endif %}
+                {% if job.title %}<h5><a href="{{job.get_absolute_url}}">{{job.title}}</a></h5>{% endif %}
                 {{job.job|markdownify}}
             </div>
             {% if user.is_authenticated %}

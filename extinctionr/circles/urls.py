@@ -20,6 +20,7 @@ urlpatterns = [
     path('couches/', views.CouchListView.as_view(), name='couches'),
     path('<int:pk>/', views.CircleView.as_view(), name='detail'),
     path('<int:pk>/jobs/', job_view, name='circle-jobs'),
+    path('<int:pk>/jobs/<int:job_id>', job_view, name='job-detail'),
     path('<int:pk>/join/', views.request_membership, name='request-membership'),
     path('<int:pk>/add/', views.add_member, name='add-member'),
     path('<int:pk>/del/', views.del_member, name='del-member'),
