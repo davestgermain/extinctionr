@@ -27,8 +27,9 @@ class CircleAdmin(MarkdownxModelAdmin):
             return request.user.has_perm('circles.change_circle')
 
     def has_module_permission(self, request):
-        contact = get_contact(email=request.user.email)
-        return contact.circlemember_set.exists()
+        if not request.user.is_anonymous:
+            contact = get_contact(email=request.user.email)
+            return contact.circlemember_set.exists()
 
 
 @admin.register(MembershipRequest)
