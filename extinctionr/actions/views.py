@@ -81,7 +81,7 @@ def list_actions(request):
             evt = icalendar.Event()
             evt['uid'] = '{}@{}'.format(action.id, request.get_host())
             evt['last-modified'] = action.modified.strftime('%Y%m%dT%H%M%SZ')
-            evt['summary'] = action.name
+            evt['summary'] = action.html_title
             evt['dtstart'] = action.when
             evt['dtend'] = action.when + timedelta(hours=1)
             evt['dtstamp'] = current_time
@@ -195,7 +195,7 @@ def show_action(request, slug):
                 commit=commit,
                 notes=data['notes'])
             next_url = data['next'] or request.headers.get('referer', '/')
-            messages.success(request, "Thank you for signing up for {}!".format(action.name))
+            messages.success(request, "Thank you for signing up for {}!".format(action.html_title))
             if commit:
                 messages.info(request, "We will notify you once at least %d others commit" % commit)
             set_last_contact(request, atten.contact)
