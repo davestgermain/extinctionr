@@ -13,6 +13,7 @@ from django import forms
 from django.views import generic
 from extinctionr.utils import get_contact, get_last_contact, set_last_contact
 from .models import Circle, Contact, CircleJob, Couch, LEAD_ROLES, Signup
+from . import get_circle
 
 from .forms import FindPeopleForm, MembershipRequestForm, ContactForm, CouchForm, ContactAutocomplete, IntakeForm
 
@@ -199,13 +200,9 @@ class SignupView(BaseCircleView, FormView):
         )
         signup_obj.data = data
         if working_group != 'UNKNOWN':
-            try:
-                circle = Circle.objects.filter(name__iexact=data['working_group']).order_by('-pk')[0]
-            except IndexError:
-                messages.error(self.request, 'Could not find circle named {}'.format(wg))
-            else:
-                if circle.request_membership(contact=person):
-                    messages.success(self.request, 'Requested membership in {}'.format(circle))
+            circle = get_circle(data['working_group'])
+            if circle and circle.request_membership(contact=person):
+                messages.success(self.request, 'Requested membership in {}'.format(circle))
         signup_obj.save()
         set_last_contact(self.request, person)
         return HttpResponseRedirect('/welcome/guide')
