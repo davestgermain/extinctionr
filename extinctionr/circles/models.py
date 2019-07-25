@@ -290,6 +290,8 @@ class Signup(models.Model):
     ip_address = models.CharField(max_length=255, blank=True, default='')
     raw_data = models.TextField(blank=True, default='{}')
 
+    json_fields = ('email', 'first_name', 'last_name', 'phone', 'zipcode', 'interests', 'other_groups', 'committment', 'working_group', 'anything_else')
+
     @property
     def data(self):
         return json.loads(self.raw_data)
@@ -297,5 +299,9 @@ class Signup(models.Model):
     @data.setter
     def data(self, obj):
         self.raw_data = json.dumps(obj)
+
+
+    for key in json_fields:
+        exec ('def {0}(self):\n    return self.data.get("{0}", None)'.format(key))
 
     

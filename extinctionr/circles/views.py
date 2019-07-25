@@ -191,8 +191,10 @@ class SignupView(BaseCircleView, FormView):
         person.tags.add('self-signup')
 
         working_group = data['working_group']
+        ip_address = self.request.META.get('HTTP_X_FORWARDED_FOR', self.request.META.get('REMOTE_ADDR', 'unknown address'))
+
         signup_obj = Signup(
-                ip_address=self.request.META['REMOTE_ADDR'],
+                ip_address=ip_address,
                 contact=person
         )
         signup_obj.data = data

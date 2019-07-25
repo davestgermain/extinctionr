@@ -85,5 +85,5 @@ class CouchAdmin(MarkdownxModelAdmin):
 
 @admin.register(Signup)
 class SignupAdmin(admin.ModelAdmin):
-    readonly_fields = ('created', 'contact', 'raw_data')
-    list_display = ('contact', 'created')
+    readonly_fields = ('created', 'contact') + Signup.json_fields + ('raw_data', )
+    list_display = ('contact', 'created', ) + Signup.json_fields
