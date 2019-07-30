@@ -59,7 +59,7 @@ WG_CHOICES = [
     ('ART', '<b>ART</b> – Help make our actions memorable with art, drama, dance and music'),
     ('MEDIA', '<b>MEDIA + MESSAGING</b> – Construct press releases, prepare media packets, and communicate with media.'),
     ('OUTREACH', '<b>OUTREACH</b> – Recruit and engage members, build alliances and promote upcoming events'),
-    ('REGENERATIVE', '<b>REGENERATIVE CULTURE</b> – Foster organizational resilience through community-building and jail support'),
+    ('REGENERATIVE CULTURE', '<b>REGENERATIVE CULTURE</b> – Foster organizational resilience through community-building and jail support'),
     ('INFRASTRUCTURE', '<b>INFRASTRUCTURE</b> – Create our digital infrastructure and train XR members to leverage it.'),
     ('FINANCE', '<b>FINANCE</b> – Raise money and transparently manage XR finances to ensure we can fund our activities'),
     ('UNKNOWN', "I'm not sure – please contact me"),
