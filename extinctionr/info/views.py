@@ -21,6 +21,13 @@ class RegistrationForm(UserCreationForm):
         fields = ("email",)
         field_classes = {'email': forms.EmailField}
 
+    def save(self, commit=True):
+        user = super().save(commit=False)
+        user.username = user.email
+        if commit:
+            user.save()
+        return user
+
 
 class ContactForm(forms.Form):
     message = forms.CharField()
@@ -33,8 +40,6 @@ class RegistrationView(FormView):
 
     def form_valid(self, form):
         self.object = form.save()
-        self.object.username = self.object.email
-        self.object.save()
         login(self.request, self.object)
         return super().form_valid(form)
 
