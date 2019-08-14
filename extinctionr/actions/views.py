@@ -8,6 +8,7 @@ from django.conf import settings
 from django.contrib.auth import get_user_model
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
+from django.core import signing
 from django.db import IntegrityError
 from django.http import JsonResponse, HttpResponse
 from django.shortcuts import render, get_object_or_404, redirect
@@ -59,6 +60,38 @@ class TalkProposalForm(forms.Form):
     phone = PhoneNumberField(label="Phone Number", required=False, widget=forms.TextInput(attrs={'class': 'form-control text-center', 'placeholder': 'Phone Number'}))
 
 
+def calendar_view(request, whatever):
+    from ics import Calendar, Event
+    token = request.GET.get('token', '')
+    if token:
+        try:
+            user_id = signing.Signer().unsign(token)
+        except signing.BadSignature:
+            return HttpResponse(status=403)
+        else:
+            user = get_user_model().objects.get(pk=user_id)
+    else:
+        user = request.user
+    actions = Action.objects.for_user(user).filter(when__gte=now() - timedelta(days=30))
+    thecal = Calendar()
+    thecal.creator = 'XR Mass Events'
+    for action in actions:
+        evt = Event()
+        evt.uid = '{}@{}'.format(action.id, request.get_host())
+        evt.name = action.html_title
+        evt.description = action.description
+        evt.categories = action.tags.names()
+        evt.last_modified = action.modified
+        evt.url = request.build_absolute_uri(action.get_absolute_url())
+        evt.begin = action.when
+        evt.duration = timedelta(hours=1)
+        # evt.end = action.when + timedelta(hours=1)
+        evt.location = action.location
+        thecal.events.add(evt)
+    response = HttpResponse(thecal, content_type='text/calendar')
+    return response
+
+
 @cache_page(1200)
 @csrf_protect
 def list_actions(request):
@@ -70,25 +103,6 @@ def list_actions(request):
             return redirect(action.get_absolute_url())
         else:
             print(form.errors)
-    elif request.GET.get('format', '') == 'ical':
-        import icalendar
-        actions = Action.objects.for_user(request.user).filter(when__gte=now())
-        thecal = icalendar.Calendar()
-        thecal.add('prodid', '-//XR Calendar//xrmass.org//')
-        thecal.add('version', '2.0')
-        current_time = now().strftime('%Y%m%dT%H%M%SZ')
-        for action in actions:
-            evt = icalendar.Event()
-            evt['uid'] = '{}@{}'.format(action.id, request.get_host())
-            evt['last-modified'] = action.modified.strftime('%Y%m%dT%H%M%SZ')
-            evt['summary'] = action.html_title
-            evt['dtstart'] = action.when
-            evt['dtend'] = action.when + timedelta(hours=1)
-            evt['dtstamp'] = current_time
-            evt['location'] = action.location
-            thecal.add_component(evt)
-        response = HttpResponse(thecal.to_ical(), content_type='text/calendar')
-        return response
 
     today = now().date()
     current_date = today.replace(day=1)
@@ -159,6 +173,10 @@ def list_actions(request):
     ctx['can_add'] = can_add
     if ctx['can_add']:
         ctx['form'] = ActionForm()
+    ctx['calendar_link'] = '/action/ical/XR Mass Events'.format(signing.Signer().sign(request.user.id))
+    if request.user.is_authenticated:
+        ctx['calendar_link'] += '?token={}'.format(signing.Signer().sign(request.user.id))
+
     ctx['current_date'] = current_date
     resp = render(request, 'list_actions.html', ctx)
     resp['Vary'] = 'Cookie'

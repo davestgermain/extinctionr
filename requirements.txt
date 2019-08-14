@@ -22,5 +22,5 @@ dulwich
 PyYAML
 django-crum
 django-taggit
-icalendar
+ics
 postorius
