@@ -27,6 +27,7 @@
 		<p class="text-info">{{action.location_link}}</p>
 		{% endif %}
 		{% if 'actions.change_action' in perms %}<h4><a href="/admin/actions/action/{{action.id}}/change/">Edit</a></h4>{% endif %}
+		<h4><a href="webcal://{{request.get_host}}/action/ical/{{action.id}}" title="Export calendar as iCal format"><i class="far fa-calendar-alt"></i></a></h4>
 
 		<div class="text-left">{{action.description|markdownify}}</div>
 		{% if action.accessibility %}

@@ -72,7 +72,11 @@ def calendar_view(request, whatever):
             user = get_user_model().objects.get(pk=user_id)
     else:
         user = request.user
-    actions = Action.objects.for_user(user).filter(when__gte=now() - timedelta(days=30))
+    actions = Action.objects.for_user(user)
+    if whatever.isdigit():
+        actions = actions.filter(pk=int(whatever))
+    else:
+        actions = actions.filter(when__gte=now() - timedelta(days=30))
     thecal = Calendar()
     thecal.creator = 'XR Mass Events'
     for action in actions:
@@ -173,7 +177,7 @@ def list_actions(request):
     ctx['can_add'] = can_add
     if ctx['can_add']:
         ctx['form'] = ActionForm()
-    ctx['calendar_link'] = '/action/ical/XR Mass Events'.format(signing.Signer().sign(request.user.id))
+    ctx['calendar_link'] = 'webcal://{}/action/ical/XR%20Mass%20Events'.format(request.get_host())
     if request.user.is_authenticated:
         ctx['calendar_link'] += '?token={}'.format(signing.Signer().sign(request.user.id))
 
