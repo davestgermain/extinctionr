@@ -3,6 +3,7 @@ import csv
 
 from collections import defaultdict
 from datetime import timedelta, datetime
+from urllib.parse import urlencode
 
 from django.conf import settings
 from django.contrib.auth import get_user_model
@@ -60,9 +61,13 @@ class TalkProposalForm(forms.Form):
     phone = PhoneNumberField(label="Phone Number", required=False, widget=forms.TextInput(attrs={'class': 'form-control text-center', 'placeholder': 'Phone Number'}))
 
 
-def calendar_view(request, whatever):
-    from ics import Calendar, Event
+def _get_actions(request, whatever='', include_future=True, include_past=7):
     token = request.GET.get('token', '')
+    req_date = request.GET.get('month','')
+    tag_filter = request.GET.get('tag', '')
+    context = {}
+    today = now().date()
+    current_date = today.replace(day=1)
     if token:
         try:
             user_id = signing.Signer().unsign(token)
@@ -76,7 +81,25 @@ def calendar_view(request, whatever):
     if whatever.isdigit():
         actions = actions.filter(pk=int(whatever))
     else:
-        actions = actions.filter(when__gte=now() - timedelta(days=30))
+        if req_date:
+            current_date = datetime.strptime(req_date, '%Y-%m')
+            context['is_cal'] = True
+        start_date = current_date - timedelta(days=include_past)
+        if not include_future:
+            end_date = start_date + timedelta(days=38)
+        actions = actions.filter(when__date__range=(start_date, end_date))
+        if tag_filter:
+            actions = actions.filter(tags__name=tag_filter)
+            context['current_tag'] = tag_filter
+            context['is_cal'] = True
+    context['current_date'] = current_date
+    context['today'] = today
+    return actions, context
+
+
+def calendar_view(request, whatever):
+    from ics import Calendar, Event
+    actions, ctx = _get_actions(request, include_future=True, include_past=30)
     thecal = Calendar()
     thecal.creator = 'XR Mass Events'
     for action in actions:
@@ -108,18 +131,13 @@ def list_actions(request):
         else:
             print(form.errors)
 
-    today = now().date()
-    current_date = today.replace(day=1)
-    ctx = {}
-    req_date = request.GET.get('month','')
-    tag_filter = request.GET.get('tag', '')
-    if req_date:
-        current_date = datetime.strptime(req_date, '%Y-%m')
-        ctx['is_cal'] = True
-        actions = None
-    else:
+    qset, ctx = _get_actions(request, include_future=False)
+    if not ctx.get('is_cal'):
         actions = Action.objects.for_user(request.user).filter(when__gte=now())
         ctx['upcoming'] = actions[:6]
+    else:
+        actions = None
+    current_date = ctx['current_date']
     ctx['next_month'] = current_date + timedelta(days=31)
     ctx['last_month'] = current_date + timedelta(days=-1)
 
@@ -127,12 +145,6 @@ def list_actions(request):
     this_month = []
     this_week = []
     month_actions = defaultdict(list)
-    qset = Action.objects.for_user(request.user).filter(when__date__range=(cal_days[0], cal_days[-1]))
-
-    if tag_filter:
-        qset = qset.filter(tags__name=tag_filter)
-        ctx['current_tag'] = tag_filter
-        ctx['is_cal'] = True
 
     for action in qset:
         month_actions[action.when.date()].append(action)
@@ -165,7 +177,7 @@ def list_actions(request):
         else:
             # previous month
             obj['bg'] = 'bg-light'
-        if mdate == today:
+        if mdate == ctx['today']:
             obj['today'] = True
         this_week.append(obj)
         if daynum % 7 == 0:
@@ -177,11 +189,13 @@ def list_actions(request):
     ctx['can_add'] = can_add
     if ctx['can_add']:
         ctx['form'] = ActionForm()
-    ctx['calendar_link'] = 'webcal://{}/action/ical/XR%20Mass%20Events'.format(request.get_host())
+    calendar_link = 'webcal://{}/action/ical/XR%20Mass%20Events'.format(request.get_host())
+    link_pars = {}
     if request.user.is_authenticated:
-        ctx['calendar_link'] += '?token={}'.format(signing.Signer().sign(request.user.id))
-
-    ctx['current_date'] = current_date
+        link_pars['token'] = signing.Signer().sign(request.user.id)
+    if ctx.get('current_tag'):
+        link_pars['tag'] = ctx.get('current_tag')
+    ctx['calendar_link'] = calendar_link + '?' + urlencode(link_pars)
     resp = render(request, 'list_actions.html', ctx)
     resp['Vary'] = 'Cookie'
 
