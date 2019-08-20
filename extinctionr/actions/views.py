@@ -87,6 +87,8 @@ def _get_actions(request, whatever='', include_future=True, include_past=7):
         start_date = current_date - timedelta(days=include_past)
         if not include_future:
             end_date = start_date + timedelta(days=38)
+        else:
+            end_date = start_date + timedelta(days=3650)
         actions = actions.filter(when__date__range=(start_date, end_date))
         if tag_filter:
             actions = actions.filter(tags__name=tag_filter)
