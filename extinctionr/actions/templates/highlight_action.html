@@ -3,6 +3,7 @@
 	<h1><a class="xr-red" href="{{action.get_absolute_url}}">{{action.html_title}}</a></h1>
 	<h3 class="xr-red">{{action.when}}</h3>
 	{% load thumbnail %}
+	{% load info %}
 	{% for photo in action.photos.all %}
 	<div class="col text-center">
       {% thumbnail photo.photo "800x800" as im %}
@@ -10,7 +11,7 @@
       {% endthumbnail %}
 	</div>
 	{% endfor %}
-	<div class="small py-4 border-bottom">{{action.description}}<br>
+	<div class="small py-4 border-bottom">{{action.description|markdownify}}<br>
 		<a href="{{action.get_absolute_url}}">RSVP here</a>
 	</div>
 </div>
