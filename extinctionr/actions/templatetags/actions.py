@@ -13,4 +13,13 @@ def recent_actions(*args, **kwargs):
         ract = ract.filter(when__lte=now()).order_by('-when')
     else:
         ract = ract.filter(when__gte=now()).order_by('when')
-    return {'actions': ract, 'adverb': adverb.capitalize()}
+    return {'actions': ract[:10], 'adverb': adverb.capitalize()}
+
+
+@register.inclusion_tag('highlight_action.html')
+def highlight_action(*args, **kwargs):
+    try:
+        action = models.Action.objects.filter(public=True, tags__name='highlight', when__gte=now())[0]
+    except IndexError:
+        action = None
+    return {'action': action}

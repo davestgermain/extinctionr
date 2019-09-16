@@ -1,0 +1,16 @@
+<div class="text-center">
+	<h3>upcoming:</h3>
+	<h1><a class="xr-red" href="{{action.get_absolute_url}}">{{action.html_title}}</a></h1>
+	<h3 class="xr-red">{{action.when}}</h3>
+	{% load thumbnail %}
+	{% for photo in action.photos.all %}
+	<div class="col text-center">
+      {% thumbnail photo.photo "800x800" as im %}
+      <a href="{{action.get_absolute_url}}"><img class="img img-fluid img-thumbnail" src="{{ im.url }}" alt="{{photo.caption}}"></a>
+      {% endthumbnail %}
+	</div>
+	{% endfor %}
+	<div class="small py-4 border-bottom">{{action.description}}<br>
+		<a href="{{action.get_absolute_url}}">RSVP here</a>
+	</div>
+</div>
