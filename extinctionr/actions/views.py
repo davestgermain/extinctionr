@@ -267,8 +267,10 @@ def show_attendees(request, action_slug):
     else:
         half = None
     if out_fmt == 'html':
-        ctx = {'attendees': attendees, 'half': half, 'can_change': request.user.is_staff, 'slug': action_slug}
-        resp = render(request, 'attendees.html', ctx)
+        resp = HttpResponse('not allowed')
+
+        # ctx = {'attendees': attendees, 'half': half, 'can_change': request.user.is_staff, 'slug': action_slug}
+        # resp = render(request, 'attendees.html', ctx)
     elif out_fmt == 'csv' and request.user.has_perm('actions.view_attendee'):
         attendees = attendees.order_by('created')
         resp = HttpResponse()
