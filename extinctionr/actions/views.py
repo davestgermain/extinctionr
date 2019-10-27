@@ -3,6 +3,7 @@ import csv
 
 from collections import defaultdict
 from datetime import timedelta, datetime
+from dateutil import tz
 from urllib.parse import urlencode
 
 from django.conf import settings
@@ -149,7 +150,9 @@ def list_actions(request):
     month_actions = defaultdict(list)
 
     for action in qset:
-        month_actions[action.when.date()].append(action)
+        # Convert day to local day so actions land in the right day for current view.
+        day = action.when.astimezone(tz.tzlocal()).date()
+        month_actions[day].append(action)
 
     event_colors = {
         'talk': 'xr-bg-pink',
