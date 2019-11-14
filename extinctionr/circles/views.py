@@ -244,9 +244,10 @@ class CircleView(BaseCircleView, generic.DetailView):
         circle = context['object']
         if self.request.user.is_authenticated:
             is_lead = circle.can_manage(self.request.user)
-            context['is_member'] = circle.is_member(self.request.user)
+            # only members of the group can see the contact info of the coordinators
+            context['is_member'] = context['can_see_leads'] = circle.is_member(self.request.user)
             context['can_see_members'] = is_lead or self.request.user.has_perm('circles.view_circle')
-            context['can_see_leads'] = self.request.user.is_authenticated
+            # context['can_see_leads'] = self.request.user.is_authenticated
             context['is_lead'] = is_lead
             context['members'] = sorted(circle.recursive_members.items(), key=lambda m: (m[0].last_name.lower(), m[0].first_name.lower()))
             context['pending'] = circle.membershiprequest_set.filter(confirmed_by=None)
