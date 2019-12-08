@@ -48,7 +48,6 @@ urlpatterns = [
     path('postorius/', include('postorius.urls')),
     path('mm/', include('django_mailman3.urls')),
     path('accounts/', include('allauth.urls')),
-    path('welcome/signup', SignupView.as_view()),
 ]
 
 if settings.DEBUG:
