@@ -157,13 +157,15 @@
   }
   #site-nav {
     background-color: #1a1a1a;
-    font-size: 1.85rem;
+    font-size: 1.6rem;
     font-family: FucXed, sans-serif;
-    padding-top:1rem;
-    padding-bottom:1rem;
+    padding-top:.4rem;
+    padding-bottom:.4rem;
+    padding-left: 0;
+    padding-right:1em;
   }
   #site-nav .navbar-nav {
-    padding-top: 2.5rem;
+    padding-top: 1rem;
   }
   #site-nav a {
     color: #ffffff;
@@ -184,6 +186,9 @@
   .dropdown-menu a:hover {
     background-color: #aaa;
   }
+  .dropdown-no-arrow::after {
+    content: none !important;
+  }
   .btn-primary {
    text-decoration: none;
    background-color: rgb(152, 98, 151) !important;
@@ -194,6 +199,9 @@
   }
   footer {
     font-size: 1em;
+  }
+  body {
+    padding-top: 100px;
   }
   {% endblock %}
  </style>
@@ -220,9 +228,9 @@
 <body>
     {% block header %}
     <header>
-      <div class="container">
-      <nav id="site-nav" class="navbar navbar-expand-lg navbar-dark">
-        <a href="{% url 'extinctionr.info:index' %}"><img id="header-image" class="img img-responsive" height="115" data-swap="{% static 'images/xrmass-yellow.svg' %}" src="{% if page == 'home' %}{% static 'images/xrmass-green.svg' %}{% else %}{% static 'images/xrmass.svg' %}{% endif %}" alt="Extinction Rebellion"></a>
+      <div class="container-fluid">
+      <nav id="site-nav" class="navbar navbar-expand-lg navbar-dark fixed-top">
+        <a href="{% url 'extinctionr.info:index' %}"><img id="header-image" class="img img-responsive" height="100" data-swap="{% static 'images/xrmass-yellow-2.svg' %}" src="{% if page == 'home' %}{% static 'images/xrmass-green.svg' %}{% else %}{% static 'images/xrmass.svg' %}{% endif %}" alt="Extinction Rebellion"></a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
         </button>
@@ -233,7 +241,7 @@
       </div>
     </header>
       {% endblock %}
-  <div id="mainbody" class="container bg-light" role="main">
+  <div id="mainbody" class="container-fluid bg-light" role="main">
 {% if messages %}<div class="row pt-4">
 <div class="col text-center">
       <ul class="messages list-unstyled">
