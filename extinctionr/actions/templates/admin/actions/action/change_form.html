@@ -2,10 +2,32 @@
 {% block after_field_sets %}
 <h1>Next Steps</h1>
 <ol>
-	<li><a target="_new" href="https://www.facebook.com/pg/ExtRebMA/events/">Add event on facebook</a></li>
-	<li>Request a flier from the <a href="https://xrmass.org/circle/3/">Art Group</a>?</li>
-	<li>Promote it like <em>crazy!</em></li>
+  <li><a target="_new" href="https://www.facebook.com/pg/ExtRebMA/events/">Add event on facebook</a></li>
+  <li>Request a flier from the <a href="https://xrmass.org/circle/3/">Art Group</a>?</li>
+  <li>Promote it like <em>crazy!</em></li>
 </ol>
-
+<div id="image_view_container"><img style="margin-left:1em;" width="360px" src=""></div>
 {{block.super}}
+{% endblock %}
+{% block admin_change_form_document_ready %}
+{{ block.super }}
+<script type="text/javascript">
+  (function($) {
+    // wait until doc ready.
+    function img_url() {
+      var path = $(this).text().split(" ")[0];
+      return "/static/media/" + path;
+    }
+    $(function() {
+      $('select[data-field-name="photos"]').change(function() {
+        var files = $(this).children("option:selected")
+          .map(img_url)
+          .get();
+        $("#image_view_container img").attr('src', files[files.length-1]);
+      });
+      $("#image_view_container").insertAfter(".field-photos .related-widget-wrapper");
+    });
+  })(django.jQuery);
+
+</script>
 {% endblock %}
