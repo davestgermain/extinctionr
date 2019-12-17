@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% load static %}
 {% block title %}:: Home{% endblock %}
 {% block og_tags %}
   <meta property="og:description" content="We are facing an unprecedented global ecological crisis. The government is not working to protect us. Extinction Rebellion Massachusetts is part of an international mobilization for non-violent disobedience against governments' criminal inaction on climate change." />
@@ -7,9 +8,12 @@
 {% block content %}
 {% load actions %}
 <div class="row">
-<div class="banner-image">
-  <img class="img-responsive" src="static/images/seaport-banner.jpg">
+  <div class="masthead">
+    <img class="img-fluid w-100" src="{% static 'images/seaport-banner.jpg' %}" alt="Extinction Rebellion Massachusetts" />
+  </div>
 </div>
+
+<div class="row pt-5">
 	<div class="col-text">
 		{% highlight_action %}
 

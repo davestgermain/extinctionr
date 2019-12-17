@@ -1,10 +1,16 @@
 {% extends "base.html" %}
+{% load static %}
 {% block title %} :: Why?{% endblock %}
 {% block og_tags %}
   <meta property="og:description" content="Help Extinction Rebellion call upon the Boston Globe to sound the alarm on the climate crisis!" />
 {% endblock %}
 
 {% block content %}
+<div class="row">
+  <div class="masthead">
+    <img class="img-fluid w-100" src="{% static 'images/climate-emergency-banner.jpg' %}" alt="Extinction Rebellion Massachusetts" />
+  </div>
+</div>
 <div class="row pt-5">
 	<div class="col-text">
 <h2 class="text-uppercase display-4">We are in the middle of an <span style="color:rgb(220,79,0)">ecological crisis.</span></h2>
