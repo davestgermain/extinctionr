@@ -201,6 +201,12 @@
     position: relative;
     width: 100%;
   }
+
+  .border-menu {
+    border: 2px solid #ffffff !important;
+    border-radius: 0.4rem !important;
+  }
+
   footer {
     font-size: 1em;
   }
@@ -234,7 +240,7 @@
     <header>
       <div class="container-fluid">
       <nav id="site-nav" class="navbar navbar-expand-lg navbar-dark fixed-top">
-        <a href="{% url 'extinctionr.info:index' %}"><img id="header-image" class="img img-responsive" height="100" data-swap="{% static 'images/xrmass-yellow-2.svg' %}" src="{% if page == 'home' %}{% static 'images/xrmass-green.svg' %}{% else %}{% static 'images/xrmass.svg' %}{% endif %}" alt="Extinction Rebellion"></a>
+        <a href="{% url 'extinctionr.info:index' %}"><img id="header-image" class="img img-responsive" height="80" data-swap="{% static 'images/xrmass-yellow-2.svg' %}" src="{% if page == 'home' %}{% static 'images/xrmass-green.svg' %}{% else %}{% static 'images/xrmass.svg' %}{% endif %}" alt="Extinction Rebellion"></a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
         </button>
