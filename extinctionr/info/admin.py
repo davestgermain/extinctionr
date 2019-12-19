@@ -1,7 +1,7 @@
 from django.contrib import admin
 from markdownx.admin import MarkdownxModelAdmin
 
-from .models import Photo, PressRelease
+from .models import Photo, PressRelease, Chapter
 
 
 @admin.register(PressRelease)
@@ -19,3 +19,7 @@ class PhotoAdmin(admin.ModelAdmin):
     def save_model(self, request, obj, form, change):
         obj.uploader = request.user
         super().save_model(request, obj, form, change)
+
+@admin.register(Chapter)
+class ChapterAdmin(admin.ModelAdmin):
+    list_display = ('title', 'site')

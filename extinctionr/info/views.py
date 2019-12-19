@@ -4,7 +4,9 @@ from django import forms
 from django.contrib.auth import get_user_model, login
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib import messages
+from django.core import serializers
 from django.http import Http404, HttpResponse
+from django.shortcuts import render
 from django.template.loader import TemplateDoesNotExist, get_template
 from django.utils.decorators import method_decorator
 from django.utils.http import http_date
@@ -12,7 +14,7 @@ from django.views.decorators.http import etag
 from django.views.decorators.cache import cache_page
 from django.views.generic import FormView, DetailView, ListView, TemplateView
 
-from .models import PressRelease
+from .models import PressRelease, Chapter
 
 
 class RegistrationForm(UserCreationForm):
@@ -115,3 +117,8 @@ class PRDetailView(DetailView):
         if self.request.user.is_authenticated:
             resp['Cache-Control'] = 'private'
         return resp
+
+def list_chapters(request):
+    chapters = serializers.serialize("json", Chapter.objects.all())
+    context = {'chapters': chapters }
+    return render(request, 'pages/groups/index.html', context)
