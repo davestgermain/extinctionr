@@ -34,15 +34,14 @@
 <script type="text/javascript">
 $(function() {
 
-// replace "toner" here with "terrain" or "watercolor"
-var layer = new L.StamenTileLayer("terrain");
 var map = new L.Map("mass_map", {
     center: new L.LatLng(42.204, -71.964),
     zoom: 8
 });
-map.addLayer(layer);
 
-L.tileLayer( 'https://stamen-tiles.a.ssl.fastly.net/terrain/{z}/{x}/{y}.jpg', {})
+L.tileLayer( 'https://stamen-tiles.a.ssl.fastly.net/terrain/{z}/{x}/{y}.jpg', {
+  attribution: 'Map tiles by <a href="http://stamen.com">Stamen Design</a>, under <a href="http://creativecommons.org/licenses/by/3.0">CC BY 3.0</a>. Data by <a href="http://openstreetmap.org">OpenStreetMap</a>, under <a href="http://www.openstreetmap.org/copyright">ODbL</a>.'
+})
  .addTo( map );  
 
 var xr_icon = L.icon({
