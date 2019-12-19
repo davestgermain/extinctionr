@@ -1,0 +1,84 @@
+{% extends "base.html" %}
+{% load static %}
+{% block extrahead %}
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.6.0/dist/leaflet.css"
+   integrity="sha512-xwE/Az9zrjBIphAcBb3F6JVqxf46+CDLwfLMHloNu6KEQCAWi6HcDUbeOfBIptF7tcCzusKFjFw2yuvEpDL9wQ=="
+   crossorigin=""/>
+{% endblock %}
+{% block title %}:: Join Us{% endblock %}
+{% block og_tags %}
+{% endblock %}
+{% block inline_css %}
+{{block.super}}
+  #mass_map { 
+    height: 400px; 
+  }
+{% endblock %}
+
+
+{% block content %}
+<div class="row pt-5">
+  <h3 class="ml-3">Find your local group:</h3>
+  <div class="col-lg-12">
+    <div id="mass_map">
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="https://unpkg.com/leaflet@1.6.0/dist/leaflet.js"
+   integrity="sha512-gZwIG9x3wUXg2hdXF6+rVkLF/0Vi9U8D2Ntg4Ga5I5BZpVkVxlJWbSQtXPSiUTtC0TjtGOmxa1AJPuV0CPthew=="
+   crossorigin=""></script>
+<script type="text/javascript" src="http://maps.stamen.com/js/tile.stamen.js?v1.3.0"></script>
+<script type="text/javascript">
+$(function() {
+
+// replace "toner" here with "terrain" or "watercolor"
+var layer = new L.StamenTileLayer("terrain");
+var map = new L.Map("mass_map", {
+    center: new L.LatLng(42.204, -71.964),
+    zoom: 8
+});
+map.addLayer(layer);
+
+L.tileLayer( 'http://tile.stamen.com/terrain/{z}/{x}/{y}.jpg', {})
+ .addTo( map );  
+
+var xr_icon = L.icon({
+    iconUrl: '/static/images/X-symbol-green-alpha-128.png',
+    iconSize:     [32, 32], // size of the icon
+    iconAnchor:   [12, 12], // point of the icon which will correspond to marker's location
+    popupAnchor:  [-4, -4] // point from which the popup should open relative to the iconAnchor
+});
+
+var chapters = JSON.parse("{{chapters|escapejs}}");
+
+chapters.forEach((model) => {
+  let c = model.fields;
+  let popup = `<div>
+    <span class="font-weight-bold">${c.title}</span><br>
+    Website: <a href="https://${c.site}">${c.site}</a><br>
+    Join: <a href="https://${c.join}">${c.join}</a><br>
+    Facebook: <a href="https://facebook.com/${c.facebook}">${c.facebook}</a><br>
+    Twitter: <a href="https://twitter.com/@${c.twitter}">${c.twitter}</a>
+  </div>`
+  L.marker([c.lat, c.lng], {icon: xr_icon}).addTo(map).bindPopup(
+    popup
+  );
+});
+
+// Boston
+//L.marker(chapters[0].latlng, {icon: xr_icon}).addTo(map).bindPopup(chapters[0].info);
+// Worcester
+//L.marker([42.2626, -71.8023], {icon: xr_icon}).addTo(map);
+// Amherst
+//L.marker([42.3732, -72.5199], {icon: xr_icon}).addTo(map);
+// Pittsfield
+//L.marker([42.4501, -73.2454], {icon: xr_icon}).addTo(map);
+// Barnstable
+//L.marker([41.6986, -70.2968], {icon: xr_icon}).addTo(map);
+
+});
+</script>
+{% endblock %}

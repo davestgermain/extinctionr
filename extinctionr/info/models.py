@@ -47,3 +47,18 @@ class Photo(models.Model):
     def thumbnail_tag(self):
         return mark_safe('<img class="img img-fluid" width=256 src="%s" />' % self.photo.url)
     thumbnail_tag.short_description = 'Image'
+
+# Model for all the XR chapters in MA
+class Chapter(models.Model):
+    title = models.CharField(max_length=64, db_index=True)
+    description = models.TextField(default='', blank=True)
+    lat = models.FloatField(default=0.0, blank=True)
+    lng = models.FloatField(default=0.0, blank=True)
+    site = models.CharField(max_length=255)
+    join = models.CharField(max_length=255)
+    facebook = models.CharField(max_length=255)
+    twitter = models.CharField(max_length=255)
+
+    def __str__(self):
+        return self.title
+
