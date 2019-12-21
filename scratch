@@ -1,0 +1,29 @@
+{ 
+    latlng: [42.3601, -71.0589],
+    description: 'XR Mass, mostly Boston area',
+    site: 'https://xrmass.org',
+    join: 'https://xrmass.org/welcome',
+    facebook: '',
+    twitter: ''
+  },
+  {
+
+  }
+];
+
+// Boston
+L.marker(chapters[0].latlng, {icon: xr_icon}).addTo(map).bindPopup(chapters[0].info);
+// Worcester
+L.marker([42.2626, -71.8023], {icon: xr_icon}).addTo(map);
+// Amherst
+L.marker([42.3732, -72.5199], {icon: xr_icon}).addTo(map);
+// Pittsfield
+L.marker([42.4501, -73.2454], {icon: xr_icon}).addTo(map);
+// Barnstable
+L.marker([41.6986, -70.2968], {icon: xr_icon}).addTo(map);
+
+
+PASSWORD': 'XR323391notenough778',
+        'HOST': '127.0.0.1',
+        'PORT': '5432'
+
