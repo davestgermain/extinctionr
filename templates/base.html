@@ -55,6 +55,9 @@
       max-width: 90%;
   }
 
+  .text-bold {
+    font-family: "Crimson Text Bold", Georgia, serif;
+  }
   .xr-green {
     color: rgb(20, 170, 55);
   }
@@ -132,6 +135,10 @@
     background-color: rgb(200, 0, 130) !important;
   }
 
+  .xr-bg-gray {
+    background-color: rgb(242,242,242) !important;
+  }
+
   #header-image {
     max-width: 100%
   }
@@ -158,8 +165,6 @@
     font-family: FucXed, sans-serif;
     padding-top:.4rem;
     padding-bottom:.4rem;
-    padding-left: 0;
-    padding-right:1em;
   }
   #site-nav .navbar-nav {
     padding-top: 1rem;
@@ -169,6 +174,7 @@
   }
   #site-nav a.active {
     color: #22a83e;
+    background-color: #1a1a1a !important;
   }
   #site-nav a:hover {
     color: #f7ec73;
@@ -180,12 +186,19 @@
     background-color: #1a1a1a;
     border: 1px solid #777;
   }
+
+  .dropdown-item.active, .dropdown-item:active {
+    color: #22a83e !important;
+    text-decoration: none;
+    background-color: #1a1a1a !important;
+  }
   .dropdown-menu a:hover {
     background-color: #aaa;
   }
   .dropdown-no-arrow::after {
     content: none !important;
   }
+
   .btn-primary {
    text-decoration: none;
    background-color: rgb(152, 98, 151) !important;
@@ -194,14 +207,47 @@
   .btn-primary:hover{
    background-color: rgb(102, 48, 101) !important; 
   }
-  .banner-image {
-    position: relative;
-    width: 100%;
+  .banner {
+    background: black;
+    padding: 0px;
   }
-  .border-menu {
-    border: 2px solid #ffffff !important;
-    border-radius: 0.4rem !important;
+  .banner img {
+    opacity: 0.5;
   }
+  .banner-title {
+    position: absolute;
+    font-family: "FucXed";
+    font-size: 2rem;
+    color:white;
+    left:1rem;
+    bottom:1rem;
+  }
+  .text-middle {
+    margin: 0;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
+
+  @media (min-width: 576px) {
+    .banner-title {
+      font-size: 4rem;
+      left:4rem;
+      bottom:2.5rem;
+    }
+    .site-nav {
+      padding-left: 0;
+      padding-right:1em;
+    }
+    .border-menu {
+      box-sizing: content-box;
+      border: 2px solid white !important;
+      border-radius: 0.4rem !important;
+      padding: .5rem;
+    }
+  }
+
   footer {
     font-size: 1em;
   }
@@ -256,7 +302,6 @@
 </div></div>{% endif %}
       {% block breadcrumb %}{% endblock %}
       {% block default_container %}{% block content %}{% endblock %}{% endblock %}
-      <hr>
       <footer class="text-center mt-4 p-4 d-print-none">
         <ul class="list-inline">
           <li class="list-inline-item"><a href="https://www.facebook.com/ExtRebMA/" target="_blank"><i class="fab fa-facebook"></i></a></li>
