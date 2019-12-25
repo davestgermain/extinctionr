@@ -6,15 +6,6 @@
 {% endblock %}
 {% block inline_css %}
 {{block.super}}
-  .banner {
-    background: black;
-    padding: 0px;
-  }
-
-  .banner img {
-    opacity: 0.5;
-  }
-
   .banner-msg {
     font-family: "FucXed";
     font-size: 4rem;
@@ -30,7 +21,7 @@
   <div class="banner position-relative w-100 text-center">
     <img class="img-fluid w-100" src="{% static 'images/banner-home.jpg' %}" alt="Extinction Rebellion Massachusetts" />
     <div class="banner-msg position-absolute text-center w-100">
-      <div>
+      <div class="mb-4">
           <span class="xr-green">Pray for the dead</span><br>
           Fight like hell for the living
       </div>

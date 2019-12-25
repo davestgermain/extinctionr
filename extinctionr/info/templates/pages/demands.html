@@ -3,49 +3,120 @@
 {% block title %}:: Join Us{% endblock %}
 {% block og_tags %}
 {% endblock %}
+{% block inline_css %}
+{{block.super}}
+.xr-graphic {
+  position: absolute;
+  right:0;
+  max-width: none !important;
+  width: auto !important;
+  height: 100% !important;
+}
+.clip-80 {
+  clip-path: inset(0 20% 0 0);
+  transform:translateX(20%);
+}
+.clip-50 {
+  clip-path: inset(0 52% 0 0);
+  transform:translateX(52%);
+}
 
+{% endblock %}
 {% block content %}
-<div class="row pt-5 border-bottom">
-  <div class="col-text text-center">
+<div class="row">
+	<div class="banner position-relative w-100">
+    <img class="img-fluid w-100" src="{% static 'images/banner-demands.jpg' %}" alt="Extinction Rebellion Massachusetts" />
+	  <div class="banner-title">Our Demands</div>
+	</div>
+</div>
+
+<div class="row py-5 bg-white">
+  <div class="col-12 col-text">
     <p>Extinction Rebellion is an international apolitical network using non-violent direct action to persuade governments to act on the Climate and Ecological Emergency. </p>
     <p>We have four demands in the US:</p>
   </div>
 </div>
-<div class="row border-bottom py-3 mt-4">
-  <div class="col-3 text-center">
-    <h1 class="display-1">01</h1>
+
+<div class="row justify-content-center py-3 xr-bg-gray">
+  <div class="col-2 text-center xr-bg-pink">
+    <h1 class="display-1 text-middle p-4">01</h1>
   </div>
-  <div class="col">
-    <h2>Tell The Truth</h2>
-    <p>The government must tell the truth by declaring a climate and ecological emergency, working with other institutions to communicate the urgency for change.</p>
+  <div class="col-6 bg-white p-3">
+    <div class="py-4 pl-4 pr-5">
+      <h2>Tell The Truth</h2>
+      <div>
+        The government must tell the truth by declaring a climate and ecological emergency, working with other institutions to communicate the urgency for change.
+      </div>
+    </div>
   </div>
-</div>
-<div class="row border-bottom py-3">
-  <div class="col-3 text-center">
-    <h1 class="display-1">02</h1>
-  </div>
-  <div class="col">
-    <h2>Act Now</h2>
-    <p>The government must take immediate action to halt biodiversity loss and to reduce greenhouse gas emissions to net zero by 2025.</p>
-  </div>
-</div>
-<div class="row border-bottom py-3">
-  <div class="col-3 text-center">
-    <h1 class="display-1">03</h1>
-  </div>
-  <div class="col">
-    <h2>Beyond Politics</h2>
-    <p>The government must create and be led by the decisions of a Citizens' Assembly on climate and ecological justice.</p>
+  <div class="col-1 bg-white px-2">
+    <img class="xr-graphic clip-80" src="{% static 'images/SaudiGazelle_small.png' %}">
   </div>
 </div>
-<div class="row py-3">
-  <div class="col-3 text-center">
-    <h1 class="display-1">04</h1>
+<div class="row justify-content-center py-3 xr-bg-gray">
+  <div class="col-2 text-center xr-bg-light-blue">
+    <h1 class="display-1 text-middle p-4">02</h1>
   </div>
-  <div class="col">
-    <h2>Just Transition</h2>
-    <p>We demand a just transition that prioritizes the most vulnerable people and establishes indigenous sovereignty; establishes reparations and remediation led by and for Black people, Indigenous people, people of color and poor communities for years of environmental injustice, establishes legal rights for ecosystems to thrive and regenerate in perpetuity, and repairs the effects of ongoing ecocide to prevent extinction of humanity and all species, in order to maintain a livable, just planet for all.
-    </p>
+  <div class="col-6 bg-white p-3">
+    <div class="py-4 pl-4">
+      <h2>Act Now</h2>
+      <div>
+        The government must take immediate action to halt biodiversity loss and to reduce greenhouse gas emissions to net zero by 2025.
+      </div>
+    </div>
+  </div>
+  <div class="col-1 bg-white px-2">
+    <img class="xr-graphic clip-50" src="{% static 'images/SandTimer_small.png' %}">
   </div>
 </div>
+<div class="row align-middle justify-content-center py-3 xr-bg-gray">
+  <div class="col-2 text-center xr-bg-warm-yellow">
+    <h1 class="display-1 text-middle p-4">03</h1>
+  </div>
+  <div class="col-6 bg-white p-3">
+    <div class="py-4 pl-4">
+      <h2>Beyond Politics</h2>
+      <div>
+        The government must create and be led by the decisions of a Citizens' Assembly on climate and ecological justice.
+      </div>
+    </div>
+  </div>
+  <div class="col-1 bg-white px-2">
+    <img class="xr-graphic clip-50" src="{% static 'images/Honey_Bee_V2_small.png' %}">
+  </div>
+</div>
+<div class="row align-middle justify-content-center py-3 xr-bg-gray">
+  <div class="col-2 text-center xr-bg-light-green">
+    <h1 class="display-1 text-middle p-4">04</h1>
+  </div>
+  <div class="col-6 bg-white p-3">
+    <div class="py-4 pl-4">
+      <h2>Just Transition</h2>
+      <div pl-2>
+        There must be a just transition that prioritizes the most vulnerable people and establishes indigenous sovereignty and remediation led by and for communities suffering environmental injustice.
+      </div>
+    </div>
+  </div>
+  <div class="col-1 bg-white px-2">
+    <img class="xr-graphic clip-50" src="{% static 'images/orchid_small.png' %}">
+  </div>
+</div>
+
+<div class="row p-5 bg-white">
+  <div class="col-12">
+    <h2>More information about the possible solutions</h2>
+    <div class="my-4">
+      <p class="text-bold">Demands 1 & 2</p>
+      <p><a href="https://www.theclimatemobilization.org/">The Climate Mobilization</a>, <a href="https://bze.org.au/">Beyond Zero Emissions</a>,
+      <a href="https://www.rapidtransition.org/">Rapid Transition Aliance</a>, <a href="https://www.greennewdealgroup.org/">Green New Deal Group</a>,<br>
+      <a href="https://www.campaigncc.org/climatejobs">One Million Climate Jobs</a> and <a href="https://www.breakthroughonline.org.au/">The Breakthrough Institute</a>.</p>
+      <p class="text-bold">Demand 3</p>
+      <p><a href="https://www.xrdemocracy.uk/">Future Democracy Hub</a>, <a href="https://participedia.net/">Participedia.net</a>,
+      <a href="https://democracyrd.org/">Democracy R&D</a>, <a href="https://www.sortitionfoundation.org/">The Sortition Foundation</a></p>
+    </div>
+    <h2>Full version of the U.S. demands</h2>
+    <p><a href="https://extinctionrebellion.us/demands" class="btn btn-lg btn-primary text-uppercase">XR U.S.</a></p>
+  </div>
+</div>
+
 {% endblock %}
