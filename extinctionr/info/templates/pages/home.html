@@ -6,28 +6,56 @@
 {% endblock %}
 {% block inline_css %}
 {{block.super}}
-  .banner-msg {
+  .home-banner {
+    overflow: hidden;
+    margin: 0;
+    background-color: black;
+  }
+  .home-banner img {
+    opacity: .5;
+  }
+  .home-banner-text {
+    position: absolute;
     font-family: "FucXed";
-    font-size: 4rem;
+    font-size: 2.5rem;
     color:white;
-    top:25%;
-    left:0;
+    top: 10%;
+    left: 0;
+    width: 100%;
+  }
+  .btn-outline-light {
+    text-decoration: none !important;
+  }
+  @media (min-width: 576px) {
+    .btn-outline-light {
+      font-size: 1.5rem !important;
+      border-width: 3px;
+    }
+    .home-banner-text {
+      font-size: 4rem;
+      top: 30%;
+    }
+    .home-banner img {
+      margin-top: -11%;
+      margin-bottom: -18%;
+    }
   }
 {% endblock %}
 
 {% block content %}
 {% load actions %}
-<div class="row">
-  <div class="banner position-relative w-100 text-center">
-    <img class="img-fluid w-100" src="{% static 'images/banner-home.jpg' %}" alt="Extinction Rebellion Massachusetts" />
-    <div class="banner-msg position-absolute text-center w-100">
-      <div class="mb-4">
-          <span class="xr-green">Pray for the dead</span><br>
-          Fight like hell for the living
+
+<div class="row justify-content-center">
+  <div class="home-banner position-relative w-100 ">
+      <img class="w-100" 
+        srcset="{% static 'images/banner-home.jpg' %} 1280w,
+                {% static 'images/banner-home-640w.jpg' %} 640w"
+        src="{% static 'images/banner-home.jpg' %}">
+      <div class="home-banner-text px-2 text-center">
+      <span class="xr-green">Pray for the dead</span><br>
+      Fight like hell for the living
+        <p><a href="{% url 'extinctionr.info:page' page='welcome/' %}" class="btn btn-outline-light text-uppercase">Join Us</a></p>
       </div>
-      <h5 class="position-absolute border-menu p-2" style="left:45%;right:45%;">
-      <a href="{% url 'extinctionr.info:page' page='welcome/' %}" style="color:white;">Join Us</a></h5>
-    </div>
   </div>
 </div>
 
