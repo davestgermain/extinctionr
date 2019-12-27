@@ -9,8 +9,12 @@
     font-family: FucXed, sans-serif;
 	color: white;
 	font-size: 3.5rem;
-	padding: 0.5rem !important;
-	text-align: center !important;
+}
+@media (min-width: 576px) {
+	.px-lg-8 {
+		padding-left: 10rem !important;
+		padding-right: 10rem !important;
+	}
 }
 {% endblock %}
 
@@ -18,7 +22,7 @@
 <div class="row">
 	<div class="banner position-relative w-100">
 		<img class="img-fluid w-100" src="{% static 'images/bridge-meditation-banner.jpg' %}" alt="Extinction Rebellion Massachusetts" />
-		<div class="banner-title">About XR</div>
+		<div class="banner-title">The Movement</div>
 	</div>
 </div>
 
@@ -32,17 +36,17 @@
 	</div>
 </div>
 
-<div class="row justify-content-center pt-5 xr-bg-gray">
-	<div class="col-8">
-		<h1 class="text-uppercase">Our Mission</h1>
+<div class="row pt-5 px-lg-8 px-5 xr-bg-gray">
+	<div class="col p-0">
+		<h1 class="text-uppercase p-0">Our Mission</h1>
 	</div>
 </div>
 
-<div class="row py-3 px-2 justify-content-center xr-bg-gray">
-    <div class="col-3 col-lg-2 xr-bg-red">
-		<div class="text-center text-middle text-fucxed display-1">01</div>
+<div class="row py-3 px-lg-8 px-5 xr-bg-gray">
+    <div class="col-12 col-lg-2 xr-bg-red">
+		<div class="text-lg-center text-fucxed pt-1 display-1">01</div>
 	</div>
-	<div class="col col-lg-6 bg-white p-4">
+	<div class="col bg-white p-4">
 		To show to radical people (and internationally) that it is possible to have 
 		an “impossible” plan and carry out a rebellion – however small (or large!) 
 		and thus increase the 
@@ -51,11 +55,11 @@
 	</div>
 </div>
   
-<div class="row py-3 px-2 justify-content-center xr-bg-gray">
-    <div class="col-3 col-lg-2 xr-bg-red">
-		<div class="text-center text-middle text-fucxed display-1">02</div>
+<div class="row py-3 px-lg-8 px-5 xr-bg-gray">
+    <div class="col-12 col-lg-2 xr-bg-red">
+		<div class="text-lg-center pt-1 text-fucxed display-1">02</div>
 	</div>
-	<div class="col col-lg-6 bg-white p-4">
+	<div class="col bg-white p-4">
 		To create a national conversation about the ecological 
 		crisis and climate breakdown – including that our families, 
 		communities, society, and state are facing existential threat. 
@@ -65,11 +69,11 @@
 	</div>
 </div>
 
-<div class="row py-3 px-2 justify-content-center xr-bg-gray">
-    <div class="col-3 col-lg-2 xr-bg-red">
-		<div class="text-center text-middle text-fucxed display-1">03</div>
+<div class="row py-3 px-lg-8 px-5 xr-bg-gray">
+    <div class="col-12 col-lg-2 xr-bg-red">
+		<div class="text-lg-center pt-1 text-fucxed display-1">03</div>
 	</div>
-	<div class="col col-lg-6 bg-white p-4">
+	<div class="col bg-white p-4">
 		To build structure, community, and test prototypes in 
 		preparation for the coming structural collapse of the 
 		regimes of western “democracies” - now seen as inevitable 
@@ -81,81 +85,81 @@
 	</div>
 </div>
 
-<div class="row justify-content-center pt-5 xr-bg-gray">
-	<div class="col-8">
+<div class="row pt-5 px-lg-8 px-5 xr-bg-gray">
+	<div class="col p-0">
 		<h1 class="text-uppercase">Our Principles &amp; Values</h1>
 	</div>
 </div>
 
-<div class="row justify-content-center xr-bg-gray pb-5">
-	<div class="col col-lg-4 p-0">
+<div class="row px-5 px-lg-8 xr-bg-gray pb-5">
+	<div class="col col-lg-6 p-0">
 		<div class="row my-2 mx-1 xr-bg-dark-blue">
-			<div class="col-3 principle-id">01</div>
+			<div class="col-12 col-lg-3 principle-id">01</div>
 			<div class="col p-3 bg-white">
 		<p class="text-bold">We have a shared vision of change</p> 
 		<p>Creating a world that is fit for the next 7 generations to live in.</p>
 			</div>
 		</div>
 		<div class="row my-2 mx-1 xr-bg-dark-blue">
-			<div class="col-3 principle-id">02</div>
+			<div class="col-12 col-lg-3 principle-id">02</div>
 			<div class="col p-2 bg-white">
 				<p class="text-bold">We set our mission on what is necessary</p> 
 				<p>Mobilizing 3.5% of the population to achieve system change.</p>
 			</div>
 		</div>
 		<div class="row my-2 mx-1 xr-bg-dark-blue">
-			<div class="col-3 principle-id">03</div>
+			<div class="col-12 col-lg-3 principle-id">03</div>
 			<div class="col p-3 bg-white">
 				<p class="text-bold">We need a regenerative culture</p> 
 				<p>Creating a culture which is healthy, resilient and adaptable.</p>
 			</div>
 		</div>
 		<div class="row my-2 mx-1 xr-bg-dark-blue">
-			<div class="col-3 principle-id">04</div>
+			<div class="col-12 col-lg-3 principle-id">04</div>
 			<div class="col p-3 bg-white">
 				<p class="text-bold">We openly challenge ourselves and this toxic system</p> 
 				<p>Leaving our comfort zones to take action for change.</p>
 			</div>
 		</div>
 		<div class="row mt-2 mx-1 xr-bg-dark-blue">
-			<div class="col-3 principle-id">05</div>
+			<div class="col-12 col-lg-3 principle-id">05</div>
 			<div class="col p-3 bg-white">
 				<p class="text-bold">We value reflecting and learning</p> 
 				<p>Following a cycle of action, reflection, learning, and planning for more action. Learning from other movements and contexts as well as our own experiences.</p>
 			</div>
 		</div>
 	</div>
-	<div class="col-lg-4 p-0">
+	<div class="col-lg-6 p-0">
 		<div class="row my-2 mx-1 xr-bg-dark-blue">
-			<div class="col-3 principle-id">06</div>
+			<div class="col-12 col-lg-3 principle-id">06</div>
 			<div class="col p-3 bg-white">
 				<p class="text-bold">We welcome everyone and every part of everyone</p> 
 				<p>Working actively to create safer and more accessible spaces.</p>
 			</div>
 		</div>
 		<div class="row my-2 mx-1 xr-bg-dark-blue">
-			<div class="col-3 principle-id">07</div>
+			<div class="col-12 col-lg-3 principle-id">07</div>
 			<div class="col p-3 bg-white">
 				<p class="text-bold">We actively mitigate for power</p> 
 				<p>Breaking down hierarchies of power for more equitable participation.</p>
 			</div>
 		</div>
 		<div class="row my-2 mx-1 xr-bg-dark-blue">
-			<div class="col-3 principle-id">08</div>
+			<div class="col-12 col-lg-3 principle-id">08</div>
 			<div class="col p-3 bg-white">
 				<p class="text-bold">We avoid blaming and shaming</p> 
 				<p>We live in a toxic system, but no one individual is to blame.</p>
 			</div>
 		</div>
 		<div class="row my-2 mx-1 xr-bg-dark-blue">
-			<div class="col-3 principle-id">09</div>
+			<div class="col-12 col-lg-3 principle-id">09</div>
 			<div class="col p-3 bg-white">
 				<p class="text-bold">We are a non-violent network</p> 
 				<p>Using non-violent strategy and tactics as the most effective way to bring about change.</p>
 			</div>
 		</div>
 		<div class="row my-2 mx-1 xr-bg-dark-blue">
-			<div class="col-3 principle-id">10</div>
+			<div class="col-12 col-lg-3 principle-id">10</div>
 			<div class="col p-3 bg-white">
 				<p class="text-bold">We are based on autonomy and decentralization</p> 
 				<p>We collectively create the structures we need to challenge power.</p>
