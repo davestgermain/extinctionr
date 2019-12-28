@@ -1,5 +1,6 @@
 import calendar
 import csv
+import math
 
 from collections import defaultdict
 from datetime import timedelta, datetime
@@ -16,7 +17,7 @@ from django.http import JsonResponse, HttpResponse
 from django.shortcuts import render, get_object_or_404, redirect
 from django.utils.html import strip_tags
 from django.utils.http import http_date
-from django.utils.timezone import now
+from django.utils.timezone import now, localtime
 from django.urls import reverse
 from django.views.decorators.cache import never_cache, cache_page
 from django.utils.decorators import method_decorator
@@ -67,7 +68,7 @@ def _get_actions(request, whatever='', include_future=True, include_past=7):
     req_date = request.GET.get('month','')
     tag_filter = request.GET.get('tag', '')
     context = {}
-    today = now().date()
+    today = localtime().date() #now().date()
     current_date = today.replace(day=1)
     if token:
         try:
@@ -97,6 +98,7 @@ def _get_actions(request, whatever='', include_future=True, include_past=7):
             context['is_cal'] = True
     context['current_date'] = current_date
     context['today'] = today
+    
     return actions, context
 
 
@@ -121,6 +123,18 @@ def calendar_view(request, whatever):
     response = HttpResponse(thecal, content_type='text/calendar')
     return response
 
+# for pagination
+def _get_req_pagination(request):
+    start = request.GET.get('from', '0')
+    count = request.GET.get('count', '10')
+    try:
+        f = int(start)
+        c = int(count)
+        if f < 0 or c < 0:
+            raise ValueError
+        return (f, c)
+    except ValueError:
+        return (0, 10)
 
 @cache_page(1200)
 @csrf_protect
@@ -137,7 +151,18 @@ def list_actions(request):
     qset, ctx = _get_actions(request, include_future=False)
     if not ctx.get('is_cal'):
         actions = Action.objects.for_user(request.user).filter(when__gte=now())
-        ctx['upcoming'] = actions[:6]
+        # handle pagination
+        start, count = _get_req_pagination(request)
+        ctx['upcoming'] = actions[start:start+count]
+        pagination = {}
+        cur_page = math.floor(start/10)
+        total_pages = math.ceil(len(actions)/10)
+        pagination['cur_page'] = cur_page
+        pagination['last_page'] = (cur_page == (total_pages - 1))
+        pagination['page_count'] = total_pages
+        # to iterate on page, start index and label
+        pagination['pages'] = [(x, x*10) for x in range(total_pages)]
+        ctx['pagination'] = pagination
     else:
         actions = None
     current_date = ctx['current_date']
@@ -173,11 +198,13 @@ def list_actions(request):
         }
         if mdate.month == current_date.month:
             for a in todays_actions:
+                a.bg = None
                 tagnames = a.tags.names()
                 for t in a.tags.names():
                     color = event_colors.get(t, None)
                     if color:
                         obj['bg'] = color
+                        a.bg = color
                         break
         else:
             # previous month

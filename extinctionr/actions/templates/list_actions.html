@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% load actions %}
 {% block title %}:: Upcoming Actions{% endblock %}
 {% block og_title %}Upcoming Actions{% endblock %}
 {% block og_tags %}
@@ -8,6 +9,7 @@
 {{block.super}}
 table a {
     color: #000;
+    font-family: FucXed, sans-serif;
     text-decoration: underline;
 }
 table td {
@@ -16,47 +18,143 @@ table td {
 table a:hover {
     color: rgb(200, 0, 130);
 }
+.btn-outline-primary {
+    color: rgb(152, 98, 151) !important;
+    background-color: white !important;
+    border-color: rgb(152, 98, 151) !important;
+    border-width: 2px;
+}
+#list-view-btn,#calendar-view-btn {
+    min-width: 8em;
+}
+.page-item.active .page-link {
+    color: #fff !important;
+    background-color: rgb(152, 98, 151) !important;
+    border-color: rgb(152, 98, 151) !important;
+}
+.page-link {
+    font-family: FucXed, sans-serif;
+    color: rgb(152, 98, 151) !important;
+    background-color: #fff;
+}
+.page-link:hover {
+    color: #rgb(102, 48, 101) !important;
+    background-color: #e9ecef;
+    border-color: rgb(102, 48, 101) !important;
+}
+.table .thead-xr-pink th {
+    color: #fff;
+    background-color: rgb(207, 98, 151);
+    border-color: rgb(151,151,151);
+}
+  
+#mainbody {
+    background-color: #fff !important;
+}
+.action_loc p {
+    display: inline-block;
+    text-decoration: underline !important;
+}
+.action_loc a {
+    color: black;
+}
 {% endblock %}
 
 {% block content %}
 {% load info %}
 {% load tz %}
 {% if not is_cal %}
-<div class="row pt-5">
-    <h1 class="col-text text-center">Upcoming Actions</h1>
+
+<div class="row p-5">
+    <h1 class="col-text text-center">Events</h1>
 </div>
-    <hr>
-<section class="row">
+
+<div class="row p-4 m-0">
+    <div class="col text-center">
+        <div class="btn-group " role="group" aria-label="view data-toggle">
+            <button id="list-view-btn" type="button" class="btn btn-outline-primary text-fucxed">List</button>
+            <button id="calendar-view-btn" type="button" class="btn btn-primary text-fucxed">Calendar</button>
+        </div>
+    </div>
+</div>
+
+<section id="list-view" class="py-5">
     {% if upcoming %}
     {% for action in upcoming %}
-    <div class="col text-center m-2 {% if not forloop.counter|divisibleby:3 %}border-right{% endif %}">
-        <h2><a href="{{action.get_absolute_url}}">{{action.html_title}}</a></h2>
-        <h3>{{action.when}}</h3>
-        {% if not action.public %}<h4 class="text-danger">not public</h4>{% endif %}
-        {% if action.location %}
-        <p class="text-info small">{{action.location_link}}</p>
-        {% endif %}
-        <div class="text-left small">{{action.description|markdownify|truncatewords_html:30}}</div>
+    <div class="row px-4 py-4">
+        <div class="col-2">
+            <p class="text-center text-fucxed p-1 xr-bg-lemon">
+                {{action.when|localtime|date:"M"}}<br>
+                <span class="display-4">{{action.when|localtime|date:"d"}}</span></p>
+        </div>
+        <div class="col-6">
+            <h3><a href="{{action.get_absolute_url}}">{{action.html_title}}</a></h3>
+            <div class="row">
+                <div class="col-3">
+            <i class="far fa-clock pr-1" title="Event time"></i><span class="small">{{action.when|localtime|time}}</span>
+                </div>
+            {% if action.location %}
+            <div class="col action_loc"> <i class="fas fa-map-marker-alt pr-1" title="Map Marker"></i>
+                <span class="small">{{action.location_link}}</span>
+            </div>
+            {% endif %}
+            </div>
+            <div class="text-left small">{{action.description|markdownify|truncatewords_html:30}}</div>
+        </div>
+        <div class="col-4">
+            <img src="{{action.card_thumbnail_url}}" class="w-100" alt="Event Image">
+        </div>
     </div>
-{% if forloop.counter|divisibleby:3 %}</section><section class="row pt-3">{% endif %}
-    {% endfor %}
+    <hr>
+    {%endfor%}
     {% else %}
     <div class="col m-2 text-center">
         <p>There are no upcoming events.</p>
         <p>Why not <a href="/talk">propose a location for a talk</a> in your area?</p>
     </div>
     {% endif %}
+
+    {% if pagination.page_count > 1 %}
+    <div class="row">
+        <div class="col">
+    <nav aria-label="page navigation">
+        <ul id="paginator" class="pagination pagination-lg justify-content-center">
+          <li class="page-item {% if pagination.cur_page == 0 %}disabled{% endif %}">
+            <a class="page-link" href="#" aria-label="Previous">
+              <span aria-hidden="true">&laquo;</span>
+              <span class="sr-only">Previous</span>
+            </a>
+          </li>
+          {% for page, start in pagination.pages %}
+          <li class="page-item {% if page == pagination.cur_page %}active{% endif %}">
+              <a class="page-link" href="./?from={{start}}&count=10">{{ page|add:"1" }}</a>
+          </li>
+          {% endfor %}
+          <li class="page-item {% if pagination.last_page %}disabled{% endif %}">
+            <a class="page-link" href="#" aria-label="Next">
+              <span aria-hidden="true">&raquo;</span>
+              <span class="sr-only">Next</span>
+            </a>
+          </li>
+        </ul>
+    </nav>
+</div>
+</div>
+    {% endif %}
 </section>
 {% endif %}
-<a name="calendar"></a>
-<div class="row {% if is_cal %}pt-5{% else %}mt-3{% endif %}">
+
+<div id="calendar-view" class="row {% if is_cal %}pt-5{% else %}mt-3{% endif %}" style="display:none">
     <div class="col">
-        {% if not is_cal %}<hr>{% endif %}
-        <h3 class="text-center">{{current_date|date:"F Y"}}</h3>
+        <h3 class="text-center">
+        <a href="?month={{last_month|date:"Y-m"}}{% if current_tag %}&tag={{current_tag}}{% endif %}"><i class="fas fa-arrow-left xr-purple"></i></a>
+        <span class="mx-4">{{current_date|date:"F Y"}}</span>
+        <a href="?month={{next_month|date:"Y-m"}}{% if current_tag %}&tag={{current_tag}}{% endif %}"><i class="fas fa-arrow-right xr-purple"></i></a>
+        </h3>
         <h4 class="text-center"><a href="{{calendar_link}}" title="Export calendar as iCal format"><i class="far fa-calendar-alt"></i></a>{% if user.is_authenticated %} <small class="text-danger">this link is secret</small>{% endif %}</h4>
         {% if current_tag %}<h3 class="text-center">{{current_tag}} events</h3>{% endif %}
         <table class="table border table-responsive-sm">
-            <thead class="thead-dark small text-center text-fucxed">
+            <thead class="thead-xr-pink small text-center text-fucxed">
                 <tr>
                     <th style="width: 14%" scope="col">Sun</th>
                     <th style="width: 14%" scope="col">Mon</th>
@@ -71,12 +169,19 @@ table a:hover {
                 {% for week in month %}
                 <tr style="height:6em">
                     {% for day in week %}
-                    <td{% if forloop.first %} scope="row"{% endif %} class="{% if day.bg %} {{day.bg}}{% endif %}{% if day.today %} border border-dark{% endif %}">
+                    <td{% if forloop.first %} scope="row"{% endif %} class="{% if day.today %} border border-dark{% endif %}">
                         <h5>{% if can_add %}<a href="" data-toggle="modal" data-target="#event-modal" data-when="{{day.day.isoformat}}">{{day.day.day}}</a>{% else %}{{day.day.day}}{% endif %}</h5>
                         {% for event in day.events %}
-                        {% if not event.public %}<i class="fas fa-lock" title="Not public"></i> {% endif %}
-                        {% if 'pending' in event.tags.names %}<i class="fas fa-question" title="Pending Event"></i>{% endif %}
-                        {{event.when|localtime|date:"P"}} &mdash; <a href="{{event.get_absolute_url}}">{{event.html_title}}</a><br>
+                        {% if not event.public %}
+                            <i class="fas fa-lock" title="Not public"></i> 
+                        {% endif %}
+                        {% if 'pending' in event.tags.names %}
+                            <i class="fas fa-question" title="Pending Event"></i>
+                        {% endif %}
+                        <div class="{% if event.bg %}{{event.bg}}{% endif %}" style="margin:2px;padding:2px;">
+                        <a href="{{event.get_absolute_url}}">{{event.html_title}}</a><br>
+                        <p><i class="far fa-clock" title="Event Time"></i>&nbsp;{{event.when|localtime|date:"P"}}</p>
+                        </div>
                         {% endfor %}
                     </td>
                     {% endfor %}
@@ -88,8 +193,7 @@ table a:hover {
             <span class="col text-left ml-3"><a href="?month={{last_month|date:"Y-m"}}{% if current_tag %}&tag={{current_tag}}{% endif %}">&larr; {{last_month|date:"F Y"}}</a></span>
             <span class="col text-right mr-3"><a href="?month={{next_month|date:"Y-m"}}{% if current_tag %}&tag={{current_tag}}{% endif %}">{{next_month|date:"F Y"}} &rarr;</a></span>
         </h4>
-<!-- <iframe src="https://calendar.google.com/calendar/embed?src=mits7cdibmdcdoac6a83996d94%40group.calendar.google.com&amp;ctz=America%2FNew_York" style="width: 70vw;height: 70vh; position: relative; border:0" scrolling="no" frameborder="0"></iframe>
- -->    </div>
+   </div>
 </div>
 {% if can_add %}
 <div class="modal" tabindex="-1" role="dialog" id="event-modal">
@@ -129,8 +233,52 @@ document.getElementById("id_name").onkeyup = function() {
         $('#event-modal input,textarea').addClass('form-control');
         var button = $(event.relatedTarget); // Button that triggered the modal
         var when = button.data('when'); // Extract info from data-* attributes
-        console.log(when);
         $('#id_when').val(when);
+    });
+
+    function show_calendar(show) {
+        if (show) {
+            $('#list-view').hide();
+            $('#calendar-view').show();
+            window.location.hash = "#calendar";
+        } else {
+            $('#calendar-view').hide();
+            $('#list-view').show();
+            window.location.hash = "";
+        }
+    }
+    // Toggle views:
+    $('#list-view-btn').on('click', function(event) {
+        $(this).removeClass('btn-primary').addClass('btn-outline-primary');
+        $('#calendar-view-btn').removeClass('btn-outline-primary').addClass('btn-primary');
+        show_calendar(false);
+    });
+    $('#calendar-view-btn').on('click', function(event) {
+        $(this).removeClass('btn-primary').addClass('btn-outline-primary');
+        $('#list-view-btn').removeClass('btn-outline-primary').addClass('btn-primary');
+        show_calendar(true);
+    });
+    function set_pagination() {
+        let pagelinks = $('.page-link');
+        let active = $('#paginator .active').index();
+        function set_href(link, idx) {
+            link.prop('href', `./?from=${idx}&count=10`);
+        }
+        if (active != -1) {
+            let from_idx = (active - 1) * 10;
+            if (active > 1) {
+                set_href(pagelinks.first(), from_idx - 10);
+            }
+            if (active < pagelinks.length - 2) {
+                set_href(pagelinks.last(), from_idx + 10);
+            }
+        }
+    }
+    $(function() {
+        if (window.location.hash == '#calendar') {
+            show_calendar(true);
+        }
+        set_pagination();
     });
 </script>
 {% endblock %}
