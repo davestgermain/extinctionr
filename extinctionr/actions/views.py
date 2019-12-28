@@ -68,7 +68,7 @@ def _get_actions(request, whatever='', include_future=True, include_past=7):
     req_date = request.GET.get('month','')
     tag_filter = request.GET.get('tag', '')
     context = {}
-    today = localtime().date() #now().date()
+    today = localtime().date()
     current_date = today.replace(day=1)
     if token:
         try:
@@ -148,23 +148,23 @@ def list_actions(request):
         else:
             print(form.errors)
 
-    qset, ctx = _get_actions(request, include_future=False)
-    if not ctx.get('is_cal'):
-        actions = Action.objects.for_user(request.user).filter(when__gte=now())
-        # handle pagination
-        start, count = _get_req_pagination(request)
-        ctx['upcoming'] = actions[start:start+count]
-        pagination = {}
-        cur_page = math.floor(start/10)
-        total_pages = math.ceil(len(actions)/10)
-        pagination['cur_page'] = cur_page
-        pagination['last_page'] = (cur_page == (total_pages - 1))
-        pagination['page_count'] = total_pages
-        # to iterate on page, start index and label
-        pagination['pages'] = [(x, x*10) for x in range(total_pages)]
-        ctx['pagination'] = pagination
-    else:
-        actions = None
+    qset, ctx = _get_actions(request, include_future=True)
+    today_utc = now().date()
+
+    actions = Action.objects.for_user(request.user).filter(when__gte=today_utc)
+    # handle pagination
+    start, count = _get_req_pagination(request)
+    ctx['upcoming'] = actions[start:start+count]
+    pagination = {}
+    cur_page = math.floor(start/10)
+    total_pages = math.ceil(len(actions)/10)
+    pagination['cur_page'] = cur_page
+    pagination['last_page'] = (cur_page == (total_pages - 1))
+    pagination['page_count'] = total_pages
+    # to iterate on page, start index and label
+    pagination['pages'] = [(x, x*10) for x in range(total_pages)]
+    ctx['pagination'] = pagination
+
     current_date = ctx['current_date']
     ctx['next_month'] = current_date + timedelta(days=31)
     ctx['last_month'] = current_date + timedelta(days=-1)
