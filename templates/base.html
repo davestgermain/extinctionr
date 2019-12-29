@@ -144,8 +144,6 @@
   }
   #mainbody {
     font-size: 1.2rem;
-    padding-left: 0;
-    padding-right: 0;
   }
   #mainbody form {
     font-size: 1.1rem;
@@ -211,7 +209,7 @@
    background-color: rgb(102, 48, 101) !important; 
   }
   .banner {
-    background-color: #1a1a1a !important;
+    background-color: black !important;
     padding: 0px !important;
     margin: 0px !important;
   }
@@ -228,6 +226,7 @@
   }
   a.social {
     color: white;
+    font-size: .8em;
   }
   @media (min-width: 576px) {
     .banner-title {
@@ -293,58 +292,58 @@
 </div></div>{% endif %}
       {% block breadcrumb %}{% endblock %}
       {% block default_container %}{% block content %}{% endblock %}{% endblock %}
-      <footer class="text-center mt-4 mx-0 px-0 py-4 d-print-none" style="background-color: #1a1a1a;">
-        <ul class="list-inline">
-          <li class="list-inline-item">
-            <a href="https://www.facebook.com/ExtRebMA/" target="_blank" class="social">
-              <span class="fa-stack" style="vertical-align: top;">
-                <i class="far fa-circle fa-stack-2x"></i>
-                <i class="fab fa-facebook-f fa-stack-1x"></i>
-              </span>
-            </a>
-          </li>
-          <li class="list-inline-item">
-            <a href="https://twitter.com/XRboston" target="_blank" class="social">
-              <span class="fa-stack" style="vertical-align: top;">
-                <i class="far fa-circle fa-stack-2x"></i>
-                <i class="fab fa-twitter fa-stack-1x"></i>
-              </span>
-            </a>
-          </li>
-          
-          <li class="list-inline-item">
-            <a href="https://www.instagram.com/xrboston/" target="_blank" class="social">
-              <span class="fa-stack" style="vertical-align: top;">
-                <i class="far fa-circle fa-stack-2x"></i>
-                <i class="fab fa-instagram fa-stack-1x"></i>
-              </span>
-            </a>
-          </li>
+</div> <!-- mainbody -->
+  <footer class="text-center mt-4 mx-0 px-0 py-4 d-print-none" style="background-color: #1a1a1a;">
+    <ul class="list-inline">
+      <li class="list-inline-item">
+        <a href="https://www.facebook.com/ExtRebMA/" target="_blank" class="social">
+          <span class="fa-stack" style="vertical-align: top;">
+            <i class="far fa-circle fa-stack-2x"></i>
+            <i class="fab fa-facebook-f fa-stack-1x"></i>
+          </span>
+        </a>
+      </li>
+      <li class="list-inline-item">
+        <a href="https://twitter.com/XRboston" target="_blank" class="social">
+          <span class="fa-stack" style="vertical-align: top;">
+            <i class="far fa-circle fa-stack-2x"></i>
+            <i class="fab fa-twitter fa-stack-1x"></i>
+          </span>
+        </a>
+      </li>
+      
+      <li class="list-inline-item">
+        <a href="https://www.instagram.com/xrboston/" target="_blank" class="social">
+          <span class="fa-stack" style="vertical-align: top;">
+            <i class="far fa-circle fa-stack-2x"></i>
+            <i class="fab fa-instagram fa-stack-1x"></i>
+          </span>
+        </a>
+      </li>
 
-          <li class="list-inline-item">
-            <a href="https://www.youtube.com/channel/UC0JxJrXXRGF9lmjzdIKGYAw" target="_blank" class="social">
-              <span class="fa-stack" style="vertical-align: top;">
-                <i class="far fa-circle fa-stack-2x"></i>
-                <i class="fab fa-youtube fa-stack-1x"></i>
-              </span>
-            </a>
-          </li>
-          <li class="list-inline-item">
-            <a href="/contact" target="_blank" class="social">
-              <span class="fa-stack" style="vertical-align: top;">
-                <i class="far fa-circle fa-stack-2x"></i>
-                <i class="fas fa-envelope fa-stack-1x"></i>
-              </span>
-            </a>
-          </li>
-        </ul>
-        {% if request.user.is_anonymous %}
-        <div class="pt-6 text-right">
-          <a class="xr-green" href="{% url 'login' %}">login</a>
-        </div>
-        {% endif %}
-      </footer>
-  </div>
+      <li class="list-inline-item">
+        <a href="https://www.youtube.com/channel/UC0JxJrXXRGF9lmjzdIKGYAw" target="_blank" class="social">
+          <span class="fa-stack" style="vertical-align: top;">
+            <i class="far fa-circle fa-stack-2x"></i>
+            <i class="fab fa-youtube fa-stack-1x"></i>
+          </span>
+        </a>
+      </li>
+      <li class="list-inline-item">
+        <a href="/contact" target="_blank" class="social">
+          <span class="fa-stack" style="vertical-align: top;">
+            <i class="far fa-circle fa-stack-2x"></i>
+            <i class="fas fa-envelope fa-stack-1x"></i>
+          </span>
+        </a>
+      </li>
+    </ul>
+    {% if request.user.is_anonymous %}
+    <div class="pt-6 text-right">
+      <a class="xr-green" href="{% url 'login' %}">login</a>
+    </div>
+    {% endif %}
+  </footer>
 
 <script src="{% static 'js/jquery-3.3.1.min.js' %}"></script>{% block extra_js %}{% endblock %}{% block js_block %}{% if form %}{{form.media}}{% endif%}{% endblock js_block %}
 <script src="{% static 'js/bootstrap.min.js' %}"></script>
@@ -352,8 +351,22 @@
 <script defer src="{% static "js/fontawesome-all.js" %}"></script>
 
 <script type="text/javascript">
+  function findActiveMenu() {
+    let active = $('.nav-a[href="' + window.location.pathname + '"]');
+    if (active.length > 0) return active;
+    let path = window.location.pathname.split('/');
+    if (path.length > 1) {
+      active = $('.nav-a[href="/' + path[1] + '"]');
+      if (active.length > 0) return active;
+      active = $('.nav-a[href="/' + path[1] + '/"]');
+    }
+    return active;
+  }
   $(document).ready(function(){
-    $('.nav-a[href="' + window.location.pathname + '"]').addClass('active');
+    //let active = $('.nav-a[href="' + window.location.pathname + '"]');
+    let active = findActiveMenu();
+    active.addClass('active');
+    active.parents('.nav-item').children('.nav-link').addClass('active');
     $('#mainbody img').addClass('img img-fluid');
     function swapImages() {
       var elt = $(this);

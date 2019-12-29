@@ -36,10 +36,7 @@
       <a class="dropdown-item nav-a" href="{% url 'todo:lists' %}">To do Lists</a>
       <a class="dropdown-item nav-a" href="{% url 'todo:mine' %}">My Tasks</a>
       {% if request.user.role == "ADMIN" or 'leads.change_lead' in perms %}
-      <!-- <a class="dropdown-item nav-a" id="dashboard" href="{% url 'common:home' %}">Dashboard</a> -->
       <a class="dropdown-item nav-a" id="contacts" href="{% url 'contacts:list' %}">Contacts</a>
-      <!-- <a class="dropdown-item nav-a" id="leads" href="{% url 'leads:list' %}">Leads</a>
-      <a class="dropdown-item nav-a" id="accounts" href="{% url 'accounts:list' %}">Accounts</a> -->
       {% endif %}
 {% if request.user.role == "ADMIN"  or request.user.is_superuser %}
       <a class="dropdown-item nav-a" href="{% url 'common:users_list' %}">Users</a>
@@ -50,8 +47,5 @@
       <a class="dropdown-item nav-a" href="{% url 'logout' %}?next=/">Logout</a>
     </div>
   </li>
-  <!-- <li class="nav-item"><a class="nav-link" id="opportunities"href="{% url 'opportunities:list' %}">Opportunities</a></li> -->
-  <!-- <li class="nav-item"><a class="nav-link" id="cases" href="{% url 'cases:list' %}">Cases</a></li> -->
-  <!-- <li class="nav-item"><a class="nav-link" id="documents" href="{% url 'common:doc_list' %}">Documents</a></li> -->
   {% endif %}
 </ul>
