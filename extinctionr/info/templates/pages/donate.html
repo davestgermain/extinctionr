@@ -5,21 +5,25 @@
 {% endblock %}
 
 {% block content %}
-<div class="row pt-5 border-bottom">
-  <div class="col-text text-center">
-    <p>Thank you for your donation!</p>
-    <p>We gratefully acknowledge the support of the non-profit organization, Regenerating Massachusetts, Inc.</p>
-    <p>Your contribution will help support outreach, education activities, art and music production.</p>  
+<div class="row">
+  <div class="banner position-relative w-100">
+    <img class="img-fluid w-100" src="{% static 'images/banner-artbuild.jpg' %}" alt="Extinction Rebellion Massachusetts" />
+    <div class="banner-title">Donate</div>
   </div>
 </div>
-<div class="row py-3 mt-4">
-  <div class="col text-center">
+
+<div class="row py-5">
+  <div class="col col-text">
+    <p class="text-bold">Thank you for your donation!</p>
+    <p>We gratefully acknowledge the support of the non-profit organization, Regenerating Massachusetts, Inc.</p>
+    <p>Your contribution will help support outreach, education activities, art and music production.</p>  
     <h2><a href="https://actionnetwork.org/fundraising/raise-awareness-on-the-climate-and-ecological-crisis-in-ma" class="btn btn-lg btn-primary text-uppercase">Donate Now</a></h2>
   </div>
 </div>
-<div class="row border-bottom">
-  <div class="col-text text-center">
-    To financially support specific XR actions, please donate directly to the XR members or team organizing the actions.
+
+<div class="row">
+  <div class="col col-text">
+    <p class="small">To financially support specific XR actions, please donate directly to the XR members or team organizing the actions.</p>
   </div>
 </div>
 {% endblock %}

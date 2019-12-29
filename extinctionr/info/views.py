@@ -121,4 +121,4 @@ class PRDetailView(DetailView):
 def list_chapters(request):
     chapters = serializers.serialize("json", Chapter.objects.all())
     context = {'chapters': chapters }
-    return render(request, 'pages/chapters/index.html', context)
+    return render(request, 'pages/groups/index.html', context)
