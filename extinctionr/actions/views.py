@@ -189,6 +189,7 @@ def list_actions(request):
         'nvda': 'xr-bg-light-blue',
         'regen': 'xr-warm-yellow xr-bg-dark-blue',
     }
+    flattened_actions = []
     for daynum, mdate in enumerate(cal_days, 1):
         todays_actions = month_actions[mdate]
         obj = {
@@ -198,6 +199,7 @@ def list_actions(request):
         }
         if mdate.month == current_date.month:
             for a in todays_actions:
+                flattened_actions.append(a)
                 a.bg = None
                 tagnames = a.tags.names()
                 for t in a.tags.names():
@@ -218,6 +220,8 @@ def list_actions(request):
     if this_week:
         this_month.append(this_week)
     ctx['month'] = this_month
+    # Also return a flat list of actions for the month
+    ctx['month_flat'] = flattened_actions
     ctx['can_add'] = can_add
     if ctx['can_add']:
         ctx['form'] = ActionForm()

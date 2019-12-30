@@ -1,0 +1,13 @@
+{% load info %}
+{% load tz %}
+
+[{% for action in actions %}
+  {"id": "{{action.pk}}", 
+  "month" : "{{action.when|localtime|date:'M'}}",
+  "day" : "{{action.when|localtime|date:'d'}}",
+  "url" : "{{action.get_absolute_url}}",
+  "title" : "{{action.html_title}}",
+  "time" : "{{action.when|localtime|time}}",
+  "description" : "{{action.description|markdownify|truncatewords_html:30}}",
+  "photo_url": "{{action.card_thumbnail_url}}"},{% endfor %}
+]
