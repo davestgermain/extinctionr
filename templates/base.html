@@ -135,7 +135,7 @@
     </ul>
     {% if request.user.is_anonymous %}
     <div class="pt-6 text-right">
-      <a class="xr-green" href="{% url 'login' %}">login</a>
+      <a class="xr-green pr-4" href="{% url 'login' %}">login</a>
     </div>
     {% endif %}
   </footer>
@@ -158,7 +158,6 @@
     return active;
   }
   $(document).ready(function(){
-    //let active = $('.nav-a[href="' + window.location.pathname + '"]');
     let active = findActiveMenu();
     active.addClass('active');
     active.parents('.nav-item').children('.nav-link').addClass('active');
