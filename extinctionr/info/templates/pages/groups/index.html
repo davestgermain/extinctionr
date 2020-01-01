@@ -67,7 +67,7 @@ mapOptions = {
   zoom: 7,
   zoomSnap: .25,
   zoomDelta: .5,
-  minZoom: 7,
+  minZoom: 6,
   maxBounds: L.latLngBounds(ne, sw)
 }
 
@@ -103,18 +103,20 @@ let xr_icon = L.icon({
 
 let chapters = JSON.parse("{{chapters|escapejs}}");
 
+// TODO: need contact info.
 chapters.forEach((model) => {
   let c = model.fields;
-  let popup = `<div>
-    <span class="font-weight-bold">${c.title}</span><br>
-    Website: <a href="https://${c.site}">${c.site}</a><br>
-    Join: <a href="https://${c.join}">${c.join}</a><br>
-    Facebook: <a href="https://facebook.com/${c.facebook}">${c.facebook}</a><br>
-    Twitter: <a href="https://twitter.com/@${c.twitter}">${c.twitter}</a>
+  let popup_content = `<div>
+    <span class="text-fucxed" style="font-size:1.2em;">${c.title}</span><br>
+    <ul class="list-unstyled" style="font-size:1.2em;font-family:'Crimson Text';">
+      <li><a href="https://${c.site}"><i class="fas fa-fw fa-globe pr-1">&nbsp;</i>${c.site}</a></li>
+      <li><a href="https://${c.join}"><i class="fas fa-fw fa-clipboard-check pr-1">&nbsp;</i>${c.join}</a></li>
+      <li><a href="https://facebook.com/${c.facebook}"><i class="fab fa-fw fa-facebook-f pr-1">&nbsp;</i>${c.facebook}</a></li>
+      <li><a href="https://twitter.com/@${c.twitter}"><i class="fab fa-fw fa-twitter pr-1">&nbsp;</i>${c.twitter}</a></li>
+    </ul>
   </div>`
-  L.marker([c.lat, c.lng], {icon: xr_icon}).addTo(map).bindPopup(
-    popup
-  );
+  L.marker([c.lat, c.lng], {icon: xr_icon})
+    .bindPopup(popup_content, {minWidth: 200}).addTo(map);
 });
 
 });
