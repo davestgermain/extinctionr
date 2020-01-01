@@ -23,7 +23,3 @@ def highlight_action(*args, **kwargs):
     except IndexError:
         action = None
     return {'action': action}
-
-@register.inclusion_tag('month_actions.json')
-def month_actions(actions):
-    return {'actions' : actions}

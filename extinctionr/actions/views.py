@@ -13,7 +13,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.core import signing
 from django.db import IntegrityError
-from django.http import JsonResponse, HttpResponse
+from django.http import JsonResponse, HttpResponse, HttpResponseBadRequest
 from django.shortcuts import render, get_object_or_404, redirect
 from django.utils.html import strip_tags
 from django.utils.http import http_date
@@ -62,49 +62,48 @@ class TalkProposalForm(forms.Form):
     email = forms.EmailField(label="Email", required=True, widget=forms.EmailInput(attrs={'class': 'form-control text-center', 'placeholder': 'Email Address'}))
     phone = PhoneNumberField(label="Phone Number", required=False, widget=forms.TextInput(attrs={'class': 'form-control text-center', 'placeholder': 'Phone Number'}))
 
-
-def _get_actions(request, whatever='', include_future=True, include_past=7):
+# Read all the params or raise exceptions.
+def _get_action_request_params(request):
     token = request.GET.get('token', '')
-    req_date = request.GET.get('month','')
-    tag_filter = request.GET.get('tag', '')
-    context = {}
-    today = localtime().date()
-    current_date = today.replace(day=1)
     if token:
         try:
             user_id = signing.Signer().unsign(token)
         except signing.BadSignature:
-            return HttpResponse(status=403)
+            raise PermissionDenied()
         else:
             user = get_user_model().objects.get(pk=user_id)
     else:
         user = request.user
-    actions = Action.objects.for_user(user)
-    if whatever.isdigit():
-        actions = actions.filter(pk=int(whatever))
+    req_date = request.GET.get('month','')
+    if req_date:
+        current_date = datetime.strptime(req_date, '%Y-%m')
     else:
-        if req_date:
-            current_date = datetime.strptime(req_date, '%Y-%m')
-            context['is_cal'] = True
-        start_date = current_date - timedelta(days=include_past)
-        if not include_future:
-            end_date = start_date + timedelta(days=38)
-        else:
-            end_date = start_date + timedelta(days=3650)
-        actions = actions.filter(when__date__range=(start_date, end_date))
-        if tag_filter:
-            actions = actions.filter(tags__name=tag_filter)
-            context['current_tag'] = tag_filter
-            context['is_cal'] = True
-    context['current_date'] = current_date
-    context['today'] = today
-    
-    return actions, context
+        current_date = localtime().date().replace(day=1)
 
+    tag_filter = request.GET.get('tag', '')
+    page = int(request.GET.get('page', '1'))
+    if page < 1:
+        raise ValueError
+    params = {}
+    params['date'] = current_date
+    params['tag'] = tag_filter
+    params['page'] = page
+    return user, params
+
+def _make_date_range(current_date, include_future=True, include_past=7):
+    start_date = current_date - timedelta(include_past)
+    if not include_future:
+        end_date = current_date + timedelta(38)
+    else:
+        end_date = current_date + timedelta(3650)
+    return start_date, end_date
 
 def calendar_view(request, whatever):
     from ics import Calendar, Event
-    actions, ctx = _get_actions(request, include_future=True, include_past=30)
+    user, _ = _get_action_request_params(request)
+    date_range = _make_date_range(include_future=True, include_past=30)
+
+    actions = Action.objects.for_user(user).filter(when__date__range=date_range)
     thecal = Calendar()
     thecal.creator = 'XR Mass Events'
     for action in actions:
@@ -123,18 +122,23 @@ def calendar_view(request, whatever):
     response = HttpResponse(thecal, content_type='text/calendar')
     return response
 
-# for pagination
-def _get_req_pagination(request):
-    start = request.GET.get('from', '0')
-    count = request.GET.get('count', '10')
-    try:
-        f = int(start)
-        c = int(count)
-        if f < 0 or c < 0:
-            raise ValueError
-        return (f, c)
-    except ValueError:
-        return (0, 10)
+def _add_action_tag_color(action):
+    event_colors = {
+        'talk': 'xr-bg-pink',
+        'action': 'xr-bg-green',
+        'ally': 'xr-bg-light-green',
+        'meeting': 'xr-bg-lemon',
+        'orientation': 'xr-bg-purple',
+        'art': 'xr-bg-warm-yellow',
+        'nvda': 'xr-bg-light-blue',
+        'regen': 'xr-warm-yellow xr-bg-dark-blue',
+    }
+
+    # Find first matching color from tags to color mapping.
+    colors = (event_colors.get(tag, None) for tag in action.tags.names())
+    action.bg_color = next((c for c in colors if c), None)
+
+    return action
 
 @cache_page(1200)
 @csrf_protect
@@ -147,90 +151,89 @@ def list_actions(request):
             return redirect(action.get_absolute_url())
         else:
             print(form.errors)
+            return HttpResponseBadRequest
 
-    qset, ctx = _get_actions(request, include_future=True)
-    today_utc = now().date()
+    # Attempt to read user and any url params:
+    try:
+        user, params = _get_action_request_params(request)
+    except ValueError:
+        return HttpResponseBadRequest()
 
-    actions = Action.objects.for_user(request.user).filter(when__gte=today_utc)
-    # handle pagination
-    start, count = _get_req_pagination(request)
-    ctx['upcoming'] = actions[start:start+count]
-    pagination = {}
-    cur_page = math.floor(start/10)
-    total_pages = math.ceil(len(actions)/10)
-    pagination['cur_page'] = cur_page
-    pagination['last_page'] = (cur_page == (total_pages - 1))
-    pagination['page_count'] = total_pages
-    # to iterate on page, start index and label
-    pagination['pages'] = [(x, x*10) for x in range(total_pages)]
-    ctx['pagination'] = pagination
+    # Get all the actions for current user.
+    actions = Action.objects.for_user(user)
 
-    current_date = ctx['current_date']
-    ctx['next_month'] = current_date + timedelta(days=31)
-    ctx['last_month'] = current_date + timedelta(days=-1)
+    # Filter by tag
+    tag_filter = params['tag']
+    if tag_filter:
+        actions = actions.filter(tags__name=tag_filter)
 
-    cal_days = list(calendar.Calendar(firstweekday=6).itermonthdates(current_date.year, current_date.month))
-    this_month = []
-    this_week = []
-    month_actions = defaultdict(list)
+    # Generate view for upcoming actions.
+    future_actions = actions.filter(when__gte=now().date())
 
-    for action in qset:
+    # Handle pagination range.
+    num_pages = math.ceil(future_actions.count() / 10)
+
+    # For pretty urls, page is 1 based.
+    start_range = (params['page'] - 1) * 10
+    future_actions = future_actions[start_range:start_range+10]
+
+    # Generate view for requested month's actions.
+    current_date = params['date']
+    date_range = _make_date_range(current_date, include_future=False)
+    current_actions = actions.filter(when__date__range=date_range)
+
+    # Generate a mapping from day to list of actions for that day.
+    actions_by_day = defaultdict(list)
+    for action in current_actions:
         # Convert day to local day so actions land in the right day for current view.
         day = action.when.astimezone(tz.tzlocal()).date()
-        month_actions[day].append(action)
+        actions_by_day[day].append(action)
 
-    event_colors = {
-        'talk': 'xr-bg-pink',
-        'action': 'xr-bg-green',
-        'ally': 'xr-bg-light-green',
-        'meeting': 'xr-bg-lemon',
-        'orientation': 'xr-bg-purple',
-        'art': 'xr-bg-warm-yellow',
-        'nvda': 'xr-bg-light-blue',
-        'regen': 'xr-warm-yellow xr-bg-dark-blue',
-    }
-    flattened_actions = []
+    # Build a multi-level mapping of the current month in the form of:
+    #   month[week[day]] where each day has a list of events.
+    cal_days = list(calendar.Calendar(firstweekday=6).itermonthdates(current_date.year, current_date.month))
+    month_actions = []
+    week_actions = []
+    today_tz = localtime().date()
+
     for daynum, mdate in enumerate(cal_days, 1):
-        todays_actions = month_actions[mdate]
-        obj = {
+        
+        day_actions = list(map(_add_action_tag_color, actions_by_day[mdate]))
+
+        day_data = {
             'day': mdate,
-            'events': todays_actions,
-            'bg': '',
+            'is_today': mdate == today_tz,
+            'actions': day_actions,
+            'is_cur_month': mdate.month == current_date.month
         }
-        if mdate.month == current_date.month:
-            for a in todays_actions:
-                flattened_actions.append(a)
-                a.bg = None
-                tagnames = a.tags.names()
-                for t in a.tags.names():
-                    color = event_colors.get(t, None)
-                    if color:
-                        obj['bg'] = color
-                        a.bg = color
-                        break
-        else:
-            # previous month
-            obj['bg'] = 'bg-light'
-        if mdate == ctx['today']:
-            obj['today'] = True
-        this_week.append(obj)
+        week_actions.append(day_data)
         if daynum % 7 == 0:
-            this_month.append(this_week)
-            this_week = []
-    if this_week:
-        this_month.append(this_week)
-    ctx['month'] = this_month
-    # Also return a flat list of actions for the month
-    ctx['month_flat'] = flattened_actions
-    ctx['can_add'] = can_add
-    if ctx['can_add']:
+            month_actions.append(week_actions)
+            week_actions = []
+    if week_actions:
+        month_actions.append(week_actions)
+
+    ctx = {
+        'future_actions' : future_actions,
+        'month_actions': month_actions,
+        'current_tag': tag_filter,
+        'current_date': current_date,
+        'next_month': current_date + timedelta(days=31),
+        'last_month': current_date + timedelta(days=-1),
+        'can_add': can_add,
+        'cur_page': params['page'],
+        'pages': range(1, num_pages+1),
+    }
+
+    if can_add:
         ctx['form'] = ActionForm()
+    
     calendar_link = 'webcal://{}/action/ical/XR%20Mass%20Events'.format(request.get_host())
     link_pars = {}
     if request.user.is_authenticated:
         link_pars['token'] = signing.Signer().sign(request.user.id)
-    if ctx.get('current_tag'):
-        link_pars['tag'] = ctx.get('current_tag')
+    if tag_filter:
+        link_pars['tag'] = tag_filter
     ctx['calendar_link'] = calendar_link + '?' + urlencode(link_pars)
     resp = render(request, 'list_actions.html', ctx)
     resp['Vary'] = 'Cookie'
