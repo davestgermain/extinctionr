@@ -37,19 +37,24 @@
 {% endblock %}
 {% block content %}
 {% load tz %}
-
+{% comment %}
+not working yet because we need actual address data for events.
+<script type="application/ld+json">
+{% include 'action.ld.json' %}
+</script>
+{% endcomment %}
 <div class="row pt-5 px-5">
-	<div class="col-2 offset-lg-1 px-4">
-		<div class="xr-bg-lemon mb-2 px-2 py-4 text-center text-fucxed">
+	<div class="col-5 col-md-2 offset-lg-2 pl-0 pr-lg-4">
+		<div class="xr-bg-lemon mb-2 px-2 pt-2 text-center text-fucxed">
 			<p class="date-month">{{action.when|localtime|date:"M"}}<br>
 			<span class="date-day">{{action.when|localtime|date:"d"}}</span></p>
 		</div>
 	</div>
-	 <div class="col-8">
-		<h1 class="display-4">{{action.html_title}}</h1>
+	 <div class="col-12 col-md-8 pl-0">
+		<h1 class="display-5">{{action.html_title}}</h1>
 		{% if not action.public %}<h4 class="text-center text-warning">not public</h4>{% endif %}
 		<div class="row">
-			<div class="col-2">
+			<div class="col-12 col-lg-2">
 		<i class="far fa-clock pr-1" title="Event time"></i><span class="small">{{action.when|localtime|time}}</span>
 			</div>
 		{% if action.location %}
@@ -61,8 +66,8 @@
 	</div>
 </div>
 <hr>
-<div class="row pt-5 px-5">
-	<div class="col-8 pl-0 offset-lg-2">
+<div class="row pt-lg-5 px-5">
+	<div class="col col-lg-8 pl-0 offset-lg-2">
 		{{action.description|markdownify}}
 		{% if action.accessibility %}
 		<div class="accessibility-info text-left">

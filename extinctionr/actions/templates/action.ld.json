@@ -1,0 +1,25 @@
+{% load info %}
+{% load tz %}
+{
+  "@context": "https://schema.org",
+  "@type": "Event",
+  "name": "{{action.text_title}}",
+  "startDate": "{{action.when.isoformat}}",
+  "endDate": "{{action.when.isoformat}}", // todo: add an hour?
+  "location": {
+    "@type": "Place",
+    "name": "{{action.location}}"
+    //"address": {
+    //  "@type": "PostalAddress",
+    //  "streetAddress": "2635 Homestead Rd",
+    //  "addressLocality": "Santa Clara",
+    //  "postalCode": "95051",
+    //  "addressRegion": "CA",
+    //  "addressCountry": "US"
+    //}
+  },
+  "image": [
+    "{{action.card_thumbnail_url}}"
+   ],
+  "description": "{{action.description|markdownify}}"
+}
