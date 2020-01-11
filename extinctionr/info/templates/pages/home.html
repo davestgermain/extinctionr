@@ -60,7 +60,7 @@
 </div>
 
 <div class="row" style="padding-top:5em;padding-bottom:5em;">
-  <div class="text-center w-100">
+  <div class="col text-center w-100">
     <h1 class="display-4 pb-3">Rebel For <span class="xr-green">Life</span></h1>
     We are facing an unprecedented global ecological crisis.
   The government is not working to protect us.<br>
@@ -69,9 +69,23 @@
   </div>
 </div>
 
-<div class="row mt-2" style="padding-top:5em;background-color: lightgray;">
+<div class="row mt-2" style="padding-top:5em;background-color: white;">
     <div class="text-center w-100">
 {% recent_actions %}
     </div>
 </div>
+
+<div class="row py-5" class="xr-bg-gray">
+  <div class="col px-5 text-center">
+  <h1>Find your local group</h1>
+  This site is primarily focused on the greater Boston area and XR is active across the entire state.<br>
+  Find and connect with your local group by searching on an <a href="{% url 'extinctionr.info:page' page='groups/' %}">interactive map:</a>
+  <div>
+  <a href="{% url 'extinctionr.info:page' page='groups/' %}"><img src="{% static 'images/map_thumbnail.jpg' %}" width=300 alt="map thumbnail"></a>
+  </div>
+  Extinction Rebellion is part of a global mass mobilization.<br>We are now active in 56 countries and 
+  645 local groups.<br>Search for XR groups and events <a href="https://rebellion.global/">around the world!</a>
+  </div>
+</div>
+
 {% endblock %}
