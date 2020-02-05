@@ -117,11 +117,11 @@ table a:hover {
 {% load info %}
 {% load tz %}
 
-<div class="row py-5">
-    <h1 class="col-text text-center">Events</h1>
+<div class="row justify-content-center px" style="padding-top: 100px;">
+    <h1 class="col-text text-center m-0 display-1">Events</h1>
 </div>
 
-<div class="row p-lg-4 m-0">
+<div class="row py-5 m-0">
     <div class="col text-center">
         <div class="btn-group " role="group" aria-label="view data-toggle">
             <button id="list-view-btn" type="button" class="btn btn-outline-primary text-fucxed">List</button>
@@ -133,7 +133,7 @@ table a:hover {
 <section id="list-view" class="py-5" style="display:none">
     {% if future_actions %}
     {% for action in future_actions %}
-    <div class="row px-4 py-4">
+    <div class="row px">
         <div class="col-3 col-lg-2">
             <p class="text-center text-fucxed p-1 xr-bg-lemon">
                 <span class="date-month">{{action.when|localtime|date:"M"}}</span><br>
@@ -201,12 +201,12 @@ table a:hover {
     {% endif %}
 </section>
 
-<div id="calendar-view" class="row pt-5" style="display:none">
-    <div class="col">
+<div id="calendar-view" class="row pb-sm-4 pb-md-5 px" style="display:none">
+    <div class="col p-0">
         <h3 class="text-center">
-        <a href="?month={{last_month|date:"Y-m"}}{% if current_tag %}&tag={{current_tag}}{% endif %}#calendar"><i class="fas fa-arrow-left xr-purple"></i></a>
+        <a href="?month={{last_month|date:"Y-m"}}{% if current_tag %}&tag={{current_tag}}{% endif %}#calendar"><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" id="Capa_1" x="0px" y="0px" viewBox="0 0 297.5 297.5" style="enable-background:new 0 0 297.5 297.5;" xml:space="preserve" width="512px" height="512px" class="arrow-btn"><g transform="matrix(-1 0 0 1 297.5 0)"><polygon points="297.5,148.25 148,33.25 148,100.25 0,100.25 0,199.25 148,199.25 148,264.25 " data-original="#000000" class="active-path" data-old_color="#000000" fill="#986297"/></g> </svg></a>
         <span class="mx-4">{{current_date|date:"F Y"}}</span>
-        <a href="?month={{next_month|date:"Y-m"}}{% if current_tag %}&tag={{current_tag}}{% endif %}#calendar"><i class="fas fa-arrow-right xr-purple"></i></a>
+        <a href="?month={{next_month|date:"Y-m"}}{% if current_tag %}&tag={{current_tag}}{% endif %}#calendar"><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" id="Capa_1" x="0px" y="0px" viewBox="0 0 297.5 297.5" style="enable-background:new 0 0 297.5 297.5;" xml:space="preserve" width="512px" height="512px" class="arrow-btn"><g><polygon points="297.5,148.25 148,33.25 148,100.25 0,100.25 0,199.25 148,199.25 148,264.25 " data-original="#000000" class="active-path" data-old_color="#000000" fill="#986297"/></g> </svg></a>
         </h3>
         <h4 class="text-center"><a href="{{calendar_link}}" title="Export calendar as iCal format"><i class="far fa-calendar-alt"></i></a>{% if user.is_authenticated %} <small class="text-danger">this link is secret</small>{% endif %}</h4>
         {% if current_tag %}<h3 class="text-center">{{current_tag}} events</h3>{% endif %}
@@ -345,25 +345,25 @@ document.getElementById("id_name").onkeyup = function() {
         // This is pretty gross. And unmaintainable. This is an almost exact copy
         // if the template for list view, but "rendered" on the client.
         return `
-        <div class="row px-4 py-4">
-        <div class="col-3 col-lg-2">
-            <p class="text-center text-fucxed p-1 xr-bg-lemon">
+        <div class="row px">
+        <div class="col-3 col-lg-2 py-sm-1 xr-bg-lemon">
+            <p class="text-center text-fucxed">
                 <span class="date-month">${action.month}</span><br>
                 <span class="date-day">${action.day}</span></p>
         </div>
-        <div class="col-12 col-lg-6">
+        <div class="col-12 col-lg-6 pt-sm-3 px-sm-0">
             <h3><a href="${action.url}" class="a-dark">${action.title}</a></h3>
             <div class="row">
                 <div class="col-12 col-lg-3">
-            <i class="far fa-clock pr-1" title="Event time"></i><span class="small">${action.time}</span>
+            <img class="event-icon" src="../../../static/images/time.png"><span class="small">${action.time}</span>
                 </div>
-            <div class="col action-loc"> <i class="fas fa-map-marker-alt pr-1" title="Map Marker"></i>
+            <div class="col action-loc"> <img class="event-icon" src="../../../static/images/location.png">
                 <span class="small">${action.location}</span>
             </div>
             </div>
-            <div class="text-left small">${action.description}</div>
+            <div class="text-left small py-sm-2">${action.description}</div>
         </div>
-        <div class="col-lg-4">
+        <div class="col pb-sm-4">
             <div style="--aspect-ratio:16/9;">
                 <img src="${action.thumbnail_url}" class="w-100 action-img" alt="Event Image">
             </div>
