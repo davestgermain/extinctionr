@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% load actions %}
 {% block title %}:: Upcoming Actions{% endblock %}
 {% block og_title %}Upcoming Actions{% endblock %}
 {% block og_tags %}
@@ -6,7 +7,12 @@
 {% endblock %}
   {% block inline_css %}
 {{block.super}}
+.a-dark {
+    color: #000;
+    text-decoration: underline;
+}
 table a {
+    font-family: FucXed, sans-serif;
     color: #000;
     text-decoration: underline;
 }
@@ -16,80 +22,238 @@ table td {
 table a:hover {
     color: rgb(200, 0, 130);
 }
+.btn-outline-primary {
+    color: rgb(152, 98, 151) !important;
+    background-color: white !important;
+    border-color: rgb(152, 98, 151) !important;
+    border-width: 2px;
+}
+.active-day {
+    outline: 4px solid rgb(56, 96, 170) !important;
+    outline-offset: -4px;
+}
+#list-view-btn,#calendar-view-btn {
+    min-width: 8em;
+}
+.page-item.active .page-link {
+    color: #fff !important;
+    background-color: rgb(152, 98, 151) !important;
+    border-color: rgb(152, 98, 151) !important;
+}
+.page-link {
+    font-family: FucXed, sans-serif;
+    color: rgb(152, 98, 151) !important;
+    background-color: #fff;
+}
+.page-link:hover {
+    color: #rgb(102, 48, 101) !important;
+    background-color: #e9ecef;
+    border-color: rgb(102, 48, 101) !important;
+}
+.table .thead-xr-pink th {
+    color: #fff;
+    background-color: rgb(207, 98, 151);
+    border-color: rgb(151,151,151);
+}
+#mainbody {
+    background-color: #fff !important;
+}
+.action-loc p {
+    display: inline-block;
+    text-decoration: underline !important;
+}
+.action-loc a {
+    color: black;
+}
+.date-month {
+    font-size: 1em;
+}
+.date-day {
+    font-size: 1.5em;
+}
+
+.highlight-day {
+    background-color: rgb(247, 238, 106);
+}
+
+@media (min-width: 576px) {
+    .date-month {
+        font-size: 1.5em;
+    }
+    .date-day {
+        font-size: 2em;
+    }
+    .highlight-day {
+        background-color: white;
+    }
+}
+
+[style*="--aspect-ratio"] > :first-child {
+    width: 100%;
+}
+[style*="--aspect-ratio"] > img {  
+    height: auto;
+} 
+@supports (--custom:property) {
+    [style*="--aspect-ratio"] {
+        position: relative;
+        overflow: hidden;
+    }
+    [style*="--aspect-ratio"]::before {
+        content: "";
+        display: block;
+        padding-bottom: calc(100% / (var(--aspect-ratio)));
+    }  
+    [style*="--aspect-ratio"] > :first-child {
+        position: absolute;
+        top: 0;
+        left: 0;
+    }  
+}
+
 {% endblock %}
 
 {% block content %}
 {% load info %}
 {% load tz %}
-{% if not is_cal %}
-<div class="row pt-5">
-    <h1 class="col-text text-center">Upcoming Actions</h1>
+
+<div class="row justify-content-center px" style="padding-top: 100px;">
+    <h1 class="col-text text-center m-0 display-1">Events</h1>
 </div>
-    <hr>
-<section class="row">
-    {% if upcoming %}
-    {% for action in upcoming %}
-    <div class="col text-center m-2 {% if not forloop.counter|divisibleby:3 %}border-right{% endif %}">
-        <h2><a href="{{action.get_absolute_url}}">{{action.html_title}}</a></h2>
-        <h3>{{action.when}}</h3>
-        {% if not action.public %}<h4 class="text-danger">not public</h4>{% endif %}
-        {% if action.location %}
-        <p class="text-info small">{{action.location_link}}</p>
-        {% endif %}
-        <div class="text-left small">{{action.description|markdownify|truncatewords_html:30}}</div>
+
+<div class="row py-5 m-0">
+    <div class="col text-center">
+        <div class="btn-group " role="group" aria-label="view data-toggle">
+            <button id="list-view-btn" type="button" class="btn btn-outline-primary text-fucxed">List</button>
+            <button id="calendar-view-btn" type="button" class="btn btn-primary text-fucxed">Calendar</button>
+        </div>
     </div>
-{% if forloop.counter|divisibleby:3 %}</section><section class="row pt-3">{% endif %}
-    {% endfor %}
+</div>
+
+<section id="list-view" class="py-5" style="display:none">
+    {% if future_actions %}
+    {% for action in future_actions %}
+    <div class="row px">
+        <div class="col-3 col-lg-2">
+            <p class="text-center text-fucxed p-1 xr-bg-lemon">
+                <span class="date-month">{{action.when|localtime|date:"M"}}</span><br>
+                <span class="date-day">{{action.when|localtime|date:"d"}}</span></p>
+        </div>
+        <div class="col-12 col-lg-6">
+            <h3><a href="{{action.get_absolute_url}}" class="a-dark">{{action.html_title}}</a></h3>
+            <div class="row">
+                <div class="col-12 col-lg-3">
+            <i class="far fa-clock pr-1" title="Event time"></i><span class="small">{{action.when|localtime|time}}</span>
+                </div>
+            {% if action.location %}
+            <div class="col action-loc"> <i class="fas fa-map-marker-alt pr-1" title="Map Marker"></i>
+                <span class="small" >{{action.location_link}}</span>
+            </div>
+            {% endif %}
+            </div>
+            <div class="text-left small">{{action.description|markdownify|truncatewords_html:30}}</div>
+        </div>
+        <div class="col-lg-4">
+            <div style="--aspect-ratio:16/9;">
+                <img src="{{action.card_thumbnail_url}}" class="w-100 action-img" alt="Event Image">
+            </div>
+        </div>
+    </div>
+    <hr>
+    {%endfor%}
     {% else %}
     <div class="col m-2 text-center">
         <p>There are no upcoming events.</p>
         <p>Why not <a href="/talk">propose a location for a talk</a> in your area?</p>
     </div>
     {% endif %}
+
+    {% if pages %}
+    <div class="row">
+        <div class="col">
+    <nav aria-label="page navigation">
+        <ul id="paginator" class="pagination pagination-lg justify-content-center">
+        {% for page in pages %}
+          {%if forloop.first %}
+          <li class="page-item {% if cur_page == page %}disabled{% endif %}">
+            <a class="page-link" href="./?page={{cur_page|add:'-1'}}" aria-label="Previous">
+              <i class="fas fa-chevron-left"></i>
+              <span class="sr-only">Previous</span>
+            </a>
+          </li>
+          {% endif %}
+          <li class="page-item {% if page == cur_page %}active{% endif %}">
+              <a class="page-link" href="./?page={{page}}">{{page}}</a>
+          </li>
+          {% if forloop.last %}
+          <li class="page-item {% if cur_page == page %}disabled{% endif %}">
+            <a class="page-link" href="./?page={{cur_page|add:'1'}}" aria-label="Next">
+              <i class="fas fa-chevron-right"></i>
+              <span class="sr-only">Next</span>
+            </a>
+          </li>
+          {% endif %}
+          {% endfor %}
+        </ul>
+    </nav>
+</div>
+</div>
+    {% endif %}
 </section>
-{% endif %}
-<a name="calendar"></a>
-<div class="row {% if is_cal %}pt-5{% else %}mt-3{% endif %}">
-    <div class="col">
-        {% if not is_cal %}<hr>{% endif %}
-        <h3 class="text-center">{{current_date|date:"F Y"}}</h3>
+
+<div id="calendar-view" class="row pb-sm-4 pb-md-5 px" style="display:none">
+    <div class="col p-0">
+        <h3 class="text-center">
+        <a href="?month={{last_month|date:"Y-m"}}{% if current_tag %}&tag={{current_tag}}{% endif %}#calendar"><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" id="Capa_1" x="0px" y="0px" viewBox="0 0 297.5 297.5" style="enable-background:new 0 0 297.5 297.5;" xml:space="preserve" width="512px" height="512px" class="arrow-btn"><g transform="matrix(-1 0 0 1 297.5 0)"><polygon points="297.5,148.25 148,33.25 148,100.25 0,100.25 0,199.25 148,199.25 148,264.25 " data-original="#000000" class="active-path" data-old_color="#000000" fill="#986297"/></g> </svg></a>
+        <span class="mx-4">{{current_date|date:"F Y"}}</span>
+        <a href="?month={{next_month|date:"Y-m"}}{% if current_tag %}&tag={{current_tag}}{% endif %}#calendar"><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" id="Capa_1" x="0px" y="0px" viewBox="0 0 297.5 297.5" style="enable-background:new 0 0 297.5 297.5;" xml:space="preserve" width="512px" height="512px" class="arrow-btn"><g><polygon points="297.5,148.25 148,33.25 148,100.25 0,100.25 0,199.25 148,199.25 148,264.25 " data-original="#000000" class="active-path" data-old_color="#000000" fill="#986297"/></g> </svg></a>
+        </h3>
         <h4 class="text-center"><a href="{{calendar_link}}" title="Export calendar as iCal format"><i class="far fa-calendar-alt"></i></a>{% if user.is_authenticated %} <small class="text-danger">this link is secret</small>{% endif %}</h4>
         {% if current_tag %}<h3 class="text-center">{{current_tag}} events</h3>{% endif %}
-        <table class="table border table-responsive-sm">
-            <thead class="thead-dark small text-center text-fucxed">
+        <table class="table border">
+            <thead class="thead-xr-pink small text-center text-fucxed">
                 <tr>
-                    <th style="width: 14%" scope="col">Sun</th>
-                    <th style="width: 14%" scope="col">Mon</th>
-                    <th style="width: 14%" scope="col">Tue</th>
-                    <th style="width: 14%" scope="col">Wed</th>
-                    <th style="width: 14%" scope="col">Thu</th>
-                    <th style="width: 14%" scope="col">Fri</th>
-                    <th style="width: 14%" scope="col">Sat</th>
+                    <th style="width: 14%" scope="col" data-abbr="S">Sun</th>
+                    <th style="width: 14%" scope="col" data-abbr="M">Mon</th>
+                    <th style="width: 14%" scope="col" data-abbr="T">Tue</th>
+                    <th style="width: 14%" scope="col" data-abbr="W">Wed</th>
+                    <th style="width: 14%" scope="col" data-abbr="T">Thu</th>
+                    <th style="width: 14%" scope="col" data-abbr="F">Fri</th>
+                    <th style="width: 14%" scope="col" data-abbr="S">Sat</th>
                 </tr>
             </thead>
             <tbody class="small">
-                {% for week in month %}
-                <tr style="height:6em">
+                {% for week in month_actions %}
+                <tr style="height:6em;width:100%">
                     {% for day in week %}
-                    <td{% if forloop.first %} scope="row"{% endif %} class="{% if day.bg %} {{day.bg}}{% endif %}{% if day.today %} border border-dark{% endif %}">
+                    <td{% if forloop.first %} scope="row"{% endif %} class="{% if day.is_today %} active-day{% endif %} {% if day.actions %} highlight-day {% endif %}" data-day-id="{{day.day.isoformat}}">
+                        {% if day.is_cur_month %}
                         <h5>{% if can_add %}<a href="" data-toggle="modal" data-target="#event-modal" data-when="{{day.day.isoformat}}">{{day.day.day}}</a>{% else %}{{day.day.day}}{% endif %}</h5>
-                        {% for event in day.events %}
-                        {% if not event.public %}<i class="fas fa-lock" title="Not public"></i> {% endif %}
-                        {% if 'pending' in event.tags.names %}<i class="fas fa-question" title="Pending Event"></i>{% endif %}
-                        {{event.when|localtime|date:"P"}} &mdash; <a href="{{event.get_absolute_url}}">{{event.html_title}}</a><br>
-                        {% endfor %}
+                        {% endif %}
+                        <div class="d-none d-lg-block">
+                        {% for action in day.actions %}
+                        {% if not action.public %}
+                            <i class="fas fa-lock" title="Not public"></i> 
+                        {% endif %}
+                        {% if 'pending' in action.tags.names %}
+                            <i class="fas fa-question" title="Pending Event"></i>
+                        {% endif %}
+                        <div class="{% if action.bg_color %}{{action.bg_color}}{% endif %}" style="margin:2px;padding:2px;">
+                        <a href="{{action.get_absolute_url}}">{{action.html_title}}</a><br>
+                        <p><i class="far fa-clock" title="Event Time"></i>&nbsp;{{action.when|localtime|date:"P"}}</p>
+                        </div>
+                        {% endfor %}                 
+                        </div>
                     </td>
                     {% endfor %}
                 </tr>
                 {% endfor %}
             </tbody>
         </table>
-        <h4 class="row">
-            <span class="col text-left ml-3"><a href="?month={{last_month|date:"Y-m"}}{% if current_tag %}&tag={{current_tag}}{% endif %}">&larr; {{last_month|date:"F Y"}}</a></span>
-            <span class="col text-right mr-3"><a href="?month={{next_month|date:"Y-m"}}{% if current_tag %}&tag={{current_tag}}{% endif %}">{{next_month|date:"F Y"}} &rarr;</a></span>
-        </h4>
-<!-- <iframe src="https://calendar.google.com/calendar/embed?src=mits7cdibmdcdoac6a83996d94%40group.calendar.google.com&amp;ctz=America%2FNew_York" style="width: 70vw;height: 70vh; position: relative; border:0" scrolling="no" frameborder="0"></iframe>
- -->    </div>
+   </div>
+</div>
+<div id="selected-calendar-items">
+    <!-- where selected day's events go -->
 </div>
 {% if can_add %}
 <div class="modal" tabindex="-1" role="dialog" id="event-modal">
@@ -118,19 +282,121 @@ table a:hover {
 {% endblock %}
 {% block extra_js %}
 {% load static %}
+
 <script type="text/javascript" src="{% static 'admin/js/vendor/xregexp/xregexp.min.js' %}"></script>
 <script type="text/javascript" src="{% static 'admin/js/urlify.js' %}"></script>
 <script type="text/javascript">
+
 document.getElementById("id_name").onkeyup = function() {
     var e = document.getElementById("id_slug");
     if (!e._changed) { e.value = URLify(document.getElementById("id_name").value, 50, true); }
 }
+    let month_actions = [
+    {% for week in month_actions %}{% for day in week %}{% for action in day.actions %}
+    { "day_id" : "{{day.day.isoformat}}",
+    "month" : "{{action.when|localtime|date:'M'}}",
+    "day" : "{{action.when|localtime|date:'d'}}",
+    "url" : "{{action.get_absolute_url}}",
+    "title" : "{{action.html_title}}",
+    "time" : "{{action.when|localtime|time}}",
+    "description" : "{{action.description|markdownify|truncatewords_html:30}}",
+    "thumbnail_url": "{{action.card_thumbnail_url}}"},
+    {% endfor %}{% endfor %}{% endfor %}
+    ];
+
     $('#event-modal').on('show.bs.modal', function (event) {
         $('#event-modal input,textarea').addClass('form-control');
         var button = $(event.relatedTarget); // Button that triggered the modal
         var when = button.data('when'); // Extract info from data-* attributes
-        console.log(when);
         $('#id_when').val(when);
+    });
+
+    window.addEventListener('hashchange', function() {
+        show_calendar(location.hash === '#calendar');
+    }, false);
+
+    function show_calendar(show) {
+        let elems = [
+            {'btn': '#list-view-btn', 'view': '#list-view'},
+            {'btn': '#calendar-view-btn', 'view': '#calendar-view'}
+        ];
+        let shown = Number(show);
+        let hidden = Number(!show);
+        $(elems[shown].view).show();
+        $(elems[shown].btn)
+            .addClass('btn-outline-primary')
+            .removeClass('btn-primary');
+        $(elems[hidden].view).hide();
+        $(elems[hidden].btn)
+            .removeClass('btn-outline-primary')
+            .addClass('btn-primary');
+        
+        // clear date selection on view change:
+        $('#selected-calendar-items').empty();
+    }
+    // Toggle views:
+    $('#list-view-btn').on('click', function(event) {
+        location.hash = '';
+    });
+    $('#calendar-view-btn').on('click', function(event) {
+        location.hash = 'calendar';
+    });
+    function renderActionHtml(action) {
+        // This is pretty gross. And unmaintainable. This is an almost exact copy
+        // if the template for list view, but "rendered" on the client.
+        return `
+        <div class="row px">
+        <div class="col-3 col-lg-2 py-sm-1 xr-bg-lemon">
+            <p class="text-center text-fucxed">
+                <span class="date-month">${action.month}</span><br>
+                <span class="date-day">${action.day}</span></p>
+        </div>
+        <div class="col-12 col-lg-6 pt-sm-3 px-sm-0">
+            <h3><a href="${action.url}" class="a-dark">${action.title}</a></h3>
+            <div class="row">
+                <div class="col-12 col-lg-3">
+            <img class="event-icon" src="../../../static/images/time.png"><span class="small">${action.time}</span>
+                </div>
+            <div class="col action-loc"> <img class="event-icon" src="../../../static/images/location.png">
+                <span class="small">${action.location}</span>
+            </div>
+            </div>
+            <div class="text-left small py-sm-2">${action.description}</div>
+        </div>
+        <div class="col pb-sm-4">
+            <div style="--aspect-ratio:16/9;">
+                <img src="${action.thumbnail_url}" class="w-100 action-img" alt="Event Image">
+            </div>
+        </div>
+        </div>`;
+    }
+    function select_day(day_el) {
+        let day_id = day_el.data('day-id');
+        let actions = month_actions.filter(action => action.day_id == day_id);
+        let selection = $('#selected-calendar-items');
+        selection.empty();
+        for (action of actions) {
+            let html = renderActionHtml(action);
+            selection.append(html);
+        }
+        $('.active-day').removeClass('active-day');
+        $(`[data-day-id=${day_id}]`).addClass('active-day');
+    }
+    $(function() {
+        let vw = $(window).width();
+        if (vw <= 576) {
+            // tweaks for mobile.
+            $('th').each(function() {
+                $(this).text($(this).data('abbr'));
+            });
+
+            $('#calendar-view td').on('click', function() {
+                select_day($(this));
+            });
+        }
+        let is_calendar_view = window.location.hash === "#calendar";
+        show_calendar(is_calendar_view);
+        select_day($('.active-day'));
     });
 </script>
 {% endblock %}

@@ -100,7 +100,17 @@ class Action(models.Model):
         else:
             link = '<a href="https://maps.google.com/?q={}">{}</a>'.format(quote(self.location), linebreaks(self.location))
         return mark_safe(link)
+    
+    @property
+    def card_thumbnail_url(self):
+        if self.photos:
+            photo = self.photos.first()
+            if photo:
+                return photo.photo.url
+        # TODO: load placeholder image url
+        return None
 
+        
 
 class ActionRole(models.Model):
     name = models.CharField(max_length=100, db_index=True, unique=True)

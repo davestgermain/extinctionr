@@ -8,25 +8,28 @@
 {% load staticfiles compress %}
     <title>Extinction Rebellion Massachusetts {% block title %}{% endblock %}</title>
     <link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet">
+    <link href="{% static 'css/xr-mass.css' %}" rel="stylesheet">
     <link rel="icon" href="{% static 'images/cropped-favicon-192x192-150x150.png' %}" sizes="32x32" />
     <link rel="icon" href="{% static 'images/cropped-favicon-192x192.png' %}" sizes="192x192" />
     <link rel="apple-touch-icon-precomposed" href="{% static 'images/cropped-favicon-192x192.png' %}" />
+    <link rel="preload" as="font" href="{% static 'css/fucxedcaps-v2-webfont.woff2' %}" type="font/woff2" crossorigin="anonymous">
+
     {% block extrahead %}{% endblock %}
 
 <style type="text/css">
   {% block inline_css %}
-  /* latin */
-  @font-face {
+/* latin */
+@font-face {
     font-family: 'Crimson Text';
     font-style: normal;
-    font-weight: 400;
+    font-weight: normal;
     font-display: fallback;
     src: local('Crimson Text Regular'), local('CrimsonText-Regular'), url({% static 'css/crimsontext-regular.woff2' %}) format('woff2');
     unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
   }
   /* latin */
   @font-face {
-    font-family: 'Crimson Text';
+    font-family: 'Crimson Text Bold';
     font-style: normal;
     font-weight: 700;
     font-display: fallback;
@@ -40,161 +43,6 @@
     font-display: swap;
     src: url("{% static 'css/fucxedcaps-v2-webfont.woff2' %}") format("woff2"), url("{% static 'css/fucxedcaps-v2-webfont.woff' %}") format("woff");
   }
-
-  body {
-    background-color: #1a1a1a;
-    font-family: "Crimson Text", Georgia, serif;
-  }
-  h1,h2,h3,h4,h5,h6,.btn-fucxed,.text-fucxed,.btn-primary {
-    font-family: FucXed, sans-serif;
-  }
-  .masthead {
-    
-  }
-  .col-text {
-      margin-left: 5%;
-      -ms-flex: 0 0 90%;
-      flex: 0 0 90%;
-      max-width: 90%;
-  }
-
-  .xr-green {
-    color: rgb(20, 170, 55);
-  }
-  .xr-bg-green {
-    background-color: rgb(20, 170, 55) !important;
-  }
-
-  .xr-lemon {
-    color: rgb(247, 238, 106);
-  }
-  .xr-bg-lemon {
-    background-color: rgb(247, 238, 106) !important;
-  }
-
-  .xr-light-blue {
-    color: rgb(117, 208, 241);
-  }
-  .xr-bg-light-blue {
-    background-color: rgb(117, 208, 241) !important;
-  }
-
-  .xr-pink {
-    color: rgb(237, 155,196);
-  }
-  .xr-bg-pink {
-    background-color: rgb(237, 155,196) !important;
-  }
-
-  .xr-purple {
-    color: rgb(152, 98, 151);
-  }
-  .xr-bg-purple {
-    background-color: rgb(152, 98, 151) !important;
-  }
-
-  .xr-light-green {
-    color: rgb(190, 210, 118);
-  }
-  .xr-bg-light-green {
-    background-color: rgb(190, 210, 118) !important;
-  }
-
-  .xr-warm-yellow {
-    color: rgb(255, 193, 30);
-  }
-  .xr-bg-warm-yellow {
-    background-color: rgb(255, 193, 30) !important;
-  }
-
-  .xr-bright-pink {
-    color: rgb(207, 98, 151);
-  }
-  .xr-bg-bright-pink {
-    background-color: rgb(207, 98, 151) !important;
-  }
-
-  .xr-red {
-    color: rgb(220, 79, 0);
-  }
-  .xr-bg-red {
-    background-color: rgb(220, 79, 0) !important;
-  }
-
-  .xr-dark-blue {
-    color: rgb(56, 96, 170);
-  }
-  .xr-bg-dark-blue {
-    background-color: rgb(56, 96, 170) !important;
-  }
-
-  .xr-angry {
-    color: rgb(200, 0, 130);
-  }
-  .xr-bg-angry {
-    background-color: rgb(200, 0, 130) !important;
-  }
-
-  #header-image {
-    max-width: 100%
-  }
-  #mainbody {
-    font-size: 1.5rem;
-  }
-  #mainbody form {
-    font-size: 1.1rem;
-  }
-  #article-container {
-    font-size: 1.5rem;
-  }
-  p a, h2 a {
-    color: #22a83e;
-    text-decoration: underline;
-  }
-  p a:hover {
-    color: #f7ec73;
-    background-color: #aaa;
-  }
-  #site-nav {
-    background-color: #1a1a1a;
-    font-size: 1.85rem;
-    font-family: FucXed, sans-serif;
-    padding-top:1rem;
-    padding-bottom:1rem;
-  }
-  #site-nav .navbar-nav {
-    padding-top: 2.5rem;
-  }
-  #site-nav a {
-    color: #ffffff;
-  }
-  #site-nav a.active {
-    color: #22a83e;
-  }
-  #site-nav a:hover {
-    color: #f7ec73;
-  }
-  .dropdown-menu a {
-    color: #22a83e;
-  }
-  .dropdown-menu {
-    background-color: #1a1a1a;
-    border: 1px solid #777;
-  }
-  .dropdown-menu a:hover {
-    background-color: #aaa;
-  }
-  .btn-primary {
-   text-decoration: none;
-   background-color: rgb(152, 98, 151) !important;
-   border-style: none;
-  }
-  .btn-primary:hover{
-   background-color: rgb(102, 48, 101) !important; 
-  }
-  footer {
-    font-size: 1em;
-  }
   {% endblock %}
  </style>
 
@@ -206,7 +54,7 @@
   <meta property="og:url" content="https://{{request.get_host}}{{request.get_full_path}}" />
   <meta property="og:type" content="website" />
 {% block og_image %}
-  <meta property="og:image" content="https://{{request.get_host}}{% static 'images/xr-mass.png' %}" />
+  <meta property="og:image" content="https://{{request.get_host}}{% static 'images/xr-mass.jpg' %}" />
   <meta property="og:image:alt" content="XR Mass logo" />
   <meta property="og:image:type" content="image/png" />
   <meta property="og:image:height" content="1080"/>
@@ -219,21 +67,17 @@
 </head>
 <body>
     {% block header %}
-    <header>
-      <div class="container">
-      <nav id="site-nav" class="navbar navbar-expand-lg navbar-dark">
-        <a href="{% url 'extinctionr.info:index' %}"><img id="header-image" class="img img-responsive" height="115" data-swap="{% static 'images/xrmass-yellow.svg' %}" src="{% if page == 'home' %}{% static 'images/xrmass-green.svg' %}{% else %}{% static 'images/xrmass.svg' %}{% endif %}" alt="Extinction Rebellion"></a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-          <span class="navbar-toggler-icon"></span>
-        </button>
-          <div class="collapse navbar-collapse" id="navbarSupportedContent">
-            {% block main_menu %}{% include "menu.html" %}{% endblock %}
-          </div>
-        </nav>
+    <nav id="site-nav" class="navbar navbar-expand-lg navbar-dark sticky-top">
+      <a href="{% url 'extinctionr.info:index' %}"><img id="header-image" class="img img-responsive" height="80" data-swap="{% static 'images/xrmass-yellow-2.svg' %}" src="{% if page == 'home' %}{% static 'images/xrmass-green.svg' %}{% else %}{% static 'images/xrmass.svg' %}{% endif %}" alt="Extinction Rebellion"></a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        {% block main_menu %}{% include "menu.html" %}{% endblock %}
       </div>
-    </header>
-      {% endblock %}
-  <div id="mainbody" class="container bg-light" role="main">
+    </nav>
+    {% endblock %}
+  <div id="mainbody" class="container-fluid xr-bg-gray" role="main">
 {% if messages %}<div class="row pt-4">
 <div class="col text-center">
       <ul class="messages list-unstyled">
@@ -243,21 +87,58 @@
 </div></div>{% endif %}
       {% block breadcrumb %}{% endblock %}
       {% block default_container %}{% block content %}{% endblock %}{% endblock %}
-      <hr>
-      <footer class="text-center mt-4 p-4 d-print-none">
-        <ul class="list-inline">
-          <li class="list-inline-item"><a href="https://www.facebook.com/ExtRebMA/" target="_blank"><i class="fab fa-facebook"></i></a></li>
-          <li class="list-inline-item px-4"><a href="https://twitter.com/XRboston" target="_blank"><i class="fab fa-twitter"></i></a></li>
-          <li class="list-inline-item"><a href="https://www.instagram.com/xrboston/" target="_blank"><i class="fab fa-instagram"></i></a></li>
-          <li class="list-inline-item px-4"><a href="/contact"><i class="fa fa-envelope"></i></a></li>
-        </ul>
-        {% if request.user.is_anonymous %}
-        <div class="pt-6 text-right">
-          <a class="xr-green" href="{% url 'login' %}">login</a>
-        </div>
-        {% endif %}
-      </footer>
-  </div>
+</div> <!-- mainbody -->
+  <footer class="text-center mt-4 mx-0 px-0 py-4 d-print-none" style="background-color: #1a1a1a;">
+    <ul class="list-inline">
+      <li class="list-inline-item">
+        <a href="https://www.facebook.com/ExtRebMA/" target="_blank" class="social">
+          <span class="fa-stack" style="vertical-align: top;">
+            <i class="far fa-circle fa-stack-2x"></i>
+            <i class="fab fa-facebook-f fa-stack-1x"></i>
+          </span>
+        </a>
+      </li>
+      <li class="list-inline-item">
+        <a href="https://twitter.com/XRboston" target="_blank" class="social">
+          <span class="fa-stack" style="vertical-align: top;">
+            <i class="far fa-circle fa-stack-2x"></i>
+            <i class="fab fa-twitter fa-stack-1x"></i>
+          </span>
+        </a>
+      </li>
+      
+      <li class="list-inline-item">
+        <a href="https://www.instagram.com/xrboston/" target="_blank" class="social">
+          <span class="fa-stack" style="vertical-align: top;">
+            <i class="far fa-circle fa-stack-2x"></i>
+            <i class="fab fa-instagram fa-stack-1x"></i>
+          </span>
+        </a>
+      </li>
+
+      <li class="list-inline-item">
+        <a href="https://www.youtube.com/channel/UC0JxJrXXRGF9lmjzdIKGYAw" target="_blank" class="social">
+          <span class="fa-stack" style="vertical-align: top;">
+            <i class="far fa-circle fa-stack-2x"></i>
+            <i class="fab fa-youtube fa-stack-1x"></i>
+          </span>
+        </a>
+      </li>
+      <li class="list-inline-item">
+        <a href="/contact" target="_blank" class="social">
+          <span class="fa-stack" style="vertical-align: top;">
+            <i class="far fa-circle fa-stack-2x"></i>
+            <i class="fas fa-envelope fa-stack-1x"></i>
+          </span>
+        </a>
+      </li>
+    </ul>
+    {% if request.user.is_anonymous %}
+    <div class="pt-6 text-right">
+      <a class="pr-4" href="{% url 'login' %}">login</a>
+    </div>
+    {% endif %}
+  </footer>
 
 <script src="{% static 'js/jquery-3.3.1.min.js' %}"></script>{% block extra_js %}{% endblock %}{% block js_block %}{% if form %}{{form.media}}{% endif%}{% endblock js_block %}
 <script src="{% static 'js/bootstrap.min.js' %}"></script>
@@ -265,8 +146,21 @@
 <script defer src="{% static "js/fontawesome-all.js" %}"></script>
 
 <script type="text/javascript">
+  function findActiveMenu() {
+    let active = $('.nav-a[href="' + window.location.pathname + '"]');
+    if (active.length > 0) return active;
+    let path = window.location.pathname.split('/');
+    if (path.length > 1) {
+      active = $('.nav-a[href="/' + path[1] + '"]');
+      if (active.length > 0) return active;
+      active = $('.nav-a[href="/' + path[1] + '/"]');
+    }
+    return active;
+  }
   $(document).ready(function(){
-    $('.nav-a[href="' + window.location.pathname + '"]').addClass('active');
+    let active = findActiveMenu();
+    active.addClass('active');
+    active.parents('.nav-item').children('.nav-link').addClass('active');
     $('#mainbody img').addClass('img img-fluid');
     function swapImages() {
       var elt = $(this);

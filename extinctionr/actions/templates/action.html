@@ -16,59 +16,105 @@
 {% block og_tags %}
   <meta property="og:description" content="{{action.description|markdownify|truncatewords_html:30|striptags}}" />
 {% endblock %}
-
+{% block inline_css %}
+{{block.super}}
+#mainbody {
+	background-color: white !important;
+}
+.action-loc p {
+    display: inline-block;
+    text-decoration: underline !important;
+}
+.action-loc a {
+    color: black;
+}
+.date-month {
+	font-size: 1.2em;
+}
+.date-day {
+	font-size: 1.8em;
+}
+{% endblock %}
 {% block content %}
-<div class="row pt-5 text-center">
-	<div class="col-lg-10 col-sm-12 offset-lg-1">
-		<h1>{{action.html_title}}</h1>
-		<h2>{{action.when}}</h2>
+{% load tz %}
+{% comment %}
+not working yet because we need actual address data for events.
+<script type="application/ld+json">
+{% include 'action.ld.json' %}
+</script>
+{% endcomment %}
+<div class="row px justify-content-center" style="padding-top: 100px">
+	<div class="col-5 col-md-2 pl-0 pr-md-3 pb-sm-3">
+		<div class="xr-bg-lemon p-2 text-center text-fucxed">
+			<p class="date-month">{{action.when|localtime|date:"M"}}<br>
+			<span class="date-day">{{action.when|localtime|date:"d"}}</span></p>
+		</div>
+	</div>
+	 <div class="col-12 col-md-8 pl-0">
+		<h1 class="display-4 pb-sm-2 pb-md-3 m-0">{{action.html_title}}</h1>
 		{% if not action.public %}<h4 class="text-center text-warning">not public</h4>{% endif %}
+		<div class="row">
+			<div class="col-12 col-lg-3">
+		<img class="event-icon" src="../../../static/images/time.png"><span class="small">{{action.when|localtime|time}}</span>
+			</div>
 		{% if action.location %}
-		<p class="text-info">{{action.location_link}}</p>
-		{% endif %}
-		{% if 'actions.change_action' in perms %}<h4><a href="/admin/actions/action/{{action.id}}/change/">Edit</a></h4>{% endif %}
-		<h4><a href="webcal://{{request.get_host}}/action/ical/{{action.id}}" title="Export calendar as iCal format"><i class="far fa-calendar-alt"></i></a></h4>
-
-		<div class="text-left">{{action.description|markdownify}}</div>
-		{% if action.accessibility %}
-		<div class="accessibility-info small text-left pt-4">
-			<h5>Accessibility</h5>
-		{{action.accessibility|markdownify}}
+		<div class="col action-loc"><img class="event-icon" src="../../../static/images/location.png">
+			<span class="small">{{action.location_link}}</span>
 		</div>
 		{% endif %}
-		<hr>
+		</div>
+	</div>
+</div>
+<hr class="col-8 my-3">
+<div class="row px justify-content-center">
+	<div class="col col-md-8">
+		{{action.description|markdownify}}
+		{% if action.accessibility %}
+		<div class="accessibility-info text-left">
+			<br>
+			<span class="text-bold">Accessibility</span><br>
+			{{action.accessibility|markdownify}}
+		</div>
+		{% endif %}
+	</div>
+	<div class="w-100"></div>
+	<div class="col">
+		<div class="text-center pt-5">
+			{% if 'actions.change_action' in perms %}
+			<h4><a href="/admin/actions/action/{{action.id}}/change/">Edit</a></h4>
+			{% endif %}
+			<h4><a href="webcal://{{request.get_host}}/action/ical/{{action.id}}" title="Export calendar as iCal format"><i class="far fa-calendar-alt"></i></a></h4>
+		</div>
 	</div>
 </div>
 {% if photos %}
 {% load thumbnail %}
-<section class="row photo-view">
+<section class="row photo-view py-sm-4 py-md-5 px justify-content-center">
 	{% for photo in photos %}
 	<div class="col text-center">
-      {% thumbnail photo.photo "400x400" as im %}
-      <a href="{{photo.photo.url}}"><img class="img img-fluid img-thumbnail" src="{{ im.url }}" alt="{{photo.caption}}"></a>
+      {% thumbnail photo.photo "600x600" as im %}
+      <a href="{{photo.photo.url}}"><img class="img img-fluid" src="{{ im.url }}" alt="{{photo.caption}}"></a>
       {% endthumbnail %}
 	</div>
 {% if forloop.counter|divisibleby:3 %}</section><section class="row mt-2">{% endif %}
 	{% endfor %}
 </section>
-<hr>
 {% endif %}
 {% if form %}
 <div class="row mt-4">
-	<div class="col-lg-6 col-sm-12 offset-sm-0 offset-lg-3">
+	<div class="col-lg-8 col-sm-12 offset-sm-0 offset-lg-2">
 		{% if not action.is_full %}
+		<h4>RSVP to this event</h4>
 		<form method="post"> {% csrf_token %}
 			<div class="text-danger">{{form.non_field_errors}}</div>
 			<div class="form-group row">
-				<label for="{{form.email.id_for_label}}" class="d-none d-sm-block col-4 text-right">Email:</label>
 				<div class="col">
+					<label for="{{form.email.id_for_label}}" class="d-none d-sm-block">Email</label>
 					{{form.email}}
 					<div class="text-danger">{{form.email.errors}}</div>
 				</div>
-			</div>
-			<div class="form-group row">
-				<label for="{{form.name.id_for_label}}" class="d-none d-sm-block col-4 text-right">Your Name:</label>
 				<div class="col">
+					<label for="{{form.name.id_for_label}}" class="d-none d-sm-block">Name</label>
 					{{form.name}}
 					<div class="text-danger">{{form.name.errors}}</div>
 				</div>
@@ -99,9 +145,9 @@
 				</div>
 			</div>
 			{% endif %}
-			<div class="form-group row mt-4 pt-4">
-				<div class="col text-center">
-					<input class="btn btn-fucxed btn-lg btn-block btn-outline-dark btn-success text-uppercase" type="submit" value="I'm Going!">
+			<div class="form-group row mt-4 pt-2">
+				<div class="col">
+					<input class="btn btn-primary btn-lg btn-outline-dark btn-success text-uppercase" type="submit" value="I'm Going!">
 				</div>
 			</div>
 		</form>

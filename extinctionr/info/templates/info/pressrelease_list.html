@@ -1,21 +1,52 @@
 {% extends "base.html" %}
 {% load info %}
+{% load static %}
 {% block title %}:: Press{% endblock %}
 {% block og_tags %}
   <meta property="og:description" content="Press releases from Extinction Rebellion Massachusetts" />
 {% endblock %}
+{% block inline_css %}
+{{block.super}}
+
+.a-dark {
+    color: #000;
+    text-decoration: underline;
+}
+.pr-footer {
+	align-self: flex-end;
+}
+{% endblock %}
 {% block content %}
-<div class="row pt-5">
-	<div class="col col-lg-10 offset-lg-1 text-center">
-		<h1 class="text-center">Press</h1>
-		<p>Contact: <a href="mailto:xrmass@gmail.com">xrmass@gmail.com</a></p>
-		<h2 class="text-center mt-4">Press Releases</h2>
-		<hr>
-		<ul class="list-unstyled">
-			{% for pr in object_list %}
-			<li class="list-item"><a href="{{pr.get_absolute_url}}">{{pr.title}}</a> &mdash; {% if not pr.is_released %}<span class="text-danger">embargoed until</span> {% endif %}{{pr.released|date}}</li>
-			{% endfor %}
-		</ul>
+<div class="row">
+	<div class="banner position-relative w-100">
+		<img class="img-fluid w-100" src="{% static 'images/banner-pr.jpg' %}" alt="Extinction Rebellion Massachusetts" />
+		<div class="banner-title">Press</div>
 	</div>
+</div>
+
+<div class="row py-5 bg-white">
+	<div class="col col-text">
+<p>This is the official source for news about Extinction Rebellion Massachusetts. For media inquiries, please<br>
+contact the XR Mass team at: <a href="mailto:xrmass@gmail.com">xrmass@gmail.com</a></p>
+	</div>
+</div>
+  
+<div class="row pt-5 mx-5">
+	{% for pr in object_list %}
+	<div class="col-lg-4 p-2 d-flex align-items-stretch">
+		<div class="p-4 d-flex flex-column justify-content-between bg-white">
+			<div>
+				<h4><a href="{{pr.get_absolute_url}}" class="a-dark">{{pr.title}}</a></h4>
+			</div>
+			<div>
+			{% if not pr.is_released %}<span class="text-danger">embargoed until</span> {% endif %}{{pr.released|date}}
+			</div>
+		</div>
+	</div>
+	{% if forloop.counter|divisibleby:3 %}
+	<div class="w-100"></div>
+	{% endif %}
+
+	{% endfor %}
 </div>
 {% endblock %}

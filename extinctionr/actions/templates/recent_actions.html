@@ -1,5 +1,5 @@
 {% if actions %}
-<h2>{{adverb}} Actions</h2>
+<h1 class="display-4">XR Mass in Action</h1>
 <ul id="recent_actions" class="list-unstyled">
 {% for action in actions %}
     <li><a class="item-link" href="{{action.get_absolute_url}}">{{action.html_title}}</a> on {{action.when|date}}</li>
