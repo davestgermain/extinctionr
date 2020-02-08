@@ -27,22 +27,23 @@
 <div class="row">
 	<div class="banner position-relative w-100">
 		<img class="img-fluid w-100" src="{% static 'images/banner-dewey2.jpg' %}" alt="Extinction Rebellion Massachusetts" />
-		<div class="banner-title">Massachusetts Groups</div>
+		<div class="banner-title">Local Groups</div>
 	</div>
 </div>
 
-<div class="row p-5 bg-white">
-	<div class="col">
+<div class="row px py-5 bg-white">
+	<div class="col-8 col-text">
     <p>Extinction Rebellion is a do-it-together movement. Anyone can join as long as they follow our guiding <a href="{% url 'extinctionr.info:page' page='about' %}#principles">principles.</a></p>
+    <br>
     <p>Find your local group on the map or <a href="mailto:xr.boston.outreach">contact us</a> for help starting your own.</p>
 	</div>
 </div>
 
-<div class="row pt-5">
-  <div class="col-lg-12 p-0 px-lg-4">
-    <h3 class="ml-3">Find your local group</h3>
+<div class="row pt-5 px xr-bg-gray justify-content-center">
+  <div class="col-lg-11 col-md-10 col-12 px-lg-5 px-md-0 p-0">
+    <h2 class="text-uppercase p-0 pb-2">Find your local group</h2>
     <!-- where the map view goes -->
-    <div id="mass-map" class="mb-5 mx-lg-2">
+    <div id="mass-map" class="mb-5 mx-lg-2 mt-2">
     </div>
   </div>
 </div>
