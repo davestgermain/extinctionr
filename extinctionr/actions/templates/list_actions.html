@@ -287,11 +287,7 @@ table a:hover {
 <script type="text/javascript" src="{% static 'admin/js/urlify.js' %}"></script>
 <script type="text/javascript">
 
-document.getElementById("id_name").onkeyup = function() {
-    var e = document.getElementById("id_slug");
-    if (!e._changed) { e.value = URLify(document.getElementById("id_name").value, 50, true); }
-}
-    let month_actions = [
+let month_actions = [
     {% for week in month_actions %}{% for day in week %}{% for action in day.actions %}
     { "day_id" : "{{day.day.isoformat}}",
     "month" : "{{action.when|localtime|date:'M'}}",
@@ -397,6 +393,17 @@ document.getElementById("id_name").onkeyup = function() {
         let is_calendar_view = window.location.hash === "#calendar";
         show_calendar(is_calendar_view);
         select_day($('.active-day'));
+
+        // for edit form:
+        let el_name = $('#id_name');
+        if (el_name) {
+            el_name.onkeyup = function() {
+                var e_slug = $('#id_slug');
+                if (!e_slug._changed) {
+                    e_slug.value = URLify(el_name.value, 50, true);
+                }
+            }
+        }
     });
 </script>
 {% endblock %}
