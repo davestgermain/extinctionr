@@ -266,7 +266,7 @@ WIKI_CHECK_SLUG_URL_AVAILABLE = False
 
 ### django-todo settings
 TODO_DEFAULT_LIST_SLUG = 'tickets'
-TODO_DEFAULT_ASSIGNEE = 'dave@st.germa.in'
+TODO_DEFAULT_ASSIGNEE = 'johnb.xr@pm.me'
 TODO_PUBLIC_SUBMIT_REDIRECT = 'extinctionr.info:index'
 
 LOGGING = {
