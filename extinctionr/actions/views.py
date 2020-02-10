@@ -100,14 +100,8 @@ def _make_date_range(current_date, include_future=True, include_past=7):
 
 def calendar_view(request, whatever):
     from ics import Calendar, Event
-    user, _ = _get_action_request_params(request)
-    current_date = today.replace(day=1)
-
-    req_date = request.GET.get('month','')
-    if req_date:
-        current_date = datetime.strptime(req_date, '%Y-%m')
-
-    date_range = _make_date_range(current_date, include_future=True, include_past=30)
+    user, params = _get_action_request_params(request)
+    date_range = _make_date_range(params['date'], include_future=True, include_past=30)
 
     actions = Action.objects.for_user(user).filter(when__date__range=date_range)
     thecal = Calendar()
