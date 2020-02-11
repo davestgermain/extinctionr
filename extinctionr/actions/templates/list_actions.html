@@ -77,7 +77,7 @@ table a:hover {
     background-color: rgb(247, 238, 106);
 }
 
-@media (min-width: 576px) {
+@media (min-width: 768px) {
     .date-month {
         font-size: 1.5em;
     }
@@ -231,7 +231,7 @@ table a:hover {
                         {% if day.is_cur_month %}
                         <h5>{% if can_add %}<a href="" data-toggle="modal" data-target="#event-modal" data-when="{{day.day.isoformat}}">{{day.day.day}}</a>{% else %}{{day.day.day}}{% endif %}</h5>
                         {% endif %}
-                        <div class="d-none d-lg-block">
+                        <div class="d-none d-md-block">
                         {% for action in day.actions %}
                         {% if not action.public %}
                             <i class="fas fa-lock" title="Not public"></i> 
@@ -239,7 +239,7 @@ table a:hover {
                         {% if 'pending' in action.tags.names %}
                             <i class="fas fa-question" title="Pending Event"></i>
                         {% endif %}
-                        <div class="{% if action.bg_color %}{{action.bg_color}}{% endif %}" style="margin:2px;padding:2px;">
+                        <div class="{{action.bg_color|default:'d-block'}}" style="margin:2px;padding:2px;">
                         <a href="{{action.get_absolute_url}}">{{action.html_title}}</a><br>
                         <p><i class="far fa-clock" title="Event Time"></i>&nbsp;{{action.when|localtime|date:"P"}}</p>
                         </div>
