@@ -65,7 +65,7 @@ let sw = L.latLng(41.29431726315258, -74.58068847656251);
 mapOptions = {
   zoomControl: false,
   center: new L.LatLng(42.189088057237164, -71.73218114985485),
-  zoom: 8,
+  zoom: 7,
   zoomSnap: .25,
   zoomDelta: .5,
   minZoom: 6,
@@ -77,20 +77,22 @@ let vw = $(window).width();
 
 // Media settings:
 if (vw > 576) {
-  mapOptions.zoom = 8.5;
+  mapOptions.zoom = 8;
   mapOptions.zoomControl = true;
 }
 
 let map = new L.Map("mass-map", mapOptions);
-/* map debugging 
-function logMap() {
-  console.log('zoom = ', map.getZoom());
-  console.log('center = ', map.getCenter());
-  console.log('bounds = ', JSON.stringify(map.getBounds()));
+let debug_map = false;
+//let debug_map = true;
+if (debug_map) {
+  function logMap() {
+    console.log('zoom = ', map.getZoom());
+    console.log('center = ', map.getCenter());
+    console.log('bounds = ', JSON.stringify(map.getBounds()));
+  }
+  map.on('moveend', logMap);
+  map.on('zoomend', logMap);
 }
-map.on('moveend', logMap);
-map.on('zoomend', logMap);
-*/
 L.tileLayer( 'https://stamen-tiles.a.ssl.fastly.net/terrain/{z}/{x}/{y}.jpg', {
   attribution: 'Map tiles by <a href="http://stamen.com">Stamen Design</a>, under <a href="http://creativecommons.org/licenses/by/3.0">CC BY 3.0</a>. Data by <a href="http://openstreetmap.org">OpenStreetMap</a>, under <a href="http://www.openstreetmap.org/copyright">ODbL</a>.'
 }).addTo( map );  
