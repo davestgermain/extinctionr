@@ -65,7 +65,7 @@ let sw = L.latLng(41.29431726315258, -74.58068847656251);
 mapOptions = {
   zoomControl: false,
   center: new L.LatLng(42.189088057237164, -71.73218114985485),
-  zoom: 7,
+  zoom: 8,
   zoomSnap: .25,
   zoomDelta: .5,
   minZoom: 6,
@@ -113,7 +113,7 @@ chapters.forEach((model) => {
       <li><a href="https://${c.site}"><i class="fas fa-fw fa-globe pr-1">&nbsp;</i>${c.site}</a></li>
       <li><a href="https://${c.join}"><i class="fas fa-fw fa-clipboard-check pr-1">&nbsp;</i>${c.join}</a></li>
       <li><a href="https://facebook.com/${c.facebook}"><i class="fab fa-fw fa-facebook-f pr-1">&nbsp;</i>${c.facebook}</a></li>
-      <li><a href="https://twitter.com/@${c.twitter}"><i class="fab fa-fw fa-twitter pr-1">&nbsp;</i>${c.twitter}</a></li>
+      <li><a href="https://twitter.com/${c.twitter}"><i class="fab fa-fw fa-twitter pr-1">&nbsp;</i>@${c.twitter}</a></li>
     </ul>
   </div>`
   L.marker([c.lat, c.lng], {icon: xr_icon})
