@@ -61,10 +61,15 @@ table a:hover {
 }
 .action-loc p {
     display: inline-block;
+    margin: 0;
     text-decoration: underline !important;
 }
 .action-loc a {
     color: black;
+}
+.action-icon {
+    vertical-align: middle;
+    font-size: 1.2em;
 }
 .date-month {
     font-size: 1em;
@@ -143,11 +148,15 @@ table a:hover {
         <div class="col-12 col-lg-6">
             <h3><a href="{{action.get_absolute_url}}" class="a-dark">{{action.html_title}}</a></h3>
             <div class="row">
-                <div class="col-12 col-lg-3">
-            <i class="far fa-clock pr-1" title="Event time"></i><span class="small">{{action.when|localtime|time}}</span>
+            <div class="col-12 col-lg-3">
+                <div style="display:inline-block">
+                <i class="far fa-clock pr-1 action-icon" title="Event time"></i>
+                <span class="small">{{action.when|localtime|time}}</span>
                 </div>
+            </div>
             {% if action.location %}
-            <div class="col action-loc"> <i class="fas fa-map-marker-alt pr-1" title="Map Marker"></i>
+            <div class="col action-loc">
+                <i class="fas fa-map-marker-alt pr-1 action-icon" title="Map Marker"></i>
                 <span class="small" >{{action.location_link}}</span>
             </div>
             {% endif %}
@@ -204,7 +213,7 @@ table a:hover {
 
 <div id="calendar-view" class="row pb-sm-4 pb-md-5 px" style="display:none">
     <div class="col p-0">
-        <h3 class="text-center">
+        <h3 class="text-center pt-1">
         <a href="?month={{last_month|date:"Y-m"}}{% if current_tag %}&tag={{current_tag}}{% endif %}#calendar"><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" id="Capa_1" x="0px" y="0px" viewBox="0 0 297.5 297.5" style="enable-background:new 0 0 297.5 297.5;" xml:space="preserve" width="512px" height="512px" class="arrow-btn"><g transform="matrix(-1 0 0 1 297.5 0)"><polygon points="297.5,148.25 148,33.25 148,100.25 0,100.25 0,199.25 148,199.25 148,264.25 " data-original="#000000" class="active-path" data-old_color="#000000" fill="#986297"/></g> </svg></a>
         <span class="mx-4">{{current_date|date:"F Y"}}</span>
         <a href="?month={{next_month|date:"Y-m"}}{% if current_tag %}&tag={{current_tag}}{% endif %}#calendar"><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" id="Capa_1" x="0px" y="0px" viewBox="0 0 297.5 297.5" style="enable-background:new 0 0 297.5 297.5;" xml:space="preserve" width="512px" height="512px" class="arrow-btn"><g><polygon points="297.5,148.25 148,33.25 148,100.25 0,100.25 0,199.25 148,199.25 148,264.25 " data-original="#000000" class="active-path" data-old_color="#000000" fill="#986297"/></g> </svg></a>

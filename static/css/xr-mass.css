@@ -24,15 +24,10 @@ div.home-banner-text {
     line-height: 1.25;
 }
 
-p {
-    margin: 0;
-}
-
 .px {
     padding-left: 10%;
     padding-right: 10%;
 }
-
 
 .p-1 {
   padding: 0.5rem !important;
@@ -869,7 +864,7 @@ ul.list-unstyled a:hover, ul.list-unstyled a:focus {
 }
 
 .navbar {
-    padding: .5rem 10%;
+    padding: .5rem 5%;
 }
 
 #site-nav {

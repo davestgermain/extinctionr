@@ -22,11 +22,16 @@
 	background-color: white !important;
 }
 .action-loc p {
-    display: inline-block;
+	display: inline-block;
+	margin: 0 !important;
     text-decoration: underline !important;
 }
 .action-loc a {
     color: black;
+}
+.action-icon {
+    vertical-align: middle;
+    font-size: 1.2em;
 }
 .date-month {
 	font-size: 1.2em;
@@ -54,12 +59,14 @@ not working yet because we need actual address data for events.
 		<h1 class="display-4 pb-sm-2 pb-md-3 m-0">{{action.html_title}}</h1>
 		{% if not action.public %}<h4 class="text-center text-warning">not public</h4>{% endif %}
 		<div class="row">
-			<div class="col-12 col-lg-3">
-		<img class="event-icon" src="../../../static/images/time.png"><span class="small">{{action.when|localtime|time}}</span>
-			</div>
+		<div class="col-12 col-lg-3">
+			<i class="far fa-clock pr-1 action-icon" title="Event time"></i>
+			<span class="small">{{action.when|localtime|time}}</span>
+		</div>
 		{% if action.location %}
-		<div class="col action-loc"><img class="event-icon" src="../../../static/images/location.png">
-			<span class="small">{{action.location_link}}</span>
+		<div class="col">
+			<i class="fas fa-map-marker-alt pr-1 action-icon" title="Map Marker"></i>
+			<span class="small action-loc">{{action.location_link}}</span>
 		</div>
 		{% endif %}
 		</div>
