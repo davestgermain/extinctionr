@@ -61,7 +61,6 @@ table a:hover {
 }
 .action-loc p {
     display: inline-block;
-    margin: 0;
     text-decoration: underline !important;
 }
 .action-loc a {
@@ -148,20 +147,20 @@ table a:hover {
         <div class="col-12 col-lg-6">
             <h3><a href="{{action.get_absolute_url}}" class="a-dark">{{action.html_title}}</a></h3>
             <div class="row">
-            <div class="col-12 col-lg-3">
-                <div style="display:inline-block">
-                <i class="far fa-clock pr-1 action-icon" title="Event time"></i>
-                <span class="small">{{action.when|localtime|time}}</span>
+                <div class="col-1 pr-0">
+                    <i class="far fa-clock pr-1 action-icon" title="Event time"></i>
                 </div>
-            </div>
-            {% if action.location %}
-            <div class="col-1 pr-0">
-                <i class="fas fa-map-marker-alt pr-1 action-icon" title="Map Marker"></i>
-            </div>
-            <div class="col action-loc pl-0">
-                <span class="small" >{{action.location_link}}</span>
-            </div>
-            {% endif %}
+                <div class="col-11 col-lg-3 pl-1">
+                    <span class="small">{{action.when|localtime|time}}</span>
+                </div>
+                {% if action.location %}
+                <div class="col-1 pr-0">
+                    <i class="fas fa-map-marker-alt pr-1 action-icon" title="Map Marker"></i>
+                </div>
+                <div class="col pl-1">
+                    <span class="small action-loc">{{action.location_link}}</span>
+                </div>
+                {% endif %}
             </div>
             <div class="text-left small">{{action.description|markdownify|truncatewords_html:30}}</div>
         </div>
@@ -238,10 +237,9 @@ table a:hover {
                 {% for week in month_actions %}
                 <tr style="height:6em;width:100%">
                     {% for day in week %}
-                    <td{% if forloop.first %} scope="row"{% endif %} class="{% if day.is_today %} active-day{% endif %} {% if day.actions %} highlight-day {% endif %}" data-day-id="{{day.day.isoformat}}">
+                    <td{% if forloop.first %} scope="row"{% endif %} class="{% if day.is_today %} active-day{% endif %}{% if not day.is_cur_month %}xr-bg-gray{% endif %}{% if day.actions %} highlight-day {% endif %}" data-day-id="{{day.day.isoformat}}">
                         {% if day.is_cur_month %}
                         <h5>{% if can_add %}<a href="" data-toggle="modal" data-target="#event-modal" data-when="{{day.day.isoformat}}">{{day.day.day}}</a>{% else %}{{day.day.day}}{% endif %}</h5>
-                        {% endif %}
                         <div class="d-none d-md-block">
                         {% for action in day.actions %}
                         {% if not action.public %}
@@ -256,6 +254,7 @@ table a:hover {
                         </div>
                         {% endfor %}                 
                         </div>
+                        {% endif %}
                     </td>
                     {% endfor %}
                 </tr>
