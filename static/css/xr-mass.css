@@ -860,7 +860,7 @@ p a, h2 a, small a, ul.list-unstyled a {
 p a:hover, p a:focus,
 small a:hover, small a:focus,
 ul.list-unstyled a:hover, ul.list-unstyled a:focus {
-    color: #22a83e;
+    color: rgb(20, 170, 55);
 }
 
 .navbar {
