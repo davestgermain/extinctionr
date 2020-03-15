@@ -1,0 +1,131 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}:: Join Us{% endblock %}
+{% block og_tags %}
+{% endblock %}
+{% block inline_css %}
+blockquote {
+    border-left: 1px solid black;
+    margin: 1.5em 10px;
+    padding: 0.5em 10px;
+}
+blockquote p {
+    display: inline;
+}
+{{block.super}}
+{% endblock %}
+{% block content %}
+<div class="row px py-5 bg-white justify-content-center">
+    <div class="col-8 col-text col">
+<h1 class="xr-purple">EXTINCTION REBELLION BOSTON’S RESPONSE TO CORONAVIRUS</h1>
+<p>
+<blockquote>
+    <em>
+As new information surrounding COVID-19 continues to surface, 
+Extinction Rebellion Boston stands by our 
+<a href="{% url 'extinctionr.info:page' page='demands' %}">demands</a> and 
+<a href="{% url 'extinctionr.info:page' page='about' %}#principles">principles.</a> 
+It is more important than ever to remember that Extinction Rebellion 
+exists to protect life, both now and for future generations. We must work 
+together to make public health our number one priority, listening to advice 
+from the scientific community, and caring for those who are most vulnerable.
+</em>
+</blockquote>
+</p>
+
+<h4>APRIL ACTION UPDATE</h4>
+<p>
+Mass public gatherings are not advisable at this time, so 
+Extinction Rebellion Boston will not be planning any large public 
+gatherings for Earth Week 2020. This means that the large 
+demonstration we were planning for April 15th, <strong>Our Taxes, Our Future</strong>, will be rescheduled for 
+the summer of 2020. In the interim, we will be shifting 
+tactics, getting creative, and building local resilience by showing 
+up for our neighbors with care, compassion, and respect. 
+We will also be growing our online community, offering a host of trainings, 
+discussions and more!
+</p>
+<h4>STAYING SAFE WITH CORONAVIRUS</h4>
+<p>
+We urge everyone to take this public health concern seriously, 
+but not to panic. We live in a global, interconnected world, 
+where our actions affect more than just ourselves. 
+It’s important we do everything we can as a movement to 
+Flatten the Curve and help keep our communities safe. 
+Read more about what this means here: <a href="https://www.flattenthecurve.com">www.flattenthecurve.com.</a>
+</p>
+
+<p>
+For regular updates about COVID-19, you can visit the <a href="https://www.who.int/emergencies/diseases/novel-coronavirus-2019">World Health Organization</a> or 
+<a href="https://www.cdc.gov/coronavirus/2019-ncov/index.html">CDC websites</a>, 
+as well as <a href="https://www.boston.gov/news/coronavirus-disease-2019-covid-19-boston">Boston’s Coronavirus page</a>. 
+The <a href="https://docs.google.com/document/d/1l18xoacLVw1rWnxiVS-q6_xzcPpdXB-7tBJFBHEzRAI/edit" target="_blank">Extinction Rebellion Global Regen</a> document provides helpful tips and 
+thoughts on regeneration, resilience, and community in the time of crisis.
+</p>
+
+<div class="text-center">
+    <img src="{% static 'images/assembly.png' %}" width="128">
+</div>
+
+<h4>WE’RE ALL IN THIS TOGETHER</h4>
+<p>
+It is understandable to feel afraid at a time like this. 
+Just as with the climate and ecological crisis, difficult 
+emotions such as fear, grief, and anger are bound to surface. 
+But you don’t have to hold these emotions alone. 
+More than ever, we need each other, Rebels! 
+We need your enthusiasm and compassion, your creativity and courage. 
+We need to stay connected, rather than letting isolation and fear take hold. 
+Your local neighborhood group is a great way to do that.
+</p>
+
+<h4>SHIFTING TACTICS</h4>
+<p>
+Extinction Rebellion Boston will be planning safe forms of disruption and 
+regenerative actions that do not involve large gatherings or mass arrests. 
+We will also be offering more trainings and meetings online. 
+Continue to check the website events page, 
+where we’ll be listing online courses, discussions, and other ways to stay involved. 
+And if you haven’t already, follow us on 
+    <a href="https://www.facebook.com/ExtRebMA">Facebook</a>, 
+    <a href="https://www.twitter.com/xrboston">Twitter</a>, and 
+    <a href="https://www.instagram.com/xrboston/">Instagram</a>!
+</p>
+
+<h4>WHAT COVID-19 MEANS FOR THE CLIMATE CRISIS</h4>
+<p>
+Coronavirus has many parallels to the climate and ecological crisis. 
+Both reveal our global interconnectedness and vulnerability. 
+Both require truth-telling and cooperation to reduce suffering and save lives. 
+Both disproportionately threaten vulnerable populations, from the elderly to 
+those with existing medical conditions. Neither can be solved while politicians 
+prioritize economic growth over the health of people and the planet.
+</p>
+
+<h4>OUR DEMANDS CANNOT WAIT</h4>
+<p>
+It’s more urgent than ever that we demand the government <a href="{% url 'extinctionr.info:page' page='demands' %}">TELL THE TRUTH</a>. 
+We have an administration that continues to deny science, and continues to 
+be ineffective in responding to global emergencies. The inadequate government 
+response to COVID-19 has worsened an already serious situation. It is clear 
+that our political system is incapable of keeping us safe, which is why we 
+need a <a href="{% url 'extinctionr.info:page' page='demands' %}">CITIZENS’ ASSEMBLY</a> now.
+</p>
+
+<h4>‘REGENERATIVE CULTURE’ AS AN ACT OF REBELLION</h4>
+<p>
+At a time when the coronavirus is disrupting business as usual, 
+grounding flights and halting industry, let’s disrupt in a different way. 
+Let’s disrupt the hyper-individualistic society in which we live. 
+Let’s take this time to slow down, safely connect with family and friends, 
+and remember all we have to be grateful for. Let’s build the more loving, 
+caring society that our hearts know is possible, beyond the story of separation. 
+Love in the time of coronavirus means collectively protecting each other from infection, 
+especially those most vulnerable.
+</p>
+<div class="text-center">
+    <img src="{% static 'images/heart-sm.png' %}" width="128">
+</div>
+	</div>
+</div>
+{% endblock %}
