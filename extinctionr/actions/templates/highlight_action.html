@@ -1,6 +1,11 @@
 {% load tz %}
-{% if action is not None %}
+{% if action is not None or True %}
+<h4 class="highlight-action text-center text-white xr-bg-pink p-1 my-0">
+	<span><a href="{% url 'extinctionr.info:page' page='coronavirus-response' %}" class="xr-angry"><u>XR Boston special statement on Coronavirus</u></a></span>
+</h4>
+<!--
 <h4 class="highlight-action text-center text-white xr-bg-pink p-1 my-0"><span>Please join us on {{action.when|localtime|date:'F d'}} for:&thinsp;</span>
 	<span><a href="{{action.get_absolute_url}}" class="xr-angry"><u>{{action.html_title}}</u></a></span>
 </h4>
+-->
 {% endif %}
