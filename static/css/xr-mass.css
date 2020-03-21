@@ -3,6 +3,23 @@ body {
     font-family: "Crimson Text", Georgia, serif;
 }
 
+:target::before {
+  content: "";
+  display: block;
+  height: 82px; /* fixed header height*/
+  margin: -82px 0 0; /* negative fixed header height */
+}
+
+@media (min-width: 576px) {
+  :target::before {
+    content: "";
+    display: block;
+    height: 100px; /* fixed header height*/
+    margin: -100px 0 0; /* negative fixed header height */
+  }
+}
+
+
 h1,h2,h3,h4,h5,h6,.btn-fucxed,.text-fucxed,.btn-primary {
     font-family: FucXed, sans-serif;
 }
