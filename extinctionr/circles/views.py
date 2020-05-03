@@ -131,8 +131,8 @@ def csv_import(request):
 
 @method_decorator(cache_page(1200), name='dispatch')
 class BaseCircleView(generic.View):
-    def render_to_response(self, context, **response_kwargs):
-        response = super().render_to_response(context, **response_kwargs)
+    def render(self, request, template_name, **response_kwargs):
+        response = super().render(request, template_name, **response_kwargs)
         response['Vary'] = 'Cookie'
         if self.request.user.is_authenticated:
             response['Cache-Control'] = 'private'

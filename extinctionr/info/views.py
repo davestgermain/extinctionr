@@ -94,8 +94,9 @@ class PRListView(ListView):
         else:
             return PressRelease.objects.released()
 
-    def render_to_response(self, context, **kwargs):
-        resp = super().render_to_response(context, **kwargs)
+    def render(self, *args, **kwargs):
+        resp = super().render(*args, **kwargs)
+        context = kwargs['context']
         resp['Last-Modified'] = http_date(context['object_list'].last().modified.timestamp())
         resp['Vary'] = 'Cookie'
         if self.request.user.is_authenticated:
@@ -110,8 +111,9 @@ class PRDetailView(DetailView):
         else:
             return PressRelease.objects.released()
 
-    def render_to_response(self, context, **kwargs):
-        resp = super().render_to_response(context, **kwargs)
+    def render(self, *args, **kwargs):
+        resp = super().render(*args, **kwargs)
+        context = kwargs['context']
         resp['Last-Modified'] = http_date(context['object'].modified.timestamp())
         resp['Vary'] = 'Cookie'
         if self.request.user.is_authenticated:

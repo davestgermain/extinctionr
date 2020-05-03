@@ -1,5 +1,5 @@
 django
-wiki
+wiki>=0.6b2
 -e git+https://github.com/davestgermain/Django-CRM@549ea96ecfbf9c9fa44d2e6f738386edbe70a8ca#egg=django_crm
 boto3
 lxml
@@ -24,3 +24,4 @@ django-crum
 django-taggit
 ics
 postorius
+
