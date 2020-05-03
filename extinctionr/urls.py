@@ -45,9 +45,9 @@ urlpatterns = [
     path('wiki/', include('wiki.urls')),
     path('markdownx/', include('markdownx.urls')),
     path('todo/', include('todo.urls', namespace="todo")),
-    path('postorius/', include('postorius.urls')),
-    path('mm/', include('django_mailman3.urls')),
-    path('accounts/', include('allauth.urls')),
+#    path('postorius/', include('postorius.urls')),
+#    path('mm/', include('django_mailman3.urls')),
+#    path('accounts/', include('allauth.urls')),
 ]
 
 if settings.DEBUG:
