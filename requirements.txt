@@ -24,4 +24,4 @@ django-crum
 django-taggit
 ics
 postorius
-
+wagtail
