@@ -11,5 +11,5 @@ urlpatterns = [
     path('contact', views.ContactView.as_view(), name="contact"),
     path('groups/', views.list_chapters, name='groups'),
     path('', views.InfoView.as_view(), kwargs={'page': 'home'}, name='index'),
-    path('<path:page>', views.InfoView.as_view(), name='page'),
+    views.wrap_info_path(path('<path:page>', views.InfoView.as_view(), name='page')),
 ]
