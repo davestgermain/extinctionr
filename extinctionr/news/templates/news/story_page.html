@@ -1,0 +1,57 @@
+{% extends "base.html" %}
+{% load info %}
+{% load tz %}
+{% load static %}
+{% load wagtailcore_tags wagtailimages_tags %}
+{% block extrahead %}
+<link rel="stylesheet" href="{% static 'css/xr-blog.css' %}">
+{% endblock %}
+{% block title %}:: {{page.title}}{% endblock %}
+{% block og_title %}{{oage.title}}{% endblock %}
+{% block og_tags %}
+  <meta property="og:description" content="{{page.lede}}" />
+
+  {% image page.hero_image width-1024 as hero %}
+  <meta property="og:image" content="https://{{request.get_host}}{{hero.url}}" />
+  <meta property="og:image:alt" content="{{hero.caption}}" />
+  <meta property="og:image:type" content="image/jpg" />
+  <meta property="og:image:height" content="{{hero.height}}"/>
+  <meta property="og:image:width" content="{{hero.width}}"/>
+
+{% endblock %}
+{% block inline_css %}
+{{block.super}}
+{% endblock %}
+
+{% block content %}
+
+<div class="row w-90 mx-auto">
+    <!-- main content -->
+    <div class="col-8 offset-2 bg-white">
+        <div class="pt-3">
+            {% if page.hero_image %}
+            {% image page.hero_image fill-1280x720 class="hero-image mb-2"%}
+            {% endif %}
+            <h1 class="mb-1 blog-title">{{page.title}}</h1>
+            <div>
+                <small>
+                By {{page.owner.username|default:"Anonymous"}} | {{page.date}}
+                </small>
+            </div>
+            <div class="mt-2">
+            {% for tag in page.tags.all %}
+              <span class="blog-tag ml-0 mr-2 my-1"><a href="{% pageurl page.get_parent %}?tag={{tag}}">{{tag}}</a></span>
+            {% endfor %}
+            </div>
+
+            <hr class="thick">
+            <div>
+            <!-- consider a separate grid here with rows for each block -->
+            {% for block in page.content %}
+              {% include_block block%}
+            {% endfor %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

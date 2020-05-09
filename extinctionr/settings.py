@@ -83,6 +83,7 @@ INSTALLED_APPS = [
     'extinctionr.actions.apps.ActionsConfig',
     'extinctionr.info',
     'extinctionr.circles.apps.CircleConfig',
+    'extinctionr.news',
     # django wiki
     'django_nyt.apps.DjangoNytConfig',
     'mptt',
