@@ -3,6 +3,7 @@ from django.db import models
 # Create your models here.
 from django import forms
 from django.db import models
+from django.core.paginator import Paginator
 
 # Create your models here.
 from modelcluster.fields import ParentalKey, ParentalManyToManyField
@@ -49,6 +50,8 @@ class StoryTag(TaggedItemBase):
 
 
 class StoryIndexPage(Page):
+    STORIES_PER_PAGE = 1
+
     """The 'media' section of the site will host multiple StoryIndex pages
     Each one is configured to show certain kinds of stories and
     other optional sections we will define."""
@@ -69,12 +72,24 @@ class StoryIndexPage(Page):
     def get_context(self, request):
         
         context = super().get_context(request)
+        
         stories = StoryPage.objects.live() #child_of(self).live()
         stories = stories.order_by('-first_published_at')
         stories = stories.filter(categories__in=list(self.categories.all())).distinct()
+
+        # Pagination.
+        paginator = Paginator(stories, self.STORIES_PER_PAGE)
+        page = request.GET.get("page")
+        try:
+            stories = paginator.page(page)
+        except:
+            stories = paginator.page(1)
+
         featured = FeaturedStory.objects.all().order_by('-story__first_published_at')
         context['stories'] = stories
         context['featured'] = featured
+        context['peer_pages'] = self.get_siblings()
+
         return context
 
 

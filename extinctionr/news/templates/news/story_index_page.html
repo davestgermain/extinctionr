@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-{% load info %}
+{% load news %}
 {% load static %}
 {% load tz %}
 {% load wagtailcore_tags wagtailimages_tags %}
@@ -28,7 +28,7 @@
 
 ul.page-nav li {
 	color: #808080;
-	display: inline;
+	display: inline-block;
 	padding: .1em;
     font-family: FucXed, sans-serif;
 }
@@ -84,18 +84,11 @@ ul.page-nav li a:hover {
 <!-- secondary nav for media -->
 <!-- TODO these will be auto generated from page structure -->
 <ul class="nav nav-fill">
+{% for peer in peer_pages %}
   <li class="nav-item">
-    <a class="nav-link active" href="/news">News</a>
+    <a class="nav-link{% if peer.id == page.id %} active{% endif %}" href="{% pageurl peer %}">News</a>
   </li>
-  <li class="nav-item">
-    <a class="nav-link" href="#">Video</a>
-  </li>
-  <li class="nav-item">
-    <a class="nav-link" href="#">People</a>
-  </li>
-  <li class="nav-item">
-    <a class="nav-link" href="#">Press</a>
-  </li>
+{% endfor %}
 </ul>
 </div>
 </div>
@@ -104,7 +97,7 @@ ul.page-nav li a:hover {
     {{page.intro|richtext}}
 </div>
 
-<div class="row">
+<div class="row mb-5">
 	<!-- story grid -->
 	<div class="col-10 offset-1">
 		<div class="grid">
@@ -141,6 +134,43 @@ ul.page-nav li a:hover {
 			{% endfor %}
 		</div>
 	</div>
+</div>
+<div class="row">
+    <div class="col">
+		<div class="text-center w-100">
+			{% if stories.paginator.num_pages > 1 %}
+			<ul class="page-nav">
+				{% if stories.has_previous %}
+					<li><a href="?page=1">first</a></li>
+					<li><a href="?page={{ stories.previous_page_number }}">previous</a></li>
+				{% else %}
+					<li>first</li>
+					<li>previous</li>
+				{% endif %}
+
+				{% for p in stories.paginator.page_range|elide_pages:stories.number %}
+					{% if p == -1 %}
+						<li>...</li>
+					{% else %}
+						{% if p == stories.number %}
+							<li>{{p}}</li>
+						{% else %}
+							<li><a href="?page={{ p }}">{{ p }}</a></li>
+						{% endif %}
+					{% endif %}
+				{% endfor %}
+
+				{% if stories.has_next %}
+					<li><a href="?page={{ stories.next_page_number }}">next</a></li>
+					<li><a href="?page={{ stories.paginator.num_pages }}">last</a></li>
+				{% else %}
+					<li>next</li>
+					<li>last</li>
+				{% endif %}
+			</ul>
+			{% endif %}
+		</div>
+    </div>
 </div>
 {% endblock %}
 {% block extra_js %}
