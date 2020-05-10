@@ -14,16 +14,7 @@
 {% endblock %}
 {% block inline_css %}
 
-.grid-sizer,
-.grid-item {
-	float: left;
-	width: 30%;
-}
-
-.grid:after {
-	content: '';
-	display: block;
-	clear: both;
+.grid-item-content {
 }
 
 ul.page-nav li {
@@ -99,41 +90,41 @@ ul.page-nav li a:hover {
 
 <div class="row mb-5">
 	<!-- story grid -->
-	<div class="col-10 offset-1">
-		<div class="grid">
-			<div class="grid-sizer"></div>
-			{% for story in stories %}
-				{% with story=story.specific %}
-				<div class="grid-item my-2">
-					<div class="bg-white">
-						{% with story.hero_image as hero_image %}
-							{% if hero_image %}
-								{% image hero_image fill-1024x576 %}
-							{% elif story.media_thumbnail_url %}
-								<div class="aspect-ratio-16-9">
-								<div>
-									<img src="{{story.media_thumbnail_url}}" width="100%">
-								</div>
-								</div>
-							{% endif %}
-						{% endwith %}
-						<div class="p-2">
-							<div><a href="{% pageurl story %}" class="blog-link blog-list-title"><strong>{{story.title}}</strong></a></div>
-							<div class="blog-byline">By {{story.author}} | {{story.date}}</div>
-							<p class="mt-2">{{story.lede}}</p>
-							{% for tag in story.tags.all %}
-							<span class="blog-tag mr-2 my-1"><a href="{% pageurl page %}?tag={{tag}}">{{tag}}</a></span>
-							{% endfor %}
-							<div class="mt-4 text-fucxed">
-								<span class="blog-btn p-1"><a href="{% pageurl story%}">Read more</a></span>
-							</div>
-						</div>
-					</div>
-				</div>
-				{% endwith %}
-			{% endfor %}
-		</div>
-	</div>
+    <div class="col w-100">
+    <div class="grid">
+        <div class="grid-sizer col col-md-6 col-lg-4"></div>
+        {% for story in stories %}
+            {% with story=story.specific %}
+            <div class="grid-item col col-md-6 col-lg-4 my-2">
+                <div class="grid-item-content bg-white">
+                    {% with story.hero_image as hero_image %}
+                        {% if hero_image %}
+                            {% image hero_image fill-1024x576 %}
+                        {% elif story.media_thumbnail_url %}
+                            <div class="aspect-ratio-16-9">
+                            <div>
+                                <img src="{{story.media_thumbnail_url}}" width="100%">
+                            </div>
+                            </div>
+                        {% endif %}
+                    {% endwith %}
+                    <div class="p-2">
+                        <div><a href="{% pageurl story %}" class="blog-link blog-list-title"><strong>{{story.title}}</strong></a></div>
+                        <div class="blog-byline">By {{story.author}} | {{story.date}}</div>
+                        <p class="mt-2">{{story.lede}}</p>
+                        {% for tag in story.tags.all %}
+                        <span class="blog-tag mr-2 my-1"><a href="{% pageurl page %}?tag={{tag}}">{{tag}}</a></span>
+                        {% endfor %}
+                        <div class="mt-4 text-fucxed">
+                            <span class="blog-btn p-1"><a href="{% pageurl story%}">Read more</a></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endwith %}
+        {% endfor %}
+    </div>
+    </div>
 </div>
 <div class="row">
     <div class="col">
@@ -186,7 +177,6 @@ imgLoad.on('always', function(x){
 		columnWidth: '.grid-sizer',
 		percentPosition: true,
 		horizontalOrder: true,
-		gutter: 16,
 	});
 });
 </script>

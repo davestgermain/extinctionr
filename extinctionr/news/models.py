@@ -50,7 +50,7 @@ class StoryTag(TaggedItemBase):
 
 
 class StoryIndexPage(Page):
-    STORIES_PER_PAGE = 1
+    STORIES_PER_PAGE = 6
 
     """The 'media' section of the site will host multiple StoryIndex pages
     Each one is configured to show certain kinds of stories and
