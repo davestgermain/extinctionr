@@ -60,6 +60,10 @@ span.blog-btn {
 	font-size: 1.5rem;
 }
 
+.blog-tag {
+	font-size: .8em;
+}
+
 span.blog-tag a {
 	color: white !important;
 	text-decoration: none !important;
