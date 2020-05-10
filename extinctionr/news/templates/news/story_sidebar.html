@@ -1,0 +1,11 @@
+{% load wagtailcore_tags wagtailimages_tags %}
+
+<ul id="blog-featured-stories" class="pl-1 m-0">
+{% for story in featured_stories %}
+    <li class="blog-featured-story-card mb-2">
+        <div class="blog-sidebar-title">
+        <a href="{% pageurl story.story %}">{{story.story.specific.title}}</a></div>
+        <div>{{story.story.specific.lede}}</div>
+    </li>
+{% endfor %}
+</ul>

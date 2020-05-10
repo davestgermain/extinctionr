@@ -16,6 +16,21 @@
 	font-size: 2em;
 }
 
+.blog-mini-title {
+	font-family: "Crimson Text Bold", Georgia, serif !important;
+	font-size: 1em;
+	text-decoration: none;
+}
+
+.blog-mini-lede {
+	font-size: .8em;
+}
+
+.blog-sidebar-title {
+	font-family: "Crimson Text Bold", Georgia, serif !important;
+	text-decoration: none;
+}
+
 .blog-byline {
 	font-family: "Crimson Text Bold", Georgia, serif;
 	font-size: 0.75em;
@@ -24,26 +39,27 @@
 	border-top: solid black 1px;
 }
 
+a.social-share {
+    color: black;
+    font-size: 1.2em;
+}
+
 hr.thick {
 	border-bottom: 1px solid black;
 }
 
-ul.blog-cat-list {
+#blog-featured-stories {
 	list-style: none;
 }
 
-ul.blog-cat-list a {
-    color: #000000;
-    text-decoration: none;
+#blog-featured-stories a {
+    color: #000000 !important;
+    text-decoration: none !important;
 }
 
 span.blog-btn a:hover, span.blog-btn a:focus,
-ul.blog-cat-list a:hover, ul.blog-cat-list a:focus {
+ul.blog-cat-list a:hover, #blog-featured-stories a:focus {
     color: rgb(20, 170, 55);
-}
-
-ul.blog-cat-list li a.active {
-	border-bottom: 2px solid black;
 }
 
 span.blog-tag {

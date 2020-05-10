@@ -77,7 +77,7 @@ ul.page-nav li a:hover {
 <ul class="nav nav-fill">
 {% for peer in peer_pages %}
   <li class="nav-item">
-    <a class="nav-link{% if peer.id == page.id %} active{% endif %}" href="{% pageurl peer %}">News</a>
+    <a class="nav-link{% if peer.id == page.id %} active{% endif %}" href="{% pageurl peer %}">{{peer.title}}</a>
   </li>
 {% endfor %}
 </ul>

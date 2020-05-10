@@ -49,7 +49,7 @@ class StoryTag(TaggedItemBase):
     )
 
 
-class StoryIndexPage(Page):
+class StoryIndexPage(Page, Orderable):
     STORIES_PER_PAGE = 6
 
     """The 'media' section of the site will host multiple StoryIndex pages
@@ -72,10 +72,14 @@ class StoryIndexPage(Page):
     def get_context(self, request):
         
         context = super().get_context(request)
+
         
         stories = StoryPage.objects.live() #child_of(self).live()
         stories = stories.order_by('-first_published_at')
         stories = stories.filter(categories__in=list(self.categories.all())).distinct()
+        tag = request.GET.get('tag', '')
+        if tag:
+            stories = stories.filter(tags__name=tag)
 
         # Pagination.
         paginator = Paginator(stories, self.STORIES_PER_PAGE)
@@ -142,6 +146,16 @@ class StoryPage(Page):
             ('embedded_content', EmbedContentBlock()),
         ]
     )
+
+    def get_context(self, request):
+        
+        context = super().get_context(request)
+        
+        related = StoryPage.objects.live().order_by('-first_published_at')
+        related = related.filter(tags__in=list(self.tags.all())).distinct()
+        context["related"] = related[0:3]
+
+        return context
 
     def author(self):
         return self.owner.username
