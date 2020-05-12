@@ -1,25 +1,25 @@
 {% load wagtailcore_tags wagtailimages_tags %}
 {% load news %}
 
-<h4>Featured:</h4>
-<ul id="blog-featured-stories" class="pl-1 m-0">
+<h5>Featured:</h5>
+<ul id="blog-featured-stories" class="m-0 p-0">
 {% for story in featured_stories %}
-    <li class="blog-featured-story-card mb-2">
+    <li class="blog-featured-story-card p-1 mb-2 bg-white">
         <div class="blog-sidebar-title">
         <a href="{% pageurl story.story %}">{{story.story.title}}</a></div>
-        <div>{{story.story.specific.lede}}</div>
+        <div><small>{{story.story.specific.lede}}</small></div>
     </li>
 {% endfor %}
 </ul>
-<hr class="thick">
-<h4>Join XR:</h4>
-<p class="btn-row">
+<hr class="thickx">
+<h5>Join XR:</h5>
+<p class="btn-row p-1 bg-white">
     <a href="{% url 'extinctionr.info:page' page='join-mailing-list' %}" 
-       class="btn btn-lg btn-primary text-uppercase">Sign-up
+       class="btn btn-lg btn-primary text-uppercase w-100">Sign-up
     </a>
 </p>
-<hr class="thick">
-<h4>Upcoming Actions:</h4>
+<hr class="thickx">
+<h5>Upcoming Actions:</h5>
 {% upcoming_actions %}
 
 <!--
