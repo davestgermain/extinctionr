@@ -14,9 +14,6 @@
 {% endblock %}
 {% block inline_css %}
 
-.grid-item-content {
-}
-
 ul.page-nav li {
 	color: #808080;
 	display: inline-block;
@@ -64,6 +61,13 @@ ul.page-nav li a:hover {
  .nav-item a:hover {
 	color: #22a83e !important;
  }
+.play-icon-overlay {
+    position: absolute;
+    background-position: center;
+    color: white;
+    font-size: 3em;
+    opacity: .75;
+}
 
 {{block.super}}
 
@@ -98,15 +102,18 @@ ul.page-nav li a:hover {
             <div class="grid-item col col-md-6 col-lg-4 my-2">
                 <div class="grid-item-content bg-white">
                     {% with story.hero_image as hero_image %}
+                        <a href="{% pageurl story %}">
                         {% if hero_image %}
                             {% image hero_image fill-1024x576 %}
                         {% elif story.media_thumbnail_url %}
                             <div class="aspect-ratio-16-9">
-                            <div>
-                                <img src="{{story.media_thumbnail_url}}" width="100%">
-                            </div>
+                                <div>
+                                    <img src="{{story.media_thumbnail_url}}" width="100%">
+                                    <i class="far fa-play-circle play-icon-overlay"></i>
+                                </div>
                             </div>
                         {% endif %}
+                        </a>
                     {% endwith %}
                     <div class="p-2">
                         <div><a href="{% pageurl story %}" class="blog-link blog-list-title"><strong>{{story.title}}</strong></a></div>
