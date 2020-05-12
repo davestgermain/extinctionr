@@ -28,7 +28,7 @@
 
 <div class="row mx-auto">
     <!-- main content -->
-    <div class="col-6 offset-2 bg-white pb-5">
+    <div class="col-12 col-lg-7 offset-lg-1 bg-white pb-5" data-column-name="story">
         <div class="pt-3">
             {% if page.hero_image %}
             {% image page.hero_image fill-1280x720 class="hero-image mb-2"%}
@@ -55,52 +55,72 @@
         </div>
         <!-- sharing links -->
         <div>
-    <ul class="list-inline">
-      <li class="list-inline-item">
-        <span class="text-fucxed d-4">Share:</span>
-      </li>
-      <li class="list-inline-item">
-        <a href="{{page|share_url:"fb"}}" target="_blank" class="social-share">
-            <i class="fab fa-facebook"></i>
-        </a>
-      </li>
-      <li class="list-inline-item">
-        <a href="{{page|share_url:"twitter"}}" target="_blank" class="social-share">
-            <i class="fab fa-twitter"></i>
-        </a>
-      </li>
-      
-      <li class="list-inline-item">
-        <a href="{{page|share_url:"email"}}" target="_blank" class="social-share">
-            <i class="fas fa-envelope"></i>
-        </a>
-      </li>
-    </ul>
-    </div>
-    <div class="row px-2">
-      {% if related %}
-        <h4 class="mb-2 mt-4">Related Stories:</h4>
-        <div class="row">
-        {% for story in related %}
-          {% if story.id != page.id %}
-            <div class="col-4">
-            {% mini_card story %}
-            </div>
-            <div class="col-4">
-            {% mini_card story %}
-            </div>
-            <div class="col-4">
-            {% mini_card story %}
+          <ul class="list-inline">
+            <li class="list-inline-item">
+              <span class="text-fucxed d-4">Share</span>
+            </li>
+            <li class="list-inline-item">
+              <a href="{{page|share_url:"fb"}}" target="_blank" class="social-share">
+                  <i class="fab fa-facebook"></i>
+              </a>
+            </li>
+            <li class="list-inline-item">
+              <a href="{{page|share_url:"twitter"}}" target="_blank" class="social-share">
+                  <i class="fab fa-twitter"></i>
+              </a>
+            </li>
+            
+            <li class="list-inline-item">
+              <a href="{{page|share_url:"email"}}" target="_blank" class="social-share">
+                  <i class="fas fa-envelope"></i>
+              </a>
+            </li>
+          </ul>
+        </div>
+        <hr class="thick mt-3">
+        <div class="row blog-sibling">
+          <div class="col">
+           {% if prevstory %}
+           <a href="{% pageurl prevstory %}">
+           <i class="fas fa-arrow-alt-circle-left"></i><span class="text-fucxed d-4 ml-1">Previous</span><br>
+           <span class="ml-1">{{prevstory.title}}</span>
+           </a>
+           {% endif %}
+          </div>
+          <div class="col text-right">
+           {% if nextstory %}
+           <a href="{% pageurl nextstory %}">
+           <span class="text-fucxed d-4">Next</span>
+           <i class="fas fa-arrow-alt-circle-right"></i><br>
+            <span class="mr-1">{{nextstory.title}}</span>
+           </a>
+           {% endif %}
+          </div>
+        </div>
+        <div class="row px-2">
+          {% if related %}
+            <h4 class="mb-2 mt-4">Related Stories:</h4>
+            <div class="row">
+            {% for story in related %}
+              {% if story.id != page.id %}
+                <div class="col-4 p-1">
+                {% mini_card story %}
+                </div>
+                <div class="col-4 p-1">
+                {% mini_card story %}
+                </div>
+                <div class="col-4 p-1">
+                {% mini_card story %}
+                </div>
+              {% endif %}
+            {% endfor %}
             </div>
           {% endif %}
-        {% endfor %}
         </div>
-      {% endif %}
     </div>
+    <div class="col col-lg-3 p-3">
+      {% story_sidebar %}
     </div>
-    <div class="col-2 pt-5">
-    <h4>Featured</h4>
-    {% story_sidebar %}
-    </div>
+  </div>
 </div>
 {% endblock %}

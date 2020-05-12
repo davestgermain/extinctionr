@@ -1,4 +1,3 @@
-from django.db import models
 
 # Create your models here.
 from django import forms
@@ -151,9 +150,22 @@ class StoryPage(Page):
         
         context = super().get_context(request)
         
-        related = StoryPage.objects.live().order_by('-first_published_at')
-        related = related.filter(tags__in=list(self.tags.all())).distinct()
-        context["related"] = related[0:3]
+        stories = StoryPage.objects.live().order_by('-first_published_at')
+        related = stories.filter(tags__in=list(self.tags.all())).exclude(id=self.id)[0:3]
+        if related.count() > 0:
+            context["related"] = related
+
+        # get next and previous by date. the names look swapped but this is intentional
+        # because posts are sorted in reverse chronological order
+        try:
+            context['nextstory'] = self.get_previous_by_date()
+        except StoryPage.DoesNotExist:
+            pass
+
+        try:
+            context['prevstory'] = self.get_next_by_date()
+        except StoryPage.DoesNotExist:
+            pass
 
         return context
 

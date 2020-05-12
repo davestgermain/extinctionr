@@ -1,11 +1,30 @@
 {% load wagtailcore_tags wagtailimages_tags %}
+{% load news %}
 
+<h4>Featured:</h4>
 <ul id="blog-featured-stories" class="pl-1 m-0">
 {% for story in featured_stories %}
     <li class="blog-featured-story-card mb-2">
         <div class="blog-sidebar-title">
-        <a href="{% pageurl story.story %}">{{story.story.specific.title}}</a></div>
+        <a href="{% pageurl story.story %}">{{story.story.title}}</a></div>
         <div>{{story.story.specific.lede}}</div>
     </li>
 {% endfor %}
 </ul>
+<hr class="thick">
+<h4>Join XR:</h4>
+<p class="btn-row">
+    <a href="{% url 'extinctionr.info:page' page='join-mailing-list' %}" 
+       class="btn btn-lg btn-primary text-uppercase">Sign-up
+    </a>
+</p>
+<hr class="thick">
+<h4>Upcoming Actions:</h4>
+{% upcoming_actions %}
+
+<!--
+    <hr class="thick">
+    <div class="position-absolute">
+    <a class="twitter-timeline" data-lang="en" href="https://twitter.com/XRboston" data-tweet-limit="3">Tweets by @XRBoston</a> 
+    <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+    </div> -->

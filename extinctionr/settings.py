@@ -32,9 +32,6 @@ ALLOWED_HOSTS = [
     'localhost',
 ]
 
-### Wagail settings.
-WAGTAIL_SITE_NAME = 'XR Boston'
-
 SITE_ID = 1
 
 # Application definition
@@ -352,5 +349,9 @@ POSTORIUS_TEMPLATE_BASE_URL = "http://localhost:8000"
 
 ADMINS = [('Webmaster', 'webmaster@xrmass.org')]
 SERVER_EMAIL = 'webmaster@xrmass.org'
+
+### Wagtail settings
+WAGTAIL_SITE_NAME = 'XR Boston'
+WAGTAILEMBEDS_RESPONSIVE_HTML = True
 
 

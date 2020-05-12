@@ -1,6 +1,9 @@
 import urllib
 from django import template
+from django.utils.timezone import now
+
 from extinctionr.news.models import FeaturedStory
+from extinctionr.actions.models import Action
 
 register = template.Library()
 
@@ -45,3 +48,11 @@ def story_sidebar(*args, **kwargs):
 @register.inclusion_tag("news/story_mini_card.html")
 def mini_card(story):
     return {'story' : story.specific}
+
+@register.inclusion_tag('news/upcoming_actions.html')
+def upcoming_actions(*args, **kwargs):
+    try:
+        actions = Action.objects.filter(public=True, when__gte=now()).order_by('when')[0:3]
+    except IndexError:
+        actions = None
+    return {'actions': actions}
