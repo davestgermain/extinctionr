@@ -1,4 +1,4 @@
-django
+django>=3.0
 wiki>=0.6b2
 -e git+https://github.com/davestgermain/Django-CRM@549ea96ecfbf9c9fa44d2e6f738386edbe70a8ca#egg=django_crm
 boto3
@@ -25,3 +25,5 @@ django-taggit
 ics
 postorius
 wagtail
+wagtailfontawesome
+-e https://github.com/cheradenine/wagtail-markdown@f95c76991066832a0c8ba29eb0ea5f3ea65a1694=wagtail-markdown

@@ -60,6 +60,7 @@ INSTALLED_APPS = [
     'wagtail.search',
     'wagtail.admin',
     'wagtail.core',
+    'wagtailmarkdown',
     'modelcluster',
     # End of Wagtail.
     # CRM stuff

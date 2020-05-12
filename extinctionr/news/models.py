@@ -24,6 +24,8 @@ from wagtail.images.blocks import ImageChooserBlock
 from wagtail.search import index
 from wagtail.snippets.models import register_snippet
 
+from wagtailmarkdown.blocks import MarkdownBlock
+
 from .blocks import EmbedContentBlock
 
 @register_snippet
@@ -137,6 +139,7 @@ class StoryPage(Page):
             ('paragraph', RichTextBlock(features=[
                 'h2', 'h3', 'bold', 'italic', 'link', 'ol', 'ul'
             ])),
+            ('markdown', MarkdownBlock(icon='code')),
             ('image', StructBlock([
                 ('image', ImageChooserBlock()),
                 ('caption', CharBlock(required=False))
