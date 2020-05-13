@@ -149,12 +149,10 @@ ul.page-nav li a:hover {
 				{% for p in stories.paginator.page_range|elide_pages:stories.number %}
 					{% if p == -1 %}
 						<li>...</li>
-					{% else %}
-						{% if p == stories.number %}
-							<li>{{p}}</li>
-						{% else %}
-							<li><a href="?page={{ p }}">{{ p }}</a></li>
-						{% endif %}
+					{% elif p == stories.number %}
+                        <li>{{p}}</li>
+                    {% else %}
+                        <li><a href="?page={{ p }}">{{ p }}</a></li>
 					{% endif %}
 				{% endfor %}
 

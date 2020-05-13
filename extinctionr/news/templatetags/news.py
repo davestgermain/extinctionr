@@ -8,20 +8,20 @@ from extinctionr.actions.models import Action
 register = template.Library()
 
 @register.filter('elide_pages')
-def elide_pages(range, page):
-    xs = []
+def elide_pages(range, cur_page):
+    pages = []
     skip = False
-    for x in range:
-        if x <= 2 or x >= range.stop - 2:
-            xs.append(x)
+    for p in range:
+        if p <= 2 or p >= range.stop - 2:
+            pages.append(p)
             skip = False
-        elif page-3 <= x <= page+3:
-            xs.append(x)
+        elif cur_page-3 <= p <= cur_page+3:
+            pages.append(p)
             skip = False
         elif not skip:        
-            xs.append(-1)
+            pages.append(-1)
             skip = True
-    return xs
+    return pages
 
 @register.filter('share_url')
 def share_url(story, service):
