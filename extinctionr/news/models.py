@@ -26,7 +26,7 @@ from wagtail.snippets.models import register_snippet
 
 from wagtailmarkdown.blocks import MarkdownBlock
 
-from .blocks import EmbedContentBlock
+from .blocks import EmbedContentBlock, ImageCarouselBlock
 
 @register_snippet
 class StoryCategory(models.Model):
@@ -144,6 +144,7 @@ class StoryPage(Page):
                 ('image', ImageChooserBlock()),
                 ('caption', CharBlock(required=False))
             ])),
+            ('carousel', ImageCarouselBlock()),
             ('quote', BlockQuoteBlock()),
             ('embedded_content', EmbedContentBlock()),
         ]

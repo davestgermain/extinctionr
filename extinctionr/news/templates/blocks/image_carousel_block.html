@@ -1,0 +1,11 @@
+{% load wagtailcore_tags wagtailimages_tags %}
+<div class="mb-1">
+    <div class="image-carousel mx-3">
+  {% for child in value %}
+    <div style="width:90%">
+    {% image child.image fill-800x450 %}
+    <p class="text-center"><small>{{child.caption}}</small></p>
+    </div>
+  {% endfor %}
+  </div>
+</div>

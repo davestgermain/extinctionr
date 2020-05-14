@@ -1,8 +1,9 @@
 # Create your models here.
 from wagtail.core.blocks import (
-    CharBlock, StructBlock, BooleanBlock, StructValue
+    CharBlock, StructBlock, BooleanBlock, StructValue, ListBlock
 )
 from wagtail.embeds.blocks import EmbedBlock
+from wagtail.images.blocks import ImageChooserBlock
 
 class EmbedContentStructValue(StructValue):
     @property
@@ -26,3 +27,14 @@ class EmbedContentBlock(StructBlock):
         template = 'blocks/embed_block.html'
 
 
+class ImageCarouselBlock(ListBlock):
+
+    def __init__(self):
+        super().__init__(StructBlock([
+            ('image', ImageChooserBlock()),
+            ('caption', CharBlock(max_length=255, required=False)),
+        ]))
+
+    class Meta:
+        icon = 'image'
+        template = 'blocks/image_carousel_block.html'
