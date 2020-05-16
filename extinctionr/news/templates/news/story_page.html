@@ -4,8 +4,7 @@
 {% load news %}
 {% load wagtailcore_tags wagtailimages_tags %}
 {% block extrahead %}
-<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.css"/>
-<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick-theme.css"/>
+<link rel="stylesheet" href="{% static "css/flickity.min.css"%}" media/>
 <link rel="stylesheet" href="{% static 'css/xr-blog.css' %}">
 {% endblock %}
 {% block title %}:: {{page.title}}{% endblock %}
@@ -24,32 +23,15 @@
 {% endblock %}
 {% block inline_css %}
 {{block.super}}
-
-
-.slide-arrow {
-  margin: 0;
-  padding: 0;
-  background-color: transparent;
-  background: none;
-  border: none;
-  outline: none;
-  position: absolute;
-  top: 40%;
-}
-.slide-arrow:focus {
-  outline: 0;
-}
-.prev-arrow{
+.flickity-prev-next-button.previous {
   left: -20px;
-  font-size: 1.5em;
-  color: #888;
 }
-.next-arrow{
+.flickity-prev-next-button.next {
   right: -20px;
-  font-size: 1.5em;
-  color: #888;
 }
-
+.flickity-button:disabled {
+  display: none;
+}
 {% endblock %}
 
 {% block content %}
@@ -155,18 +137,6 @@
 
 {% block extra_js %}
 
-<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js"></script>
-<script type="text/javascript">
-
-$(function() {
-  $('.image-carousel').slick({
-    slidesToShow: 1.5,
-    slidesToScroll: 1,
-    dots: true,
-    prevArrow:'<button class="slide-arrow prev-arrow"><i class="fas fa-angle-left"></i>',
-    nextArrow:'<button class="slide-arrow next-arrow"><i class="fas fa-angle-right"></i>',
-  });
-});
-</script>
+<script type="text/javascript" src="{% static "js/flickity.pkgd.min.js" %}"></script>
 
 {% endblock %}
