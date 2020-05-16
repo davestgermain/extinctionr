@@ -1,32 +1,30 @@
-
-# Create your models here.
 from django import forms
 from django.db import models
 from django.core.paginator import Paginator
 
-# Create your models here.
 from modelcluster.fields import ParentalKey, ParentalManyToManyField
 from modelcluster.contrib.taggit import ClusterTaggableManager
 from taggit.models import TaggedItemBase
 
-# Create your models here.
+from wagtail.admin.edit_handlers import (
+    FieldPanel, InlinePanel, MultiFieldPanel, StreamFieldPanel, PageChooserPanel
+)
 from wagtail.core.blocks import (
     RichTextBlock, BlockQuoteBlock, CharBlock, StructBlock, BooleanBlock, StructValue
 )
 from wagtail.core.models import Page, Orderable
 from wagtail.core.fields import RichTextField, StreamField
 from wagtail.embeds.blocks import EmbedBlock
-from wagtail.admin.edit_handlers import (
-    FieldPanel, InlinePanel, MultiFieldPanel, StreamFieldPanel, PageChooserPanel
-)
-from wagtail.images.edit_handlers import ImageChooserPanel
 from wagtail.images.blocks import ImageChooserBlock
+from wagtail.images.edit_handlers import ImageChooserPanel
+from wagtail.images.models import Image
 from wagtail.search import index
 from wagtail.snippets.models import register_snippet
 
 from wagtailmarkdown.blocks import MarkdownBlock
 
-from .blocks import EmbedContentBlock, ImageCarouselBlock
+from extinctionr.vaquita.blocks import ImageCarouselBlock
+from .blocks import EmbedContentBlock
 
 @register_snippet
 class StoryCategory(models.Model):
@@ -161,14 +159,15 @@ class StoryPage(Page):
 
         # get next and previous by date. the names look swapped but this is intentional
         # because posts are sorted in reverse chronological order
+
         try:
             context['nextstory'] = self.get_previous_by_date()
-        except StoryPage.DoesNotExist:
+        except (StoryPage.DoesNotExist, ValueError):
             pass
 
         try:
             context['prevstory'] = self.get_next_by_date()
-        except StoryPage.DoesNotExist:
+        except (StoryPage.DoesNotExist, ValueError):
             pass
 
         return context
@@ -215,7 +214,7 @@ class StoryPage(Page):
 class StoryPageGalleryImage(Orderable):
     page = ParentalKey(StoryPage, on_delete=models.CASCADE, related_name='gallery_images')
     image = models.ForeignKey(
-        'wagtailimages.Image', on_delete=models.CASCADE, related_name="+"
+        'vaquita.CustomImage', on_delete=models.CASCADE, related_name="+"
     )
     caption = models.CharField(blank=True, max_length=250)
     panels = [

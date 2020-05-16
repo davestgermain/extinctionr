@@ -82,6 +82,7 @@ INSTALLED_APPS = [
     'extinctionr.info',
     'extinctionr.circles.apps.CircleConfig',
     'extinctionr.news',
+    'extinctionr.vaquita',
     # django wiki
     'django_nyt.apps.DjangoNytConfig',
     'mptt',
@@ -354,5 +355,5 @@ SERVER_EMAIL = 'webmaster@xrmass.org'
 ### Wagtail settings
 WAGTAIL_SITE_NAME = 'XR Boston'
 WAGTAILEMBEDS_RESPONSIVE_HTML = True
-
+WAGTAILIMAGES_IMAGE_MODEL = 'vaquita.CustomImage'
 

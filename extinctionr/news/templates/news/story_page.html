@@ -110,7 +110,7 @@
           <div class="col">
            {% if prevstory %}
            <a href="{% pageurl prevstory %}">
-           <i class="fas fa-arrow-alt-circle-left"></i><span class="text-fucxed d-4 ml-1">Previous</span><br>
+           <i class="fas fa-arrow-alt-circle-left"></i><span class="text-fucxed d-5 ml-1">Previous</span><br>
            <span class="ml-1">{{prevstory.title}}</span>
            </a>
            {% endif %}
@@ -118,7 +118,7 @@
           <div class="col text-right">
            {% if nextstory %}
            <a href="{% pageurl nextstory %}">
-           <span class="text-fucxed d-4">Next</span>
+           <span class="text-fucxed d-5">Next</span>
            <i class="fas fa-arrow-alt-circle-right"></i><br>
             <span class="mr-1">{{nextstory.title}}</span>
            </a>
@@ -127,7 +127,7 @@
         </div>
         <div class="row px-2">
           {% if related %}
-            <h4 class="mb-2 mt-4">Related Stories:</h4>
+            <h5 class="mb-2 mt-4">Related Stories:</h5>
             <div class="row">
             {% for story in related %}
               {% if story.id != page.id %}

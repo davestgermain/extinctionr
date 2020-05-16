@@ -75,13 +75,13 @@ ul.page-nav li a:hover {
 {% block content %}
 
 <div class="row bg-white">
-<div class="col-8 w-100 offset-2">
+<div class="col col-lg-8 w-100 offset-lg-2">
 <!-- secondary nav for media -->
 <!-- TODO these will be auto generated from page structure -->
 <ul class="nav nav-fill">
 {% for peer in peer_pages %}
   <li class="nav-item">
-    <a class="nav-link{% if peer.id == page.id %} active{% endif %}" href="{% pageurl peer %}">{{peer.title}}</a>
+    <a class="news-menu nav-link{% if peer.id == page.id %} active{% endif %}" href="{% pageurl peer %}">{{peer.title}}</a>
   </li>
 {% endfor %}
 </ul>
@@ -99,7 +99,7 @@ ul.page-nav li a:hover {
         <div class="grid-sizer col col-md-6 col-lg-4"></div>
         {% for story in stories %}
             {% with story=story.specific %}
-            <div class="grid-item col col-md-6 col-lg-4 my-2">
+            <div class="grid-item col p-xs-0 col-md-6 col-lg-4 my-2">
                 <div class="grid-item-content bg-white">
                     {% with story.hero_image as hero_image %}
                         <a href="{% pageurl story %}">
