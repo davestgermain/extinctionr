@@ -120,6 +120,8 @@ class FeaturedStory(models.Model):
 
 
 class StoryPage(Page):
+    MAX_RELATED_STORIES = 10
+
     # This is a leaf page
     subpage_types = []
     parent_page_types = [
@@ -153,7 +155,8 @@ class StoryPage(Page):
         context = super().get_context(request)
         
         stories = StoryPage.objects.live().order_by('-first_published_at')
-        related = stories.filter(tags__in=list(self.tags.all())).exclude(id=self.id)[0:3]
+        # Collects set of stories that has the same tags as this story.
+        related = stories.filter(tags__in=list(self.tags.all())).exclude(id=self.id)[0:self.MAX_RELATED_STORIES]
         if related.count() > 0:
             context["related"] = related
 

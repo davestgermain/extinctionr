@@ -65,7 +65,7 @@
         </div>
         <!-- sharing links -->
         <div>
-          <ul class="list-inline">
+          <ul class="list-inline list-unstyled">
             <li class="list-inline-item">
               <span class="text-fucxed d-4">Share</span>
             </li>
@@ -107,25 +107,27 @@
            {% endif %}
           </div>
         </div>
-        <div class="row px-2">
+        <div class="row">
+          <div class="col w-100">
           {% if related %}
             <h5 class="mb-2 mt-4">Related Stories:</h5>
-            <div class="row">
+            <div data-flickity='{ "cellAlign":"left", "contain":true, "imagesLoaded":true, "pageDots":false, "adaptiveHeight":true }'>
             {% for story in related %}
               {% if story.id != page.id %}
-                <div class="col-4 p-1">
+                <div class="carousel-cell" style="width:45%">
                 {% mini_card story %}
                 </div>
-                <div class="col-4 p-1">
+                <div class="carousel-cell" style="width:45%">
                 {% mini_card story %}
                 </div>
-                <div class="col-4 p-1">
+                <div class="caoursel-cell" style="width:45%">
                 {% mini_card story %}
                 </div>
               {% endif %}
             {% endfor %}
             </div>
           {% endif %}
+          </div>
         </div>
     </div>
     <div class="col col-lg-3 py-3 px-0 p-lg-3">

@@ -15,7 +15,8 @@
     {% endwith %}
     </a>
     <div class="card-body p-1">
-        <div class="card-title mb-0"><a href="{% pageurl story %}" class="blog-link blog-mini-title"><strong>{{story.title}}</strong></a></div>
+        <div class="card-title mb-0 blog-mini-title"><a href="{% pageurl story %}" class="blog-link">
+          {{story.title}}</a></div>
         <div class="card-text blog-mini-lede pt-1">{{story.lede}}</div>
     </div>
 </div>

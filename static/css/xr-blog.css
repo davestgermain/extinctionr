@@ -20,7 +20,6 @@
 
 .blog-link {
     color: #000;
-    text-decoration: underline;
 }
 
 .blog-list-title {
@@ -38,13 +37,23 @@
 
 .blog-mini-title {
 	font-family: "Crimson Text Bold", Georgia, serif !important;
-	font-size: 1em;
+	font-size: .8em;
 	text-decoration: none;
-	line-height: .5em;
+	line-height: 1.2;
 }
 
 .blog-mini-lede {
-	font-size: .8em;
+	font-size: .7em;
+	line-height: 1.2;
+}
+
+@media (min-width: 576px) {
+	.blog-mini-title {
+		font-size: 1em;
+	}	
+	.blog-mini-lede {
+		font-size: .8em;
+	}	
 }
 
 .blog-sidebar-title {
@@ -85,6 +94,7 @@ hr.thick {
 
 span.blog-btn a:hover, span.blog-btn a:focus,
 .blog-sibling a:hover, .blog-sibling a:focus,
+.blog-link:hover, .blog-link:focus,
 ul.blog-cat-list a:hover, #blog-featured-stories a:focus {
     color: rgb(20, 170, 55);
 }
@@ -120,3 +130,22 @@ span.blog-btn a {
 iframe.youtube {
 	width: 100%;
 }
+
+.aspect-ratio-16-9 {
+	width:100%;
+	padding-top:56.25%;
+	position: relative;
+	overflow:hidden;
+}
+
+.aspect-ratio-16-9 div {
+	position: absolute;
+	top: 0;
+	left: 0;
+	bottom: 0;
+	right: 0;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
