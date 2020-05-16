@@ -3,12 +3,8 @@
   <div data-flickity='{ "cellAlign":"left", "contain":true, "imagesLoaded":true, "pageDots":false, "adaptiveHeight":true }'>
     {% for child in value %}
       <div class="carousel-cell w-100">
-        <div class="aspect-ratio-16-9">
-          <div>
-          {% image child.image fill-1025x576 as car_img %}
-          <img src="{{car_img.url}}" >
-          </div>
-        </div>
+        {% image child.image fill-1025x576 as car_img %}
+        <img src="{{car_img.url}}" >
         <p class="text-center mb-0"><small>{{child.caption}}</small></p>
       </div>
     {% endfor %}
