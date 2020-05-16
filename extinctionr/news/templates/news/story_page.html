@@ -113,17 +113,9 @@
             <h5 class="mb-2 mt-4">Related Stories:</h5>
             <div data-flickity='{ "cellAlign":"left", "contain":true, "imagesLoaded":true, "pageDots":false, "adaptiveHeight":true }'>
             {% for story in related %}
-              {% if story.id != page.id %}
-                <div class="carousel-cell" style="width:45%">
-                {% mini_card story %}
-                </div>
-                <div class="carousel-cell" style="width:45%">
-                {% mini_card story %}
-                </div>
-                <div class="caoursel-cell" style="width:45%">
-                {% mini_card story %}
-                </div>
-              {% endif %}
+              <div class="carousel-cell" style="width:45%">
+              {% mini_card story %}
+              </div>
             {% endfor %}
             </div>
           {% endif %}

@@ -156,7 +156,9 @@ class StoryPage(Page):
         
         stories = StoryPage.objects.live().order_by('-first_published_at')
         # Collects set of stories that has the same tags as this story.
-        related = stories.filter(tags__in=list(self.tags.all())).exclude(id=self.id)[0:self.MAX_RELATED_STORIES]
+        related = stories.filter(tags__in=list(self.tags.all()))
+        related = related.exclude(id=self.id)
+        related = related.distinct()[0:self.MAX_RELATED_STORIES]
         if related.count() > 0:
             context["related"] = related
 
