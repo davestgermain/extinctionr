@@ -14,9 +14,14 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path, include
+from django.urls import path, re_path, include
 from django.conf import settings
-from django.conf.urls.static import static
+
+from wagtail.admin import urls as wagtailadmin_urls
+from wagtail.documents import urls as wagtaildocs_urls
+from wagtail.contrib.sitemaps.views import sitemap
+from wagtail.core import urls as wagtail_urls
+
 # from django.contrib.auth import views
 from extinctionr.actions.views import propose_talk
 from extinctionr.circles.views import SignupView
@@ -39,7 +44,6 @@ urlpatterns = [
          include('opportunity.urls', namespace="opportunities")),
     path('relationships/cases/', include('cases.urls', namespace="cases")),
     path('relationships/emails/', include('emails.urls', namespace="emails")),
-    # path('planner/', include('planner.urls', namespace="planner")),
     path('admin/', admin.site.urls),
     path('notifications/', include('django_nyt.urls')),
     path('wiki/', include('wiki.urls')),
@@ -48,10 +52,16 @@ urlpatterns = [
     path('postorius/', include('postorius.urls')),
     path('mm/', include('django_mailman3.urls')),
     path('accounts/', include('allauth.urls')),
+    re_path(r'^cms/', include(wagtailadmin_urls)),
+    re_path(r'^documents/', include(wagtaildocs_urls)),
 ]
 
 if settings.DEBUG:
+    from django.conf.urls.static import static
+    from django.contrib.staticfiles.urls import staticfiles_urlpatterns
+
     print(settings.MEDIA_ROOT, settings.MEDIA_URL)
+    urlpatterns += staticfiles_urlpatterns()
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
     try:
         import debug_toolbar
@@ -61,4 +71,7 @@ if settings.DEBUG:
     except ImportError:
         pass
 
-urlpatterns += [path('', include('extinctionr.info.urls', namespace='extinctionr.info'))]
+urlpatterns += [
+    path('', include('extinctionr.info.urls', namespace='extinctionr.info')),
+    path('', include(wagtail_urls)),
+]

@@ -1,0 +1,22 @@
+{% load wagtailcore_tags wagtailimages_tags %}
+
+<div class="card bg-white m-md-1">
+    <a href="{% pageurl story %}">
+    {% with story.hero_image as hero_image %}
+        {% if hero_image %}
+            {% image hero_image fill-800x450 class="card-img-top" %}
+        {% elif story.media_thumbnail_url %}
+            <div class="aspect-ratio-16-9">
+                <div>
+                    <img src="{{story.media_thumbnail_url}}" class="card-img-top">
+                </div>
+            </div>
+        {% endif %}
+    {% endwith %}
+    </a>
+    <div class="card-body p-1">
+        <div class="card-title mb-0 blog-mini-title"><a href="{% pageurl story %}" class="blog-link">
+          {{story.title}}</a></div>
+        <div class="card-text blog-mini-lede pt-1">{{story.lede}}</div>
+    </div>
+</div>

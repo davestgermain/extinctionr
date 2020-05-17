@@ -1,0 +1,11 @@
+{% load tz %}
+
+<ul class="list-unstyled" class="p-0 m-0">
+{% for action in actions %}
+    <li class="blog-featured-story-card p-1 mb-2 bg-white">
+        <div class="blog-sidebar-title">
+        <a href="{{action.get_absolute_url}}">{{action.html_title}}</a></div>
+        <div><small>{{action.when|localtime|date:"D M jS @ P"}}</small></div>
+    </li>
+{% endfor %}
+</ul>

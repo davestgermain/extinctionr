@@ -15,6 +15,7 @@ from django.views.decorators.cache import cache_page
 from django.views.generic import FormView, DetailView, ListView, TemplateView
 
 from .models import PressRelease, Chapter
+from django.urls.exceptions import Resolver404
 
 
 class RegistrationForm(UserCreationForm):
@@ -68,22 +69,55 @@ class ContactView(FormView):
 class InfoView(TemplateView):
     def get(self, request, *args, **kwargs):
         page = kwargs['page']
-        if page.endswith('.html'):
-            page = page.split('.')[0]
-        elif page.endswith('/'):
-            page += 'index'
         try:
-            template_name = 'pages/%s.html' % page
-            get_template(template_name).template
-            self.template_name = template_name
+            self.template_name = self.find_template(page)
         except TemplateDoesNotExist:
-            raise Http404(page)
+            raise Resolver404(page)
         tresp = super(InfoView, self).get(request, *args, **kwargs)
         response = HttpResponse(tresp.rendered_content)
         response['Vary'] = 'Cookie'
         if request.user.is_authenticated:
             response['Cache-Control'] = 'private'
         return response
+
+    @staticmethod
+    def find_template(page):
+        if page.endswith('.html'):
+            page = page.split('.')[0]
+        elif page.endswith('/'):
+            page += 'index'
+        try:
+            template_name = 'pages/%s.html' % page
+            template = get_template(template_name).template
+            return template_name
+        except TemplateDoesNotExist:
+            return None
+
+
+# Wraps any Django URL Pattern and overrides the 'match' function.
+class InfoViewUrlPattern():
+    def __init__(self, pattern):
+        self.pattern = pattern
+
+    def match(self, path):
+        match = self.pattern.match(path)
+        if match:
+            _, _, kwargs = match
+            page = kwargs['page']
+            if InfoView.find_template(page):
+                return match
+        return None
+
+    # dynamically chain down to anything else to the wrapped pattern    
+    def __getattr__(self, attr):
+        if attr in self.__dict__:
+            return getattr(self, attr)
+        return getattr(self.pattern, attr)
+
+
+def wrap_info_path(path):
+    path.pattern = InfoViewUrlPattern(path.pattern)
+    return path
 
 
 @method_decorator(cache_page(1200), name='dispatch')

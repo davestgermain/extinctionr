@@ -1,0 +1,151 @@
+/* styles for wagtail responsive embeds */
+.rich-text img {
+    max-width: 100%;
+    height: auto;
+}
+
+.responsive-object {
+    position: relative;
+}
+
+.responsive-object iframe,
+.responsive-object object,
+.responsive-object embed {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
+
+.blog-link {
+    color: #000;
+}
+
+.blog-list-title {
+	font-family: "Crimson Text Bold", Georgia, serif !important;
+	text-decoration: none;
+	font-size: 1.5em;
+	line-height: .8em;
+}
+
+.blog-title {
+	font-family: "Crimson Text Bold", Georgia, serif !important;
+	text-decoration: none;
+	font-size: 2em;
+}
+
+.blog-mini-title {
+	font-family: "Crimson Text Bold", Georgia, serif !important;
+	font-size: .8em;
+	text-decoration: none;
+	line-height: 1.2;
+}
+
+.blog-mini-lede {
+	font-size: .7em;
+	line-height: 1.2;
+}
+
+@media (min-width: 576px) {
+	.blog-mini-title {
+		font-size: 1em;
+	}	
+	.blog-mini-lede {
+		font-size: .8em;
+	}	
+}
+
+.blog-sidebar-title {
+	font-family: "Crimson Text Bold", Georgia, serif !important;
+	text-decoration: none;
+}
+
+.blog-byline {
+	font-family: "Crimson Text Bold", Georgia, serif;
+	font-size: 0.75em;
+	margin-top: 1em;
+	padding-top: .25em;
+	border-top: solid black 1px;
+}
+
+.blog-sibling a {
+	color: black;
+	font-size: 1.2em;
+}
+
+a.social-share {
+    color: black;
+    font-size: 1.2em;
+}
+
+hr.thick {
+	border-bottom: 1px solid black;
+}
+
+#blog-featured-stories {
+	list-style: none;
+}
+
+#blog-featured-stories a {
+    color: #000000 !important;
+    text-decoration: none !important;
+}
+
+span.blog-btn a:hover, span.blog-btn a:focus,
+.blog-sibling a:hover, .blog-sibling a:focus,
+.blog-link:hover, .blog-link:focus,
+ul.blog-cat-list a:hover, #blog-featured-stories a:focus {
+    color: rgb(20, 170, 55);
+}
+
+span.blog-tag {
+	background-color: black;
+	color: white;
+	padding-top: 0;
+	padding-bottom: 0.2em;
+	padding-left: 0.4em;
+	padding-right: 0.4em;
+}
+
+span.blog-btn {
+	background-color: black;
+	font-size: 1.5rem;
+}
+
+.blog-tag {
+	font-size: .8em;
+}
+
+span.blog-tag a {
+	color: white !important;
+	text-decoration: none !important;
+}
+
+span.blog-btn a {
+	color: white !important;
+	text-decoration: none !important;
+}
+
+iframe.youtube {
+	width: 100%;
+}
+
+.aspect-ratio-16-9 {
+	width:100%;
+	padding-top:56.25%;
+	position: relative;
+	overflow:hidden;
+}
+
+.aspect-ratio-16-9 div {
+	position: absolute;
+	top: 0;
+	left: 0;
+	bottom: 0;
+	right: 0;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+

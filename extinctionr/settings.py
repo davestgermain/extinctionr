@@ -48,6 +48,21 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'django.contrib.humanize.apps.HumanizeConfig',
     'django.contrib.redirects',
+    # Wagatil core packages.
+    'wagtail.contrib.forms',
+    'wagtail.contrib.redirects',
+    'wagtail.embeds',
+    'wagtail.sites',
+    'wagtail.users',
+    'wagtail.snippets',
+    'wagtail.documents',
+    'wagtail.images',
+    'wagtail.search',
+    'wagtail.admin',
+    'wagtail.core',
+    'wagtailmarkdown',
+    'modelcluster',
+    # End of Wagtail.
     # CRM stuff
     'simple_pagination',
     'compressor',
@@ -66,6 +81,8 @@ INSTALLED_APPS = [
     'extinctionr.actions.apps.ActionsConfig',
     'extinctionr.info',
     'extinctionr.circles.apps.CircleConfig',
+    'extinctionr.news',
+    'extinctionr.vaquita',
     # django wiki
     'django_nyt.apps.DjangoNytConfig',
     'mptt',
@@ -111,6 +128,8 @@ MIDDLEWARE = [
     'extinctionr.middleware.redirect_middleware',
     'crum.CurrentRequestUserMiddleware',
     'postorius.middleware.PostoriusMiddleware',
+    'wagtail.core.middleware.SiteMiddleware',
+    'wagtail.contrib.redirects.middleware.RedirectMiddleware',
 ]
 if DEBUG:
     try:
@@ -118,6 +137,7 @@ if DEBUG:
         INSTALLED_APPS += ['debug_toolbar']
         MIDDLEWARE += ['debug_toolbar.middleware.DebugToolbarMiddleware']
     except ImportError:
+        print('Debug toolbar not installed.')
         pass
     EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
@@ -332,4 +352,8 @@ POSTORIUS_TEMPLATE_BASE_URL = "http://localhost:8000"
 ADMINS = [('Webmaster', 'webmaster@xrmass.org')]
 SERVER_EMAIL = 'webmaster@xrmass.org'
 
+### Wagtail settings
+WAGTAIL_SITE_NAME = 'XR Boston'
+WAGTAILEMBEDS_RESPONSIVE_HTML = True
+WAGTAILIMAGES_IMAGE_MODEL = 'vaquita.CustomImage'
 

@@ -1,0 +1,30 @@
+{% load wagtailcore_tags wagtailimages_tags %}
+{% load news %}
+
+<h5>Featured:</h5>
+<ul id="blog-featured-stories" class="m-0 p-0 list-unstyled">
+{% for story in featured_stories %}
+    <li class="blog-featured-story-card p-1 mb-2 bg-white">
+        <div class="blog-sidebar-title">
+        <a href="{% pageurl story.story %}">{{story.story.title}}</a></div>
+        <div><small>{{story.story.specific.lede}}</small></div>
+    </li>
+{% endfor %}
+</ul>
+<hr>
+<h5>Join XR:</h5>
+<p class="btn-row p-1 bg-white">
+    <a href="{% url 'extinctionr.info:page' page='join-mailing-list' %}" 
+       class="btn btn-lg btn-primary text-uppercase w-100">Sign-up
+    </a>
+</p>
+<hr>
+<h5>Upcoming Actions:</h5>
+{% upcoming_actions %}
+
+<!--
+    <hr class="thick">
+    <div class="position-absolute">
+    <a class="twitter-timeline" data-lang="en" href="https://twitter.com/XRboston" data-tweet-limit="3">Tweets by @XRBoston</a> 
+    <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+    </div> -->
