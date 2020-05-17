@@ -26,4 +26,4 @@ ics
 postorius
 wagtail
 wagtailfontawesome
--e https://github.com/cheradenine/wagtail-markdown@f95c76991066832a0c8ba29eb0ea5f3ea65a1694=wagtail-markdown
+-e git+https://github.com/cheradenine/wagtail-markdown@f95c76991066832a0c8ba29eb0ea5f3ea65a1694#egg=wagtail-markdown
