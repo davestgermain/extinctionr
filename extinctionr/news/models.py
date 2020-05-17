@@ -153,10 +153,10 @@ class StoryPage(Page):
     def get_context(self, request):
         
         context = super().get_context(request)
-        
+        tags_list = list(self.tags.all())
         stories = StoryPage.objects.live().order_by('-first_published_at')
         # Collects set of stories that has the same tags as this story.
-        related = stories.filter(tags__in=list(self.tags.all()))
+        related = stories.filter(tags__in=tags_list)
         related = related.exclude(id=self.id)
         related = related.distinct()[0:self.MAX_RELATED_STORIES]
         if related.count() > 0:
@@ -166,12 +166,12 @@ class StoryPage(Page):
         # because posts are sorted in reverse chronological order
 
         try:
-            context['nextstory'] = self.get_previous_by_date()
+            context['nextstory'] = self.get_previous_by_date(tags__in=tags_list)
         except (StoryPage.DoesNotExist, ValueError):
             pass
 
         try:
-            context['prevstory'] = self.get_next_by_date()
+            context['prevstory'] = self.get_next_by_date(tags__in=tags_list)
         except (StoryPage.DoesNotExist, ValueError):
             pass
 
