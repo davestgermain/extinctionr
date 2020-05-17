@@ -160,8 +160,11 @@ TEMPLATES = [
                 'sekizai.context_processors.sekizai', # for django-wiki
                 'django_mailman3.context_processors.common',
                 'postorius.context_processors.postorius',
-
             ],
+            'libraries': {
+                # Temp hack to fix CRM library. Django 3 removed staticfiles.
+                'staticfiles': 'django.templatetags.static'
+            }
         },
     },
 ]
