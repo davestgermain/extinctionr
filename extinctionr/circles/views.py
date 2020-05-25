@@ -2,6 +2,7 @@ from io import TextIOWrapper
 import csv
 
 from django.shortcuts import render, get_object_or_404, redirect
+from django.conf import settings
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
 from django.views.decorators.cache import cache_page
@@ -11,11 +12,14 @@ from django.contrib import messages
 from django.http import HttpResponseForbidden, HttpResponse, HttpResponseRedirect
 from django import forms
 from django.views import generic
-from extinctionr.utils import get_contact, get_last_contact, set_last_contact
-from .models import Circle, Contact, CircleJob, Couch, LEAD_ROLES, Signup
-from . import get_circle
 
-from .forms import FindPeopleForm, MembershipRequestForm, ContactForm, CouchForm, ContactAutocomplete, IntakeForm
+from extinctionr.utils import get_contact, get_last_contact, set_last_contact
+from .models import Circle, Contact, CircleJob, Couch, LEAD_ROLES, Signup, VolunteerRequest
+from . import get_circle
+from .forms import (
+    FindPeopleForm, MembershipRequestForm, ContactForm, 
+    CouchForm, ContactAutocomplete, IntakeForm,
+    VOLUNTEER_SKILL_CHOICES)
 
 
 @login_required
@@ -219,6 +223,8 @@ class SignupView(BaseCircleView, FormView):
         return initial
 
 
+
+
 class CouchListView(BaseCircleView, generic.ListView):
     template_name = 'circles/couches.html'
 
@@ -387,3 +393,40 @@ def signup_export(request):
             csv_writer.writerow(row)
         return resp
 
+
+@login_required
+def volunteer_export(request):
+    if request.user.has_perm('contacts.view_contact'):
+        resp = HttpResponse(content_type='text/csv')
+        resp['Content-Disposition'] = 'attachment; filename="volunteers.csv"'
+        csv_writer = csv.writer(resp)
+        header = [
+            'Created', 'Email', 'First Name', 'Last Name', 
+            'Phone', 'City', 'State', 'Zipcode', 
+            'Message'
+        ]
+        skill_tags = VOLUNTEER_SKILL_CHOICES
+        skill_header = [skill[1] for skill in VOLUNTEER_SKILL_CHOICES]
+        header = header + skill_header
+        csv_writer.writerow(header)
+        volunteers = VolunteerRequest.objects.all()
+        for volunteer in VolunteerRequest.objects.all():
+            contact = volunteer.contact
+            address = contact.address
+            # art, social, foo
+            # 'True', 'False', 'True', etc.
+            skills = set(volunteer.tags.names())
+            skill_data = [str(skill[0] in skills) for skill in skill_tags]
+
+            csv_writer.writerow((
+                volunteer.created.isoformat(),
+                contact.email,
+                contact.first_name,
+                contact.last_name,
+                contact.phone,
+                address.city if address else None,
+                address.state if address else None,
+                address.postcode if address else None,
+                volunteer.message,
+                *skill_data))
+        return resp
