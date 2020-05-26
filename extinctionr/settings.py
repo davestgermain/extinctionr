@@ -48,21 +48,6 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'django.contrib.humanize.apps.HumanizeConfig',
     'django.contrib.redirects',
-    # Wagatil core packages.
-    'wagtail.contrib.forms',
-    'wagtail.contrib.redirects',
-    'wagtail.embeds',
-    'wagtail.sites',
-    'wagtail.users',
-    'wagtail.snippets',
-    'wagtail.documents',
-    'wagtail.images',
-    'wagtail.search',
-    'wagtail.admin',
-    'wagtail.core',
-    'wagtailmarkdown',
-    'modelcluster',
-    # End of Wagtail.
     # CRM stuff
     'simple_pagination',
     'compressor',
@@ -83,6 +68,21 @@ INSTALLED_APPS = [
     'extinctionr.circles.apps.CircleConfig',
     'extinctionr.news',
     'extinctionr.vaquita',
+    # Wagatil core packages.
+    'wagtail.contrib.forms',
+    'wagtail.contrib.redirects',
+    'wagtail.embeds',
+    'wagtail.sites',
+    'wagtail.users',
+    'wagtail.snippets',
+    'wagtail.documents',
+    'wagtail.images',
+    'wagtail.search',
+    'wagtail.admin',
+    'wagtail.core',
+    'wagtailmarkdown',
+    'modelcluster',
+    # End of Wagtail.
     # django wiki
     'django_nyt.apps.DjangoNytConfig',
     'mptt',
