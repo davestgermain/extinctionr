@@ -48,21 +48,6 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'django.contrib.humanize.apps.HumanizeConfig',
     'django.contrib.redirects',
-    # Wagatil core packages.
-    'wagtail.contrib.forms',
-    'wagtail.contrib.redirects',
-    'wagtail.embeds',
-    'wagtail.sites',
-    'wagtail.users',
-    'wagtail.snippets',
-    'wagtail.documents',
-    'wagtail.images',
-    'wagtail.search',
-    'wagtail.admin',
-    'wagtail.core',
-    'wagtailmarkdown',
-    'modelcluster',
-    # End of Wagtail.
     # CRM stuff
     'simple_pagination',
     'compressor',
@@ -83,6 +68,21 @@ INSTALLED_APPS = [
     'extinctionr.circles.apps.CircleConfig',
     'extinctionr.news',
     'extinctionr.vaquita',
+    # Wagatil core packages.
+    'wagtail.contrib.forms',
+    'wagtail.contrib.redirects',
+    'wagtail.embeds',
+    'wagtail.sites',
+    'wagtail.users',
+    'wagtail.snippets',
+    'wagtail.documents',
+    'wagtail.images',
+    'wagtail.search',
+    'wagtail.admin',
+    'wagtail.core',
+    'wagtailmarkdown',
+    'modelcluster',
+    # End of Wagtail.
     # django wiki
     'django_nyt.apps.DjangoNytConfig',
     'mptt',
@@ -359,5 +359,8 @@ SERVER_EMAIL = 'webmaster@xrmass.org'
 WAGTAIL_SITE_NAME = 'XR Boston'
 WAGTAILEMBEDS_RESPONSIVE_HTML = True
 WAGTAILIMAGES_IMAGE_MODEL = 'vaquita.CustomImage'
+WAGTAIL_USER_EDIT_FORM = 'extinctionr.vaquita.forms.CustomUserEditForm'
+WAGTAIL_USER_CREATION_FORM = 'extinctionr.vaquita.forms.CustomUserCreationForm'
+WAGTAIL_USER_CUSTOM_FIELDS = ['username']
 
 AN_API_KEY = 'Debug'
