@@ -69,9 +69,13 @@ def zipcode_lookup(zipcode):
     r = requests.get(nominatim_url)
     geo_data = r.json()
     addresses = [geo['address'] for geo in geo_data]
+    state = ''
+    city = ''
     for address in addresses:
+        if not state and 'state' in address:
+            state = us_state_abbrev[address['state']]
         if 'city' in address:
-            return (address['city'], us_state_abbrev[address['state']])
+            return (address['city'], state)
         if 'town' in address:
-            return (address['town'], us_state_abbrev[address['state']])
-    raise KeyError('city or town not found in address')
+            return (address['town'], state)
+    return city, state
