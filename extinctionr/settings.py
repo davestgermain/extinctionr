@@ -359,5 +359,8 @@ SERVER_EMAIL = 'webmaster@xrmass.org'
 WAGTAIL_SITE_NAME = 'XR Boston'
 WAGTAILEMBEDS_RESPONSIVE_HTML = True
 WAGTAILIMAGES_IMAGE_MODEL = 'vaquita.CustomImage'
+WAGTAIL_USER_EDIT_FORM = 'extinctionr.vaquita.forms.CustomUserEditForm'
+WAGTAIL_USER_CREATION_FORM = 'extinctionr.vaquita.forms.CustomUserCreationForm'
+WAGTAIL_USER_CUSTOM_FIELDS = ['username']
 
 AN_API_KEY = 'Debug'
