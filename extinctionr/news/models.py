@@ -23,8 +23,12 @@ from wagtail.snippets.models import register_snippet
 
 from wagtailmarkdown.blocks import MarkdownBlock
 
+from common.models import User
 from extinctionr.vaquita.blocks import ImageCarouselBlock
 from .blocks import EmbedContentBlock
+
+# Display name used when story is tagged as anonymous
+ANONYMOUS_AUTHOR_NAME = "Extinction Rebellion Boston"
 
 @register_snippet
 class StoryCategory(models.Model):
@@ -71,11 +75,20 @@ class StoryIndexPage(Page, Orderable):
     def get_context(self, request):
         
         context = super().get_context(request)
-
         
         stories = StoryPage.objects.live() #child_of(self).live()
-        stories = stories.order_by('-first_published_at')
+        stories = stories.order_by('-date')
         stories = stories.filter(categories__in=list(self.categories.all())).distinct()
+        author = request.GET.get('author', '')
+        if author:
+            # A bit wonky, but if using author filter we serve all content types,
+            # not just the categories under this listing.
+            if author == ANONYMOUS_AUTHOR_NAME:
+                stories = stories.filter(author=None)
+            else:
+                stories = stories.filter(author__username=author)
+        else:
+            stories = stories.filter(categories__in=list(self.categories.all())).distinct()
         tag = request.GET.get('tag', '')
         if tag:
             stories = stories.filter(tags__name=tag)
@@ -88,7 +101,7 @@ class StoryIndexPage(Page, Orderable):
         except:
             stories = paginator.page(1)
 
-        featured = FeaturedStory.objects.all().order_by('-story__first_published_at')
+        featured = FeaturedStory.objects.all().order_by('-story__date')
         context['stories'] = stories
         context['featured'] = featured
         context['peer_pages'] = self.get_siblings()
@@ -119,6 +132,21 @@ class FeaturedStory(models.Model):
         verbose_name_plural = "featured stories"
 
 
+class StoryAuthorFieldPanel(FieldPanel):
+    def on_form_bound(self):
+        def label_from_instance(self, obj):
+            return obj.username
+
+        author_field = self.form.fields[self.field_name]
+        author_field.queryset = User.objects.with_perm('wagtaildocs.add_document')
+        author_field.empty_label = ANONYMOUS_AUTHOR_NAME
+        author_field.initial = self.model.owner
+        # We can't get the wagtail panel to instantiate a derived ModelChoiceField
+        # so we patch it to override the choice label.
+        author_field.label_from_instance = label_from_instance.__get__(author_field)
+        super().on_form_bound()
+
+
 class StoryPage(Page):
     MAX_RELATED_STORIES = 10
 
@@ -128,10 +156,24 @@ class StoryPage(Page):
         'news.StoryIndexPage'
     ]
 
+    author = models.ForeignKey(
+        'common.User', 
+        null=True, 
+        blank=True, 
+        on_delete=models.SET_NULL, 
+        related_name="+"
+    )
     date = models.DateField("post date")
-    lede = models.CharField(max_length=1024)
+    lede = models.CharField(
+        max_length=1024, 
+        help_text="A short intro that appears in the story index page"
+    )
     tags = ClusterTaggableManager(through=StoryTag, blank=True)
-    categories = ParentalManyToManyField('news.StoryCategory', blank=True)
+    categories = ParentalManyToManyField(
+        'news.StoryCategory', 
+        blank=True, 
+        help_text="The set of categories this page will be served"
+    )
 
     # Add allowed block types to StreamPanel
     content = StreamField(
@@ -154,31 +196,26 @@ class StoryPage(Page):
         
         context = super().get_context(request)
         tags_list = list(self.tags.all())
-        stories = StoryPage.objects.live().order_by('-first_published_at')
+
         # Collects set of stories that has the same tags as this story.
-        related = stories.filter(tags__in=tags_list)
+        related = StoryPage.objects.live().order_by('-first_published_at')
+        related = related.filter(tags__in=tags_list)
         related = related.exclude(id=self.id)
-        related = related.distinct()[0:self.MAX_RELATED_STORIES]
         if related.count() > 0:
+            related = related.distinct()[0:self.MAX_RELATED_STORIES]
             context["related"] = related
 
-        # get next and previous by date. the names look swapped but this is intentional
-        # because posts are sorted in reverse chronological order
-
         try:
-            context['nextstory'] = self.get_previous_by_date(tags__in=tags_list)
+            context['prevstory'] = self.get_previous_by_date(tags__in=tags_list)
         except (StoryPage.DoesNotExist, ValueError):
             pass
 
         try:
-            context['prevstory'] = self.get_next_by_date(tags__in=tags_list)
+            context['nextstory'] = self.get_next_by_date(tags__in=tags_list)
         except (StoryPage.DoesNotExist, ValueError):
             pass
 
         return context
-
-    def author(self):
-        return self.owner.username
 
     def hero_image(self):
         gallery_item = self.gallery_images.first()
@@ -198,6 +235,12 @@ class StoryPage(Page):
         if hero_image:
             return hero_image.url
         return self.media_thumbnail_url()
+
+    def author_name(self):
+        if not self.author:
+            return ANONYMOUS_AUTHOR_NAME
+        else:
+            return self.owner.username
         
     search_fields = Page.search_fields = [
         index.SearchField('lede'),
@@ -206,6 +249,7 @@ class StoryPage(Page):
 
     content_panels = Page.content_panels + [
         MultiFieldPanel([
+            StoryAuthorFieldPanel('author', widget=forms.Select),
             FieldPanel('date'),
             FieldPanel('tags'),
             FieldPanel('categories', widget=forms.CheckboxSelectMultiple),
