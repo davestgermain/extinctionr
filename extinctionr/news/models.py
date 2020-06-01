@@ -1,34 +1,36 @@
 from django import forms
+from django.core.paginator import (
+    Paginator, InvalidPage, PageNotAnInteger
+)
 from django.db import models
-from django.core.paginator import Paginator
 
-from modelcluster.fields import ParentalKey, ParentalManyToManyField
 from modelcluster.contrib.taggit import ClusterTaggableManager
+from modelcluster.fields import ParentalKey, ParentalManyToManyField
 from taggit.models import TaggedItemBase
 
 from wagtail.admin.edit_handlers import (
-    FieldPanel, InlinePanel, MultiFieldPanel, StreamFieldPanel, PageChooserPanel
+    FieldPanel, InlinePanel, MultiFieldPanel, StreamFieldPanel,
+    PageChooserPanel
 )
 from wagtail.core.blocks import (
-    RichTextBlock, BlockQuoteBlock, CharBlock, StructBlock, BooleanBlock, StructValue
+    RichTextBlock, BlockQuoteBlock, CharBlock, StructBlock
 )
-from wagtail.core.models import Page, Orderable
 from wagtail.core.fields import RichTextField, StreamField
-from wagtail.embeds.blocks import EmbedBlock
+from wagtail.core.models import Page, Orderable
 from wagtail.images.blocks import ImageChooserBlock
 from wagtail.images.edit_handlers import ImageChooserPanel
-from wagtail.images.models import Image
 from wagtail.search import index
 from wagtail.snippets.models import register_snippet
 
 from wagtailmarkdown.blocks import MarkdownBlock
 
 from common.models import User
-from extinctionr.vaquita.blocks import ImageCarouselBlock
+from extinctionr.vaquita.blocks import ImageCarouselBlock, ZOrderMarkdownBlock
 from .blocks import EmbedContentBlock
 
 # Display name used when story is tagged as anonymous
 ANONYMOUS_AUTHOR_NAME = "Extinction Rebellion Boston"
+
 
 @register_snippet
 class StoryCategory(models.Model):
@@ -64,7 +66,7 @@ class StoryIndexPage(Page, Orderable):
 
     intro = RichTextField(blank=True)
 
-    # determines what type of stories are displayed on this page
+    # Determines what type of stories are displayed on this page.
     categories = ParentalManyToManyField('news.StoryCategory', blank=True)
 
     content_panels = Page.content_panels + [
@@ -73,21 +75,23 @@ class StoryIndexPage(Page, Orderable):
     ]
 
     def get_context(self, request):
-        
+
         context = super().get_context(request)
-        
-        stories = StoryPage.objects.live() #child_of(self).live()
+
+        stories = StoryPage.objects.live()
         stories = stories.order_by('-date')
         author = request.GET.get('author', '')
         if author:
-            # A bit wonky, but if using author filter we serve all content types,
-            # not just the categories under this listing.
+            # A bit wonky, but if using author filter we serve all
+            # content types, not just the categories under this listing.
             if author == ANONYMOUS_AUTHOR_NAME:
                 stories = stories.filter(author=None)
             else:
                 stories = stories.filter(author__username=author)
         else:
-            stories = stories.filter(categories__in=list(self.categories.all())).distinct()
+            stories = stories.filter(
+                categories__in=list(self.categories.all())
+            ).distinct()
         tag = request.GET.get('tag', '')
         if tag:
             stories = stories.filter(tags__name=tag)
@@ -97,7 +101,7 @@ class StoryIndexPage(Page, Orderable):
         page = request.GET.get("page")
         try:
             stories = paginator.page(page)
-        except:
+        except (InvalidPage, PageNotAnInteger):
             stories = paginator.page(1)
 
         featured = FeaturedStory.objects.all().order_by('-story__date')
@@ -113,7 +117,7 @@ class FeaturedStory(models.Model):
     """ A featured story holds a reference to the story and can be set
     in the snippets editor"""
     story = models.ForeignKey(
-        "wagtailcore.Page", 
+        "wagtailcore.Page",
         null=True,
         blank=True,
         on_delete=models.SET_NULL,
@@ -140,8 +144,8 @@ class StoryAuthorFieldPanel(FieldPanel):
         author_field.queryset = User.objects.with_perm('wagtaildocs.add_document')
         author_field.empty_label = ANONYMOUS_AUTHOR_NAME
         author_field.initial = self.model.owner
-        # We can't get the wagtail panel to instantiate a derived ModelChoiceField
-        # so we patch it to override the choice label.
+        # We can't get the wagtail panel to instantiate a derived
+        # ModelChoiceFieldso we patch it to override the choice label.
         author_field.label_from_instance = label_from_instance.__get__(author_field)
         super().on_form_bound()
 
@@ -156,21 +160,21 @@ class StoryPage(Page):
     ]
 
     author = models.ForeignKey(
-        'common.User', 
-        null=True, 
-        blank=True, 
-        on_delete=models.SET_NULL, 
+        'common.User',
+        null=True,
+        blank=True,
+        on_delete=models.SET_NULL,
         related_name="+"
     )
     date = models.DateField("post date")
     lede = models.CharField(
-        max_length=1024, 
+        max_length=1024,
         help_text="A short intro that appears in the story index page"
     )
     tags = ClusterTaggableManager(through=StoryTag, blank=True)
     categories = ParentalManyToManyField(
-        'news.StoryCategory', 
-        blank=True, 
+        'news.StoryCategory',
+        blank=True,
         help_text="The set of categories this page will be served"
     )
 
@@ -180,7 +184,7 @@ class StoryPage(Page):
             ('paragraph', RichTextBlock(features=[
                 'h2', 'h3', 'bold', 'italic', 'link', 'ol', 'ul'
             ])),
-            ('markdown', MarkdownBlock(icon='code')),
+            ('markdown', ZOrderMarkdownBlock(icon='code')),
             ('image', StructBlock([
                 ('image', ImageChooserBlock()),
                 ('caption', CharBlock(required=False))
@@ -192,7 +196,7 @@ class StoryPage(Page):
     )
 
     def get_context(self, request):
-        
+
         context = super().get_context(request)
         tags_list = list(self.tags.all())
 
@@ -240,7 +244,7 @@ class StoryPage(Page):
             return ANONYMOUS_AUTHOR_NAME
         else:
             return self.owner.username
-        
+
     search_fields = Page.search_fields = [
         index.SearchField('lede'),
         index.SearchField('body'),
@@ -260,9 +264,15 @@ class StoryPage(Page):
 
 
 class StoryPageGalleryImage(Orderable):
-    page = ParentalKey(StoryPage, on_delete=models.CASCADE, related_name='gallery_images')
+    page = ParentalKey(
+        StoryPage,
+        on_delete=models.CASCADE,
+        related_name='gallery_images'
+    )
     image = models.ForeignKey(
-        'vaquita.CustomImage', on_delete=models.CASCADE, related_name="+"
+        'vaquita.CustomImage',
+        on_delete=models.CASCADE,
+        related_name="+"
     )
     caption = models.CharField(blank=True, max_length=250)
     panels = [

@@ -1,0 +1,31 @@
+{% extends "modeladmin/create.html" %}
+{% load i18n %}
+
+{% block footer %}
+    <footer>
+        <ul>
+            <li class="actions">
+                {% block form_actions %}
+                    <div class="dropdown dropup dropdown-button match-width">
+                        <button type="submit" class="button action-save button-longrunning" data-clicked-text="{% trans 'Saving…' %}">
+                            <span class="icon icon-spinner"></span><em>{% trans 'Save' %}</em>
+                        </button>
+                        <div class="dropdown-toggle icon icon-arrow-up"></div>
+                            <ul>
+                                <li>
+                        <input type="submit" class="button action-save button-longrunning" data-clicked-text="{% trans 'Saving…' %}" value="Save and continue editing" name="_continue">
+                            <span class="icon icon-spinner"></span><em>{% trans 'Save and continue editing' %}</em>
+                        </input>
+                                </li>
+                            </ul>
+                    </div>
+                {% endblock %}
+            </li>
+            {% if view.view_url %}
+                <li class="preview">
+                    <a href="{{ view.view_url }}" target="_blank" class="button icon icon-site">View</a>    
+                </li>
+            {% endif %}
+        </ul>
+    </footer>
+{% endblock %}
