@@ -51,7 +51,7 @@ def banner_message(*args, **kwargs):
     messages = SpecialNotice.objects.all()
 
     # Avoids breakage on new installs when there is no message
-    if messages.count() == 0 or True:
+    if messages.count() == 0:
         return {'message': {'enabled': False}}
 
     return {'message': messages[0]}
