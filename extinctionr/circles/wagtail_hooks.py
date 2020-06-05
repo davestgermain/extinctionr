@@ -111,7 +111,8 @@ class VolunteerRequestAdmin(ModelAdmin):
         'contact_phone',
         'contact_city',
         'message',
-        'replied_on',
+        'status',
+        'updated',
         'assigned',
     )
 
