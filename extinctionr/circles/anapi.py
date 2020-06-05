@@ -6,11 +6,12 @@ from django.conf import settings
 
 AN_ENTRY_POINT = "https://actionnetwork.org/api/v2/"
 AN_HEADERS = {
-    'OSDI-API-Token' : settings.AN_API_KEY,
-    'Content-Type' : 'application/json',
+    'OSDI-API-Token': settings.AN_API_KEY,
+    'Content-Type': 'application/json',
 }
 
 logger = logging.getLogger('circles.anapi')
+
 
 def _get_people_api():
     if AN_HEADERS['OSDI-API-Token'] == 'Debug':
@@ -38,16 +39,18 @@ def add_to_action_networks(contact):
     if not people_url:
         return
 
+    postal_address = [{"postal_code": contact.address.postcode}] if contact.address else []
+    phone = contact.phone.as_national if contact.phone else ''
     id = uuid.uuid3(uuid.NAMESPACE_DNS, 'xrboston.org')
     payload = {
         "person": {
-            "identifiers": [ id.hex ],
-            "family_name" : contact.last_name,
-            "given_name" : contact.first_name,
-            "postal_address": [ { "postal_code": contact.address.postcode}],
-            "email_addresses" : [ { "address" : contact.email }],
-            "custom_fields" : [
-                { "phone" : contact.phone.as_national },
+            "identifiers": [id.hex],
+            "family_name": contact.last_name,
+            "given_name": contact.first_name,
+            "postal_address": postal_address,
+            "email_addresses": [{"address": contact.email}],
+            "custom_fields": [
+                {"phone": phone},
             ],
         }
     }
