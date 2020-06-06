@@ -163,7 +163,7 @@ not working yet because we need actual address data for events.
 			{% endif %}
 			<div class="form-group row mt-4 pt-2">
 				<div class="col">
-					<input class="btn btn-primary btn-lg btn-outline-dark btn-success text-uppercase" type="submit" value="I'm Going!">
+					<input class="btn btn-primary btn-lg text-uppercase" type="submit" value="I'm Going!">
 				</div>
 			</div>
 		</form>
@@ -215,10 +215,10 @@ not working yet because we need actual address data for events.
 			<form class="form-inline" action="/action/{{action.slug}}/attendees/notify/" method="post">
 				<label for="threshold-field" class="small col-5">Notify people who have indicated a committment threshold: </label>
 				<input id="threshold-field" class="mx-2 form-control col-2 col-lg-1" type="number" name="threshold" value="1">
-				<input type="submit" value="Notify" class="mx-2 form-control btn btn-primary col-3 col-lg-2 btn-fucxed">
+				<input type="submit" value="Notify" class="mx-2 form-control btn btn-primary col-3 col-lg-2">
 			</form>
 		{% endif %}
-			<button id="email-everyone" class="col-lg-2 col ml-auto mr-2 btn btn-info btn-fucxed">Email checked</button>
+			<button id="email-everyone" class="col-lg-2 col ml-auto mr-2 btn btn-info">Email checked</button>
 		</div>
 		{% endif %}
 	</div>
