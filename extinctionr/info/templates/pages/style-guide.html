@@ -2,496 +2,390 @@
 
 {% block content %}
 
-  <div class="row mt-3">
-    <div class="col-lg-3 col-md-6">
+<div class="row">
+    <div class="col-md pt-5">
+        
+        <section id="buttons" class="pb-2">
+            <div class="row">
+                <div class="col-12">
 
-      <!--Body text-->
-      <p>Hello. I'm a little bit of body text. Plain and simple.</p>
+                    <!-- Breadcrumb -->
+                    <nav aria-label="breadcrumb">
+                        <ol class="breadcrumb">
+                            <li class="breadcrumb-item"><a href="#">Home</a></li>
+                            <li class="breadcrumb-item"><a href="#">Library</a></li>
+                            <li class="breadcrumb-item active" aria-current="page">Breadcrumb</li>
+                        </ol>
+                    </nav>
 
-      <!--Badges-->
-      <span class="badge badge-primary">Primary</span>
-      <span class="badge badge-secondary">Secondary</span>
-      <span class="badge badge-success">Success</span>
-      <span class="badge badge-danger">Danger</span>
-      <span class="badge badge-warning">Warning</span>
-      <span class="badge badge-info">Info</span>
-      <span class="badge badge-light">Light</span>
-      <span class="badge badge-dark">Dark</span>
+                </div>
+                <div class="col-lg-4">
+                    <div class="pb-3">
+                        <button type="button" class="btn btn-primary mr-1">Button</button>
+                        <button type="button" class="btn btn-outline-primary">Outline</button>
+                    </div>
+                    <div class="pb-3">
+                        <!-- Large Button -->
+                        <button type="button" class="btn btn-primary align-bottom btn-lg mr-1">Large</button>
 
-      <!--Breadcrumb-->
-      <nav aria-label="breadcrumb" role="navigation">
-        <ol class="breadcrumb mt-2">
-          <li class="breadcrumb-item"><a href="#">Home</a></li>
-          <li class="breadcrumb-item"><a href="#">Library</a></li>
-          <li class="breadcrumb-item active" aria-current="page">Data</li>
-        </ol>
-      </nav>
+                        <!-- Small Button -->
+                        <button type="button" class="btn btn-primary align-bottom btn-sm mr-1">Small</button>
 
-      <!--Buttons-->
-      <div>
-        <button type="button" class="btn btn-primary">Primary</button>
-        <button type="button" class="btn btn-secondary">Secondary</button>
-        <button type="button" class="btn btn-success">Success</button>
-        <button type="button" class="btn btn-danger">Danger</button>
-      </div>
-      <div class="mt-2">
-        <button type="button" class="btn btn-warning">Warning</button>
-        <button type="button" class="btn btn-info">Info</button>
-        <button type="button" class="btn btn-light">Light</button>
-        <button type="button" class="btn btn-dark">Dark</button>
-      </div>
+                        <!-- Link -->
+                        <a href="#">Text</a>
+                    </div>
+                </div>
+                <div class="col-lg-8 text-right">
 
-      <!--Outline Buttons-->
-      <div class="mt-2">
-        <button type="button" class="btn btn-outline-primary">Primary</button>
-        <button type="button" class="btn btn-outline-secondary">Secondary</button>
-        <button type="button" class="btn btn-outline-success">Success</button>
-        <button type="button" class="btn btn-outline-danger">Danger</button>
-      </div>
-      <div class="mt-2">
-        <button type="button" class="btn btn-outline-warning">Warning</button>
-        <button type="button" class="btn btn-outline-info">Info</button>
-        <button type="button" class="btn btn-outline-light">Light</button>
-        <button type="button" class="btn btn-outline-dark">Dark</button>
-      </div>
+                    <!-- Button toolbar -->
+                    <div class="btn-toolbar d-inline-block mb-3" role="toolbar" aria-label="Toolbar with button groups">
+                        <div class="btn-group mr-2" role="group" aria-label="First group">
+                            <button type="button" class="btn btn-outline-primary">1</button>
+                            <button type="button" class="btn btn-primary">2</button>
+                            <button type="button" class="btn btn-primary">3</button>
+                            <button type="button" class="btn btn-primary">4</button>
+                        </div>
+                        <div class="btn-group mr-2" role="group" aria-label="Second group">
+                            <button type="button" class="btn btn-primary">5</button>
+                            <button type="button" class="btn btn-primary">6</button>
+                            <button type="button" class="btn btn-primary">7</button>
+                        </div>
+                        <div class="btn-group" role="group" aria-label="Third group">
+                            <button type="button" class="btn btn-primary">8</button>
+                        </div>
+                    </div>
 
-      <!--Checkbox buttons-->
+                    <!-- Dropdown Button -->
+                    <div class="dropdown">
+                        <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            Dropdown button
+                        </button>
+                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                            <a class="dropdown-item" href="#">Action</a>
+                            <a class="dropdown-item" href="#">Another action</a>
+                            <a class="dropdown-item" href="#">Something else here</a>
+                        </div>
+                    </div>
 
-      <div class="mt-3">
-        <div class="btn-group btn-group-toggle" data-toggle="buttons">
-          <label class="btn btn-primary active">
-            <input type="checkbox" checked autocomplete="off"> Yes
-          </label>
-          <label class="btn btn-primary">
-            <input type="checkbox" autocomplete="off"> No
-          </label>
-        </div>
+                </div>
+                <div class="col-12 py-4">
+                    <button class="btn btn-primary mr-1 mb-1">Primary</button>
+                    <button class="btn btn-secondary mr-1 mb-1">Secondary</button>
+                    <button class="btn btn-info mr-1 mb-1">Info</button>
+                    <button class="btn btn-danger mr-1 mb-1">Danger</button>
+                    <button class="btn btn-success mr-1 mb-1">Success</button>
+                    <button class="btn btn-warning mr-1 mb-1">Warning</button>
+                    <button class="btn btn-light border mr-1 mb-1">Light</button>
+                    <button class="btn btn-dark mr-1 mb-1">Dark</button>
+                </div>
+            </div>
+        </section>
 
-        <div class="btn-group btn-group-toggle" data-toggle="buttons">
-          <label class="btn btn-secondary active">
-            <input type="checkbox" checked autocomplete="off"> Yes
-          </label>
-          <label class="btn btn-secondary">
-            <input type="checkbox" autocomplete="off"> No
-          </label>
-        </div>
-        <div class="btn-group btn-group-toggle" data-toggle="buttons">
-          <label class="btn btn-success active">
-            <input type="checkbox" checked autocomplete="off"> Yes
-          </label>
-          <label class="btn btn-success">
-            <input type="checkbox" autocomplete="off"> No
-          </label>
-        </div>
-        <div class="btn-group btn-group-toggle" data-toggle="buttons">
-          <label class="btn btn-danger active">
-            <input type="checkbox" checked autocomplete="off"> Yes
-          </label>
-          <label class="btn btn-danger">
-            <input type="checkbox" autocomplete="off"> No
-          </label>
-        </div>
+        <section id="navs" class="py-3">
+            <div class="row">
+                <div class="col-xl-9 pb-4">
 
-      </div>
+                    <!-- Nav -->
+                    <ul class="nav">
+                        <li class="nav-item">
+                            <a class="nav-link pl-0" href="#">Link</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">Link</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">Link</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">Link</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link disabled" href="#">Disabled</a>
+                        </li>
+                    </ul>
+                    <hr>
 
-      <div class="mt-2">
-        <div class="btn-group btn-group-toggle" data-toggle="buttons">
-          <label class="btn btn-warning active">
-            <input type="checkbox" checked autocomplete="off"> Yes
-          </label>
-          <label class="btn btn-warning">
-            <input type="checkbox" autocomplete="off"> No
-          </label>
-        </div>
-        <div class="btn-group btn-group-toggle" data-toggle="buttons">
-          <label class="btn btn-info active">
-            <input type="checkbox" checked autocomplete="off"> Yes
-          </label>
-          <label class="btn btn-info">
-            <input type="checkbox" autocomplete="off"> No
-          </label>
-        </div>
-        <div class="btn-group btn-group-toggle" data-toggle="buttons">
-          <label class="btn btn-light active">
-            <input type="checkbox" checked autocomplete="off"> Yes
-          </label>
-          <label class="btn btn-light">
-            <input type="checkbox" autocomplete="off"> No
-          </label>
-        </div>
-        <div class="btn-group btn-group-toggle" data-toggle="buttons">
-          <label class="btn btn-dark active">
-            <input type="checkbox" checked autocomplete="off"> Yes
-          </label>
-          <label class="btn btn-dark">
-            <input type="checkbox" autocomplete="off"> No
-          </label>
-        </div>
-      </div>
+                    <!-- Nav Tabs -->
+                    <ul class="nav nav-tabs">
+                        <li class="nav-item">
+                            <a class="nav-link active" href="#tab1" data-toggle="tab">Tab</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#tab2" data-toggle="tab">Tab</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#tab3" data-toggle="tab">Tab</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link disabled" href="#tab4" data-toggle="tab">Disabled</a>
+                        </li>
+                    </ul>
+                    <div class="tab-content px-1 pt-2">
+                        <div class="tab-pane active" id="tab1">
+                            <p>
+                                Welcome to my custom Bootstrap 4 test page that is a simple way to see various Bootstrap component examples.
+                            </p>
+                            <nav aria-label="Page navigation example">
+                                <ul class="pagination">
+                                    <li class="page-item"><a class="page-link" href="#">Previous</a></li>
+                                    <li class="page-item"><a class="page-link" href="#">1</a></li>
+                                    <li class="page-item"><a class="page-link" href="#">2</a></li>
+                                    <li class="page-item"><a class="page-link" href="#">3</a></li>
+                                    <li class="page-item"><a class="page-link" href="#">Next</a></li>
+                                </ul>
+                            </nav>
+                        </div>
+                        <div class="tab-pane" id="tab2">2. Put a little content in your pane.</div>
+                        <div class="tab-pane" id="tab3">3. Put some more content in your pane here.</div>
+                    </div>
+                </div>
+                <div class="col-xl-3 pb-4">
 
-      <!--Dropdown buttons-->
-
-      <div class="mt-3">
-        <div class="btn-group">
-          <button type="button" class="btn btn-primary">Primary</button>
-          <button type="button" class="btn btn-primary dropdown-toggle dropdown-toggle-split"
-                  data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            <span class="sr-only">Toggle Dropdown</span>
-          </button>
-          <div class="dropdown-menu">
-            <a class="dropdown-item" href="#">Action</a>
-            <a class="dropdown-item" href="#">Another action</a>
-            <a class="dropdown-item" href="#">Something else here</a>
-            <div class="dropdown-divider"></div>
-            <a class="dropdown-item" href="#">Separated link</a>
-          </div>
-        </div><!-- /btn-group -->
-        <div class="btn-group">
-          <button type="button" class="btn btn-secondary">Secondary</button>
-          <button type="button" class="btn btn-secondary dropdown-toggle dropdown-toggle-split"
-                  data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            <span class="sr-only">Toggle Dropdown</span>
-          </button>
-          <div class="dropdown-menu">
-            <a class="dropdown-item" href="#">Action</a>
-            <a class="dropdown-item" href="#">Another action</a>
-            <a class="dropdown-item" href="#">Something else here</a>
-            <div class="dropdown-divider"></div>
-            <a class="dropdown-item" href="#">Separated link</a>
-          </div>
-        </div><!-- /btn-group -->
-        <div class="btn-group">
-          <button type="button" class="btn btn-success">Success</button>
-          <button type="button" class="btn btn-success dropdown-toggle dropdown-toggle-split"
-                  data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            <span class="sr-only">Toggle Dropdown</span>
-          </button>
-          <div class="dropdown-menu">
-            <a class="dropdown-item" href="#">Action</a>
-            <a class="dropdown-item" href="#">Another action</a>
-            <a class="dropdown-item" href="#">Something else here</a>
-            <div class="dropdown-divider"></div>
-            <a class="dropdown-item" href="#">Separated link</a>
-          </div>
-        </div><!-- /btn-group -->
-      </div>
-      <div class="mt-2">
-        <div class="btn-group">
-          <button type="button" class="btn btn-info">Info</button>
-          <button type="button" class="btn btn-info dropdown-toggle dropdown-toggle-split"
-                  data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            <span class="sr-only">Toggle Dropdown</span>
-          </button>
-          <div class="dropdown-menu">
-            <a class="dropdown-item" href="#">Action</a>
-            <a class="dropdown-item" href="#">Another action</a>
-            <a class="dropdown-item" href="#">Something else here</a>
-            <div class="dropdown-divider"></div>
-            <a class="dropdown-item" href="#">Separated link</a>
-          </div>
-        </div><!-- /btn-group -->
-        <div class="btn-group">
-          <button type="button" class="btn btn-warning">Warning</button>
-          <button type="button" class="btn btn-warning dropdown-toggle dropdown-toggle-split"
-                  data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            <span class="sr-only">Toggle Dropdown</span>
-          </button>
-          <div class="dropdown-menu">
-            <a class="dropdown-item" href="#">Action</a>
-            <a class="dropdown-item" href="#">Another action</a>
-            <a class="dropdown-item" href="#">Something else here</a>
-            <div class="dropdown-divider"></div>
-            <a class="dropdown-item" href="#">Separated link</a>
-          </div>
-        </div><!-- /btn-group -->
-        <div class="btn-group">
-          <button type="button" class="btn btn-danger">Danger</button>
-          <button type="button" class="btn btn-danger dropdown-toggle dropdown-toggle-split"
-                  data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            <span class="sr-only">Toggle Dropdown</span>
-          </button>
-          <div class="dropdown-menu">
-            <a class="dropdown-item" href="#">Action</a>
-            <a class="dropdown-item" href="#">Another action</a>
-            <a class="dropdown-item" href="#">Something else here</a>
-            <div class="dropdown-divider"></div>
-            <a class="dropdown-item" href="#">Separated link</a>
-          </div>
-        </div><!-- /btn-group -->
-
-      </div>
+                    <!-- Vertical Nav -->
+                    <ul class="nav nav-pills flex-column mb-3">
+                        <li class="nav-item">
+                            <a class="nav-link active" href="#" data-toggle="popover" data-trigger="hover" data-placement="top" data-title="Primary color" data-content="Links and 'active' elements always use the primary color.">Active</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">Link</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">Link</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">Link</a>
+                        </li>
+                    </ul>
 
 
-      <!--Forms-->
+                    <!-- Dropdown Split Button -->
+                    <div class="btn-group mb-3 w-100">
+                        <button type="button" class="btn btn-primary btn-block">Dropdown</button>
+                        <button type="button" class="btn btn-primary dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <span class="sr-only">Toggle Dropdown</span>
+                        </button>
+                        <div class="dropdown-menu dropdown-menu-right">
+                            <a class="dropdown-item" href="#">Action</a>
+                            <a class="dropdown-item" href="#">Link</a>
+                            <div class="dropdown-divider"></div>
+                            <a class="dropdown-item" href="#">Separated link</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <section id="grid" class="py-3">
+            <p class="lead">The rows &amp; columns of the world famous Bootstrap grid speak for themselves.</p>
+            <div class="row">
+                <div class="col-sm-6">
+                    6
+                </div>
+                <div class="col-6">
+                    <div class="card my-1 bg-light">6</div>
+                </div>
+                <div class="col-sm-5">
+                    5
+                </div>
+                <div class="col-7">
+                    <div class="card my-1">7</div>
+                </div>
+                <div class="col-sm-4">
+                    4
+                </div>
+                <div class="col-8">
+                    <div class="card my-1">8</div>
+                </div>
+                <div class="col-sm-3">
+                    3
+                </div>
+                <div class="col-9">
+                    <div class="card my-1">9</div>
+                </div>
+                <div class="col-sm-2">
+                    2
+                </div>
+                <div class="col-10">
+                    <div class="card my-1">10</div>
+                </div>
+                <div class="col-sm-1">
+                    1
+                </div>
+                <div class="col-11">
+                    <div class="card my-1">11</div>
+                </div>
+            </div>
+        </section>
 
-      <div class="mt-3">
-        <form>
-          <div class="form-group">
-            <label for="exampleInputEmail1">Form label</label>
-            <input type="email" class="form-control" id="exampleInputEmail1"
-                   aria-describedby="emailHelp"
-                   placeholder="Enter email">
-            <small id="emailHelp" class="form-text text-muted">Form Text - To give hints and things</small>
-          </div>
-        </form>
+        <section id="cards" class="bg-faded py-2">
+            <div class="d-flex my-3">
 
-      </div>
+                <!-- Jumbotron -->
+                <div class="jumbotron w-100 py-5 mx-auto">
+                    <h1 class="display-3">Hello, world!</h1>
+                    <p class="lead">This is a simple hero unit, a simple jumbotron-style component for calling extra attention to featured content or information.</p>
+                </div>
 
-      <div class="mt-2">
-        <div class="custom-control custom-checkbox">
-          <input type="checkbox" class="custom-control-input" id="customCheck1">
-          <label class="custom-control-label" for="customCheck1">Custom check</label>
-        </div>
-        <div class="custom-control custom-radio">
-          <input type="radio" id="customRadio1" name="customRadio" class="custom-control-input">
-          <label class="custom-control-label" for="customRadio1">Custom radio</label>
-        </div>
-        <select class="custom-select">
-          <option selected>Custom select menu</option>
-          <option value="1">One</option>
-          <option value="2">Two</option>
-          <option value="3">Three</option>
-        </select>
-      </div>
+            </div>
+            <div class="row">
+                <div class="col-xl-6 col-lg-4 mb-4">
 
-      <div class="mt-2">
-        <label class="custom-file">
-          <input type="file" id="file" class="custom-file-input">
-          <span class="custom-file-control"></span>
-        </label>
-      </div>
+                    <!-- Card -->
+                    <div class="card border-primary h-100">
+                        <div class="card-body d-flex flex-column align-items-start">
+                            <h4 class="card-title text-primary">Card Outline</h4>
+                            <p class="card-text">With supporting text below as a natural lead-in to additional content. This has text that may wrap to the next line.</p>
+                            <a href="#" class="btn btn-primary mt-auto">Button</a>
+                        </div>
+                    </div>
 
+                </div>
+                <div class="col-xl-6 col-lg-4 mb-4">
+                    <div class="card border-primary h-100">
+                        <div class="card-body">
 
-      <!--Pagination-->
-      <div class="mt-2">
-        <nav aria-label="...">
-          <ul class="pagination">
-            <li class="page-item disabled">
-              <span class="page-link">Previous</span>
-            </li>
-            <li class="page-item">
-              <a class="page-link" href="#!">1</a>
-            </li>
-            <li class="page-item active">
-              <span class="page-link">
-                2
-                <span class="sr-only">(current)</span>
-              </span>
-            </li>
-            <li class="page-item">
-              <a class="page-link" href="#!">3</a>
-            </li>
-            <li class="page-item">
-              <a class="page-link" href="#!">Next</a>
-            </li>
-          </ul>
-        </nav>
-      </div>
+                            <!-- List Group -->
+                            <div class="list-group">
+                                <a href="#" class="list-group-item list-group-item-action active">List Group</a>
+                                <a href="#" class="list-group-item list-group-item-action">List item</a>
+                                <a href="#" class="list-group-item list-group-item-action">List item 2</a>
+                                <a href="#" class="list-group-item list-group-item-action disabled">List item 3</a>
+                            </div>
 
-      <div class="mt-2">
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xl-12 col-lg-4 mb-4">
+                    <div class="card bg-primary text-white h-100">
+                        <div class="card-body d-flex flex-column align-items-start">
+                            <h4 class="card-title">Card</h4>
+                            <p class="card-text">Watch me scale, scale. Now watch me stack, stack. Watch me scale, scale...</p>
+                            <a href="#" class="btn btn-primary border-white mt-auto">Button</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
 
-        <div class="progress">
-          <div class="progress-bar bg-primary" role="progressbar"
-               style="width: 16%" aria-valuenow="16" aria-valuemin="0" aria-valuemax="100"></div>
-          <div class="progress-bar bg-secondary" role="progressbar"
-               style="width: 16%" aria-valuenow="16" aria-valuemin="0" aria-valuemax="100"></div>
-          <div class="progress-bar bg-success" role="progressbar"
-               style="width: 16%" aria-valuenow="16" aria-valuemin="0" aria-valuemax="100"></div>
-          <div class="progress-bar bg-info" role="progressbar"
-               style="width: 16%" aria-valuenow="16" aria-valuemin="0" aria-valuemax="100"></div>
-          <div class="progress-bar bg-warning" role="progressbar"
-               style="width: 16%" aria-valuenow="16" aria-valuemin="0" aria-valuemax="100"></div>
-          <div class="progress-bar bg-danger" role="progressbar"
-               style="width: 16%" aria-valuenow="16" aria-valuemin="0" aria-valuemax="100"></div>
-          <div class="progress-bar bg-light" role="progressbar"
-               style="width: 16%" aria-valuenow="16" aria-valuemin="0" aria-valuemax="100"></div>
-          <div class="progress-bar bg-dark" role="progressbar"
-               style="width: 16%" aria-valuenow="16" aria-valuemin="0" aria-valuemax="100"></div>
-        </div>
+        <section id="forms" class="py-3">
+            <div class="row">
+                <div class="col-md-12">
 
-        <div class="progress mt-2">
-          <div class="progress-bar progress-bar-striped bg-primary" role="progressbar"
-               style="width: 16%" aria-valuenow="16" aria-valuemin="0" aria-valuemax="100"></div>
-          <div class="progress-bar progress-bar-striped bg-secondary" role="progressbar"
-               style="width: 16%" aria-valuenow="16" aria-valuemin="0" aria-valuemax="100"></div>
-          <div class="progress-bar progress-bar-striped bg-success" role="progressbar"
-               style="width: 16%" aria-valuenow="16" aria-valuemin="0" aria-valuemax="100"></div>
-          <div class="progress-bar progress-bar-striped bg-info" role="progressbar"
-               style="width: 16%" aria-valuenow="16" aria-valuemin="0" aria-valuemax="100"></div>
-          <div class="progress-bar progress-bar-striped bg-warning" role="progressbar"
-               style="width: 16%" aria-valuenow="16" aria-valuemin="0" aria-valuemax="100"></div>
-          <div class="progress-bar progress-bar-striped bg-danger" role="progressbar"
-               style="width: 16%" aria-valuenow="16" aria-valuemin="0" aria-valuemax="100"></div>
-          <div class="progress-bar progress-bar-striped bg-light" role="progressbar"
-               style="width: 16%" aria-valuenow="16" aria-valuemin="0" aria-valuemax="100"></div>
-          <div class="progress-bar progress-bar-striped bg-dark" role="progressbar"
-               style="width: 16%" aria-valuenow="16" aria-valuemin="0" aria-valuemax="100"></div>
-        </div>
+                    <!-- Form -->
+                    <form role="form">
+                        <div class="form-group row">
+                            <label class="col-md-2 col-form-label form-control-label text-muted">First</label>
+                            <div class="col-md-4">
+                                <input class="form-control" type="text" value="Jane">
+                            </div>
+                            <label class="col-md-1 col-form-label form-control-label text-muted">Last</label>
+                            <div class="col-md-5">
+                                <input class="form-control" type="text" value="Bishop">
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-lg-2 col-form-label form-control-label text-muted">Address</label>
+                            <div class="col-lg-10">
+                                <input class="form-control" type="text" placeholder="Street">
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-lg-2 col-form-label form-control-label text-muted"></label>
+                            <div class="col-lg-6">
+                                <input class="form-control" type="text" placeholder="City">
+                            </div>
+                            <div class="col-lg-4">
+                                <select class="form-control">
+                                    <option>State</option>
+                                    <option>AK</option>
+                                    <option>AZ</option>
+                                    <option>CA</option>
+                                    <option>CO</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group row was-validated">
+                            <label class="col-lg-2 col-form-label form-control-label text-muted">Username</label>
+                            <div class="col-lg-10">
+                                <input class="form-control" type="text" required="">
+                                <div class="invalid-feedback">
+                                    Username is required.
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-lg-2 col-form-label form-control-label text-muted">Password</label>
+                            <div class="col-lg-10">
+                                <input class="form-control" type="password" value="11111122333">
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-lg-2 col-form-label form-control-label"></label>
+                            <div class="col-lg-10">
+                                <input type="reset" class="btn btn-outline-secondary mr-2" value="Cancel">
+                                <input type="button" class="btn btn-primary mr-2" value="Submit">
+                                <div class="custom-control custom-checkbox d-inline">
+                                    <input type="checkbox" class="custom-control-input" id="customCheck" checked="">
+                                    <label class="custom-control-label" for="customCheck">Check me out</label>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
 
-      </div>
+                </div>
+            </div>
+        </section>
 
+        <section id="more" class="py-2">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="table-responsive">
+                        <table class="table table-hover table-sm">
+                            <tbody>
+                                <tr>
+                                    <th class="w-25">Location</th>
+                                    <th class="w-50">Date</th>
+                                    <th class="w-25">Visits</th>
+                                </tr>
+                                <tr>
+                                    <td>Westfield</td>
+                                    <td>08.05.18 <span class="badge badge-primary">badge</span></td>
+                                    <td>2323</td>
+                                </tr>
+                                <tr>
+                                    <td>Galway</td>
+                                    <td>08.05.18 <span class="badge badge-pill badge-primary">badge-pill</span></td>
+                                    <td>5362</td>
+                                </tr>
+                                <tr class="table-primary">
+                                    <td>Bern</td>
+                                    <td>08.05.18</td>
+                                    <td>153</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="w-100 my-4"></div>
+                <div class="col-md-12">
+                    <div class="progress mb-2">
+                        <div class="progress-bar bg-primary w-25" role="progressbar" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">25%</div>
+                    </div>
+                </div>
+                <div class="col-md-12">
 
+                    <!-- Alert -->
+                    <div class="alert alert-primary alert-dismissable show fade" role="alert">
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">×</span>
+                        </button>
+                        <strong>Well done!</strong> You successfully read this important alert message.
+                    </div>
+                </div>
+
+            </div>
+        </section>
     </div>
-
-    <div class="col-lg-3 col-md-6">
-
-      <!--Alerts-->
-      <div class="mb-2 alert alert-primary" role="alert">
-        This is a primary alert with <a href="#" class="alert-link">an example link</a>.
-      </div>
-      <div class="mb-2 alert alert-secondary" role="alert">
-        This is a secondary alert with <a href="#" class="alert-link">an example link</a>.
-      </div>
-      <div class="mb-2 alert alert-success" role="alert">
-        This is a success alert with <a href="#" class="alert-link">an example link</a>.
-      </div>
-      <div class="mb-2 alert alert-danger" role="alert">
-        This is a danger alert with <a href="#" class="alert-link">an example link</a>.
-      </div>
-      <div class="mb-2 alert alert-warning" role="alert">
-        This is a warning alert with <a href="#" class="alert-link">an example link</a>.
-      </div>
-      <div class="mb-2 alert alert-info" role="alert">
-        This is a info alert with <a href="#" class="alert-link">an example link</a>.
-      </div>
-      <div class="mb-2 alert alert-light" role="alert">
-        This is a light alert with <a href="#" class="alert-link">an example link</a>.
-      </div>
-      <div class="mb-2 alert alert-dark" role="alert">
-        This is a dark alert with <a href="#" class="alert-link">an example link</a>.
-      </div>
-
-
-      <div class="mt-2">
-        <ul class="list-group">
-          <li class="list-group-item list-group-item-primary">Dapibus ac facilisis in</li>
-          <li class="list-group-item list-group-item-secondary">Cras justo odio</li>
-          <li class="list-group-item list-group-item-success">Dapibus ac facilisis in</li>
-          <li class="list-group-item list-group-item-danger">Porta ac consectetur ac</li>
-          <li class="list-group-item list-group-item-warning">Vestibulum at eros</li>
-          <li class="list-group-item list-group-item-info">Cras justo odio</li>
-          <li class="list-group-item list-group-item-light">Dapibus ac facilisis in</li>
-          <li class="list-group-item list-group-item-dark">Porta ac consectetur ac</li>
-        </ul>
-
-
-      </div>
-    </div>
-
-    <!--Progress-->
-    <div class="col-lg-6 mt-lg-0 mt-4">
-      <div class="card text-white bg-primary mb-2 d-inline-block" style="max-width: 18rem;">
-        <div class="card-header">Header</div>
-        <div class="card-body">
-          <h4 class="card-title">Primary card title</h4>
-          <p class="card-text">Some quick example text to build on the card title and make up the
-            bulk of the card's content.</p>
-        </div>
-      </div>
-      <div class="card text-white bg-secondary mb-2 d-inline-block" style="max-width: 18rem;">
-        <div class="card-header">Header</div>
-        <div class="card-body">
-          <h4 class="card-title">Secondary card title</h4>
-          <p class="card-text">Some quick example text to build on the card title and make up the
-            bulk of the card's content.</p>
-        </div>
-      </div>
-      <div class="card text-white bg-success mb-2 d-inline-block" style="max-width: 18rem;">
-        <div class="card-header">Header</div>
-        <div class="card-body">
-          <h4 class="card-title">Success card title</h4>
-          <p class="card-text">Some quick example text to build on the card title and make up the
-            bulk of the card's content.</p>
-        </div>
-      </div>
-      <div class="card text-white bg-danger mb-2 d-inline-block" style="max-width: 18rem;">
-        <div class="card-header">Header</div>
-        <div class="card-body">
-          <h4 class="card-title">Danger card title</h4>
-          <p class="card-text">Some quick example text to build on the card title and make up the
-            bulk of the card's content.</p>
-        </div>
-      </div>
-      <div class="card text-white bg-warning mb-2 d-inline-block" style="max-width: 18rem;">
-        <div class="card-header">Header</div>
-        <div class="card-body">
-          <h4 class="card-title">Warning card title</h4>
-          <p class="card-text">Some quick example text to build on the card title and make up the
-            bulk of the card's content.</p>
-        </div>
-      </div>
-      <div class="card text-white bg-info mb-2 d-inline-block" style="max-width: 18rem;">
-        <div class="card-header">Header</div>
-        <div class="card-body">
-          <h4 class="card-title">Info card title</h4>
-          <p class="card-text">Some quick example text to build on the card title and make up the
-            bulk of the card's content.</p>
-        </div>
-      </div>
-      <div class="card bg-light mb-2 d-inline-block" style="max-width: 18rem;">
-        <div class="card-header">Header</div>
-        <div class="card-body">
-          <h4 class="card-title">Light card title</h4>
-          <p class="card-text">Some quick example text to build on the card title and make up the
-            bulk of the card's content.</p>
-        </div>
-      </div>
-      <div class="card text-white bg-dark mb-2 d-inline-block" style="max-width: 18rem;">
-        <div class="card-header">Header</div>
-        <div class="card-body">
-          <h4 class="card-title">Dark card title</h4>
-          <p class="card-text">Some quick example text to build on the card title and make up the
-            bulk of the card's content.</p>
-        </div>
-      </div>
-
-
-      <div>
-
-        <table class="table table-hover table-striped table-">
-          <thead class="thead-dark">
-          <tr>
-            <th>#</th>
-            <th>Column</th>
-            <th>Column</th>
-            <th>Column</th>
-            <th>Column</th>
-          </tr>
-          </thead>
-          <tbody>
-          <tr>
-            <th scope="row">1</th>
-            <td class="table-primary">Content</td>
-            <td class="table-secondary">Content</td>
-            <td class="table-success">Content</td>
-            <td class="table-danger">Content</td>
-          </tr>
-          <tr>
-            <th scope="row">2</th>
-            <td class="table-warning">Content</td>
-            <td class="table-info">Content</td>
-            <td class="table-light">Content</td>
-            <td class="table-dark">Content</td>
-          </tr>
-
-          <tr>
-            <th scope="row">1</th>
-            <td class="bg-primary">Content</td>
-            <td class="bg-secondary">Content</td>
-            <td class="bg-success">Content</td>
-            <td class="bg-danger">Content</td>
-          </tr>
-          <tr>
-            <th scope="row">2</th>
-            <td class="bg-warning">Content</td>
-            <td class="bg-info">Content</td>
-            <td class="bg-light">Content</td>
-            <td class="bg-dark">Content</td>
-          </tr>
-          </tbody>
-        </table>
-      </div>
-    </div>
-  </div>
+</div>
 
 {% endblock %}
