@@ -148,8 +148,11 @@
     {% endif %}
   </footer>
 
-<script src="{% static 'js/jquery-3.3.1.min.js' %}"></script>{% block extra_js %}{% endblock %}{% block js_block %}{% if form %}{{form.media}}{% endif%}{% endblock js_block %}
+<script src="{% static 'js/popper.min.js' %}"></script>
+<script src="{% static 'js/jquery-3.5.1.min.js' %}"></script>
 <script src="{% static 'js/bootstrap.min.js' %}"></script>
+{% block extra_js %}{% endblock %}
+{% block js_block %}{% if form %}{{form.media}}{% endif%}{% endblock js_block %}
 {% render_block "js" %}
 <script defer src="{% static "js/fontawesome-all.js" %}"></script>
 
