@@ -1,5 +1,4 @@
 from django import forms
-from django.templatetags.static import static
 
 from wagtailmarkdown.widgets import MarkdownTextarea
 
@@ -18,6 +17,6 @@ class XRColorPicker(forms.TextInput):
 
     class Media:
         css = {
-            'all': (static('css/xr-color-picker.css'),)
+            'all': ('css/xr-color-picker.css',)
         }
-        js = (static('js/xr-color-picker.js'),)
+        js = ('js/xr-color-picker.js',)
