@@ -1,6 +1,12 @@
-from contacts.models import Contact, Address
+import re
+
+from compressor.filters import CallbackOutputFilter
+from rcssmin import cssmin
+
 from django.conf import settings
 from django.contrib.sites.models import Site
+
+from contacts.models import Contact, Address
 
 
 def _get_names(name, first, last):
@@ -32,7 +38,7 @@ def _update_model(model, **kwargs):
 
 def _has_name(name):
     return name not in ('', '?', 'unknown')
-            
+
 
 def get_contact(email, name='', first_name='', last_name='', **kwargs):
     email = email.lower().strip()
@@ -41,7 +47,7 @@ def get_contact(email, name='', first_name='', last_name='', **kwargs):
     addr_keys.remove('id')
 
     # Create address dict from fields in kwargs.
-    address = {k : kwargs.pop(k) for k in addr_keys if k in kwargs}
+    address = {k: kwargs.pop(k) for k in addr_keys if k in kwargs}
 
     is_update = False
     try:
@@ -97,3 +103,17 @@ def base_url():
     current_site = Site.objects.get_current()
     scheme = 'http' if settings.DEBUG else 'https'
     return '%s://%s' % (scheme, current_site.domain)
+
+
+# https://github.com/django-compressor/django-compressor/issues/910#issuecomment-500502936
+def compress(css, **kwargs):
+    capture_svg = re.compile(r'url\("(data:image/svg.*?svg%3[Ee])\"\)')
+    data_urls = re.findall(capture_svg, css)
+    for data_url in data_urls:
+        css = css.replace(data_url, data_url.replace(' ', '%20'))
+    css = cssmin(css, **kwargs)
+    return css
+
+
+class CSSMinFilter(CallbackOutputFilter):
+    callback = 'extinctionr.utils.compress'

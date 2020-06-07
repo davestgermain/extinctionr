@@ -227,7 +227,6 @@ STORAGE_TYPE = 'normal'
 STATICFILES_DIRS = (BASE_DIR + '/static',)
 
 STATIC_ROOT = BASE_DIR + '/static_root/'
-COMPRESS_ROOT = STATIC_ROOT
 
 STATIC_URL = '/static/'
 if DEBUG:
@@ -236,9 +235,21 @@ else:
     MEDIA_URL = '/static/media/'
 MEDIA_ROOT = STATIC_ROOT + 'media/'
 
+COMPRESS_ENABLED = True
+COMPRESS_ROOT = STATIC_ROOT
 
-COMPRESS_ENABLED = False
+COMPRESS_CSS_FILTERS = [
+    'compressor.filters.css_default.CssAbsoluteFilter',
+    'extinctionr.utils.CSSMinFilter'
+]
 
+COMPRESS_REBUILD_TIMEOUT = 5400
+COMPRESS_OUTPUT_DIR = 'CACHE'
+COMPRESS_URL = STATIC_URL
+
+COMPRESS_PRECOMPILERS = (
+    ('text/x-scss', 'django_libsass.SassCompiler'),
+)
 COMPRESS_OFFLINE_CONTEXT = {
     'STATIC_URL': 'STATIC_URL',
 }
@@ -249,31 +260,11 @@ STATICFILES_FINDERS = (
     'compressor.finders.CompressorFinder',
 )
 
-COMPRESS_CSS_FILTERS = [
-    'compressor.filters.css_default.CssAbsoluteFilter', 'compressor.filters.cssmin.CSSMinFilter']
-COMPRESS_REBUILD_TIMEOUT = 5400
-
-COMPRESS_OUTPUT_DIR = 'CACHE'
-COMPRESS_URL = STATIC_URL
-
-COMPRESS_PRECOMPILERS = (
-    ('text/less', 'lessc {infile} {outfile}'),
-    ('text/x-sass', 'sass {infile} {outfile}'),
-    ('text/x-scss', 'sass {infile} {outfile}'),
-)
-
-COMPRESS_OFFLINE_CONTEXT = {
-    'STATIC_URL': 'STATIC_URL',
-}
-
 AUTH_USER_MODEL = 'common.User'
 
 LOGIN_REDIRECT_URL = '/'
-
 LOGIN_URL = 'login'
-
 LOGOUT_URL = 'logout'
-
 
 GP_CLIENT_ID = os.getenv('GP_CLIENT_ID', False)
 GP_CLIENT_SECRET = os.getenv('GP_CLIENT_SECRET', False)

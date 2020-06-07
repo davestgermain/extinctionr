@@ -1,0 +1,52 @@
+$fucXed-font:  FucXed, sans-serif;
+$crimson-font: "Crimson Text", Georgia, serif;
+
+$xr-green: rgb(20, 170, 55);
+$xr-lemon: rgb(247, 238, 106);
+$xr-light-blue: rgb(117, 208, 241);
+$xr-pink: rgb(237, 155,196);
+$xr-purple: rgb(152, 98, 151);
+$xr-light-green: rgb(190, 210, 118);
+$xr-warm-yellow: rgb(255, 193, 30);
+$xr-bright-pink: rgb(207, 98, 151);
+$xr-red:rgb(220, 79, 0);
+$xr-dark-blue: rgb(56, 96, 170);
+$xr-angry: rgb(200, 0, 130);
+$xr-gray: rgb(242,242,242);
+$xr-dark-gray: #1a1a1a;
+
+$xr-colors: (
+    "green": $xr-green,
+    "lemon": $xr-lemon,
+    "light-blue": $xr-light-blue,
+    "pink": $xr-pink,
+    "purple": $xr-purple,
+    "light-green": $xr-light-green,
+    "warm-yellow": $xr-warm-yellow,
+    "bright-pink": $xr-bright-pink,
+    "red": $xr-red,
+    "dark-blue": $xr-dark-blue,
+    "angry": $xr-angry
+);
+
+$primary: $xr-purple;
+$success: $xr-green;
+$info: $xr-light-blue;
+$warning: $xr-warm-yellow;
+$danger: $xr-angry;
+
+$link-color: black;
+$link-hover-color: $xr-green;
+$link-decoration:  underline; 
+
+$spacer: 2rem;
+$spacers: (5: 5rem);
+
+$hr-margin-y: 1rem;
+
+$btn-font-family: $fucXed-font;
+
+$btn-font-size: 1rem;
+$btn-padding-y: .5rem;
+$btn-padding-x: 1.5rem;
+$btn-border-width: 3px;

@@ -1,0 +1,413 @@
+
+body {
+    background-color: $xr-dark-gray;
+    font-family: $crimson-font;
+}
+
+:target::before {
+  content: "";
+  display: block;
+  height: 82px; /* fixed header height*/
+  margin: -82px 0 0; /* negative fixed header height */
+}
+
+@media (min-width: 576px) {
+  :target::before {
+    content: "";
+    display: block;
+    height: 100px; /* fixed header height*/
+    margin: -100px 0 0; /* negative fixed header height */
+  }
+}
+
+h1,h2,h3,h4,h5,h6,.btn-fucxed,.text-fucxed {
+    font-family: $fucXed-font;
+}
+
+h1 {
+    margin-bottom: 2.25rem;
+}
+
+h2 {
+    font-size: 1.5rem;
+}
+
+h2, h3, h4, h5, h6,
+.h2, .h3, .h4, .h5, .h6 {
+  margin-bottom: 1rem;
+}
+
+.home-banner-text {
+  div {
+    line-height: 1.25;
+  }
+}
+
+.px {
+    padding-left: 10%;
+    padding-right: 10%;
+}
+
+@media (min-width: 320px) {
+    .display-1 {
+        font-size: 2.25rem;
+        line-height: 1;
+    }
+
+    h3 {
+        font-size: 1.25rem;
+    }
+
+    .display-4 {
+        font-size: 2.25rem;
+    }
+
+    .banner-title {
+        position: absolute;
+        font-family: $fucXed-font;
+        font-size: 2.25rem;
+        color:white;
+        padding-left: 10%;
+        padding-right: 10%;
+        bottom: 2.5rem;
+    }
+
+    .highlight-action span {
+      display: inline-block;
+    }
+
+    .date-month, .date-day {
+        font-size: 1.2rem;
+    }
+
+    #site-nav .navbar-nav {
+        padding-top: 1.25rem;
+    }
+
+    a.nav-link {
+        margin-top: 18px;
+        margin-bottom: 18px;
+        padding-top: 0;
+        padding-bottom: 0;
+    }
+
+    a.donate-btn {
+        margin-left: 0;
+        margin-top: 18px;
+        margin-bottom: 18px;
+    }
+}
+
+@media (min-width: 576px) {
+    .banner-title {
+        font-size: 4rem;
+    }
+
+    .banner {
+        overflow: hidden;
+        height: 25vw;
+    }
+
+    .banner img {
+        overflow: hidden;
+    }
+
+    .site-nav {
+        padding-left: 0;
+        padding-right:1em;
+    }
+}
+
+@media (min-width: 768px) {
+
+    .date-month {
+        font-size: 1.5rem;
+    }
+
+    .date-day {
+        font-size: 2.25rem;
+    }
+}
+
+@media (min-width: 992px) {
+
+    .navbar-expand-lg .navbar-nav .nav-link {
+        padding-right: .75rem;
+        padding-left: .75rem;
+    }
+
+    #site-nav .navbar-nav {
+        padding-top: 0;
+    }
+
+    a.nav-link {
+        margin-top: 0;
+        margin-bottom: 0;
+        padding-top: 8px;
+        padding-bottom: 8px;
+    }
+
+    a.donate-btn {
+        margin-left: .75rem;
+    }
+
+    ul.navbar-nav {
+        align-items: center;
+    }
+}
+
+.my-3 {
+    margin-top: 3rem !important;
+    margin-bottom: 3rem !important;
+}
+
+@media (max-width: 991px) {
+    .col-text {
+        max-width: 90%;
+    }
+}
+
+.col-text {
+  -ms-flex: 0 0 90%;
+  flex: 0 0 90%;
+
+  .col-8 {
+    padding-left: 0;
+    padding-right: 0;
+  }
+}
+
+.text-bold {
+    font-family: "Crimson Text Bold", Georgia, serif;
+}
+
+/* Generate color classes for xr colors */
+@each $color, $xr-color in $xr-colors {
+  .xr-#{$color} {
+    color: $xr-color;
+  }
+  .xr-bg-#{$color} {
+    background-color: $xr-color;
+  }
+}
+
+.xr-bg-gray {
+    background-color: $xr-gray !important;
+}
+
+#header-image {
+    max-width: 100%;
+    height: 4.25rem;
+}
+
+#mainbody {
+    font-size: 1.2rem;
+
+    form {
+      font-size: 1.1rem;
+    }
+}
+
+#article-container {
+    font-size: 1.5rem;
+}
+
+.navbar {
+    padding: .5rem 5%;
+}
+
+#site-nav {
+    background-color: $xr-dark-gray;
+    font-size: 1.2rem;
+    font-family: $fucXed-font;
+    padding-top:.4rem;
+
+    a {
+      color: white;
+    }
+    a.active {
+      color: $xr-green;
+      background-color: $xr-dark-gray !important;
+    }
+    a:hover, a:focus {
+      color: $xr-green;
+    }
+}
+
+.dropdown-menu {
+    background-color: $xr-dark-gray;
+    margin: 1.25rem 0 0;
+    border: none; /*hacky way of overriding default drop-menu*/
+    border-top: 3px solid white;
+    border-radius: 0;
+
+    a {
+      color: $xr-green;
+    }
+
+    a:hover {
+      background-color: #aaa;
+    }
+}
+
+.dropdown-item {
+    font-size: 1.2rem;
+    padding: .25rem 1.25rem;
+
+    .active {
+      color: $xr-green !important;
+      text-decoration: none;
+      background-color: $xr-dark-gray !important;  
+    }
+}
+
+.dropdown-no-arrow::after {
+    content: none !important;
+}
+
+@media (max-width: 767px) {
+    p.btn-row>a {
+        margin-bottom: 1rem;
+    }
+
+    p.btn-row>a:last-child {
+        margin-bottom: 0;
+    }
+}
+
+.btn-row {
+    margin-top: 1.2rem;
+}
+
+p.btn-row>a {
+    margin-right: 1.2rem;
+}
+
+p.btn-row>a:last-child {
+    margin-right: 0;
+}
+
+/* tweak bootstrap button classes */
+@each $color, $value in $theme-colors {
+  .btn-#{$color} {
+    border-style: none;
+    text-decoration: none;
+  }
+}
+
+.btn-secondary {
+  color: white !important;
+}
+
+.btn-warning {
+  color: black !important;
+}
+
+.btn-info {
+  color: black !important;
+}
+
+.donate-btn {
+    padding: .5rem 1.5rem;
+    font-size: 1.2rem;
+
+    a:hover {
+      color: #000000 !important;
+    }
+}
+
+.arrow-btn {
+    height: 1.75rem;
+    width: auto;
+}
+
+svg.arrow-btn:hover,svg.arrow-btn:focus {
+    fill: rgb(102, 48, 101) !important;
+}
+
+.banner {
+    background-color: black !important;
+    padding: 0px !important;
+    margin: 0px !important;
+
+    img {
+      opacity: 0.5;
+    }
+}
+
+.card-row {
+    margin-left: 10%;
+    margin-right: 10%;
+}
+
+.card-body {
+    padding: 1.75rem;
+}
+
+.card-text {
+    padding-top: 1.25rem;
+}
+
+.quote-mark {
+    height: 1.5rem;
+}
+
+.table .thead-xr-pink th {
+    font-size: 1.25rem;
+    border: none;
+}
+
+.table a:hover {
+    color: $xr-green;
+}
+
+.table td {
+    padding: 0;
+}
+
+.border, .table td {
+    border: 3px solid #F2F2F2 !important;
+}
+
+div.d-lg-block>div {
+    background-color: #F7EE6A;
+    padding: 9px 7px !important;
+    margin: 0 0 4px 0 !important;
+}
+
+td h5 {
+    padding-top: .75rem;
+    padding-left: .75rem;
+}
+
+div.act-now-block h1 {
+    max-width: fit-content;
+}
+
+a.social {
+    color: white;
+    font-size: .8em;
+}
+
+.fa-stack, .svg-inline--fa.fa-stack-2x {
+    height: 2.75em;
+    width: 2.75em;
+}
+
+span.fa-stack path:hover, span.fa-stack path:focus {
+    fill: $xr-green;
+}
+
+footer {
+  
+    a {
+      font-size: 1.2rem;
+      font-family: $fucXed-font;
+      color: #FFFFFF;
+    }
+
+    a.pr-4:hover, a.pr-4:focus {
+      color: $xr-green;
+      text-decoration: none;
+    }
+}

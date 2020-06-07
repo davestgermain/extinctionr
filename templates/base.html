@@ -7,8 +7,12 @@
     <meta name="google-site-verification" content="ZON_H48TzAPuGJFBRW4tqfRC6d6HnaDvYUFp7xoF9lw" />
 {% load static compress %}
     <title>Extinction Rebellion Massachusetts {% block title %}{% endblock %}</title>
-    <link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet">
-    <link href="{% static 'css/xr-mass.css' %}" rel="stylesheet">
+
+    {% compress css %}
+        {% comment %} <link type="text/x-scss" href="{% static 'css/bootstrap/scss/bootstrap.scss' %}" rel="stylesheet" media="screen"> {% endcomment %}
+        <link type="text/x-scss" href="{% static 'css/xr-theme.scss' %}" rel="stylesheet" media="screen">
+    {% endcompress %}
+
     <link href="{% static 'css/pygments.css' %}" rel="stylesheet">
     <link rel="icon" href="{% static 'images/cropped-favicon-192x192-150x150.png' %}" sizes="32x32" />
     <link rel="icon" href="{% static 'images/cropped-favicon-192x192.png' %}" sizes="192x192" />
@@ -144,8 +148,11 @@
     {% endif %}
   </footer>
 
-<script src="{% static 'js/jquery-3.3.1.min.js' %}"></script>{% block extra_js %}{% endblock %}{% block js_block %}{% if form %}{{form.media}}{% endif%}{% endblock js_block %}
+<script src="{% static 'js/popper.min.js' %}"></script>
+<script src="{% static 'js/jquery-3.5.1.min.js' %}"></script>
 <script src="{% static 'js/bootstrap.min.js' %}"></script>
+{% block extra_js %}{% endblock %}
+{% block js_block %}{% if form %}{{form.media}}{% endif%}{% endblock js_block %}
 {% render_block "js" %}
 <script defer src="{% static "js/fontawesome-all.js" %}"></script>
 
