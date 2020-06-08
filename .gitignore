@@ -13,4 +13,7 @@ attachments/*
 var/*
 extinctionr/prod_settings.py
 .vscode/*
+.sass-cache
+
+
 
