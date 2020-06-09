@@ -1,15 +1,15 @@
 import os.path
-from django.db.models.signals import m2m_changed, post_save
+from django.db.models.signals import post_save
 from django.conf import settings
 
 from django.dispatch import receiver
 from crum import get_current_user
 
 from .models import (
-    Circle, CircleMember, MembershipRequest, 
-    CircleJob, Contact
+    Circle, CircleMember, MembershipRequest,
+    CircleJob, Contact, VolunteerRequest
 )
-from . import comm, git, get_circle
+from . import comm, git
 from .anapi import add_to_action_networks
 
 
@@ -45,3 +45,7 @@ def send_contact_to_action_networks(sender, instance, created, **kwargs):
         add_to_action_networks(instance)
 
 
+@receiver(post_save, sender=VolunteerRequest)
+def notify_volunteer_request(sender, instance, created, **kwargs):
+    if created:
+        comm.notify_new_volunteer(instance)

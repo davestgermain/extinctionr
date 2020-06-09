@@ -1,10 +1,9 @@
 from django.conf import settings
 from django.core.mail import send_mass_mail, send_mail
-from django.utils.timezone import now, localtime
-from django.utils import dateformat
 from extinctionr.utils import base_url
 
 from .models import Contact
+from extinctionr.circles import get_circle
 
 
 def notify_circle_membership(circle, msg_type, members):
@@ -44,17 +43,17 @@ def notify_circle_job(job):
     send_mail(subject, message, settings.DEFAULT_FROM_EMAIL, addresses)
 
 
-def notify_new_signup(outreach_circle, signup):
-    contact = signup.contact
-    if signup.data.get('working_group', '') == 'UNKNOWN':
-        wg_message = 'They will need help finding a working group\n'
-    else:
-        wg_message = ''
-    subject = '[XR] New Self-Service Signup: {}'.format(contact)
-    message = '''{who} <{email}> has signed up through the website.
-{wg_message}
-To export signup data:
-{baseurl}/circle/person/join/export/
+def notify_new_volunteer(volunteer):
+    contact = volunteer.contact
+    outreach_circle = get_circle('outreach')
+    subject = '[XR] New Volunteer Request: {}'.format(contact)
+    message = '''{who} <{email}> has signed up to volunteer.
 
-'''.format(who=contact, email=contact.email, wg_message=wg_message, data=signup.data, baseurl=base_url())
+View all new requests at:
+  {baseurl}/cms/circles/volunteerrequest/?status__exact=n
+
+Edit this request at:
+  {baseurl}/cms/circles/volunteerrequest/edit/{pk}/
+
+'''.format(who=contact, email=contact.email, baseurl=base_url(), pk=volunteer.id)
     send_mail(subject, message, settings.DEFAULT_FROM_EMAIL, outreach_circle.get_notification_addresses())
