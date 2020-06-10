@@ -246,9 +246,9 @@ class StoryPage(Page):
         else:
             return self.owner.username
 
-    search_fields = Page.search_fields = [
+    search_fields = Page.search_fields + [
         index.SearchField('lede'),
-        index.SearchField('body'),
+        index.SearchField('content'),
     ]
 
     content_panels = Page.content_panels + [
