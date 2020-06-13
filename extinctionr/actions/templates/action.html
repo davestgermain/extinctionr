@@ -4,7 +4,14 @@
 {% block title %}:: {{action.text_title}}{% endblock %}
 {% block og_title %}{{action.text_title}}{% endblock %}
 {% block og_image %}
-{% if photos %}
+{% if image %}
+  {% image image fill-800x450 format-jpeg as og_image %}
+  <meta property="og:image" content="https://{{request.get_host}}{{og_image.url}}" />
+  <meta property="og:image:alt" content="{{og_image.caption}}" />
+  <meta property="og:image:type" content="image/jpg" />
+  <meta property="og:image:height" content="450"/>
+  <meta property="og:image:width" content="800"/>
+{% elif photos %}
   <meta property="og:image" content="https://{{request.get_host}}{{photos.0.photo.url}}" />
   <meta property="og:image:alt" content="{{photos.0.caption}}" />
   <meta property="og:image:type" content="image/jpg" />
@@ -101,7 +108,7 @@ not working yet because we need actual address data for events.
 </div>
 {% if image %}
 	<div class="col text-center">
-		{% image image fill-1024x576 class="img img-fluid"%}
+		{% image image fill-800x450 class="img img-fluid"%}
 	</div>
 {% elif photos %}
 {% load thumbnail %}

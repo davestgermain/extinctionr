@@ -285,6 +285,8 @@ def show_action(request, slug):
     ctx['form'] = form
     ctx['has_roles'] = list(action.available_role_choices)
     ctx['photos'] = list(action.photos.all())
+    if action.image:
+        ctx['image'] = action.image
     resp = render(request, 'action.html', ctx)
     resp['Vary'] = 'Cookie'
     resp['Last-Modified'] = http_date(action.modified.timestamp())
