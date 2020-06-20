@@ -55,9 +55,10 @@ class ImageImporter:
 def clear_image_exif(file_obj):
     img = Image.open(file_obj.path)
     try:
-        img_no_exif = Image.new(img.mode, img.size)
-        img_no_exif.putdata(list(img.getdata()))
-        img_no_exif.save(file_obj.path)
+        exif = img.getexif()
+        if exif:
+            del img.info["exif"]
+            img.save(file_obj.path)
     except OSError as err:
         logger.error(
             'failed to clear exif metadata from {0}: {1}'.format(file_obj.path, err)
