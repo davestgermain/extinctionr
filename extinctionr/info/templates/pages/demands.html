@@ -1,10 +1,27 @@
-{% extends "base.html" %} {% load static %} {% block title %}:: Join Us{%
-endblock %} {% block og_tags %} {% endblock %} {% block inline_css %}
-{{block.super}} .xr-graphic { position: absolute; right:0; max-width: none
-!important; width: auto !important; height: 100% !important; } .clip-80 {
-clip-path: inset(0 20% 0 0); transform:translateX(20%); } .clip-50 { clip-path:
-inset(0 52% 0 0); transform:translateX(52%); } {% endblock %} {% block content
-%}
+{% extends "base.html" %} 
+{% load static %} 
+{% block title %}:: Join Us{% endblock %} 
+{% block og_tags %} 
+{% endblock %} 
+{% block inline_css %}
+{{block.super}} 
+.xr-graphic { 
+  position: absolute; 
+  right:0; 
+  max-width: none !important; 
+  width: auto !important; 
+  height: 100% !important; 
+} 
+
+.clip-80 {
+  clip-path: inset(0 20% 0 0); transform:translateX(20%); 
+} 
+
+.clip-50 { 
+  clip-path: inset(0 52% 0 0); transform:translateX(52%); 
+} 
+{% endblock %} 
+{% block content %}
 <div class="row">
   <div class="banner position-relative w-100">
     <img
