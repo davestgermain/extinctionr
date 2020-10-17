@@ -40,8 +40,8 @@ class ActionForm(forms.ModelForm):
 
 
 class SignupForm(forms.Form):
-    email = forms.EmailField(label="Email", required=True, widget=forms.EmailInput(attrs={'class': 'form-control text-center', 'placeholder': 'Email Address'}))
-    name = forms.CharField(label="Your name", widget=forms.TextInput(attrs={'class': 'form-control text-center', 'placeholder': 'Your Name'}))
+    email = forms.EmailField(label="Email", required=True, widget=forms.EmailInput(attrs={'class': 'form-control text-center', 'placeholder': 'Email address'}))
+    name = forms.CharField(label="Your name", widget=forms.TextInput(attrs={'class': 'form-control text-center', 'placeholder': 'Your name'}))
     promised = forms.BooleanField(required=False, widget=forms.CheckboxInput(attrs={'class': 'form-check'}))
     role = forms.ModelChoiceField(queryset=None, required=False, widget=forms.Select(attrs=BOOTSTRAP_ATTRS))
     next = forms.CharField(required=False, widget=forms.HiddenInput())
@@ -280,7 +280,8 @@ def show_action(request, slug):
         initial = {}
         if contact:
             initial['email'] = contact.email
-            initial['name'] = str(contact)
+            if contact.first_name:
+                initial['name'] = str(contact)
         form = SignupForm(action=action, initial=initial)
     ctx['form'] = form
     ctx['has_roles'] = list(action.available_role_choices)

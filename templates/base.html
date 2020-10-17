@@ -90,7 +90,7 @@
 <div class="col text-center">
       <ul class="messages list-unstyled">
       {% for message in messages %}
-      <li{% if message.tags %} class="text-{{ message.tags }}"{% endif %}>{{ message|safe }}</li> {% endfor %}
+      <li{% if message.tags %} class="py-2 px-1 msg-{{ message.tags }}"{% endif %}>{{ message|safe }}</li> {% endfor %}
     </ul>
 </div></div>{% endif %}
       {% block breadcrumb %}{% endblock %}

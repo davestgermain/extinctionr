@@ -47,6 +47,10 @@
 .date-day {
 	font-size: 1.8em;
 }
+.rsvp {
+	position: sticky;
+	background-color: white;
+}
 {% endblock %}
 {% block content %}
 {% load tz %}
@@ -56,14 +60,14 @@ not working yet because we need actual address data for events.
 {% include 'action.ld.json' %}
 </script>
 {% endcomment %}
-<div class="row px justify-content-center" style="padding-top: 100px">
-	<div class="col-5 col-md-2 pl-0 pr-md-3 pb-sm-3">
+<div class="row px pt-2 pt-lg-3 justify-content-center">
+	<div class="col-5 col-md-2 px-0 px-lg-2 pb-lg-0 mb-lg-0">
 		<div class="xr-bg-lemon p-2 text-center text-fucxed">
-			<p class="date-month">{{action.when|localtime|date:"M"}}<br>
+			<p class="date-month m-0">{{action.when|localtime|date:"M"}}<br>
 			<span class="date-day">{{action.when|localtime|date:"d"}}</span></p>
 		</div>
 	</div>
-	 <div class="col-12 col-md-8 pl-0">
+	<div class="col-12 col-md-8 pl-0 pt-1">
 		<h1 class="display-4 pb-sm-2 pb-md-3 m-0">{{action.html_title}}</h1>
 		{% if not action.public %}<h4 class="text-center text-warning">not public</h4>{% endif %}
 		<div class="row">
@@ -84,62 +88,23 @@ not working yet because we need actual address data for events.
 		</div>
 	</div>
 </div>
-<hr class="col-8 my-3">
-<div class="row px justify-content-center">
-	<div class="col col-md-8">
-		{{action.description|markdownify}}
-		{% if action.accessibility %}
-		<div class="accessibility-info text-left">
-			<br>
-			<span class="text-bold">Accessibility</span><br>
-			{{action.accessibility|markdownify}}
-		</div>
-		{% endif %}
-	</div>
-	<div class="w-100"></div>
-	<div class="col">
-		<div class="text-center pt-5">
-			{% if 'actions.change_action' in perms %}
-			<h4><a href="{% url 'wagtailadmin_home' %}actions/action/edit/{{action.id}}/">Edit</a></h4>
-			{% endif %}
-			<h4><a href="webcal://{{request.get_host}}/action/ical/{{action.id}}" title="Export calendar as iCal format"><i class="far fa-calendar-alt"></i></a></h4>
-		</div>
-	</div>
-</div>
-{% if image %}
-	<div class="col text-center">
-		{% image image fill-800x450 class="img img-fluid"%}
-	</div>
-{% elif photos %}
-{% load thumbnail %}
-<section class="row photo-view py-sm-4 py-md-5 px justify-content-center">
-	{% for photo in photos %}
-	<div class="col text-center">
-      {% thumbnail photo.photo "600x600" as im %}
-      <a href="{{photo.photo.url}}"><img class="img img-fluid" src="{{ im.url }}" alt="{{photo.caption}}"></a>
-      {% endthumbnail %}
-	</div>
-{% if forloop.counter|divisibleby:3 %}</section><section class="row mt-2">{% endif %}
-	{% endfor %}
-</section>
-{% endif %}
 {% if form %}
-<div class="row mt-4">
-	<div class="col-lg-8 col-sm-12 offset-sm-0 offset-lg-2">
+<div class="row my-0 pt-2 pb-0 sticky-top rsvp">
+	<div class="col-lg-8 col-sm-12 offset-sm-0 offset-lg-2 my-0">
 		{% if not action.is_full %}
-		<h4>RSVP to this event</h4>
 		<form method="post"> {% csrf_token %}
 			<div class="text-danger">{{form.non_field_errors}}</div>
-			<div class="form-group row">
-				<div class="col">
-					<label for="{{form.email.id_for_label}}" class="d-none d-sm-block">Email</label>
+			<div class="form-group row py-0 my-0 px-1">
+				<div class="col-5 pl-0 pr-1">
 					{{form.email}}
 					<div class="text-danger">{{form.email.errors}}</div>
 				</div>
-				<div class="col">
-					<label for="{{form.name.id_for_label}}" class="d-none d-sm-block">Name</label>
+				<div class="col-5 px-1">
 					{{form.name}}
 					<div class="text-danger">{{form.name.errors}}</div>
+				</div>
+				<div class="col-2 pr-0 pl-1">
+					<input class="btn btn-success text-uppercase px-0 w-100" type="submit" value="RSVP">
 				</div>
 			</div>
 			{% if has_roles %}
@@ -168,19 +133,52 @@ not working yet because we need actual address data for events.
 				</div>
 			</div>
 			{% endif %}
-			<div class="form-group row mt-4 pt-2">
-				<div class="col">
-					<input class="btn btn-primary btn-lg text-uppercase" type="submit" value="I'm Going!">
-				</div>
-			</div>
 		</form>
 		{% else %}
 		<h2 class="text-center text-warning">Sorry, but registration is closed</h2>
 		<p class="text-center">Please check back for future <a href="{% url 'extinctionr.actions:list-actions' %}">events</a>.</p>
 		{% endif %}
 	</div>
+	<hr class="col-10">
 </div>
 {% endif %}
+<section class="row p-0 m-0 mb-1 justify-content-center">
+	{% if image %}
+		<div class="col text-center">
+			{% image image fill-600x338 class="img img-fluid"%}
+		</div>
+	{% elif photos %}
+	{% load thumbnail %}
+	{% with photo=photos|first %}
+		<div class="col text-center">
+		{% thumbnail photo.photo "600x600" as im %}
+		<a href="{{photo.photo.url}}"><img class="img img-fluid" src="{{ im.url }}" alt="{{photo.caption}}"></a>
+		{% endthumbnail %}
+		</div>
+	{% endwith %}
+	{% endif %}
+</section>
+<div class="row px justify-content-center">
+	<div class="col col-md-8">
+		{{action.description|markdownify}}
+		{% if action.accessibility %}
+		<div class="accessibility-info text-left">
+			<br>
+			<span class="text-bold">Accessibility</span><br>
+			{{action.accessibility|markdownify}}
+		</div>
+		{% endif %}
+	</div>
+	<div class="w-100"></div>
+	<div class="col">
+		<div class="text-center pt-5">
+			{% if 'actions.change_action' in perms %}
+			<h4><a href="{% url 'wagtailadmin_home' %}actions/action/edit/{{action.id}}/">Edit</a></h4>
+			{% endif %}
+			<h4><a href="webcal://{{request.get_host}}/action/ical/{{action.id}}" title="Export calendar as iCal format"><i class="far fa-calendar-alt"></i></a></h4>
+		</div>
+	</div>
+</div>
 {% if request.user.is_staff %}
 <div class="row mt-4">
 	<div class="col small">
@@ -235,6 +233,10 @@ not working yet because we need actual address data for events.
 {% endblock %}
 {% block extra_js %}
 <script type="text/javascript">
+    $(function() {
+		var navHeight = $('#site-nav').outerHeight();
+		$('.rsvp').css('top', `${navHeight}px`);
+	});
 	$('#id_commit').change(function(){
 		if ($(this).val() != '0') {
 			$('#id_promised').prop('checked', false);

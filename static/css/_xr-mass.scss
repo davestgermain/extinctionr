@@ -37,6 +37,28 @@ h2, h3, h4, h5, h6,
   margin-bottom: 1rem;
 }
 
+.msg-success {
+    font-family: $fucXed-font;
+    color: white;
+    background-color: $success;
+}
+
+.msg-danger {
+    font-family: $fucXed-font;
+    color: white;
+    background-color: $danger;
+}
+
+.msg-info {
+    font-family: $fucXed-font;
+    background-color: $info;
+}
+
+.msg-warning {
+    font-family: $fucXed-font;
+    background-color: $warning;
+}
+
 .home-banner-text {
   div {
     line-height: 1.25;
@@ -143,8 +165,8 @@ h2, h3, h4, h5, h6,
     a.nav-link {
         margin-top: 0;
         margin-bottom: 0;
-        padding-top: 8px;
-        padding-bottom: 8px;
+        padding-top: 6px;
+        padding-bottom: 6px;
     }
 
     a.donate-btn {
@@ -221,7 +243,7 @@ h2, h3, h4, h5, h6,
 }
 
 .navbar {
-    padding: .5rem 5%;
+    padding: 0 5%;
 }
 
 #site-nav {
