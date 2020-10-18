@@ -297,9 +297,10 @@ def show_action(request, slug):
             if commit:
                 messages.info(request, "We will notify you once at least %d others commit" % commit)
             set_last_contact(request, attendee.contact)
-            ical_data = str(action_to_ical(action, request))
-            action_url = request.build_absolute_uri(reverse('actions:action', kwargs={'slug': slug}))
-            confirm_rsvp(action, attendee, action_url, ical_data)
+            if not action.public:
+                ical_data = str(action_to_ical(action, request))
+                action_url = request.build_absolute_uri(reverse('actions:action', kwargs={'slug': slug}))
+                confirm_rsvp(action, attendee, action_url, ical_data)
             return redirect(next_url)
     else:
         contact = get_contact(email=request.user.email) if request.user.is_authenticated else get_last_contact(request)
