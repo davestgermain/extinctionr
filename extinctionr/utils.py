@@ -48,14 +48,14 @@ def get_contact(email, name='', first_name='', last_name='', **kwargs):
 
     # Create address dict from fields in kwargs.
     address = {k: kwargs.pop(k) for k in addr_keys if k in kwargs}
+    if not (first_name and last_name):
+        first_name, last_name = _get_names(name, first_name, last_name)
 
     is_update = False
     try:
         user = Contact.objects.get(email=email)
         is_update = True
     except Contact.DoesNotExist:
-        if not (first_name and last_name):
-            first_name, last_name = _get_names(name, first_name, last_name)
         user = Contact.objects.create(
             email=email,
             first_name=first_name,

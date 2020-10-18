@@ -10,6 +10,7 @@ urlpatterns = [
     path('talk/list/', views.list_proposals, name='list-talk-proposals'),
     path('', views.list_actions, name='list-actions'),
     path('ical/<str:whatever>', views.calendar_view, name='calendar-actions'),
+    path('ics/<str:slug>', views.action_ics_view, name='calendar-action'),
     path('<str:slug>/', views.show_action, name='action'),
     path('<str:action_slug>/attendees/', views.show_attendees, name='attendees'),
     path('<str:action_slug>/attendees/mark/', views.mark_promised, name='mark-attendee'),

@@ -42,12 +42,10 @@
     font-size: 1em;
 	min-width: 24px;
 }
-
 .event-date {
 	font-size: 1em;
 }
 .rsvp {
-	position: sticky;
 	background-color: white;
 }
 .hero {
@@ -85,32 +83,43 @@ not working yet because we need actual address data for events.
 	</div>
 </div>
 <div class="row py-0 justify-content-center">
-	<div class="col-12 col-md-6 px-0">
-		<h1 class="display-4 py-0 my-2 text-center">{{action.html_title}}</h1>
-		{% if not action.public %}<h4 class="text-center text-warning">not public</h4>{% endif %}
-		<dir class="row mx-0 px-0">
-			<div class="col-12 w-100 xr-bg-lemon text-fucxed py-2">
-				<span class="event-date">
-					{{action.when|localtime|date:"M d"}}
-				</span>
-			</div>
-			<div class="w-100"></div>
-			<div class="col col-lg-3 pl-1">
-				<i class="far fa-clock action-icon" title="Event time"></i>
-				<span class="small">{{action.when|localtime|time}}</span>
-			</div>
-			<div class="w-100"></div>
-			{% if action.location %}
-			<div class="col pl-1">
-				<i class="fas fa-map-marker-alt action-icon" title="Map Marker"></i>
-				<span class="small action-loc">{{action.location_link}}</span>
-			</div>
-			{% endif %}
+  <div class="col col-md-8 p-0">
+	<h1 class="display-4 py-0 my-2 text-center">{{action.html_title}}</h1>
+	{% if not action.public %}<h4 class="text-center text-warning">not public</h4>{% endif %}
+  </div>
+</div>
+<div class="row py-0 justify-content-center">
+	<div class="col col-md-8 w-100 xr-bg-lemon text-fucxed py-2">
+		<span class="event-date">
+			{{action.when|localtime|date:"M d"}}
+		</span>
+	</div>
+	<div class="w-100"></div>
+	<div class="col col-md-8 my-1">
+		<div>
+			<i class="far fa-clock action-icon" title="Event time"></i>
+			<span class="small">{{action.when|localtime|time}}</span>
+		</div>
+		{% if action.location %}
+		<div class="action-loc">
+			<i class="fas fa-map-marker-alt action-icon" title="Map Marker"></i>
+			<span class="small">{{action.location_link}}</span>
+		</div>
+		{% endif %}
+		<div>
+			<i class="far fa-calendar-alt action-icon" title="Calendar"></i>
+			<span class="small">
+			<a href="/action/ics/{{action.slug}}" title="Export event as ics format">
+				Add to calendar
+			</a>
+			</span>
+		</div>
 	</div>
 </div>
+
 {% if form %}
-<div class="row my-0 px-2 pt-2 pb-0 sticky-top rsvp">
-	<div class="col-lg-8 col-sm-12 offset-sm-0 offset-lg-2 my-0">
+<div class="row my-0 px-0 pt-2 pb-0 sticky-top justify-content-center rsvp">
+	<div class="col col-md-8 my-0">
 		{% if not action.is_full %}
 		<form method="post"> {% csrf_token %}
 			<div class="text-danger">{{form.non_field_errors}}</div>
@@ -159,10 +168,10 @@ not working yet because we need actual address data for events.
 		<p class="text-center">Please check back for future <a href="{% url 'extinctionr.actions:list-actions' %}">events</a>.</p>
 		{% endif %}
 	</div>
-	<hr class="col-10">
+	<hr class="col-12">
 </div>
 {% endif %}
-<div class="row px-2 justify-content-center">
+<div class="row justify-content-center">
 	<div class="col col-md-8">
 		{{action.description|markdownify}}
 		{% if action.accessibility %}
@@ -179,7 +188,6 @@ not working yet because we need actual address data for events.
 			{% if 'actions.change_action' in perms %}
 			<h4><a href="{% url 'wagtailadmin_home' %}actions/action/edit/{{action.id}}/">Edit</a></h4>
 			{% endif %}
-			<h4><a href="webcal://{{request.get_host}}/action/ical/{{action.id}}" title="Export calendar as iCal format"><i class="far fa-calendar-alt"></i></a></h4>
 		</div>
 	</div>
 </div>

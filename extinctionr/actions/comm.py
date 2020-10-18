@@ -1,5 +1,5 @@
 from django.conf import settings
-from django.core.mail import send_mass_mail
+from django.core.mail import EmailMessage, send_mass_mail
 from django.utils.timezone import now, localtime
 from django.utils import dateformat
 
@@ -57,3 +57,42 @@ def notify_commitments(action, threshold, action_url):
         for attendee in modified:
             attendee.save()
         return len(messages)
+
+
+RSVP_MSG = '''
+Hi {name},
+
+Thank you for signing up for "{action_name}"! We're looking forward to seeing you at
+the event on {action_date}.
+
+See event details here: {action_url}
+
+In Solidarity,
+Extinction Rebellion Boston
+'''
+
+
+def confirm_rsvp(action, attendee, action_url, ics_data):
+    """
+    Send notification email to attendee when they register.
+    Will not send notifications for actions which have already happened.
+    Will not notify attendees twice.
+    """
+    if now() > action.when:
+        return 0
+    subject = "[XR] RSVP confirmation for %s" % action.name
+    from_email = settings.DEFAULT_FROM_EMAIL
+    when = dateformat.format(localtime(action.when), 'l, F jS @ g:iA')
+    msg_body = RSVP_MSG.format(
+        name=attendee.contact.first_name,
+        action_name=action.name,
+        action_date=when,
+        action_url=action_url,
+    )
+    attendee.notified = now()
+    if not attendee.promised:
+        attendee.promised = now()    
+    msg = EmailMessage(subject, msg_body, from_email, [attendee.contact.email])
+    msg.attach(f'{action.slug}.ics', ics_data, 'text/calendar')
+    msg.send()
+    attendee.save()

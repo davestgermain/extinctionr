@@ -4,22 +4,6 @@ body {
     font-family: $crimson-font;
 }
 
-:target::before {
-  content: "";
-  display: block;
-  height: 82px; /* fixed header height*/
-  margin: -82px 0 0; /* negative fixed header height */
-}
-
-@media (min-width: 576px) {
-  :target::before {
-    content: "";
-    display: block;
-    height: 100px; /* fixed header height*/
-    margin: -100px 0 0; /* negative fixed header height */
-  }
-}
-
 h1,h2,h3,h4,h5,h6,.btn-fucxed,.text-fucxed {
     font-family: $fucXed-font;
 }
@@ -102,10 +86,6 @@ h2, h3, h4, h5, h6,
         font-size: 1.2rem;
     }
 
-    #site-nav .navbar-nav {
-        padding-top: 1.25rem;
-    }
-
     a.nav-link {
         margin-top: 18px;
         margin-bottom: 18px;
@@ -133,11 +113,6 @@ h2, h3, h4, h5, h6,
     .banner img {
         overflow: hidden;
     }
-
-    .site-nav {
-        padding-left: 0;
-        padding-right:1em;
-    }
 }
 
 @media (min-width: 768px) {
@@ -156,10 +131,6 @@ h2, h3, h4, h5, h6,
     .navbar-expand-lg .navbar-nav .nav-link {
         padding-right: .75rem;
         padding-left: .75rem;
-    }
-
-    #site-nav .navbar-nav {
-        padding-top: 0;
     }
 
     a.nav-link {
@@ -242,15 +213,10 @@ h2, h3, h4, h5, h6,
     font-size: 1.5rem;
 }
 
-.navbar {
-    padding: 0 5%;
-}
-
 #site-nav {
     background-color: $xr-dark-gray;
     font-size: 1.2rem;
     font-family: $fucXed-font;
-    padding-top:.4rem;
 
     a {
       color: white;
@@ -262,6 +228,7 @@ h2, h3, h4, h5, h6,
     a:hover, a:focus {
       color: $xr-green;
     }
+    padding: 0 5%;
 }
 
 .dropdown-menu {

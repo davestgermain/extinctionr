@@ -144,10 +144,11 @@ table a:hover {
     {% if future_actions %}
     {% for action in future_actions %}
     <div class="row px">
-        <div class="col-3 col-lg-2 py-1">
-            <p class="text-center text-fucxed p-1 xr-bg-lemon">
-                <span class="date-month">{{action.when|localtime|date:"M"}}</span><br>
-                <span class="date-day">{{action.when|localtime|date:"d"}}</span></p>
+        <div class="col-4 col-lg-2">
+            <p class="text-center text-fucxed p-1 xr-bg-lemon w-100">
+                <span class="date-month px-1">{{action.when|localtime|date:"M"}}</span><br>
+                <span class="date-day px-1">{{action.when|localtime|date:"d"}}</span>
+            </p>
         </div>
         <div class="col-12 col-lg-6">
             <h3><span class="action-title"><a href="{{action.get_absolute_url}}">{{action.html_title}}</a></span></h3>

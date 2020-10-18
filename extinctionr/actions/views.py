@@ -28,7 +28,7 @@ from phonenumber_field.formfields import PhoneNumberField
 
 from extinctionr.utils import get_last_contact, set_last_contact, get_contact
 from .models import Action, ActionRole, Attendee, TalkProposal
-from .comm import notify_commitments
+from .comm import notify_commitments, confirm_rsvp
 
 
 BOOTSTRAP_ATTRS = {'class': 'form-control text-center'}
@@ -62,6 +62,7 @@ class TalkProposalForm(forms.Form):
     email = forms.EmailField(label="Email", required=True, widget=forms.EmailInput(attrs={'class': 'form-control text-center', 'placeholder': 'Email Address'}))
     phone = PhoneNumberField(label="Phone Number", required=False, widget=forms.TextInput(attrs={'class': 'form-control text-center', 'placeholder': 'Phone Number'}))
 
+
 # Read all the params or raise exceptions.
 def _get_action_request_params(request):
     token = request.GET.get('token', '')
@@ -74,7 +75,7 @@ def _get_action_request_params(request):
             user = get_user_model().objects.get(pk=user_id)
     else:
         user = request.user
-    req_date = request.GET.get('month','')
+    req_date = request.GET.get('month', '')
     if req_date:
         current_date = datetime.strptime(req_date, '%Y-%m')
     else:
@@ -90,6 +91,7 @@ def _get_action_request_params(request):
     params['page'] = page
     return user, params
 
+
 def _make_date_range(current_date, include_future=True, include_past=7):
     start_date = current_date - timedelta(include_past)
     if not include_future:
@@ -98,8 +100,32 @@ def _make_date_range(current_date, include_future=True, include_past=7):
         end_date = current_date + timedelta(3650)
     return start_date, end_date
 
+
+def action_to_event(action, request):
+    from ics import Event
+    evt = Event()
+    evt.uid = '{}@{}'.format(action.id, request.get_host())
+    evt.name = action.html_title
+    evt.description = action.description
+    evt.categories = action.tags.names()
+    evt.last_modified = action.modified
+    evt.url = request.build_absolute_uri(action.get_absolute_url())
+    evt.begin = action.when
+    evt.duration = timedelta(hours=1)
+    # evt.end = action.when + timedelta(hours=1)
+    evt.location = action.location
+    return evt
+
+
+def action_to_ical(action, request):
+    from ics import Calendar
+    thecal = Calendar()
+    thecal.events.add(action_to_event(action, request))
+    return thecal
+
+
 def calendar_view(request, whatever):
-    from ics import Calendar, Event
+    from ics import Calendar
     user, params = _get_action_request_params(request)
     date_range = _make_date_range(params['date'], include_future=True, include_past=30)
 
@@ -107,20 +133,18 @@ def calendar_view(request, whatever):
     thecal = Calendar()
     thecal.creator = 'XR Mass Events'
     for action in actions:
-        evt = Event()
-        evt.uid = '{}@{}'.format(action.id, request.get_host())
-        evt.name = action.html_title
-        evt.description = action.description
-        evt.categories = action.tags.names()
-        evt.last_modified = action.modified
-        evt.url = request.build_absolute_uri(action.get_absolute_url())
-        evt.begin = action.when
-        evt.duration = timedelta(hours=1)
-        # evt.end = action.when + timedelta(hours=1)
-        evt.location = action.location
+        evt = action_to_event(action, request)
         thecal.events.add(evt)
     response = HttpResponse(thecal, content_type='text/calendar')
     return response
+
+
+def action_ics_view(request, slug):
+    user, params = _get_action_request_params(request)
+    action = get_object_or_404(Action.objects.for_user(user), slug=slug)
+    thecal = action_to_ical(action, request)
+    return HttpResponse(thecal, content_type='text/calendar')
+
 
 def _add_action_tag_color(action):
     event_colors = {
@@ -214,7 +238,7 @@ def list_actions(request):
         month_actions.append(week_actions)
 
     ctx = {
-        'future_actions' : future_actions,
+        'future_actions': future_actions,
         'month_actions': month_actions,
         'current_tag': tag_filter,
         'current_date': current_date,
@@ -245,7 +269,6 @@ def list_actions(request):
     return resp
 
 
-
 @cache_page(1200)
 def show_action(request, slug):
     action = get_object_or_404(Action, slug=slug)
@@ -263,7 +286,7 @@ def show_action(request, slug):
         if form.is_valid():
             data = form.cleaned_data
             commit = abs(data['commit'] or 0)
-            atten = action.signup(data['email'],
+            attendee = action.signup(data['email'],
                 data['role'],
                 name=data['name'][:100],
                 promised=data['promised'],
@@ -273,7 +296,10 @@ def show_action(request, slug):
             messages.success(request, "Thank you for signing up for {}!".format(action.html_title))
             if commit:
                 messages.info(request, "We will notify you once at least %d others commit" % commit)
-            set_last_contact(request, atten.contact)
+            set_last_contact(request, attendee.contact)
+            ical_data = str(action_to_ical(action, request))
+            action_url = request.build_absolute_uri(reverse('actions:action', kwargs={'slug': slug}))
+            confirm_rsvp(action, attendee, action_url, ical_data)
             return redirect(next_url)
     else:
         contact = get_contact(email=request.user.email) if request.user.is_authenticated else get_last_contact(request)
