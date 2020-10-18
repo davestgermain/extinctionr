@@ -39,17 +39,21 @@
 }
 .action-icon {
     vertical-align: middle;
-    font-size: 1.2em;
+    font-size: 1em;
+	min-width: 24px;
 }
-.date-month {
-	font-size: 1.2em;
-}
-.date-day {
-	font-size: 1.8em;
+
+.event-date {
+	font-size: 1em;
 }
 .rsvp {
 	position: sticky;
 	background-color: white;
+}
+.hero {
+    padding: 0px !important;
+    margin: 0px !important;
+	max-width: 100%;
 }
 {% endblock %}
 {% block content %}
@@ -60,36 +64,52 @@ not working yet because we need actual address data for events.
 {% include 'action.ld.json' %}
 </script>
 {% endcomment %}
-<div class="row px pt-2 pt-lg-3 justify-content-center">
-	<div class="col-5 col-md-2 px-0 px-lg-2 pb-lg-0 mb-lg-0">
-		<div class="xr-bg-lemon p-2 text-center text-fucxed">
-			<p class="date-month m-0">{{action.when|localtime|date:"M"}}<br>
-			<span class="date-day">{{action.when|localtime|date:"d"}}</span></p>
-		</div>
-	</div>
-	<div class="col-12 col-md-8 pl-0 pt-1">
-		<h1 class="display-4 pb-sm-2 pb-md-3 m-0">{{action.html_title}}</h1>
-		{% if not action.public %}<h4 class="text-center text-warning">not public</h4>{% endif %}
-		<div class="row">
-		<div class="col-1 pr-0">
-			<i class="far fa-clock pr-1 action-icon" title="Event time"></i>
-		</div>
-		<div class="col-11 col-lg-3 pl-1">
-			<span class="small">{{action.when|localtime|time}}</span>
-		</div>
-		{% if action.location %}
-		<div class="col-1 pr-0">
-			<i class="fas fa-map-marker-alt pr-1 action-icon" title="Map Marker"></i>
-		</div>
-		<div class="col pl-1">
-			<span class="small action-loc">{{action.location_link}}</span>
-		</div>
+<div class="row justify-content-center">
+	<div class="col-12 col-md-6 p-0 pt-md-2">
+		{% if image %}
+			<div class="hero">
+				{% image image fill-600x338 class="w-100 img-fluid"%}
+			</div>
+		{% elif photos %}
+		{% load thumbnail %}
+		{% with photo=photos|first %}
+			<div class="hero">
+			{% thumbnail photo.photo "600x338" as im %}
+			<a href="{{photo.photo.url}}">
+				<img class="w-100 img-fluid" src="{{ im.url }}" alt="{{photo.caption}}">
+			</a>
+			{% endthumbnail %}
+			</div>
+		{% endwith %}
 		{% endif %}
-		</div>
+	</div>
+</div>
+<div class="row py-0 justify-content-center">
+	<div class="col-12 col-md-6 px-0">
+		<h1 class="display-4 py-0 my-2 text-center">{{action.html_title}}</h1>
+		{% if not action.public %}<h4 class="text-center text-warning">not public</h4>{% endif %}
+		<dir class="row mx-0 px-0">
+			<div class="col-12 w-100 xr-bg-lemon text-fucxed py-2">
+				<span class="event-date">
+					{{action.when|localtime|date:"M d"}}
+				</span>
+			</div>
+			<div class="w-100"></div>
+			<div class="col col-lg-3 pl-1">
+				<i class="far fa-clock action-icon" title="Event time"></i>
+				<span class="small">{{action.when|localtime|time}}</span>
+			</div>
+			<div class="w-100"></div>
+			{% if action.location %}
+			<div class="col pl-1">
+				<i class="fas fa-map-marker-alt action-icon" title="Map Marker"></i>
+				<span class="small action-loc">{{action.location_link}}</span>
+			</div>
+			{% endif %}
 	</div>
 </div>
 {% if form %}
-<div class="row my-0 pt-2 pb-0 sticky-top rsvp">
+<div class="row my-0 px-2 pt-2 pb-0 sticky-top rsvp">
 	<div class="col-lg-8 col-sm-12 offset-sm-0 offset-lg-2 my-0">
 		{% if not action.is_full %}
 		<form method="post"> {% csrf_token %}
@@ -142,23 +162,7 @@ not working yet because we need actual address data for events.
 	<hr class="col-10">
 </div>
 {% endif %}
-<section class="row p-0 m-0 mb-1 justify-content-center">
-	{% if image %}
-		<div class="col text-center">
-			{% image image fill-600x338 class="img img-fluid"%}
-		</div>
-	{% elif photos %}
-	{% load thumbnail %}
-	{% with photo=photos|first %}
-		<div class="col text-center">
-		{% thumbnail photo.photo "600x600" as im %}
-		<a href="{{photo.photo.url}}"><img class="img img-fluid" src="{{ im.url }}" alt="{{photo.caption}}"></a>
-		{% endthumbnail %}
-		</div>
-	{% endwith %}
-	{% endif %}
-</section>
-<div class="row px justify-content-center">
+<div class="row px-2 justify-content-center">
 	<div class="col col-md-8">
 		{{action.description|markdownify}}
 		{% if action.accessibility %}
