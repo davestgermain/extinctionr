@@ -271,6 +271,7 @@ def list_actions(request):
 
 @cache_page(1200)
 def show_action(request, slug):
+    enable_send_rsvp = False # TODO: not sure what to do about email yet.
     action = get_object_or_404(Action, slug=slug)
     ctx = {'action': action}
     if request.user.is_authenticated:
@@ -297,7 +298,7 @@ def show_action(request, slug):
             if commit:
                 messages.info(request, "We will notify you once at least %d others commit" % commit)
             set_last_contact(request, attendee.contact)
-            if not action.public:
+            if enable_send_rsvp:
                 ical_data = str(action_to_ical(action, request))
                 action_url = request.build_absolute_uri(reverse('actions:action', kwargs={'slug': slug}))
                 confirm_rsvp(action, attendee, action_url, ical_data)
