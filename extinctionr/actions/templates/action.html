@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 {% load wagtailcore_tags wagtailimages_tags %}
-{% load info %}
+{% load info actions %}
 {% block title %}:: {{action.text_title}}{% endblock %}
 {% block og_title %}{{action.text_title}}{% endblock %}
 {% block og_image %}
@@ -47,6 +47,7 @@
 }
 .rsvp {
 	background-color: white;
+	z-index: 998;
 }
 .hero {
     padding: 0px !important;
@@ -108,11 +109,27 @@ not working yet because we need actual address data for events.
 		{% endif %}
 		<div>
 			<i class="far fa-calendar-alt action-icon" title="Calendar"></i>
-			<span class="small">
-			<a href="/action/ics/{{action.slug}}" title="Export event as ics format">
-				Add to calendar
+			<a data-toggle="collapse" href="#collapseCalendars" role="button" aria-expanded="false" aria-controls="collapseCalendars">
+				<span class="small">Add to calendar</span>
 			</a>
-			</span>
+			<div class="collapse pl-3" id="collapseCalendars">
+				<div>
+					<i class="fab fa-google action-icon"></i>
+					<a class="small" target="_blank" href="{% calendar_url action "Google" %}">Google</a>
+				</div>			
+				<div>
+					<i class="fab fa-apple action-icon"></i>
+					<a class="small" target="_blank" href="{% calendar_url action "Apple" %}">Apple</a>
+				</div>
+				<div>
+					<i class="fab fa-windows action-icon"></i>
+					<a class="small" target="_blank" href="{% calendar_url action "Outlook" %}">Outlook</a>
+				</div>	
+				<div>
+					<i class="fab fa-yahoo action-icon"></i>
+					<a class="small" target="_blank" href="{% calendar_url action "Yahoo" %}">Yahoo</a>
+				</div>
+			</div>
 		</div>
 	</div>
 </div>
@@ -240,14 +257,30 @@ not working yet because we need actual address data for events.
 		{% endif %}
 	</div>
 </div>
+
 {% endif %}
 
 {% endblock %}
 {% block extra_js %}
 <script type="text/javascript">
+	function xfa() {
+		var faSplat = {
+		prefix: 'fac',
+		iconName: 'splat',
+		icon: [
+			448, 448,
+			[],
+			null,
+			'M163.006,417.598 L166.015,306.629 L63.506,343.841 L129.87,255.871 L25.5,224.5 L129.87,193.129 L63.506,105.159 L166.015,142.371 L163.006,31.402 L224.5,122.983 L285.995,31.402 L282.985,142.371 L385.495,105.159 L319.13,193.13 L423.5,224.5 L319.13,255.871 L385.494,343.841 L282.984,306.629 L285.994,417.598 L224.5,326.017 z'
+		]
+		}
+
+		FontAwesome.library.add(faSplat)
+	}
     $(function() {
 		var navHeight = $('#site-nav').outerHeight();
 		$('.rsvp').css('top', `${navHeight}px`);
+		xfa();
 	});
 	$('#id_commit').change(function(){
 		if ($(this).val() != '0') {

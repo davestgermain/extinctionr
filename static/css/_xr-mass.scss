@@ -1,46 +1,60 @@
-
 body {
-    background-color: $xr-dark-gray;
-    font-family: $crimson-font;
+  background-color: $xr-dark-gray;
+  font-family: $crimson-font;
 }
 
-h1,h2,h3,h4,h5,h6,.btn-fucxed,.text-fucxed {
-    font-family: $fucXed-font;
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+.btn-fucxed,
+.text-fucxed {
+  font-family: $fucXed-font;
 }
 
 h1 {
-    margin-bottom: 2.25rem;
+  margin-bottom: 2.25rem;
 }
 
 h2 {
-    font-size: 1.5rem;
+  font-size: 1.5rem;
 }
 
-h2, h3, h4, h5, h6,
-.h2, .h3, .h4, .h5, .h6 {
+h2,
+h3,
+h4,
+h5,
+h6,
+.h2,
+.h3,
+.h4,
+.h5,
+.h6 {
   margin-bottom: 1rem;
 }
 
 .msg-success {
-    font-family: $fucXed-font;
-    color: white;
-    background-color: $success;
+  font-family: $fucXed-font;
+  color: white;
+  background-color: $success;
 }
 
 .msg-danger {
-    font-family: $fucXed-font;
-    color: white;
-    background-color: $danger;
+  font-family: $fucXed-font;
+  color: white;
+  background-color: $danger;
 }
 
 .msg-info {
-    font-family: $fucXed-font;
-    background-color: $info;
+  font-family: $fucXed-font;
+  background-color: $info;
 }
 
 .msg-warning {
-    font-family: $fucXed-font;
-    background-color: $warning;
+  font-family: $fucXed-font;
+  background-color: $warning;
 }
 
 .home-banner-text {
@@ -50,114 +64,113 @@ h2, h3, h4, h5, h6,
 }
 
 .px {
-    padding-left: 10%;
-    padding-right: 10%;
+  padding-left: 10%;
+  padding-right: 10%;
 }
 
 @media (min-width: 320px) {
-    .display-1 {
-        font-size: 2.25rem;
-        line-height: 1;
-    }
+  .display-1 {
+    font-size: 2.25rem;
+    line-height: 1;
+  }
 
-    h3 {
-        font-size: 1.25rem;
-    }
+  h3 {
+    font-size: 1.25rem;
+  }
 
-    .display-4 {
-        font-size: 2.25rem;
-    }
+  .display-4 {
+    font-size: 2.25rem;
+  }
 
-    .banner-title {
-        position: absolute;
-        font-family: $fucXed-font;
-        font-size: 2.25rem;
-        color:white;
-        padding-left: 10%;
-        padding-right: 10%;
-        bottom: 2.5rem;
-    }
+  .banner-title {
+    position: absolute;
+    font-family: $fucXed-font;
+    font-size: 2.25rem;
+    color: white;
+    padding-left: 10%;
+    padding-right: 10%;
+    bottom: 2.5rem;
+  }
 
-    .highlight-action span {
-      display: inline-block;
-    }
+  .highlight-action span {
+    display: inline-block;
+  }
 
-    .date-month, .date-day {
-        font-size: 1.2rem;
-    }
+  .date-month,
+  .date-day {
+    font-size: 1.2rem;
+  }
 
-    a.nav-link {
-        margin-top: 18px;
-        margin-bottom: 18px;
-        padding-top: 0;
-        padding-bottom: 0;
-    }
+  a.nav-link {
+    margin-top: 18px;
+    margin-bottom: 18px;
+    padding-top: 0;
+    padding-bottom: 0;
+  }
 
-    a.donate-btn {
-        margin-left: 0;
-        margin-top: 18px;
-        margin-bottom: 18px;
-    }
+  a.donate-btn {
+    margin-left: 0;
+    margin-top: 18px;
+    margin-bottom: 18px;
+  }
 }
 
 @media (min-width: 576px) {
-    .banner-title {
-        font-size: 4rem;
-    }
+  .banner-title {
+    font-size: 4rem;
+  }
 
-    .banner {
-        overflow: hidden;
-        height: 25vw;
-    }
+  .banner {
+    overflow: hidden;
+    height: 25vw;
+  }
 
-    .banner img {
-        overflow: hidden;
-    }
+  .banner img {
+    overflow: hidden;
+  }
 }
 
 @media (min-width: 768px) {
+  .date-month {
+    font-size: 1.5rem;
+  }
 
-    .date-month {
-        font-size: 1.5rem;
-    }
-
-    .date-day {
-        font-size: 2.25rem;
-    }
+  .date-day {
+    font-size: 2.25rem;
+  }
 }
 
 @media (min-width: 992px) {
+  .navbar-expand-lg .navbar-nav .nav-link {
+    padding-right: 0.75rem;
+    padding-left: 0.75rem;
+  }
 
-    .navbar-expand-lg .navbar-nav .nav-link {
-        padding-right: .75rem;
-        padding-left: .75rem;
-    }
+  a.nav-link {
+    margin-top: 0;
+    margin-bottom: 0;
+    padding-top: 6px;
+    padding-bottom: 6px;
+  }
 
-    a.nav-link {
-        margin-top: 0;
-        margin-bottom: 0;
-        padding-top: 6px;
-        padding-bottom: 6px;
-    }
+  a.donate-btn {
+    margin-left: 0.75rem;
+  }
 
-    a.donate-btn {
-        margin-left: .75rem;
-    }
-
-    ul.navbar-nav {
-        align-items: center;
-    }
+  ul.navbar-nav {
+    align-items: center;
+  }
 }
 
 .my-3 {
-    margin-top: 3rem !important;
-    margin-bottom: 3rem !important;
+  margin-top: 3rem !important;
+  margin-bottom: 3rem !important;
 }
 
 @media (max-width: 991px) {
-    .col-text {
-        max-width: 90%;
-    }
+  .col-text {
+    max-width: 90%;
+  }
 }
 
 .col-text {
@@ -171,7 +184,7 @@ h2, h3, h4, h5, h6,
 }
 
 .text-bold {
-    font-family: "Crimson Text Bold", Georgia, serif;
+  font-family: "Crimson Text Bold", Georgia, serif;
 }
 
 /* Generate color classes for xr colors */
@@ -193,95 +206,104 @@ h2, h3, h4, h5, h6,
 }
 
 .xr-bg-gray {
-    background-color: $xr-gray !important;
+  background-color: $xr-gray !important;
 }
 
 #header-image {
-    max-width: 100%;
-    height: 4.25rem;
+  max-width: 100%;
+  height: 4.25rem;
 }
 
 #mainbody {
-    font-size: 1.2rem;
+  font-size: 1.2rem;
 
-    form {
-      font-size: 1.1rem;
-    }
+  form {
+    font-size: 1.1rem;
+  }
 }
 
 #article-container {
-    font-size: 1.5rem;
+  font-size: 1.5rem;
 }
 
 #site-nav {
-    background-color: $xr-dark-gray;
-    font-size: 1.2rem;
-    font-family: $fucXed-font;
+  background-color: $xr-dark-gray;
+  font-size: 1.2rem;
+  font-family: $fucXed-font;
 
-    a {
-      color: white;
-    }
-    a.active {
-      color: $xr-green;
-      background-color: $xr-dark-gray !important;
-    }
-    a:hover, a:focus {
-      color: $xr-green;
-    }
-    padding: 0 5%;
+  a {
+    color: white;
+  }
+  a.active {
+    color: $xr-green;
+    background-color: $xr-dark-gray !important;
+  }
+  a:hover,
+  a:focus {
+    color: $xr-green;
+  }
+  padding: 0 5%;
+}
+
+.sticky-top {
+  z-index: -1;
+}
+
+#site-nav {
+  z-index: 999;
 }
 
 .dropdown-menu {
-    background-color: $xr-dark-gray;
-    margin: 1.25rem 0 0;
-    border: none; /*hacky way of overriding default drop-menu*/
-    border-top: 3px solid white;
-    border-radius: 0;
+  background-color: $xr-dark-gray;
+  margin: 1.25rem 0 0;
+  border: none; /*hacky way of overriding default drop-menu*/
+  border-top: 3px solid white;
+  border-radius: 0;
 
-    a {
-      color: $xr-green;
-    }
+  a {
+    color: $xr-green;
+  }
 
-    a:hover {
-      background-color: #aaa;
-    }
+  a:hover {
+    background-color: #aaa;
+  }
 }
 
 .dropdown-item {
-    font-size: 1.2rem;
-    padding: .25rem 1.25rem;
+  font-size: 1.2rem;
+  padding: 0.25rem 1.25rem;
 
-    .active {
-      color: $xr-green !important;
-      text-decoration: none;
-      background-color: $xr-dark-gray !important;  
-    }
+  .active {
+    color: $xr-green !important;
+    text-decoration: none;
+    background-color: $xr-dark-gray !important;
+  }
 }
 
 .dropdown-no-arrow::after {
-    content: none !important;
+  content: none !important;
 }
 
 @media (max-width: 767px) {
-    p.btn-row>a {
-        margin-bottom: 1rem;
-    }
+  p.btn-row > a {
+    margin-bottom: 1rem;
+  }
 
-    p.btn-row>a:last-child {
-        margin-bottom: 0;
-    }
+  p.btn-row > a:last-child {
+    margin-bottom: 0;
+  }
 }
 
 .btn-row {
-    margin-top: 1.2rem;
+  margin-top: 1.2rem;
 }
 
-p.btn-row>a {
-    margin-right: 1.2rem;
+p.btn-row > a {
+  margin-right: 1.2rem;
 }
 
-p.btn-row>a:last-child {
-    margin-right: 0;
+p.btn-row > a:last-child {
+  margin-right: 0;
 }
 
 /* tweak bootstrap button classes */
@@ -305,106 +327,110 @@ p.btn-row>a:last-child {
 }
 
 .donate-btn {
-    padding: .5rem 1.5rem;
-    font-size: 1.2rem;
+  padding: 0.5rem 1.5rem;
+  font-size: 1.2rem;
 
-    a:hover {
-      color: #000000 !important;
-    }
+  a:hover {
+    color: #000000 !important;
+  }
 }
 
 .arrow-btn {
-    height: 1.75rem;
-    width: auto;
+  height: 1.75rem;
+  width: auto;
 }
 
-svg.arrow-btn:hover,svg.arrow-btn:focus {
-    fill: rgb(102, 48, 101) !important;
+svg.arrow-btn:hover,
+svg.arrow-btn:focus {
+  fill: rgb(102, 48, 101) !important;
 }
 
 .banner {
-    background-color: black !important;
-    padding: 0px !important;
-    margin: 0px !important;
+  background-color: black !important;
+  padding: 0px !important;
+  margin: 0px !important;
 
-    img {
-      opacity: 0.5;
-    }
+  img {
+    opacity: 0.5;
+  }
 }
 
 .card-row {
-    margin-left: 10%;
-    margin-right: 10%;
+  margin-left: 10%;
+  margin-right: 10%;
 }
 
 .card-body {
-    padding: 1.75rem;
+  padding: 1.75rem;
 }
 
 .card-text {
-    padding-top: 1.25rem;
+  padding-top: 1.25rem;
 }
 
 .quote-mark {
-    height: 1.5rem;
+  height: 1.5rem;
 }
 
 .table .thead-xr-pink th {
-    font-size: 1.25rem;
-    border: none;
+  font-size: 1.25rem;
+  border: none;
 }
 
 .table a:hover {
-    color: $xr-green;
+  color: $xr-green;
 }
 
 .table td {
-    padding: 0;
+  padding: 0;
 }
 
-.border, .table td {
-    border: 3px solid #F2F2F2 !important;
+.border,
+.table td {
+  border: 3px solid #f2f2f2 !important;
 }
 
-div.d-lg-block>div {
-    background-color: #F7EE6A;
-    padding: 9px 7px !important;
-    margin: 0 0 4px 0 !important;
+div.d-lg-block > div {
+  background-color: #f7ee6a;
+  padding: 9px 7px !important;
+  margin: 0 0 4px 0 !important;
 }
 
 td h5 {
-    padding-top: .75rem;
-    padding-left: .75rem;
+  padding-top: 0.75rem;
+  padding-left: 0.75rem;
 }
 
 div.act-now-block h1 {
-    max-width: fit-content;
+  max-width: fit-content;
 }
 
 a.social {
-    color: white;
-    font-size: .8em;
+  color: white;
+  font-size: 0.8em;
 }
 
-.fa-stack, .svg-inline--fa.fa-stack-2x {
-    height: 2.75em;
-    width: 2.75em;
+.fa-stack,
+.svg-inline--fa.fa-stack-2x {
+  height: 2.75em;
+  width: 2.75em;
 }
 
-span.fa-stack path:hover, span.fa-stack path:focus {
-    fill: $xr-green;
+span.fa-stack path:hover,
+span.fa-stack path:focus {
+  fill: $xr-green;
 }
 
 footer {
-  
-    a {
-      font-size: 1.2rem;
-      font-family: $fucXed-font;
-      color: #FFFFFF;
-    }
+  a {
+    font-size: 1.2rem;
+    font-family: $fucXed-font;
+    color: #ffffff;
+  }
 
-    a.pr-4:hover, a.pr-4:focus {
-      color: $xr-green;
-      text-decoration: none;
-    }
+  a.pr-4:hover,
+  a.pr-4:focus {
+    color: $xr-green;
+    text-decoration: none;
+  }
 }
