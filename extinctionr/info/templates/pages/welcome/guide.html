@@ -1,54 +1,89 @@
-{% extends "base.html" %}
-{% load static %}
-{% block title %}:: Welcome to the Rebellion{% endblock %}
-{% block og_tags %}
-{% endblock %}
-
-{% block content %}
+{% extends "base.html" %} {% load static %} {% block title %}:: Welcome to the
+Rebellion{% endblock %} {% block og_tags %} {% endblock %} {% block content %}
 <div class="row p-5">
-	<div class="col-text">
-		<h1 class="xr-green text-center">XR Mass Rebels’ Welcome Manual</h1>
-		<p><a href="{% url 'extinctionr.info:page' page='about' %}#principles">XR Principles &amp; Values</a></p>
-		<p><a href="{% url 'extinctionr.info:page' page='demands' %}">Our Demands</a></p>
-		<p><a href="https://xrmass.org/wiki/">XR Mass Resources</a></p>
+  <div class="col-text">
+    <h1 class="xr-green text-center">XR Mass Rebels’ Welcome Manual</h1>
+    <p>
+      <a href="{% url 'extinctionr.info:page' page='about' %}#principles"
+        >XR Principles &amp; Values</a
+      >
+    </p>
+    <p>
+      <a href="{% url 'extinctionr.info:page' page='demands' %}">Our Demands</a>
+    </p>
+    <p><a href="https://xrmass.org/wiki/">XR Mass Resources</a></p>
 
+    <h3 class="text-center">How do I get involved?</h3>
+    <p>
+      After your onboarding meeting, a fellow rebel will call you up in a few
+      days to check in.
+    </p>
+    <p>
+      Note: for online sign-ups a member will be in touch via email to schedule
+      the call.
+    </p>
+    <p>
+      Since there are many ways to be involved in XR Mass, they can help direct
+      you to your next steps. Broadly speaking:
+    </p>
 
-<h3 class="text-center">How do I get involved?</h3>
-<p>After your onboarding meeting, a fellow rebel will call you up in a few days to check in.
-<p>Note: for online sign-ups a member will be in touch via email to schedule the call.
-<p> Since there are many ways to be involved in XR Mass, they can help direct you to your next steps. Broadly speaking:
+    <h4>working groups (WGs)</h4>
+    <p><em>organize events and actions behind the scenes</em></p>
+    <ul>
+      <li>
+        On <a href="/wiki/working-groups/">WG homepages</a> you’ll find:
+        <ul>
+          <li>How to join that WG and coordinator contact info</li>
+          <li>Current and upcoming projects</li>
+          <li>WG-specific meeting information: calendar and minutes</li>
+        </ul>
+      </li>
+    </ul>
+    <h4>Affinity groups (AGs)</h4>
+    <p><em>execute actions, including non-violent direct action</em></p>
+    <ul>
+      <li>
+        There may be an upcoming action you can attend in a low/no-risk role.
+        <a href="/action/">View upcoming actions and events</a>
+      </li>
+      <li>
+        Attend an upcoming XR non-violent direct action training to carry out
+        civil disobedience and join an AG
+      </li>
+      <li><a href="/wiki/affinity-groups/">Find more on affinity groups</a></li>
+    </ul>
 
-<h4>working groups (WGs)</h4>
-<p><em>organize events and actions behind the scenes</em></p>
-<ul>
-	<li>On <a href="/wiki/working-groups/">WG homepages</a> you’ll find:
-		<ul>
-			<li>How to join that WG and coordinator contact info</li>
-			<li>Current and upcoming projects</li>
-			<li>WG-specific meeting information: calendar and minutes</li>
-		</ul>
-	</li>
-</ul>
-<h4>Affinity groups (AGs)</h4>
-<p><em>execute actions, including non-violent direct action</em></p>
-<ul>
-	<li>There may be an upcoming action you can attend in a low/no-risk role. <a href="/action/">View upcoming actions and events</a></li>
-	<li>Attend an upcoming XR non-violent direct action training to carry out civil disobedience and join an AG</li>
-	<li><a href="/wiki/affinity-groups/">Find more on affinity groups</a></li>
-</ul>
+    <p>
+      To find upcoming trainings, events and actions:
+      <a href="/action/#calendar">xrmass.org/action/#calendar</a> or
+      <a href="https://facebook.com/XRebelBoston">facebook.com/XRebelBoston</a>
+    </p>
 
-<p>To find upcoming trainings, events and actions: <a href="/action/#calendar">xrmass.org/action/#calendar</a> or <a href="https://facebook.com/XRebelBoston">facebook.com/XRebelBoston</a></p>
+    <p>
+      <a href="/wiki/org-structure/">Read more on XR Mass structure</a>,
+      including WGs and AGs
+    </p>
 
-<p><a href="/wiki/org-structure/">Read more on XR Mass structure</a>, including WGs and AGs</p>  
-
-<h3 class="text-center mt-5">How to find information and ask questions</h3>
-<p>Our <a href="/wiki/">wiki</a> is always the first place to check. If you have a question:</p>
-<ol>
-<li>Check if it’s answered on our website, particularly our resources page</li>
-<li>Check if it falls under the domain of a particular WG, and email them as indicated on their homepage</li>
-<li>Send an email to <a href="mailto:xr.boston.outreach@protonmail.com">xr.boston.outreach@protonmail.com</a></li>
-</ol>
-
-	</div>
+    <h3 class="text-center mt-5">How to find information and ask questions</h3>
+    <p>
+      Our <a href="/wiki/">wiki</a> is always the first place to check. If you
+      have a question:
+    </p>
+    <ol>
+      <li>
+        Check if it’s answered on our website, particularly our resources page
+      </li>
+      <li>
+        Check if it falls under the domain of a particular WG, and email them as
+        indicated on their homepage
+      </li>
+      <li>
+        Send an email to
+        <a href="mailto:xrboston.connect@protonmail.com"
+          >xrboston.connect@protonmail.com</a
+        >
+      </li>
+    </ol>
+  </div>
 </div>
 {% endblock %}

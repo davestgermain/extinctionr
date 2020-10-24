@@ -1,14 +1,17 @@
 {% extends "base.html" %}
 {% load static %}
 {% block extrahead %}
-<link rel="stylesheet" href="https://unpkg.com/leaflet@1.6.0/dist/leaflet.css"
-   integrity="sha512-xwE/Az9zrjBIphAcBb3F6JVqxf46+CDLwfLMHloNu6KEQCAWi6HcDUbeOfBIptF7tcCzusKFjFw2yuvEpDL9wQ=="
-   crossorigin=""/>
+<link
+  rel="stylesheet"
+  href="https://unpkg.com/leaflet@1.6.0/dist/leaflet.css"
+  integrity="sha512-xwE/Az9zrjBIphAcBb3F6JVqxf46+CDLwfLMHloNu6KEQCAWi6HcDUbeOfBIptF7tcCzusKFjFw2yuvEpDL9wQ=="
+  crossorigin=""
+/>
 {% endblock %}
 {% block title %}:: Join Us{% endblock %}
 {% block og_tags %}
 {% endblock %}
-{% block inline_css %}
+{% block inline_css %} 
 {{block.super}}
 
 #mass-map {
@@ -25,91 +28,109 @@
 
 {% block content %}
 <div class="row">
-	<div class="banner position-relative w-100">
-		<img class="img-fluid w-100" src="{% static 'images/banner-dewey2.jpg' %}" alt="Extinction Rebellion Massachusetts" />
-		<div class="banner-title">Local Groups</div>
-	</div>
+  <div class="banner position-relative w-100">
+    <img
+      class="img-fluid w-100"
+      src="{% static 'images/banner-dewey2.jpg' %}"
+      alt="Extinction Rebellion Massachusetts"
+    />
+    <div class="banner-title">Local Groups</div>
+  </div>
 </div>
 
 <div class="row px py-5 bg-white">
-	<div class="col-8 col-text">
-    <p>Extinction Rebellion is a do-it-together movement. Anyone can join as long as they follow our guiding <a href="{% url 'extinctionr.info:page' page='about' %}#principles">principles.</a></p>
-    <br>
-    <p>Find your local group on the map or <a href="mailto:xr.boston.outreach@protonmail.com">contact us</a> for help starting your own.</p>
-	</div>
+  <div class="col-8 col-text">
+    <p>
+      Extinction Rebellion is a do-it-together movement. Anyone can join as long
+      as they follow our guiding
+      <a href="{% url 'extinctionr.info:page' page='about' %}#principles"
+        >principles.</a
+      >
+    </p>
+    <br />
+    <p>
+      Find your local group on the map or
+      <a href="mailto:xrboston.connect@protonmail.com">contact us</a> for help
+      starting your own.
+    </p>
+  </div>
 </div>
 
 <div class="row pt-5 px xr-bg-gray justify-content-center">
   <div class="col-lg-11 col-md-10 col-12 px-lg-5 px-md-0 p-0">
     <h2 class="text-uppercase p-0 pb-2">Find your local group</h2>
     <!-- where the map view goes -->
-    <div id="mass-map" class="mb-5 mx-lg-2 mt-2">
-    </div>
+    <div id="mass-map" class="mb-5 mx-lg-2 mt-2"></div>
   </div>
 </div>
-{% endblock %}
-
-{% block extra_js %}
-<script src="https://unpkg.com/leaflet@1.6.0/dist/leaflet.js"
-   integrity="sha512-gZwIG9x3wUXg2hdXF6+rVkLF/0Vi9U8D2Ntg4Ga5I5BZpVkVxlJWbSQtXPSiUTtC0TjtGOmxa1AJPuV0CPthew=="
-   crossorigin=""></script>
-<script type="text/javascript" src="https://stamen-maps.a.ssl.fastly.net/js/tile.stamen.js"></script>
+{% endblock %} {% block extra_js %}
+<script
+  src="https://unpkg.com/leaflet@1.6.0/dist/leaflet.js"
+  integrity="sha512-gZwIG9x3wUXg2hdXF6+rVkLF/0Vi9U8D2Ntg4Ga5I5BZpVkVxlJWbSQtXPSiUTtC0TjtGOmxa1AJPuV0CPthew=="
+  crossorigin=""
+></script>
+<script
+  type="text/javascript"
+  src="https://stamen-maps.a.ssl.fastly.net/js/tile.stamen.js"
+></script>
 <script type="text/javascript">
-$(function() {
+  $(function () {
+    // set up max bounds:
+    let ne = L.latLng(43.072900581493215, -68.88427734375001);
+    let sw = L.latLng(41.29431726315258, -74.58068847656251);
 
+    mapOptions = {
+      zoomControl: false,
+      center: new L.LatLng(42.189088057237164, -71.73218114985485),
+      zoom: 7,
+      zoomSnap: 0.25,
+      zoomDelta: 0.5,
+      minZoom: 6,
+      maxBounds: L.latLngBounds(ne, sw),
+    };
 
-// set up max bounds:
-let ne = L.latLng(43.072900581493215, -68.88427734375001);
-let sw = L.latLng(41.29431726315258, -74.58068847656251);
+    // Set up aspect ratio
+    let vw = $(window).width();
 
-mapOptions = {
-  zoomControl: false,
-  center: new L.LatLng(42.189088057237164, -71.73218114985485),
-  zoom: 7,
-  zoomSnap: .25,
-  zoomDelta: .5,
-  minZoom: 6,
-  maxBounds: L.latLngBounds(ne, sw)
-}
+    // Media settings:
+    if (vw > 576) {
+      mapOptions.zoom = 8;
+      mapOptions.zoomControl = true;
+    }
 
-// Set up aspect ratio
-let vw = $(window).width();
+    let map = new L.Map("mass-map", mapOptions);
+    let debug_map = false;
+    //let debug_map = true;
+    if (debug_map) {
+      function logMap() {
+        console.log("zoom = ", map.getZoom());
+        console.log("center = ", map.getCenter());
+        console.log("bounds = ", JSON.stringify(map.getBounds()));
+      }
+      map.on("moveend", logMap);
+      map.on("zoomend", logMap);
+    }
+    L.tileLayer(
+      "https://stamen-tiles.a.ssl.fastly.net/terrain/{z}/{x}/{y}.jpg",
+      {
+        attribution:
+          'Map tiles by <a href="http://stamen.com">Stamen Design</a>, under <a href="http://creativecommons.org/licenses/by/3.0">CC BY 3.0</a>. Data by <a href="http://openstreetmap.org">OpenStreetMap</a>, under <a href="http://www.openstreetmap.org/copyright">ODbL</a>.',
+      }
+    ).addTo(map);
 
-// Media settings:
-if (vw > 576) {
-  mapOptions.zoom = 8;
-  mapOptions.zoomControl = true;
-}
+    let xr_icon = L.icon({
+      iconUrl: "/static/images/X-symbol-green-alpha-128.png",
+      iconSize: [32, 32], // size of the icon
+      iconAnchor: [12, 12], // point of the icon which will correspond to marker's location
+      popupAnchor: [-4, -4], // point from which the popup should open relative to the iconAnchor
+    });
 
-let map = new L.Map("mass-map", mapOptions);
-let debug_map = false;
-//let debug_map = true;
-if (debug_map) {
-  function logMap() {
-    console.log('zoom = ', map.getZoom());
-    console.log('center = ', map.getCenter());
-    console.log('bounds = ', JSON.stringify(map.getBounds()));
-  }
-  map.on('moveend', logMap);
-  map.on('zoomend', logMap);
-}
-L.tileLayer( 'https://stamen-tiles.a.ssl.fastly.net/terrain/{z}/{x}/{y}.jpg', {
-  attribution: 'Map tiles by <a href="http://stamen.com">Stamen Design</a>, under <a href="http://creativecommons.org/licenses/by/3.0">CC BY 3.0</a>. Data by <a href="http://openstreetmap.org">OpenStreetMap</a>, under <a href="http://www.openstreetmap.org/copyright">ODbL</a>.'
-}).addTo( map );  
+    let chapters = JSON.parse("{{chapters|escapejs}}");
 
-let xr_icon = L.icon({
-    iconUrl: '/static/images/X-symbol-green-alpha-128.png',
-    iconSize:     [32, 32], // size of the icon
-    iconAnchor:   [12, 12], // point of the icon which will correspond to marker's location
-    popupAnchor:  [-4, -4] // point from which the popup should open relative to the iconAnchor
-});
-
-let chapters = JSON.parse("{{chapters|escapejs}}");
-
-// TODO: need contact info.
-chapters.forEach((model) => {
-  let c = model.fields;
-  let popup_content = `<div>
+    // TODO: need contact info.
+    chapters.forEach((model) => {
+      let c = model.fields;
+      let popup_content = `<div>
     <span class="text-fucxed" style="font-size:1.2em;">${c.title}</span><br>
     <ul class="list-unstyled" style="font-size:1.2em;font-family:'Crimson Text';">
       <li><a href="https://${c.site}"><i class="fas fa-fw fa-globe pr-1">&nbsp;</i>${c.site}</a></li>
@@ -117,11 +138,11 @@ chapters.forEach((model) => {
       <li><a href="https://facebook.com/${c.facebook}"><i class="fab fa-fw fa-facebook-f pr-1">&nbsp;</i>${c.facebook}</a></li>
       <li><a href="https://twitter.com/${c.twitter}"><i class="fab fa-fw fa-twitter pr-1">&nbsp;</i>@${c.twitter}</a></li>
     </ul>
-  </div>`
-  L.marker([c.lat, c.lng], {icon: xr_icon})
-    .bindPopup(popup_content, {minWidth: 200}).addTo(map);
-});
-
-});
+  </div>`;
+      L.marker([c.lat, c.lng], { icon: xr_icon })
+        .bindPopup(popup_content, { minWidth: 200 })
+        .addTo(map);
+    });
+  });
 </script>
 {% endblock %}

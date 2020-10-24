@@ -30,51 +30,82 @@ hr.green {
 {% endblock %}
 {% block content %}
   
-<div class="row p-2 bg-white act-now-block">
-	<div class="col-md-8 pt-2 xr-bg-green text-center offset-md-2">
-        <div class="text-white display-4 text-fucxed">Thank you for joining XR</div>
-        <p class="text-white">You are now part of a global movement to stop the climate and ecological emergency!</p>
-    </div>
-	<div class="col-md-8 pt-2 xr-bg-white offset-md-2">
-    <h4>Here are some next steps you can take right now:</h4>
-        <ul class="list-inline list-unstyled">
-        <li class="list-inline-item">
-        Help spread the word: 
-        </li>
-        {% url 'circles:join' as join_url %}
-        {% with message='Join the Rebellion'%}
-        <li class="list-inline-item">
-            <a href="{% social_url join_url 'fb' message %}" target="_blank" class="social-share">
-                <i class="far fa-thumbs-up fb-blue"></i>
-            </a>
-        </li>
-        <li class="list-inline-item">
-            <a href="{% social_url join_url 'twitter' message %}" target="_blank" class="social-share">
-                <i class="fab fa-twitter twitter-blue"></i>
-            </a>
-        </li>
-        
-        <li class="list-inline-item">
-            <a href="{% social_url join_url 'email' message %}" target="_blank" class="social-share">
-                <i class="fas fa-envelope xr-green"></i>
-            </a>
-        </li>
-        {% endwith %}
-        </ul>
-        <p><i class="fas fa-seedling"></i> Look for upcoming events and actions on our <a href="/action">calendar</a>. Most events are open to everyone!</p>
-        <p><i class="fas fa-crow"></i> Check out our <a href="/wiki">wiki</a> with information about our <a href="/wiki/working-groups">Working Groups</a> and <a href="/wiki/affinity-groups">Affinity Groups.</a></p>
-        <p><i class="fas fa-fish"></i> Send us an <a href="mailto:xr.boston.outreach@pm.me">email</a> with your ideas and to learn more about how to help us organize.</p>
-        <p><i class="fas fa-frog"></i> Learn about our theory of change, and activists tactics on our <a href="/resources">resources</a> page.</p>
-        <p><i class="fas fa-hippo"></i> Read more about Extinction Rebellion on <a href="https://rebellion.earth">Rebellion.Earth</a></p>
-        <hr class="green">
-    </div>
-    <div class="col-12 mt-2 text-center pb-4">
-        <h4>#TellTheTruth #ActNow #RebelForLife</h4>
-		<img src="{% static 'images/symbols/bee_small.png' %}" class="bee">
-		<img src="{% static 'images/symbols/bee_small.png' %}" class="bee">
-		<img src="{% static 'images/symbols/bee_small.png' %}" class="bee">
-	</div>
 
+<div class="row p-2 bg-white act-now-block">
+  <div class="col-md-8 pt-2 xr-bg-green text-center offset-md-2">
+    <div class="text-white display-4 text-fucxed">Thank you for joining XR</div>
+    <p class="text-white">
+      You are now part of a global movement to stop the climate and ecological
+      emergency!
+    </p>
+  </div>
+  <div class="col-md-8 pt-2 xr-bg-white offset-md-2">
+    <h4>Here are some next steps you can take right now:</h4>
+    <ul class="list-inline list-unstyled">
+      <li class="list-inline-item">Help spread the word:</li>
+      {% url 'extinctionr.info:join' as join_url %} 
+      {% with message='I just joined Extinction Rebellion Boston to take action on the climate and ecological emergency!'%}
+      <li class="list-inline-item">
+        <a
+          href="{% social_url join_url 'fb' message %}"
+          target="_blank"
+          class="social-share"
+        >
+          <i class="far fa-thumbs-up fb-blue"></i>
+        </a>
+      </li>
+      <li class="list-inline-item">
+        <a
+          href="{% social_url join_url 'twitter' message %}"
+          target="_blank"
+          class="social-share"
+        >
+          <i class="fab fa-twitter twitter-blue"></i>
+        </a>
+      </li>
+
+      <li class="list-inline-item">
+        <a
+          href="{% social_url join_url 'email' message %}"
+          target="_blank"
+          class="social-share"
+        >
+          <i class="fas fa-envelope xr-green"></i>
+        </a>
+      </li>
+      {% endwith %}
+    </ul>
+    <p>
+      <i class="fas fa-seedling"></i> Look for upcoming events and actions on
+      our <a href="/action">calendar</a>. Most events are open to everyone!
+    </p>
+    <p>
+      <i class="fas fa-crow"></i> Check out our <a href="/wiki">wiki</a> with
+      information about our
+      <a href="/wiki/working-groups">Working Groups</a> and
+      <a href="/wiki/affinity-groups">Affinity Groups.</a>
+    </p>
+    <p>
+      <i class="fas fa-fish"></i> Send us an
+      <a href="mailto:xrboston.connect@protonmail.com">email</a> with your ideas and to
+      learn more about how to help us organize.
+    </p>
+    <p>
+      <i class="fas fa-frog"></i> Learn about our theory of change, and
+      activists tactics on our <a href="/resources">resources</a> page.
+    </p>
+    <p>
+      <i class="fas fa-hippo"></i> Read more about Extinction Rebellion on
+      <a href="https://rebellion.earth">Rebellion.Earth</a>
+    </p>
+    <hr class="green" />
+  </div>
+  <div class="col-12 mt-2 text-center pb-4">
+    <h4>#TellTheTruth #ActNow #RebelForLife</h4>
+    <img src="{% static 'images/symbols/bee_small.png' %}" class="bee" />
+    <img src="{% static 'images/symbols/bee_small.png' %}" class="bee" />
+    <img src="{% static 'images/symbols/bee_small.png' %}" class="bee" />
+  </div>
 </div>
-  
+
 {% endblock %}

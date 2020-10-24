@@ -1,26 +1,63 @@
 {% extends "base.html" %}
-{% block title %}:: Contact Extinction Rebellion Massachusetts!{% endblock %}
+{% block title %}:: Contact Extinction Rebellion Massachusetts!{% endblock %} 
 {% block og_tags %}
-  <meta property="og:description" content="How to contact Extinction Rebellion Massachusetts" />
+<meta
+  property="og:description"
+  content="How to contact Extinction Rebellion Massachusetts"
+/>
 {% endblock %}
 {% load static %}
 {% block content %}
 <div class="row">
-	<div class="banner position-relative w-100">
-      <img class="img-fluid w-100" src="{% static 'images/contact-us-banner.jpg' %}" alt="Say it loud" />
-	  <div class="banner-title">Contact Us</div>
-	</div>
+  <div class="banner position-relative w-100">
+    <img
+      class="img-fluid w-100"
+      src="{% static 'images/contact-us-banner.jpg' %}"
+      alt="Say it loud"
+    />
+    <div class="banner-title">Contact Us</div>
+  </div>
 </div>
 <div class="row py-5 px bg-white">
-	<div class="col text-left">
-    <p>email us: <a href="mailto:xr.boston.outreach@protonmail.com">xr.boston.outreach@protonmail.com</a></p>
+  <div class="col text-left">
+    <p>
+      email us:
+      <a href="mailto:xrboston.connect@protonmail.com"
+        >xrboston.connect@protonmail.com</a
+      >
+    </p>
     <p>Find us on social media:</p>
     <ul class="list-unstyled ml-5">
-      <li class="list-item"><a href="https://www.facebook.com/XRebelBoston/" target="_blank"><i class="fab fa-facebook"></i></a> <a href="https://www.facebook.com/XRebelBoston/" target="_blank">facebook.com/XRebelBoston</a></li>
-      <li class="list-item"><a href="https://twitter.com/XRboston" target="_blank"><i class="fab fa-twitter"></i></a> <a href="https://twitter.com/XRboston" target="_blank">twitter.com/XRboston</a></li>
-      <li class="list-item"><a href="https://www.instagram.com/xrmass/" target="_blank"><i class="fab fa-instagram"></i></a> <a href="https://www.instagram.com/xrmass/" target="_blank">instagram.com/xrmass</a></li>
+      <li class="list-item">
+        <a href="https://www.facebook.com/XRebelBoston/" target="_blank"
+          ><i class="fab fa-facebook"></i
+        ></a>
+        <a href="https://www.facebook.com/XRebelBoston/" target="_blank"
+          >facebook.com/XRebelBoston</a
+        >
+      </li>
+      <li class="list-item">
+        <a href="https://twitter.com/XRboston" target="_blank"
+          ><i class="fab fa-twitter"></i
+        ></a>
+        <a href="https://twitter.com/XRboston" target="_blank"
+          >twitter.com/XRboston</a
+        >
+      </li>
+      <li class="list-item">
+        <a href="https://www.instagram.com/xrmass/" target="_blank"
+          ><i class="fab fa-instagram"></i
+        ></a>
+        <a href="https://www.instagram.com/xrmass/" target="_blank"
+          >instagram.com/xrmass</a
+        >
+      </li>
     </ul>
-    <p><a href="/welcome/" class="btn btn-lg btn-primary text-uppercase">Join us!</a></p>
+    <p>
+      <a href="/welcome/" class="btn btn-lg btn-primary text-uppercase"
+        >Join us!</a
+      >
+    </p>
   </div>
 </div>
 {% endblock %}
