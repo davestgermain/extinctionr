@@ -11,11 +11,12 @@
     <a class="nav-link dropdown-toggle dropdown-no-arrow" href="#" id="nav-info-dropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">More</a>
     <div class="dropdown-menu nav-a" aria-labelledby="nav-info-dropdown">
       <a class="dropdown-item nav-a" id="about" href="{% url 'extinctionr.info:page' page='about' %}">About XR</a>
-      <a class="dropdown-item nav-a" id="out_ee" href="https://emergencyeverywhere.net">Emergency Everywhere</a>
+      <a class="dropdown-item nav-a" id="out_ee" href="https://emergencyeverywhere.net">Emergency Everywhere <i class="fas fa-external-link-alt"></i></a>
       <a class="dropdown-item nav-a" id="profiles" href="{% slugurl 'profiles' %}">Member Profiles</a>
       <a class="dropdown-item nav-a" id="videos" href="{% slugurl 'video' %}">Videos</a>
       <a class="dropdown-item nav-a" id="resources" href="{% url 'extinctionr.info:page' page='resources' %}">Resources</a>
       <a class="dropdown-item nav-a" id="wiki" href="{% url 'wiki:root' %}">Wiki</a>
+      <a class="dropdown-item nav-a" id="xryouth" href="http://xryouthboston.org">XR Youth <i class="fas fa-external-link-alt"></i></a>
       <a class="dropdown-item nav-a" id="groups" href="{% url 'extinctionr.info:page' page='groups/' %}">Local Groups</a>
     </div>
   </li>
