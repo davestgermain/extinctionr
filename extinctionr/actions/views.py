@@ -12,15 +12,15 @@ from django.contrib.auth import get_user_model
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.core import signing
+from django.core.exceptions import PermissionDenied
 from django.db import IntegrityError
 from django.http import JsonResponse, HttpResponse, HttpResponseBadRequest
 from django.shortcuts import render, get_object_or_404, redirect
 from django.utils.html import strip_tags
 from django.utils.http import http_date
-from django.utils.timezone import now, localtime
+from django.utils.timezone import now, localtime, localdate
 from django.urls import reverse
 from django.views.decorators.cache import never_cache, cache_page
-from django.utils.decorators import method_decorator
 from django.views.decorators.csrf import csrf_protect
 
 from django import forms
@@ -32,6 +32,7 @@ from .comm import notify_commitments, confirm_rsvp
 
 
 BOOTSTRAP_ATTRS = {'class': 'form-control text-center'}
+
 
 class ActionForm(forms.ModelForm):
     class Meta:
@@ -85,10 +86,11 @@ def _get_action_request_params(request):
     page = int(request.GET.get('page', '1'))
     if page < 1:
         raise ValueError
-    params = {}
-    params['date'] = current_date
-    params['tag'] = tag_filter
-    params['page'] = page
+    params = {
+        'date': current_date,
+        'tag': tag_filter,
+        'page': page
+    }
     return user, params
 
 
@@ -101,7 +103,11 @@ def _make_date_range(current_date, include_future=True, include_past=7):
     return start_date, end_date
 
 
-def action_to_event(action, request):
+def build_action_full_url(action, request):
+    return request.build_absolute_uri(action.get_absolute_url())
+
+
+def action_to_ical_event(action, request):
     from ics import Event
     evt = Event()
     evt.uid = '{}@{}'.format(action.id, request.get_host())
@@ -109,7 +115,7 @@ def action_to_event(action, request):
     evt.description = action.description
     evt.categories = action.tags.names()
     evt.last_modified = action.modified
-    evt.url = request.build_absolute_uri(action.get_absolute_url())
+    evt.url = build_action_full_url(action, request)
     evt.begin = action.when
     evt.duration = timedelta(hours=1)
     # evt.end = action.when + timedelta(hours=1)
@@ -120,7 +126,7 @@ def action_to_event(action, request):
 def action_to_ical(action, request):
     from ics import Calendar
     thecal = Calendar()
-    thecal.events.add(action_to_event(action, request))
+    thecal.events.add(action_to_ical_event(action, request))
     return thecal
 
 
@@ -131,10 +137,9 @@ def calendar_view(request, whatever):
 
     actions = Action.objects.for_user(user).filter(when__date__range=date_range)
     thecal = Calendar()
-    thecal.creator = 'XR Mass Events'
-    for action in actions:
-        evt = action_to_event(action, request)
-        thecal.events.add(evt)
+    thecal.creator = 'XR Boston Events'
+    # Turn action object into ical events
+    thecal.events = [action_to_ical_event(action, request) for action in actions]
     response = HttpResponse(thecal, content_type='text/calendar')
     return response
 
@@ -164,6 +169,7 @@ def _add_action_tag_color(action):
 
     return action
 
+
 @cache_page(1200)
 @csrf_protect
 def list_actions(request):
@@ -174,7 +180,6 @@ def list_actions(request):
             action = form.save()
             return redirect(action.get_absolute_url())
         else:
-            print(form.errors)
             return HttpResponseBadRequest
 
     # Attempt to read user and any url params:
@@ -192,14 +197,15 @@ def list_actions(request):
         actions = actions.filter(tags__name=tag_filter)
 
     # Generate view for upcoming actions.
-    future_actions = actions.filter(when__gte=now().date())
+    today_tz = localtime().date()
+    future_actions = actions.filter(when__gte=today_tz)
 
     # Handle pagination range.
     num_pages = math.ceil(future_actions.count() / 10)
 
     # For pretty urls, page is 1 based.
     start_range = (params['page'] - 1) * 10
-    future_actions = future_actions[start_range:start_range+10]
+    future_actions = future_actions[start_range:start_range + 10]
 
     # Generate view for requested month's actions.
     current_date = params['date']
@@ -218,10 +224,10 @@ def list_actions(request):
     cal_days = list(calendar.Calendar(firstweekday=6).itermonthdates(current_date.year, current_date.month))
     month_actions = []
     week_actions = []
-    today_tz = localtime().date()
 
     for daynum, mdate in enumerate(cal_days, 1):
-        
+
+        # produce a list of actions for each day.
         day_actions = list(map(_add_action_tag_color, actions_by_day[mdate]))
 
         day_data = {
@@ -246,12 +252,12 @@ def list_actions(request):
         'last_month': current_date + timedelta(days=-1),
         'can_add': can_add,
         'cur_page': params['page'],
-        'pages': range(1, num_pages+1),
+        'pages': range(1, num_pages + 1),
     }
 
     if can_add:
         ctx['form'] = ActionForm()
-    
+
     calendar_link = 'webcal://{}/action/ical/XR%20Mass%20Events'.format(request.get_host())
     link_pars = {}
     if request.user.is_authenticated:
@@ -288,11 +294,11 @@ def show_action(request, slug):
             data = form.cleaned_data
             commit = abs(data['commit'] or 0)
             attendee = action.signup(data['email'],
-                data['role'],
-                name=data['name'][:100],
-                promised=data['promised'],
-                commit=commit,
-                notes=data['notes'])
+                            data['role'],
+                            name=data['name'][:100],
+                            promised=data['promised'],
+                            commit=commit,
+                            notes=data['notes'])
             next_url = data['next'] or request.headers.get('referer', '/')
             messages.success(request, "Thank you for signing up for {}!".format(action.html_title))
             if commit:
@@ -300,7 +306,7 @@ def show_action(request, slug):
             set_last_contact(request, attendee.contact)
             if enable_send_rsvp:
                 ical_data = str(action_to_ical(action, request))
-                action_url = request.build_absolute_uri(reverse('actions:action', kwargs={'slug': slug}))
+                action_url = build_action_full_url(action, request)
                 confirm_rsvp(action, attendee, action_url, ical_data)
             return redirect(next_url)
     else:
@@ -329,16 +335,9 @@ def show_attendees(request, action_slug):
     action = get_object_or_404(Action, slug=action_slug)
     out_fmt = request.GET.get('fmt', 'json')
     attendees = Attendee.objects.filter(action=action).select_related('contact').order_by('contact__last_name')
-    num = attendees.count()
-    if num > 10:
-        half = int(num / 2)
-    else:
-        half = None
+
     if out_fmt == 'html':
         resp = HttpResponse('not allowed')
-
-        # ctx = {'attendees': attendees, 'half': half, 'can_change': request.user.is_staff, 'slug': action_slug}
-        # resp = render(request, 'attendees.html', ctx)
     elif out_fmt == 'csv' and request.user.has_perm('actions.view_attendee'):
         attendees = attendees.order_by('created')
         resp = HttpResponse()
