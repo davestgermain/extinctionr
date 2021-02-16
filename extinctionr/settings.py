@@ -351,11 +351,11 @@ EXPLORER_SCHEMA_INCLUDE_TABLE_PREFIXES = (
     "actions",
     "circles",
     "contacts",
-    "common_user"
+    "common_user",
     "info",
-    "marketing"
+    "marketing",
     "news",
-    "taggit"
+    "taggit",
 )
 
 # Mailman API credentials
