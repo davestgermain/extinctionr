@@ -231,9 +231,11 @@ class SignupFormView(FormView):
         initial = super().get_initial()
         now = datetime.now().isoformat()
         token = jwt.encode({'served': now}, settings.SECRET_KEY, algorithm='HS256')
+        if isinstance(token, bytes):
+            token = token.decode('UTF-8')
         # todo: would be cool to move this into the field at runtime
         # to further thwart the bots.
-        initial['message'] = token.decode('UTF-8')
+        initial['message'] = token
         initial['email'] = self.request.GET.get('email', None)
         return initial
 
