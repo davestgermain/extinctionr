@@ -36,18 +36,3 @@ def do_monkeypatch():
 
     # fix the icon on the image macro
     ImagePlugin.sidebar['icon_class'] = 'fa-images'
-
-    # Fix werid bug in wiki
-    # TODO: revisit this on future upgrades of wiki, markdown, etc.
-    original_responsive_table_tree_run = ResponsiveTableTree.run
-
-    def patched_responsive_table_tree_run(self, root):
-        class ElementWrapper:
-            def __init__(self, root):
-                self.root = root
-
-            def getiterator(self, tag=None):
-                return self.root.findall(tag)
-        original_responsive_table_tree_run(self, ElementWrapper(root))
-        return root
-    ResponsiveTableTree.run = patched_responsive_table_tree_run
