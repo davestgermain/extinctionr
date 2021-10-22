@@ -277,8 +277,8 @@ GP_CLIENT_ID = os.getenv("GP_CLIENT_ID", False)
 GP_CLIENT_SECRET = os.getenv("GP_CLIENT_SECRET", False)
 ENABLE_GOOGLE_LOGIN = os.getenv("ENABLE_GOOGLE_LOGIN", False)
 
-ADMIN_EMAIL = "webmaster@xrmass.org"
-DEFAULT_FROM_EMAIL = "webmaster@xrmass.org"
+ADMIN_EMAIL = "webmaster@xrboston.org"
+DEFAULT_FROM_EMAIL = "webmaster@xrboston.org"
 
 PHONENUMBER_DEFAULT_REGION = "US"
 
@@ -366,8 +366,8 @@ MAILMAN_REST_API_PASS = "restpass"
 POSTORIUS_TEMPLATE_BASE_URL = "http://localhost:8000"
 
 
-ADMINS = [("Webmaster", "webmaster@xrmass.org")]
-SERVER_EMAIL = "webmaster@xrmass.org"
+ADMINS = [("Webmaster", "webmaster@xrboston.org")]
+SERVER_EMAIL = "webmaster@xrboston.org"
 
 # Wagtail settings
 WAGTAIL_SITE_NAME = "XR Boston"
