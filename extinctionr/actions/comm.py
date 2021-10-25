@@ -109,6 +109,7 @@ def confirm_rsvp(action, attendee, ics_data):
     attendee.notified = now()
 
     from_email = settings.NOREPLY_FROM_EMAIL
+    subject = "[XR Boston] RSVP confirmation for {}".format(action.text_title)
     msg_body = _render_action_email(action, attendee, "action_email_rsvp.html")
 
     msg = EmailMessage(subject, msg_body, from_email, [attendee.contact.email])
