@@ -28,9 +28,9 @@ SECRET_KEY = os.getenv(
 DEBUG = os.getenv("DEBUG", "true") == "true"
 
 ALLOWED_HOSTS = [
-    "www.xrmass.org",
-    "xrmass.org",
-    "test.xrmass.org",
+    "www.xrboston.org",
+    "xrboston.org",
+    "test.xrboston.org",
     "localhost",
 ]
 
@@ -119,6 +119,7 @@ INSTALLED_APPS = [
     # 'allauth.socialaccount.providers.facebook',
     # 'allauth.socialaccount.providers.twitter',
     # 'allauth.socialaccount.providers.stackexchange',
+    "django_apscheduler",
 ]
 
 MIDDLEWARE = [
@@ -191,7 +192,7 @@ DATABASES = {
     "readonly": {
         "ENGINE": "django.db.backends.sqlite3",
         "NAME": os.path.join(BASE_DIR, "db.sqlite3"),
-    }
+    },
 }
 
 DEFAULT_AUTO_FIELD = "django.db.models.AutoField"
@@ -279,6 +280,7 @@ ENABLE_GOOGLE_LOGIN = os.getenv("ENABLE_GOOGLE_LOGIN", False)
 
 ADMIN_EMAIL = "webmaster@xrboston.org"
 DEFAULT_FROM_EMAIL = "webmaster@xrboston.org"
+NOREPLY_FROM_EMAIL = "noreply@xrboston.org"
 
 PHONENUMBER_DEFAULT_REGION = "US"
 
@@ -308,7 +310,8 @@ LOGGING = {
     "formatters": {
         "django.server": {
             "()": "django.utils.log.ServerFormatter",
-            "format": "[%(server_time)s] %(message)s",
+            "format": "[{server_time}] {message}",
+            'style': '{',
         }
     },
     "handlers": {
@@ -316,11 +319,13 @@ LOGGING = {
             "level": "INFO",
             "filters": ["require_debug_true"],
             "class": "logging.StreamHandler",
+            "formatter": "django.server",
         },
         "console_debug_false": {
             "level": "ERROR",
             "filters": ["require_debug_false"],
             "class": "logging.StreamHandler",
+            "formatter": "django.server",
         },
         "django.server": {
             "level": "INFO",
@@ -342,6 +347,10 @@ LOGGING = {
             "handlers": ["django.server"],
             "level": "INFO",
             "propagate": False,
+        },
+        "extinctionr": {
+            "handlers": ["console", "console_debug_false", "mail_admins"],
+            "level": "INFO",
         },
     },
 }
@@ -368,6 +377,7 @@ POSTORIUS_TEMPLATE_BASE_URL = "http://localhost:8000"
 
 ADMINS = [("Webmaster", "webmaster@xrboston.org")]
 SERVER_EMAIL = "webmaster@xrboston.org"
+ACTION_RSVP_WHITELIST = []
 
 # Wagtail settings
 WAGTAIL_SITE_NAME = "XR Boston"
