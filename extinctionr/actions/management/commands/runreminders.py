@@ -24,7 +24,7 @@ logger = logging.getLogger(__name__)
 def _upcoming_actions(time_now, hours):
     start = time_now + timedelta(hours=hours, minutes=-30)
     end = time_now + timedelta(hours=hours, minutes=30)
-    return Action.objects.filter(when__date__range=(start, end))
+    return Action.objects.filter(when__range=(start, end))
 
 
 def _send_reminders(hours, reminder_type):
