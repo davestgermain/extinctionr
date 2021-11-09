@@ -1,5 +1,7 @@
 {% load wagtailcore_tags %}
 <div class="mb-1">
+    {% autoescape off %}
     {% include_block value.embed %}
+    {% endautoescape %}
     <small>{{value.caption}}</small>
 </div>
