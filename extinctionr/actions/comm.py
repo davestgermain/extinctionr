@@ -156,7 +156,7 @@ def send_action_reminder(action, attendees, reminder):
     elif reminder is EventReminder.SOON:
         template_html = engine.get_template("action_email_reminder_soon.html")
         template_plain = engine.get_template("action_email_reminder_soon.txt")
-        subject = "[XR Boston] Event reminder: {} is startng soon".format(
+        subject = "[XR Boston] Event reminder: {} is starting soon".format(
             action.text_title
         )
     else:
@@ -183,7 +183,7 @@ def send_action_reminder(action, attendees, reminder):
         if not _check_attendee_whitelist(attendee):
             continue
         # If they got a reminder less than one day ago, skip this one.
-        if attendee.notified and time_now < (attendee.notified + timedelta(days=1)):
+        if attendee.notified and (time_now - attendee.notified) < timedelta(days=1):
             continue
         notified.add(attendee)
         msg_body_plain = _render_action_email(action, attendee, outreach.public_email, template_plain)
