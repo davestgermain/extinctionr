@@ -1,18 +1,14 @@
 import logging
 from datetime import timedelta
-import os
+import asyncio
+
+from asgiref.sync import sync_to_async
 
 from django.conf import settings
 from django.core.management.base import BaseCommand
 from django.db.models import Q
-from django.utils.timezone import now, localtime, localdate
+from django.utils.timezone import now, localtime
 from django.utils import dateformat
-
-from apscheduler.schedulers.blocking import BlockingScheduler
-from apscheduler.triggers.cron import CronTrigger
-from django_apscheduler.jobstores import DjangoJobStore
-from django_apscheduler.models import DjangoJobExecution
-from django_apscheduler import util
 
 from extinctionr.actions.models import Action, Attendee
 from extinctionr.actions.comm import EventReminder, send_action_reminder
@@ -27,17 +23,23 @@ def _upcoming_actions(time_now, hours):
     return Action.objects.filter(when__range=(start, end))
 
 
+@sync_to_async
 def _send_reminders(hours, reminder_type):
     time_now = now()
     actions = _upcoming_actions(time_now, hours)
 
     logger.info("checking reminders for %s", reminder_type)
+    action_count = actions.count()
+    logger.info("found %d action%s", action_count, "" if action_count == 1 else "s")
+
+    notification_cutoff = time_now - timedelta(days=1)
+    logger.info("notifying attendees that haven't been notified since %s", notification_cutoff)
 
     for action in actions:
 
         attendees = (
             Attendee.objects.filter(action=action)
-            .filter(Q(notified__isnull=True) | Q(notified__lte=time_now - timedelta(days=1)))
+            .filter(Q(notified__isnull=True) | Q(notified__lte=notification_cutoff))
             .select_related("contact")
         )
 
@@ -52,58 +54,22 @@ def _send_reminders(hours, reminder_type):
                     action.text_title,
                     dateformat.format(localtime(time_now), "l, F jS @ g:iA"),
                 )
+        else:
+            logger.info("There were no attendees to notify")
 
 
-def action_reminders_job():
-    _send_reminders(26, EventReminder.NEXT_DAY)
-    _send_reminders(2, EventReminder.SOON)
-
-
-# The `close_old_connections` decorator ensures that database connections, that have become
-# unusable or are obsolete, are closed before and after our job has run.
-@util.close_old_connections
-def delete_old_job_executions(max_age=604_800):
-    """
-    This job deletes APScheduler job execution entries older than `max_age` from the database.
-    It helps to prevent the database from filling up with old historical records that are no
-    longer useful.
-
-    :param max_age: The maximum length of time to retain historical job execution records.
-                    Defaults to 7 days.
-    """
-    DjangoJobExecution.objects.delete_old_job_executions(max_age)
+async def run_reminders():
+    logger.info("Starting reminders service")
+    while True:
+        # Sleep for 30 mins
+        sleep_time = 30 * 60
+        await asyncio.sleep(sleep_time)
+        await _send_reminders(26, EventReminder.NEXT_DAY)
+        await _send_reminders(2, EventReminder.SOON)
 
 
 class Command(BaseCommand):
-    help = "Runs APScheduler for action reminders."
+    help = "Runs asyncio scheduler for action reminders."
 
     def handle(self, *args, **options):
-
-        scheduler = BlockingScheduler(timezone=settings.TIME_ZONE)
-        scheduler.add_jobstore(DjangoJobStore(), "default")
-
-        scheduler.add_job(
-            action_reminders_job,
-            trigger=CronTrigger(minute="*/30"),  # Every 30 minutes
-            id="send_action_reminders",  # The `id` assigned to each job MUST be unique
-            max_instances=1,
-            replace_existing=True,
-        )
-        logger.info("Added job 'send_action_reminders'.")
-
-        scheduler.add_job(
-            delete_old_job_executions,
-            trigger=CronTrigger(hour="00", minute="00"),
-            id="delete_old_job_executions",
-            max_instances=1,
-            replace_existing=True,
-        )
-        logger.info("Added nightly job: 'delete_old_job_executions'.")
-
-        try:
-            logger.info("Starting scheduler...")
-            scheduler.start()
-        except KeyboardInterrupt:
-            logger.info("Stopping scheduler...")
-            scheduler.shutdown()
-            logger.info("Scheduler shut down successfully!")
+        asyncio.run(run_reminders())

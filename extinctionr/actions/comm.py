@@ -141,8 +141,6 @@ def confirm_rsvp(action, attendee, ics_data):
     attendee.save()
 
 
-
-
 def send_action_reminder(action, attendees, reminder):
     
     engine = Engine.get_default()
@@ -194,9 +192,9 @@ def send_action_reminder(action, attendees, reminder):
         # Record when they were notified so that we don't do it again right away.
         attendee.notified = time_now
 
-    mail_connection.send_messages(messages)
-    
     for attendee in notified:
         attendee.save()
 
+    mail_connection.send_messages(messages)
+    
     return len(notified)
