@@ -95,6 +95,8 @@ class VolunteerRequestAdmin(admin.ModelAdmin):
     contact_email.short_description = 'email'
 
     def contact_city(self, obj):
-        return obj.contact.address.city
+        if obj.contact.address:
+            return obj.contact.address.city
+        return 'unknown'
     
     contact_city.short_description = 'city'

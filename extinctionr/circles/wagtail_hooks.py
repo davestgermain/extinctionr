@@ -134,14 +134,22 @@ class VolunteerRequestAdmin(ModelAdmin):
     contact_phone.short_description = 'phone'
 
     def contact_city(self, obj):
-        return obj.contact.address.city
+        if obj.contact.address:
+            return obj.contact.address.city | 'unknown'
+        else:
+            return 'unknown'
 
     contact_city.short_description = 'city'
+    contact_city.admin_order_field = 'address__city'
 
     def contact_zipcode(self, obj):
-        return obj.contact.address.postcode
+        if obj.contact.address:
+            return obj.contact.address.postcode | 'unknown'
+        else:
+            return 'unknown'
 
     contact_zipcode.short_description = 'zipcode'
+    contact_zipcode.admin_order_field = 'address__postcode'
 
 
 class CRMGroup(ModelAdminGroup):
