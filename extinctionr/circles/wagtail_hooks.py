@@ -135,7 +135,7 @@ class VolunteerRequestAdmin(ModelAdmin):
 
     def contact_city(self, obj):
         if obj.contact.address:
-            return obj.contact.address.city | 'unknown'
+            return obj.contact.address.city or 'unknown'
         else:
             return 'unknown'
 
@@ -144,7 +144,7 @@ class VolunteerRequestAdmin(ModelAdmin):
 
     def contact_zipcode(self, obj):
         if obj.contact.address:
-            return obj.contact.address.postcode | 'unknown'
+            return obj.contact.address.postcode or 'unknown'
         else:
             return 'unknown'
 
