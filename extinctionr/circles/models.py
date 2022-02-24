@@ -285,6 +285,16 @@ class Couch(models.Model):
         return get_contact(user.email) == self.owner
 
 
+# New, simpler model to do away with circles and CRM eventually.
+class Contact2(models.Model):
+    username = models.CharField(max_length=127)
+    first_name = models.CharField(max_length=127)
+    last_name = models.CharField(max_length=127)
+    email = models.EmailField()
+    city = models.CharField(max_length=127)
+    zipcode = models.CharField(max_length=10)
+
+
 class TaggedVolunteerRequest(TaggedItemBase):
     content_object = models.ForeignKey('VolunteerRequest', on_delete=models.CASCADE)
 

@@ -29,8 +29,8 @@ class ContactAdmin(ModelAdmin):
     empty_value_display = 'unknown'
     list_select_related = ('address',)
     readonly_fields = ('created_on')
-    list_display = ('email', 'first_name', 'last_name', 'phone', 'city', 'created_on')
-    list_filter = (('tags', admin.RelatedOnlyFieldListFilter), 'address__city')
+    list_display = ('email', 'first_name', 'last_name', 'phone', 'city', 'zipcode', 'created_on')
+    list_filter = (('tags', admin.RelatedOnlyFieldListFilter), 'address__city', 'address__postcode')
     list_export = (
         'created_on',
         'email',
@@ -64,6 +64,7 @@ class ContactAdmin(ModelAdmin):
         if not obj.address:
             return self.empty_value_display
         return obj.address.postcode
+    zipcode.admin_order_field = 'address__postcode'
 
 
 class VolunteerIndexView(IndexView):
@@ -71,6 +72,7 @@ class VolunteerIndexView(IndexView):
         super().__init__(*args, **kwargs)
         self.export_headings['contact_email'] = 'Email'
         self.export_headings['contact_phone'] = 'Phone'
+        self.export_headings['contact_zipcode'] = 'Zipcode'
         self.export_headings['contact_city'] = 'City'
 
 
@@ -94,6 +96,7 @@ class VolunteerRequestAdmin(ModelAdmin):
         'contact_email',
         'contact_phone',
         'contact_city',
+        'contact_zipcode',
         'created',
         'status',
         'updated',
@@ -103,6 +106,7 @@ class VolunteerRequestAdmin(ModelAdmin):
         'status',
         ('tags', admin.RelatedOnlyFieldListFilter),
         'contact__address__city',
+        'contact__address__postcode'
     )
     list_export = (
         'created',
@@ -110,13 +114,14 @@ class VolunteerRequestAdmin(ModelAdmin):
         'contact_email',
         'contact_phone',
         'contact_city',
+        'contact_zipcode',
         'message',
         'status',
         'updated',
         'assigned',
     )
 
-    search_fields = ('contact__email', 'contact__address__city',)
+    search_fields = ('contact__email', 'contact__address__city', 'contact__address__postcode')
 
     def contact_email(self, obj):
         return obj.contact.email
@@ -132,6 +137,11 @@ class VolunteerRequestAdmin(ModelAdmin):
         return obj.contact.address.city
 
     contact_city.short_description = 'city'
+
+    def contact_zipcode(self, obj):
+        return obj.contact.address.postcode
+
+    contact_zipcode.short_description = 'zipcode'
 
 
 class CRMGroup(ModelAdminGroup):
