@@ -140,7 +140,7 @@ class VolunteerRequestAdmin(ModelAdmin):
             return 'unknown'
 
     contact_city.short_description = 'city'
-    contact_city.admin_order_field = 'address__city'
+    contact_city.admin_order_field = 'contact__address__city'
 
     def contact_zipcode(self, obj):
         if obj.contact.address:
@@ -149,7 +149,7 @@ class VolunteerRequestAdmin(ModelAdmin):
             return 'unknown'
 
     contact_zipcode.short_description = 'zipcode'
-    contact_zipcode.admin_order_field = 'address__postcode'
+    contact_zipcode.admin_order_field = 'contact__address__postcode'
 
 
 class CRMGroup(ModelAdminGroup):
