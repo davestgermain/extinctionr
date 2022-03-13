@@ -180,11 +180,15 @@ class Action(models.Model):
         if self.location.startswith("["):
             link = markdown(self.location)
         else:
+            if self.virtual:
+                link_text = "Online Meeting"
+            else:
+                link_text = self.location
             # See if the text is already a valid url.
             url_validator = URLValidator(schemes=["http", "https"])
             try:
                 url_validator(self.location)
-                link = f"<a href={self.location}>{self.location}</a>"
+                link = f"<a href={self.location}>{link_text}</a>"
             except ValidationError:
                 if self.virtual:
                     link = "/" # validation should have seen to this.
