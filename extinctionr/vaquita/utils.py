@@ -57,7 +57,10 @@ def clear_image_exif(file_obj):
     try:
         exif = img.getexif()
         if exif:
-            del img.info["exif"]
+            try:
+                del img.info["exif"]
+            except KeyError:
+                pass
             img.save(file_obj.path)
     except OSError as err:
         logger.error(

@@ -3,10 +3,16 @@ from fabric import Connection, task
 
 conn = Connection('xr@xrboston.org')
 
+
+@task
+def test(ctx):
+    conn.run('whoami')
+
+    
 @task
 def deploy(ctx):
     conn.run('git -C /home/src/extinctionr/ pull')
-    conn.run('supervisorctl restart xr')
+    conn.run('supervisorctl restart xrboston')
 
 
 @task
