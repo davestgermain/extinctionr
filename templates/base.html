@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no minimum-scale=1">
     <meta name="google-site-verification" content="ZON_H48TzAPuGJFBRW4tqfRC6d6HnaDvYUFp7xoF9lw" />
 {% load static compress %}
-    <title>Extinction Rebellion Massachusetts {% block title %}{% endblock %}</title>
+    <title>Extinction Rebellion Boston {% block title %}{% endblock %}</title>
 
     {% compress css %}
         {% comment %} <link type="text/x-scss" href="{% static 'css/bootstrap/scss/bootstrap.scss' %}" rel="stylesheet" media="screen"> {% endcomment %}
@@ -55,7 +55,7 @@
 
  {% render_block "css" %}
 
-  <meta property="og:title" content="{% block og_title %}Extinction Rebellion Massachusetts{%endblock%}" />
+  <meta property="og:title" content="{% block og_title %}Extinction Rebellion Boston{%endblock%}" />
   <meta property="og:url" content="https://{{request.get_host}}{{request.get_full_path}}" />
   <meta property="og:type" content="website" />
 {% block og_image %}
@@ -65,7 +65,7 @@
   <meta property="og:image:height" content="1080"/>
   <meta property="og:image:width" content="1920"/>
 {% endblock %}{% block og_tags %}
-  <meta property="og:description" content="Extinction Rebellion Massachusetts" />
+  <meta property="og:description" content="Extinction Rebellion Boston" />
 {% endblock %}
     {% block extralinks %} {% endblock %}
 

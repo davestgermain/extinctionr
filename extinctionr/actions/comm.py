@@ -22,7 +22,7 @@ We've now got enough other folks to commit! We hope to see you there, on {action
 More details here: {action_url}
 
 Solidarity,
-Extinction Rebellion Massachusetts
+Extinction Rebellion Boston
 
 P.S. If you can't make it, please get in touch. We're all in this together.
 
