@@ -67,7 +67,14 @@ blockquote {
             <div class="mt-2">
             <!-- consider a separate grid here with rows for each block -->
             {% for block in page.content %}
-              {% include_block block %}
+              {% if block.block_type == 'image' %}
+                {% image block.value.image fill-1024x576 %}
+                {% if block.value.caption %}
+                <div class="small">{{block.value.caption}}</div>
+                {% endif %}
+              {% else %}
+                {% include_block block %}
+              {% endif %}
             {% endfor %}
             </div>
             <div class="mt-2 mb-3">
