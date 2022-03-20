@@ -6,6 +6,7 @@
   <li class="nav-item"><a class="nav-link nav-a" id="join" href="{% url 'extinctionr.info:page' page='welcome/' %}">Join Us</a></li>
   <li class="nav-item"><a class="nav-link nav-a" id="action" href="{% url 'extinctionr.actions:list-actions' %}">Events</a></li>
   <li class="nav-item"><a class="nav-link nav-a" id="news" href="{% slugurl 'news' %}">News</a></li>
+  <li class="nav-item"><a class="nav-link nav-a" id="xryouth" href="http://xryouthboston.org">XR Youth</a></li>
   
   <li class="nav-item dropdown">
     <a class="nav-link dropdown-toggle dropdown-no-arrow" href="#" id="nav-info-dropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">More</a>
@@ -16,7 +17,6 @@
       <a class="dropdown-item nav-a" id="videos" href="{% slugurl 'video' %}">Videos</a>
       <a class="dropdown-item nav-a" id="resources" href="{% url 'extinctionr.info:page' page='resources' %}">Resources</a>
       <a class="dropdown-item nav-a" id="wiki" href="{% url 'wiki:root' %}">Wiki</a>
-      <a class="dropdown-item nav-a" id="xryouth" href="http://xryouthboston.org">XR Youth <i class="fas fa-external-link-alt"></i></a>
       <a class="dropdown-item nav-a" id="groups" href="{% url 'extinctionr.info:page' page='groups/' %}">Local Groups</a>
     </div>
   </li>
