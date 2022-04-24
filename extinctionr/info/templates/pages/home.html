@@ -12,105 +12,53 @@
     margin: 0;
     background-color: black;
   }
-  .home-banner video {
+  .home-banner img {
     opacity: .5;
   }
   .home-banner-text {
     position: absolute;
     font-family: "FucXed";
-    font-size: 1.5rem;
+    font-size: 2rem;
     color:white;
     top: 10%;
     left: 0;
     width: 100%;
   }
-  .video-overlay {
-    position: absolute;
-    top: 0;
-    left: 0;
-    padding: 0;
-    height: 100%;
-    width: 100%;
-    background-color: rgb(0, 0, 0, .5)
-  }
-  .video-wrapper {
-    position: relative;
-    padding-bottom: 56.25%; /* 16:9 */  
-    padding-top: 25px;
-    width: 300%; /* enlarge beyond browser width */
-    left: -100%; /* center */
-    display: none;
-  }
-  .video-wrapper iframe {
-    position: absolute; 
-    top: 0; 
-    left: 0; 
-    width: 100%; 
-    height: 100%;
-  }
-  .video {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    border: 0;
-    padding: 0 5%;
-    magin: auto;
-    display: block;
-  }
   .btn-outline-light {
     text-decoration: none !important;
   }
-  @media (min-width: 768px) {
+  @media (min-width: 884px) {
     .home-banner-text {
-      font-size: 3rem;
-    }
-    .btn-outline-light {
-      font-size: 1.5rem;
-      border-width: 3px;
-    }
-    .video-wrapper {
-      display: block;
-    }
-    .home-banner img {
-      display: none;
+      font-size: 4rem;
     }
   }
   @media (min-width: 576px) {
     .btn-outline-light {
+      font-size: 1.2rem !important;
       border-width: 3px;
+    }
+    .home-banner-text {
+      top: 30%;
+    }
+    .home-banner img {
+      margin-top: -11%;
+      margin-bottom: -18%;
     }
   }
 {% endblock %}
 {% block content %}
+
 <div class="row justify-content-center">
-  <div class="home-banner position-relative w-100 text-center overflow-hidden">
-    <img class="w-100" 
-    srcset="{% static 'images/banner-home.jpg' %} 1280w,
-            {% static 'images/banner-home-640w.jpg' %} 640w"
-    src="{% static 'images/banner-home.jpg' %}">    
-    <div class="video-wrapper">
-      <iframe
-        class="video"
-        src="https://www.youtube.com/embed/9lPhj6VmsEc?controls=0&playlist=9lPhj6VmsEc&mute=1&&autoplay=1&loop=1&modestbranding=1&showinfo=0" 
-        title="YouTube video player"
-        frameborder="0"
-        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen>
-      </iframe>
-    </div>
-    <div class="video-overlay">
-    </div>
-    <div class="home-banner-text px-2 text-center">
-      <span class="xr-green">Join Us This Earth Day</span><br>
-      <span class="small">For The</span></br>
-      <span class="xr-green">Freedom From Fossil Fuels Tour</span>
-      <p>
-        <a href="/action/fossil-fuel-freedom-tour/" class="mt-sm-2 mt-md-4 btn btn-outline-light text-uppercase">
-          Learn More
-        </a>
-      </p>
-    </div>
+  <div class="home-banner position-relative w-100 ">
+      <img class="w-100" 
+        srcset="{% static 'images/banner-home-2.jpg' %} 1280w,
+                {% static 'images/banner-home-2-640w.jpg' %} 640w"
+        src="{% static 'images/banner-home-2.jpg' %}">
+      <div class="home-banner-text px-2 text-center">
+      <span class="xr-green">We Must Act Now</span><br>
+      On the Climate and Ecological Emergency
+        <p><a href="{% url 'extinctionr.info:page' page='welcome/' %}" class="mt-sm-2 mt-md-4 btn btn-outline-light text-uppercase">Join Us</a></p>
+      </div>
   </div>
 </div>
 
@@ -144,11 +92,4 @@
   </div>
 </div>
 
-{% endblock %}
-{% block extra_js %}
-<script type="text/javascript">
-$('.home-banner').hover(function(e){
-    e.preventDefault();    
-});
-</script>
 {% endblock %}
