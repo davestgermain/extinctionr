@@ -47,19 +47,20 @@ class SaveAndContinue:
     def form_valid(self, form):
         # Have to save instance this form is working with:
         self._instance = form.instance
-        res = super().form_valid(form)
 
         action = self._instance
         url_validator = URLValidator(schemes=["http", "https"])
+
         try:
-            if action.virtual:
+            if action.virtual or action.location.startswith("http"):
                 url_validator(action.location)
             elif action.location.startswith("["):
                 markdown_link_validator(action.location)
         except ValidationError as err:
             form.add_error('location', err)
             return self.form_invalid(form)
-        return res
+
+        return super().form_valid(form)
 
 
     def get_success_message_buttons(self, instance):

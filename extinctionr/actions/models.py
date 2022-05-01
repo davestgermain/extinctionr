@@ -56,7 +56,7 @@ class Action(models.Model):
     )
     virtual = models.BooleanField(
         default=False,
-        help_text="Check this if the event is online (virtual zoom or other video conferencing)",
+        help_text="Check this if the event is online (virtual zoom or other video conferencing) and enter the url below (including the https part)",
     )
     available_roles = models.CharField(
         default="",

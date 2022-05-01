@@ -26,5 +26,6 @@ def markdown_link_validator(md):
     html = markdown(md)
     href = extract_href(html)
     if href is None:
-        raise ValidationError(_('Invalid mardkdown link: %(value)s'), params={'value': md})
+        msg = f"Invalid markdown link: {md}\nMarkdown links must be in the form [link text](http(s)://example.com)"
+        raise ValidationError(msg)
     return href
