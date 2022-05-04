@@ -1,58 +1,99 @@
 {% extends "base.html" %}
 {% block title %}:: Propose a Talk{% endblock %}
+{% block inline_css %}
+{{block.super}}
+
+.form-group label {
+	font-size: .9em;
+    font-family: FucXed, sans-serif;
+}
+.big-label {
+	font-size: 1.2em;
+}
+
+{% endblock %}
 {% block content %}
 {% load info %}
+
 <div class="row text-center pt-5">
 	<div class="col-text">
 		<h1>Let's Talk!</h1>
-		<div class="text-left">
-		<p>In this public talk, speakers from the Extinction Rebellion Boston will share the latest climate science on where our planet is heading, discuss some of the current psychology around climate change, and offer solutions through the study of social movements.</p>
+		<div class="text-left px-4">
+			<p>
+				In this public talk, speakers from Extinction Rebellion Boston 
+				will share the latest climate science on where our planet is 
+				heading, discuss some of the current psychology around climate change, 
+				and offer solutions through the study of social movements.
+			</p>
 
-<p>We will be travelling around Massachusetts to give this talk everywhere we can and share what we know about the climate emergency. If you'd like for us to visit your community to give the 'Heading to Extinction (and what to do about it)' talk, fill out the form below. We are happy to talk to audiences small and large. </p>
+			<p>
+				We will be travelling around Massachusetts to give this talk 
+				everywhere we can and share what we know about the climate 
+				emergency. If you'd like for us to visit your community to 
+				give the 'Heading to Extinction (and what to do about it)' 
+				or 'Look Up, Step Up' talk, fill out the form below. We are 
+				happy to talk to audiences small and large.
+			</p>
 
-<p>We may ask you to help us advertise the event on Facebook, with flyers, or through word-of-mouth. If you have a venue to suggest, whether it's your living room or a community center, please include that in the comments below. In our experience, this talk is a good way to start a conversation about the ongoing crisis in a supportive and understanding atmosphere.</p><p class="text-center"><em>We'll be in touch!</em></p>
+			<p>We may ask you to help us advertise the event on Facebook, 
+				with flyers, or through word-of-mouth. If you have a venue to 
+				suggest, whether it's your living room or a community center, 
+				please include that in the comments below. In our experience, 
+				this talk is a good way to start a conversation about the 
+				ongoing crisis in a supportive and understanding atmosphere.
+			</p>
+			<p class="text-center"><em>We'll be in touch!</em></p>
 		</div>
 		<hr>
 	</div>
 </div>
-<div class="row mt-4">
-	<div class="col-lg-6 col-sm-12 offset-lg-3">
+
+<div class="row justify-content-center mt-4">
+	<div class="col-lg-6 col-sm-12">
 		{% if not created %}
 		<form method="post"> {% csrf_token %}
 			<div class="text-danger">
 			{{ form.non_field_errors }}
 			</div>
-			<div class="form-group row">
-				<label for="{{form.email.id_for_label}}" class="d-none d-sm-block col-4 text-right">Email:</label>
-				<div class="col">
-					{{form.email}}
-					<div class="text-danger">{{form.email.errors}}</div>
+			<div class="form-row">
+				<div class="form-group col">
+					<label for="{{form.email.id_for_label}}">Email:</label>
+					<div>
+						{{form.email}}
+						<div class="text-danger">{{form.email.errors}}</div>
+					</div>
 				</div>
 			</div>
-			<div class="form-group row">
-				<label for="{{form.name.id_for_label}}" class="d-none d-sm-block col-4 text-right">Your Name:</label>
-				<div class="col">
-					{{form.name}}
-					<div class="text-danger">{{form.name.errors}}</div>
+			<div class="form-row">
+				<div class="form-group col">
+					<label for="{{form.name.id_for_label}}">Your Name:</label>
+					<div>
+						{{form.name}}
+						<div class="text-danger">{{form.name.errors}}</div>
+					</div>
 				</div>
 			</div>
-			<div class="form-group row">
-				<label for="{{form.phone.id_for_label}}" class="d-none d-sm-block col-4 text-right">Phone Number:</label>
-				<div class="col">
-					{{form.phone}}
-					<div class="text-danger">{{form.phone.errors}}</div>
+			<div class="form-row">
+				<div class="form-group col">
+					<label for="{{form.phone.id_for_label}}">Phone Number:</label>
+					<div>
+						{{form.phone}}
+						<div class="text-danger">{{form.phone.errors}}</div>
+					</div>
 				</div>
 			</div>
-			<div class="form-group row">
-				<label for="{{form.location.id_for_label}}" class="d-none d-sm-block col-4 text-right">Your Location:</label>
-				<div class="col">
-					{{form.location}}
+			<div class="form-row">
+				<div class="form-group col">
+					<label for="{{form.location.id_for_label}}">Your Location:</label>
+					<div>
+						{{form.location}}
+					</div>
+					<div class="text-danger">{{form.location.errors}}</div>
 				</div>
-				<div class="text-danger">{{form.location.errors}}</div>
 			</div>
 			<div class="form-group row mt-4 pt-2">
 				<div class="col-10 offset-1">
-					<input class="btn btn-block btn-lg btn-outline-dark btn-success text-uppercase" type="submit" value="I want to participate">
+					<input class="btn btn-block btn-lg btn-outline-dark btn-success text-uppercase" type="submit" value="Request Talk">
 				</div>
 			</div>
 		</form>
