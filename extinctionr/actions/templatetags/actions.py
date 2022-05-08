@@ -34,6 +34,15 @@ def highlight_action(*args, **kwargs):
         action = None
     return {'action': action}
 
+@register.inclusion_tag('upcoming_xr_actions.html')
+def upcoming_xr_actions(*args, **kwargs):
+    try:
+        actions = models.Action.objects.filter(public=True, when__gte=now()).order_by('when')
+        actions = actions.exclude(tags__name__in=["solidarity"])[0:10]
+    except IndexError:
+        actions = None
+    return {'actions': actions}
+
 
 @register.simple_tag(name='calendar_url', takes_context=True)
 def calendar_url(context, action, service):

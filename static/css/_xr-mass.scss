@@ -434,3 +434,28 @@ footer {
     text-decoration: none;
   }
 }
+
+.mini-card-title {
+	font-family: "Crimson Text Bold", Georgia, serif !important;
+	font-size: .8em;
+	text-decoration: none;
+	line-height: 1.2;
+}
+
+.mini-card-subtitle {
+	font-size: .6em;
+}
+
+.mini-card-lede {
+	font-size: .7em;
+	line-height: 1.2;
+}
+
+@media (min-width: 576px) {
+	.mini-card-title {
+		font-size: 1em;
+	}	
+  .mini-card-lede {
+		font-size: .8em;
+	}	
+}

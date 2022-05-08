@@ -1,0 +1,17 @@
+{% load wagtailcore_tags wagtailimages_tags %}
+{% load tz %}
+{% load info %}
+
+<div class="card bg-white m-md-1">
+    <a href="{{action.get_absolute_url}}">
+      {% image action.image fill-800x450 class="card-img-top" %}
+    </a>
+    <div class="card-body p-1">
+        <div class="card-title mini-card-title mb-0"><a href="{{action.get_absolute_url}}" class="blog-link">
+          {{action.html_title}}</a></div>
+          <div class="card-subtitle mini-card-subtitle">
+            {{action.when|localtime|date:"l, M d"}}
+          </div>
+        <div class="card-text mini-card-lede">{{action.description|markdownify|truncatewords_html:15}}</div>
+    </div>
+</div>

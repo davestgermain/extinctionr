@@ -1,9 +1,12 @@
 {% extends "base.html" %}
-{% load static %}
+{% load static compress %}
 {% load actions %}
 {% block title %}:: Home{% endblock %}
 {% block og_tags %}
   <meta property="og:description" content="We are facing an unprecedented global ecological crisis. The government is not working to protect us. Extinction Rebellion Boston is part of an international mobilization for non-violent disobedience against governments' criminal inaction on climate change." />
+{% endblock %}
+{% block extrahead %}
+<link rel="stylesheet" href="{% static "css/flickity.min.css"%}" media/>
 {% endblock %}
 {% block inline_css %}
 {{block.super}}
@@ -45,6 +48,23 @@
       margin-bottom: -18%;
     }
   }
+  .upcoming-action-cell {
+    width: 62.5%;
+  }
+  @media (min-width: 884px) {
+    .upcoming-action-cell {
+      width: 31%;
+    }
+  }
+  .flickity-prev-next-button.previous {
+    left: -20px;
+  }
+  .flickity-prev-next-button.next {
+    right: -20px;
+  }
+  .flickity-button:disabled {
+    display: none;
+  }
 {% endblock %}
 {% block content %}
 
@@ -66,17 +86,27 @@
 <div class="row px py-5">
   <div class="text-center w-100">
     <h1 class="display-4">Rebel For <span class="xr-green">Life</span></h1>
+    <p>
     We are facing an unprecedented global ecological crisis.
-  The government is not working to protect us.<br>
-  Extinction Rebellion is an international mobilization for non-violent disobedience against governments'<br>
+  The government is not working to protect us.
+  </p>
+  <p>
+  Extinction Rebellion is an international mobilization for non-violent direct action against governments'
   criminal inaction on climate change and the wider ecological emergency.
+  </p>
   </div>
 </div>
 
-<div class="row mt-2 py-5" style="background-color: white;">
-    <div class="text-center w-100">
-{% recent_actions %}
+<div class="row px-0 px-lg-4 mt-2 py-3 bg-white">
+  <div class="col w-100">
+    <h1 class="display-4 text-center">Upcoming Actions and Events</h1>
+    <div id="upcoming_actions">
+    {% upcoming_xr_actions %}      
     </div>
+    <div class="py-1 text-center">
+    <a href="/action/" role="button" class="btn btn-primary btn-fucxed">More Events...</a>
+    </div>
+  </div>
 </div>
 
 <div class="row py-5" class="xr-bg-gray">
@@ -92,4 +122,25 @@
   </div>
 </div>
 
+{% endblock %}
+
+{% block extra_js %}
+
+<script type="text/javascript" src="{% static "js/flickity.pkgd.min.js" %}"></script>
+{% compress js inline %}
+<script>
+  $(function(){
+    let flkty = new Flickity('#upcoming_actions', {
+      "cellAlign": "left", 
+      "contain": true, 
+      "imagesLoaded": true, 
+      "pageDots": false, 
+      "adaptiveHeight": false
+    });
+    setTimeout(() => {
+      flkty.resize();
+    }, 1);
+  });
+</script>
+{% endcompress %}
 {% endblock %}
