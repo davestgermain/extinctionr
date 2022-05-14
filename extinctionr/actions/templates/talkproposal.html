@@ -14,11 +14,18 @@
 {% endblock %}
 {% block content %}
 {% load info %}
+{% load static %}
+
+<div class="row">
+	<div class="banner position-relative w-100">
+      <img class="img-fluid w-100" src="{% static 'images/banner-talk.jpg' %}" alt="Rise from the wreckage" />
+	  <div class="banner-title">Let's Talk</div>
+	</div>
+</div>
 
 <div class="row text-center pt-5">
 	<div class="col-text">
-		<h1>Let's Talk!</h1>
-		<div class="text-left px-4">
+		<div class="text-left px-5">
 			<p>
 				In this public talk, speakers from Extinction Rebellion Boston 
 				will share the latest climate science on where our planet is 
@@ -93,7 +100,7 @@
 			</div>
 			<div class="form-group row mt-4 pt-2">
 				<div class="col-10 offset-1">
-					<input class="btn btn-block btn-lg btn-outline-dark btn-success text-uppercase" type="submit" value="Request Talk">
+					<input class="btn btn-block btn-lg btn-outline-dark btn-primary text-uppercase" type="submit" value="Request Talk">
 				</div>
 			</div>
 		</form>
