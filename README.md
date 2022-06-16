@@ -1,12 +1,27 @@
-To run this site:
+Prerequisites:
+Python 3.8
+
 
 ```
+# In a new directory:
+
+python -m venv venv
+
+# Activate the virtual environment
+source ./venv/bin/activate
+
+git clone <this project>
+cd extinctionr
+
 pip install django
 pip install -r requirements.txt
 
-./manage.py migrate
-./manage.py runserver
+python manage.py migrate
+python manage.py runserver
 ```
 
-Adding a page in `extinctionr/info/templates/pages/` makes it automatically available at `/pagename`
+Note: to exit the python venv use:
+
+`deactivate`
+
 
