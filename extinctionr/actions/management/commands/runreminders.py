@@ -42,7 +42,8 @@ def _send_reminders(hours, reminder_type):
     )
 
     actions = _upcoming_actions(time_now, hours)
-
+    actions = actions.filter(Q(send_reminders__isnull=True) | Q(send_reminders=True))
+    
     if not actions:
         logger.info("No upcoming actions")
         return
